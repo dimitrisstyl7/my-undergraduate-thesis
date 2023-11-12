@@ -1,7 +1,5 @@
-# my_undergraduate_thesis
+# Πανεπιστήμιο Πειραιώς / University of Piraeus
+## Τμήμα Πληροφορικής / Department of Informatics
+### Πτυχιακή Εργασία / Undergraduate Thesis
 ---
-<h1>Πανεπιστήμιο Πειραιώς / University of Piraeus</h1>
----
-<h2>Τμήμα Πληροφορικής / Department of Informatics</h2>
----
-<h3>Πτυχιακή Εργασία / Undergraduate Thesis</h3>
+#### Δημήτρης Στυλιανού Π20004<br>Dimitris Stylianou P20004
