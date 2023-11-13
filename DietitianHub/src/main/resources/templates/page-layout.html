@@ -358,7 +358,7 @@
                     <li class="menu-title">Navigation</li>
 
                     <li>
-                        <a href="index.html">
+                        <a th:href="@{index}">
                             <i class="mdi mdi-view-dashboard-outline"></i>
                             <span class="badge bg-success rounded-pill float-end">9+</span>
                             <span> Dashboard </span>
@@ -368,9 +368,9 @@
                     <li class="menu-title mt-2">Apps</li>
 
                     <li>
-                        <a href="apps-calendar.html">
+                        <a th:href="@{appointments}">
                             <i class="mdi mdi-calendar-blank-outline"></i>
-                            <span> Calendar </span>
+                            <span> Appointments </span>
                         </a>
                     </li>
 
@@ -891,6 +891,13 @@
 <script th:src="@{/libs/waypoints/lib/jquery.waypoints.min.js}"></script>
 <script th:src="@{/libs/jquery.counterup/jquery.counterup.min.js}"></script>
 <script th:src="@{/libs/feather-icons/feather.min.js}"></script>
+
+<!-- plugin js -->
+<script th:src="@{/libs/moment/min/moment.min.js}"></script>
+<script th:src="@{/libs/fullcalendar/main.min.js}"></script>
+
+<!-- Calendar init -->
+<script th:src="@{/js/pages/calendar.init.js}"></script>
 
 <!-- App js -->
 <script th:src="@{/js/app.min.js}"></script>

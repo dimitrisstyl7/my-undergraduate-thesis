@@ -16,4 +16,9 @@ public class AppController {
     public String newPage() {
         return Constants.NEW_PAGE_FILE;
     }
+
+    @GetMapping(Constants.APPOINTMENTS_URL)
+    public String appointments() {
+        return Constants.APPOINTMENTS_FILE;
+    }
 }
