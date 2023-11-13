@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
->
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset=" utf-8"/>
     <title>Starter | Adminto - Responsive Admin Dashboard Template</title>
@@ -213,7 +213,7 @@
                    href="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <img th:src="@{/images/users/user-1.jpg}" alt="user-image" class="rounded-circle">
                     <span class="pro-user-name ms-1">
-                                    Nowak <i class="mdi mdi-chevron-down"></i> 
+                                    Nowak <i class="mdi mdi-chevron-down"></i>
                                 </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
@@ -847,19 +847,10 @@
     <!-- ============================================================== -->
 
     <div class="content-page">
+
         <div class="content">
-
             <!-- Start Content-->
-            <div class="container-fluid">
-
-                <div class="row">
-                    <div class="col-sm-12"></div>
-                </div>
-                <!-- end row -->
-
-
-            </div> <!-- container -->
-
+            <div class="container-fluid" layout:fragment="main"></div> <!-- container -->
         </div> <!-- content -->
 
         <!-- Footer Start -->
