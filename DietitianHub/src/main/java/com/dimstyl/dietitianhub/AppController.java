@@ -16,9 +16,4 @@ public class AppController {
     public String newPage() {
         return Constants.NEW_PAGE_FILE;
     }
-
-    @GetMapping(Constants.PAGE_LAYOUT_URL)
-    public String pageLayout() {
-        return Constants.PAGE_LAYOUT_FILE;
-    }
 }
