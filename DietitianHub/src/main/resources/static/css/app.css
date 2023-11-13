@@ -16807,10 +16807,6 @@ body {
   padding-right: 0px !important;
   padding-left: 0px !important;
 }
-body.loading {
-  visibility: hidden;
-  opacity: 0;
-}
 
 label {
   font-weight: 500;
