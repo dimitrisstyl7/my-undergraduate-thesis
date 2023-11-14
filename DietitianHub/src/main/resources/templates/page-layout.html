@@ -368,8 +368,6 @@
                         </a>
                     </li>
 
-                    <li class="menu-title mt-2">Apps</li>
-
                     <li>
                         <a th:href="@{appointments}">
                             <i class="mdi mdi-calendar-blank-outline"></i>
@@ -378,74 +376,32 @@
                     </li>
 
                     <li>
-                        <a href="apps-chat.html">
+                        <a th:href="@{chat}">
                             <i class="mdi mdi-forum-outline"></i>
                             <span> Chat </span>
                         </a>
                     </li>
 
                     <li>
-                        <a href="#email" data-bs-toggle="collapse">
-                            <i class="mdi mdi-email-outline"></i>
-                            <span> Email </span>
+                        <a href="#clients" data-bs-toggle="collapse">
+                            <i class="fe-users"></i>
+                            <span> Clients </span>
                             <span class="menu-arrow"></span>
                         </a>
-                        <div class="collapse" id="email">
+                        <div class="collapse" id="clients">
                             <ul class="nav-second-level">
                                 <li>
-                                    <a href="email-inbox.html">Inbox</a>
+                                    <a th:href="@{register-client}">Register client</a>
                                 </li>
                                 <li>
-                                    <a href="email-templates.html">Email Templates</a>
+                                    <a th:href="@{view-clients}">View clients</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{remove-client}">Remove client</a>
                                 </li>
                             </ul>
                         </div>
                     </li>
-
-                    <li>
-                        <a href="#sidebarTasks" data-bs-toggle="collapse">
-                            <i class="mdi mdi-clipboard-outline"></i>
-                            <span> Tasks </span>
-                            <span class="menu-arrow"></span>
-                        </a>
-                        <div class="collapse" id="sidebarTasks">
-                            <ul class="nav-second-level">
-                                <li>
-                                    <a href="task-kanban-board.html">Kanban Board</a>
-                                </li>
-                                <li>
-                                    <a href="task-details.html">Details</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li>
-                        <a href="apps-projects.html">
-                            <i class="mdi mdi-briefcase-variant-outline"></i>
-                            <span> Projects </span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#contacts" data-bs-toggle="collapse">
-                            <i class="mdi mdi-book-open-page-variant-outline"></i>
-                            <span> Contacts </span>
-                            <span class="menu-arrow"></span>
-                        </a>
-                        <div class="collapse" id="contacts">
-                            <ul class="nav-second-level">
-                                <li>
-                                    <a href="contacts-list.html">Members List</a>
-                                </li>
-                                <li>
-                                    <a href="contacts-profile.html">Profile</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li class="menu-title mt-2">Custom</li>
 
                     <li>
                         <a href="#sidebarAuth" data-bs-toggle="collapse">
@@ -458,9 +414,7 @@
                                 <li>
                                     <a href="auth-login.html">Log In</a>
                                 </li>
-                                <li>
-                                    <a href="auth-register.html">Register</a>
-                                </li>
+
                                 <li>
                                     <a href="auth-recoverpw.html">Recover Password</a>
                                 </li>
