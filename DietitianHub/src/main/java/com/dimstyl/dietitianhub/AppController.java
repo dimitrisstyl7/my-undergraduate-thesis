@@ -36,4 +36,9 @@ public class AppController {
     public String removeClientPage() {
         return Constants.REMOVE_CLIENT_FILE;
     }
+
+    @GetMapping(Constants.LOGIN_URL)
+    public String loginPage() {
+        return Constants.LOGIN_FILE;
+    }
 }
