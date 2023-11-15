@@ -4,6 +4,9 @@
       layout:decorate="~{page-layout}">
 <head>
     <title>Appointments</title>
+
+    <!-- Plugin css -->
+    <link th:href="@{/libs/fullcalendar/main.min.css}" rel="stylesheet" type="text/css"/>
 </head>
 
 <div layout:fragment="main">
@@ -107,5 +110,12 @@
         </div>
         <!-- end col-12 -->
     </div> <!-- end row -->
+
+    <!-- Calendar init -->
+    <script th:src="@{/js/pages/calendar.init.js}" defer></script>
+
+    <!-- plugin js -->
+    <script th:src="@{/libs/moment/min/moment.min.js}"></script>
+    <script th:src="@{/libs/fullcalendar/main.min.js}"></script>
 </div>
 </html>
