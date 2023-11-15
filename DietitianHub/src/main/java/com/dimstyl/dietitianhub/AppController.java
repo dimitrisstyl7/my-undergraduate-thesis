@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @NoArgsConstructor
 public class AppController {
-    @GetMapping({Constants.INDEX_URL_1, Constants.INDEX_URL_2})
+    @GetMapping({Constants.INDEX_URL})
     public String indexPage() {
         return Constants.INDEX_FILE;
     }
@@ -20,11 +20,6 @@ public class AppController {
     @GetMapping(Constants.CHAT_URL)
     public String chatPage() {
         return Constants.CHAT_FILE;
-    }
-
-    @GetMapping(Constants.REGISTER_CLIENT_URL)
-    public String registerClientPage() {
-        return Constants.REGISTER_CLIENT_FILE;
     }
 
     @GetMapping(Constants.VIEW_CLIENTS_URL)

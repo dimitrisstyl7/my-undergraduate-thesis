@@ -382,24 +382,10 @@
                     </li>
 
                     <li>
-                        <a href="#clients" data-bs-toggle="collapse">
+                        <a th:href="@{view-clients}">
                             <i class="fe-users"></i>
                             <span> Clients </span>
-                            <span class="menu-arrow"></span>
                         </a>
-                        <div class="collapse" id="clients">
-                            <ul class="nav-second-level">
-                                <li>
-                                    <a th:href="@{view-clients}">View clients</a>
-                                </li>
-                                <li>
-                                    <a th:href="@{register-client}">Register client</a>
-                                </li>
-                                <li>
-                                    <a th:href="@{remove-client}">Remove client</a>
-                                </li>
-                            </ul>
-                        </div>
                     </li>
                 </ul>
             </div>
