@@ -17,9 +17,9 @@ public class AppController {
         return Constants.APPOINTMENTS_FILE;
     }
 
-    @GetMapping(Constants.CHAT_URL)
+    @GetMapping(Constants.MESSAGES_URL)
     public String chatPage() {
-        return Constants.CHAT_FILE;
+        return Constants.MESSAGES_FILE;
     }
 
     @GetMapping(Constants.VIEW_CLIENTS_URL)
