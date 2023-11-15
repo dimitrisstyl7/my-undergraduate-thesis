@@ -9,11 +9,13 @@ public class Constants {
     public static final String VIEW_CLIENTS_URL = "view-clients";
     public static final String REMOVE_CLIENT_URL = "remove-client";
     public static final String LOGIN_URL = "login";
+    public static final String UPLOAD_FILE_URL = "upload-file";
 
-    // Files
-    public static final String INDEX_FILE = "index";
-    public static final String APPOINTMENTS_FILE = "appointments";
-    public static final String MESSAGES_FILE = "messages";
-    public static final String VIEW_CLIENTS_FILE = "view-clients";
-    public static final String LOGIN_FILE = "login";
+    // HTML Files
+    public static final String INDEX_HTML = "index";
+    public static final String APPOINTMENTS_HTML = "appointments";
+    public static final String MESSAGES_HTML = "messages";
+    public static final String VIEW_CLIENTS_HTML = "view-clients";
+    public static final String LOGIN_HTML = "login";
+    public static final String UPLOAD_FILE_HTML = "upload-file";
 }
