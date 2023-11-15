@@ -8,7 +8,6 @@ public class Constants {
     public static final String CHAT_URL = "chat";
     public static final String REGISTER_CLIENT_URL = "register-client";
     public static final String VIEW_CLIENTS_URL = "view-clients";
-    public static final String REMOVE_CLIENT_URL = "remove-client";
     public static final String LOGIN_URL = "login";
 
     // Files
@@ -17,6 +16,5 @@ public class Constants {
     public static final String CHAT_FILE = "chat";
     public static final String REGISTER_CLIENT_FILE = "register-client";
     public static final String VIEW_CLIENTS_FILE = "view-clients";
-    public static final String REMOVE_CLIENT_FILE = "remove-client";
     public static final String LOGIN_FILE = "login";
 }

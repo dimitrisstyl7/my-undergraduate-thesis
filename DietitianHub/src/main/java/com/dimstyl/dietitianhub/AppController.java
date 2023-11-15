@@ -32,11 +32,6 @@ public class AppController {
         return Constants.VIEW_CLIENTS_FILE;
     }
 
-    @GetMapping(Constants.REMOVE_CLIENT_URL)
-    public String removeClientPage() {
-        return Constants.REMOVE_CLIENT_FILE;
-    }
-
     @GetMapping(Constants.LOGIN_URL)
     public String loginPage() {
         return Constants.LOGIN_FILE;
