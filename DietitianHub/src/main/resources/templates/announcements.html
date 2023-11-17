@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{page-layout}">
+<head>
+    <title>Announcements</title>
+
+    <!-- Plugins css -->
+    <link th:href="@{/libs/quill/quill.core.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/libs/quill/quill.bubble.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{/libs/quill/quill.snow.css}" rel="stylesheet" type="text/css"/>
+</head>
+
+<div layout:fragment="main">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a href="#view-announcement" data-bs-toggle="tab" aria-expanded="false"
+                               class="nav-link active">
+                                View announcement
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#edit-announcement" data-bs-toggle="tab" aria-expanded="true" class="nav-link">
+                                Edit announcement
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane show active" id="view-announcement">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div id="bubble-editor">
+                                            <h3><span class="ql-size-large">Hello World!</span></h3>
+                                            <p><br></p>
+                                            <h3>This is a simple editable area.</h3>
+                                            <p><br></p>
+                                            <ul>
+                                                <li>
+                                                    Select a text to reveal the toolbar.
+                                                </li>
+                                                <li>
+                                                    Edit rich document on-the-fly, so elastic!
+                                                </li>
+                                            </ul>
+                                            <p><br></p>
+                                            <p>
+                                                End of simple area
+                                            </p>
+                                        </div> <!-- end Snow-editor-->
+                                    </div> <!-- end card-body-->
+                                </div> <!-- end card-->
+                            </div><!-- end col -->
+                        </div>
+
+                        <div class="tab-pane" id="edit-announcement">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div id="snow-editor" style="height: 300px;">
+                                            <h3><span class="ql-size-large">Hello World!</span></h3>
+                                            <p><br></p>
+                                            <h3>This is an simple editable area.</h3>
+                                            <p><br></p>
+                                            <ul>
+                                                <li>
+                                                    Select a text to reveal the toolbar.
+                                                </li>
+                                                <li>
+                                                    Edit rich document on-the-fly, so elastic!
+                                                </li>
+                                            </ul>
+                                            <p><br></p>
+                                            <p>
+                                                End of simple area
+                                            </p>
+
+                                        </div> <!-- end Snow-editor-->
+                                    </div> <!-- end card-body-->
+                                </div> <!-- end card-->
+                            </div><!-- end col -->
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end card-->
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+
+    <!-- Plugins js -->
+    <script th:src="@{/libs/quill/quill.min.js}"></script>
+
+    <!-- Init js -->
+    <script th:src="@{/js/pages/form-quilljs.init.js}"></script>
+
+    <!-- Custom script -->
+    <script>
+        // Change page title.
+        const title = document.getElementsByClassName("page-title-main");
+        title[0].textContent = "Announcements";
+
+        // Disable editing of the view (editor) announcement.
+        const editors = document.getElementsByClassName("ql-editor");
+        editors[0].setAttribute("contenteditable", "false");
+    </script>
+
+</div>
+</html>
