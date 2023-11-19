@@ -14,11 +14,15 @@
 
 <div layout:fragment="main">
     <div class="modal fade" id="custom-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-light">
-                    <h4 class="modal-title">Announcement title here</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title" id="custom-title">
+                        <label for="title">Title:</label>
+                        <input type="text" id="title" name="title" disabled>
+                    </h4>
+                    <button type="button" class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"
+                            aria-hidden="true"><i class="mdi mdi-close"></i></button>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -28,14 +32,16 @@
                                     <div class="card-body">
                                         <ul class="nav nav-tabs">
                                             <li class="nav-item">
-                                                <a href="#view-announcement" data-bs-toggle="tab" aria-expanded="false"
-                                                   class="nav-link active">
+                                                <a id="view-announcement-tab" href="#view-announcement"
+                                                   data-bs-toggle="tab" aria-expanded="false"
+                                                   class="nav-link active" onclick="toggleTitleEditing()">
                                                     View announcement
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="#edit-announcement" data-bs-toggle="tab" aria-expanded="true"
-                                                   class="nav-link">
+                                                <a id="edit-announcement-tab" href="#edit-announcement"
+                                                   data-bs-toggle="tab" aria-expanded="true"
+                                                   class="nav-link" onclick="toggleTitleEditing()">
                                                     Edit announcement
                                                 </a>
                                             </li>
@@ -96,6 +102,19 @@
                                                     </div> <!-- end card-->
                                                 </div><!-- end col -->
                                             </div>
+
+                                            <div id="publish-button-div" style="text-align: center;">
+                                                <button type="button" class="btn btn-success waves-effect waves-light">
+                                                    Publish now
+                                                    <span class="btn-label-right"><i class="mdi mdi-18px mdi-publish"></i></span>
+                                                </button>
+                                            </div>
+                                            <div id="update-button-div" style="text-align: center;">
+                                                <button type="button" class="btn btn-info waves-effect waves-light">
+                                                    Update
+                                                    <span class="btn-label-right"><i class="mdi mdi-18px mdi-update"></i></span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div> <!-- end card-->
@@ -107,96 +126,115 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+    <button class="btn btn-lg font-16 btn-success" id="btn-new-event" data-bs-toggle="modal"
+            data-bs-target="#custom-modal" onclick="expandEditAnnouncementTab()">
+        <i class="fa fa-plus me-1"></i> Create new
+    </button>
+
     <div class="row">
         <div class="col-sm-12">
             <div class="timeline">
                 <article class="timeline-item alt">
-                    <div class="time-show first">
-                        <a class="btn btn-warning width-lg" style="pointer-events: none">Today</a>
+                    <div class="time-show">
+                        <a class="btn btn-purple width-lg" style="pointer-events: none">Today</a>
                     </div>
                 </article>
+
                 <article class="timeline-item alt">
                     <div class="timeline-desk">
                         <div class="panel">
                             <div class="panel-body">
                                 <span class="arrow-alt"></span>
-                                <span class="timeline-icon bg-danger"><i class="mdi mdi-circle"></i></span>
-                                <h4 class="text-danger mt-0">1 hour ago</h4>
+                                <span class="timeline-icon bg-purple"><i class="mdi mdi-circle"></i></span>
+                                <h4>Announcement title here</h4>
+                                <p class="text-purple mt-1">1 hour ago</p>
                                 <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                <p>Announcement title here</p>
-                                <div style="float: right; margin-top: 5px">
+                                <div style="float: right; margin-top: 10px">
                                     <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
-                                            data-bs-toggle="modal" data-bs-target="#custom-modal">View announcement
+                                            data-bs-toggle="modal" data-bs-target="#custom-modal"
+                                            onclick="expandViewAnnouncementTab()">View
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </article>
-                <article class="timeline-item ">
-                    <div class="timeline-desk">
-                        <div class="panel">
-                            <div class="panel-body">
-                                <span class="arrow"></span>
-                                <span class="timeline-icon bg-success"><i class="mdi mdi-circle"></i></span>
-                                <h4 class="text-success mt-0">2 hours ago</h4>
-                                <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                <p>consectetur adipisicing elit. Iusto, optio, dolorum <a href="#">John deon</a>
-                                    provident rerum aut hic quasi placeat iure tempora laudantium </p>
 
-                            </div>
-                        </div>
-                    </div>
-                </article>
-                <article class="timeline-item alt">
-                    <div class="timeline-desk">
-                        <div class="panel">
-                            <div class="panel-body">
-                                <span class="arrow-alt"></span>
-                                <span class="timeline-icon bg-primary"><i class="mdi mdi-circle"></i></span>
-                                <h4 class="text-primary mt-0">10 hours ago</h4>
-                                <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                <p>3 new photo Uploaded on facebook fan page</p>
-                                <div class="album">
-                                    <a href="#">
-                                        <img alt="" th:src="@{/images/small/img-1.jpg}" class="img-fluid">
-                                    </a>
-                                    <a href="#">
-                                        <img alt="" th:src="@{/images/small/img-2.jpg}">
-                                    </a>
-                                    <a href="#">
-                                        <img alt="" th:src="@{/images/small/img-3.jpg}">
-                                    </a>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
                 <article class="timeline-item">
                     <div class="timeline-desk">
                         <div class="panel">
                             <div class="panel-body">
                                 <span class="arrow"></span>
                                 <span class="timeline-icon bg-purple"><i class="mdi mdi-circle"></i></span>
-                                <h4 class="text-purple mt-0">14 hours ago</h4>
-                                <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                <p>Outdoor visit at California State Route 85 with John Boltana &
-                                    Harry Piterson regarding to setup a new show room.</p>
+                                <h4>Announcement title here</h4>
+                                <p class="text-purple mt-1">1 hour ago</p>
+                                <p class="timeline-date text-muted" style="margin-top: 10px"><small>08:25 am</small></p>
+                                <div style="float: left; margin-top: 10px">
+                                    <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
+                                            data-bs-toggle="modal" data-bs-target="#custom-modal"
+                                            onclick="expandViewAnnouncementTab()">View
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </article>
+
                 <article class="timeline-item alt">
                     <div class="timeline-desk">
                         <div class="panel">
                             <div class="panel-body">
                                 <span class="arrow-alt"></span>
-                                <span class="timeline-icon"><i class="mdi mdi-circle"></i></span>
-                                <h4 class="text-muted mt-0">19 hours ago</h4>
+                                <span class="timeline-icon bg-purple"><i class="mdi mdi-circle"></i></span>
+                                <h4>Announcement title here</h4>
+                                <p class="text-purple mt-1">1 hour ago</p>
                                 <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                <p>Jonatha Smith added new milestone <span><a href="#">Pathek</a></span>
-                                    Lorem ipsum dolor sit amet consiquest dio</p>
+                                <div style="float: right; margin-top: 10px">
+                                    <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
+                                            data-bs-toggle="modal" data-bs-target="#custom-modal"
+                                            onclick="expandViewAnnouncementTab()">View
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="timeline-item">
+                    <div class="timeline-desk">
+                        <div class="panel">
+                            <div class="panel-body">
+                                <span class="arrow"></span>
+                                <span class="timeline-icon bg-purple"><i class="mdi mdi-circle"></i></span>
+                                <h4>Announcement title here</h4>
+                                <p class="text-purple mt-1">1 hour ago</p>
+                                <p class="timeline-date text-muted" style="margin-top: 10px"><small>08:25 am</small></p>
+                                <div style="float: left; margin-top: 10px">
+                                    <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
+                                            data-bs-toggle="modal" data-bs-target="#custom-modal"
+                                            onclick="expandViewAnnouncementTab()">View
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="timeline-item alt">
+                    <div class="timeline-desk">
+                        <div class="panel">
+                            <div class="panel-body">
+                                <span class="arrow-alt"></span>
+                                <span class="timeline-icon bg-purple"><i class="mdi mdi-circle"></i></span>
+                                <h4>Announcement title here</h4>
+                                <p class="text-purple mt-1">1 hour ago</p>
+                                <p class="timeline-date text-muted"><small>08:25 am</small></p>
+                                <div style="float: right; margin-top: 10px">
+                                    <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
+                                            data-bs-toggle="modal" data-bs-target="#custom-modal"
+                                            onclick="expandViewAnnouncementTab()">View
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -204,34 +242,45 @@
 
                 <article class="timeline-item alt">
                     <div class="time-show">
-                        <a href="#" class="btn btn-primary width-lg">Yesterday</a>
+                        <a class="btn btn-warning width-lg" style="pointer-events: none">Yesterday</a>
                     </div>
                 </article>
+
                 <article class="timeline-item">
                     <div class="timeline-desk">
                         <div class="panel">
                             <div class="panel-body">
                                 <span class="arrow"></span>
                                 <span class="timeline-icon bg-warning"><i class="mdi mdi-circle"></i></span>
-                                <h4 class="text-warning mt-0">07 January 2016</h4>
-                                <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                <p>Montly Regular Medical check up at Greenland Hospital by the
-                                    doctor <span><a href="#"> Johm meon </a></span>
-                                </p>
-
+                                <h4>Announcement title here</h4>
+                                <p class="text-warning mt-1">07 January 2016</p>
+                                <p class="timeline-date text-muted" style="margin-top: 10px"><small>08:25 am</small></p>
+                                <div style="float: left; margin-top: 10px">
+                                    <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
+                                            data-bs-toggle="modal" data-bs-target="#custom-modal"
+                                            onclick="expandViewAnnouncementTab()">View
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </article>
+
                 <article class="timeline-item alt">
                     <div class="timeline-desk">
                         <div class="panel">
                             <div class="panel-body">
                                 <span class="arrow-alt"></span>
-                                <span class="timeline-icon bg-primary"><i class="mdi mdi-circle"></i></span>
-                                <h4 class="text-primary mt-0">07 January 2016</h4>
+                                <span class="timeline-icon bg-warning"><i class="mdi mdi-circle"></i></span>
+                                <h4>Announcement title here</h4>
+                                <p class="text-warning mt-1">07 January 2016</p>
                                 <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                <p>Download the new updates of Adminto admin dashboard</p>
+                                <div style="float: right; margin-top: 10px">
+                                    <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
+                                            data-bs-toggle="modal" data-bs-target="#custom-modal"
+                                            onclick="expandViewAnnouncementTab()">View
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -242,18 +291,24 @@
                         <div class="panel">
                             <div class="panel-body">
                                 <span class="arrow"></span>
-                                <span class="timeline-icon bg-success"><i class="mdi mdi-circle"></i></span>
-                                <h4 class="text-success mt-0">07 January 2016</h4>
-                                <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                <p>Jonatha Smith added new milestone <span><a class="blue" href="#">crishtian</a></span>
-                                    Lorem ipsum dolor sit amet consiquest dio</p>
+                                <span class="timeline-icon bg-warning"><i class="mdi mdi-circle"></i></span>
+                                <h4>Announcement title here</h4>
+                                <p class="text-warning mt-1">07 January 2016</p>
+                                <p class="timeline-date text-muted" style="margin-top: 10px"><small>08:25 am</small></p>
+                                <div style="float: left; margin-top: 10px">
+                                    <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
+                                            data-bs-toggle="modal" data-bs-target="#custom-modal"
+                                            onclick="expandViewAnnouncementTab()">View
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </article>
+
                 <article class="timeline-item alt">
                     <div class="time-show">
-                        <a href="#" class="btn btn-primary width-lg">Last Month</a>
+                        <a class="btn btn-pink width-lg" style="pointer-events: none">Last Month</a>
                     </div>
                 </article>
 
@@ -262,10 +317,16 @@
                         <div class="panel">
                             <div class="panel-body">
                                 <span class="arrow-alt"></span>
-                                <span class="timeline-icon"><i class="mdi mdi-circle"></i></span>
-                                <h4 class="text-muted mt-0">31 December 2015</h4>
+                                <span class="timeline-icon bg-pink"><i class="mdi mdi-circle"></i></span>
+                                <h4>Announcement title here</h4>
+                                <p class="text-pink mt-1">31 December 2015</p>
                                 <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                <p>Download the new updates of Adminto admin dashboard</p>
+                                <div style="float: right; margin-top: 10px">
+                                    <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
+                                            data-bs-toggle="modal" data-bs-target="#custom-modal"
+                                            onclick="expandViewAnnouncementTab()">View
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -276,16 +337,20 @@
                         <div class="panel">
                             <div class="panel-body">
                                 <span class="arrow"></span>
-                                <span class="timeline-icon bg-danger"><i class="mdi mdi-circle">    </i></span>
-                                <h4 class="text-danger mt-0">16 Decembar 2015</h4>
-                                <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                <p>Jonatha Smith added new milestone <span><a href="#">prank</a></span>
-                                    Lorem ipsum dolor sit amet consiquest dio</p>
+                                <span class="timeline-icon bg-pink"><i class="mdi mdi-circle"></i></span>
+                                <h4>Announcement title here</h4>
+                                <p class="text-pink mt-1">31 December 2015</p>
+                                <p class="timeline-date text-muted" style="margin-top: 10px"><small>08:25 am</small></p>
+                                <div style="float: left; margin-top: 10px">
+                                    <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
+                                            data-bs-toggle="modal" data-bs-target="#custom-modal"
+                                            onclick="expandViewAnnouncementTab()">View
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </article>
-
             </div>
         </div>
     </div>
@@ -293,6 +358,7 @@
 
     <!-- Plugins js -->
     <script th:src="@{/libs/quill/quill.min.js}"></script>
+    <script th:src="@{/libs/moment/min/moment.min.js}"></script>
 
     <!-- Init js -->
     <script th:src="@{/js/pages/form-quilljs.init.js}"></script>
@@ -303,9 +369,76 @@
         const title = document.getElementsByClassName("page-title-main");
         title[0].textContent = "Announcements";
 
-        // Disable editing of the view (editor) announcement.
+        // Disable the editor of the view announcement.
         const editors = document.getElementsByClassName("ql-editor");
         editors[0].setAttribute("contenteditable", "false");
+
+        // Function that expands the edit announcement tab.
+        function expandEditAnnouncementTab() {
+            const editAnnouncementTab = document.getElementById("edit-announcement-tab");
+            const viewAnnouncementTab = document.getElementById("view-announcement-tab");
+            const editAnnouncementTabContent = document.getElementById("edit-announcement");
+            const viewAnnouncementTabContent = document.getElementById("view-announcement");
+            const title = document.getElementById("title");
+
+            editAnnouncementTab.setAttribute("aria-expanded", "true");
+            editAnnouncementTab.classList.add("active");
+            editAnnouncementTabContent.classList.add("show", "active");
+            viewAnnouncementTab.setAttribute("aria-expanded", "false");
+            viewAnnouncementTab.classList.remove("active");
+            viewAnnouncementTabContent.classList.remove("show", "active");
+            title.removeAttribute("disabled");
+
+            showPublishButton();
+        }
+
+        // Function that expands the view announcement tab.
+        function expandViewAnnouncementTab() {
+            const editAnnouncementTab = document.getElementById("edit-announcement-tab");
+            const viewAnnouncementTab = document.getElementById("view-announcement-tab");
+            const editAnnouncementTabContent = document.getElementById("edit-announcement");
+            const viewAnnouncementTabContent = document.getElementById("view-announcement");
+            const title = document.getElementById("title");
+
+            editAnnouncementTab.setAttribute("aria-expanded", "false");
+            editAnnouncementTab.classList.remove("active");
+            editAnnouncementTabContent.classList.remove("show", "active");
+            viewAnnouncementTab.setAttribute("aria-expanded", "true");
+            viewAnnouncementTab.classList.add("active");
+            viewAnnouncementTabContent.classList.add("show", "active");
+            title.setAttribute("disabled", "true");
+
+            showUpdateButton();
+        }
+
+        // Function that shows publish button.
+        function showPublishButton() {
+            const publishButtonDiv = document.getElementById("publish-button-div");
+            const updateButtonDiv = document.getElementById("update-button-div");
+
+            publishButtonDiv.style.display = "block";
+            updateButtonDiv.style.display = "none";
+        }
+
+        // Function that shows update button.
+        function showUpdateButton() {
+            const publishButtonDiv = document.getElementById("publish-button-div");
+            const updateButtonDiv = document.getElementById("update-button-div");
+
+            publishButtonDiv.style.display = "none";
+            updateButtonDiv.style.display = "block";
+        }
+
+        // Function that enable/disable editing of an announcement title.
+        function toggleTitleEditing() {
+            const title = document.getElementById("title");
+
+            if (title.hasAttribute("disabled")) {
+                title.removeAttribute("disabled");
+            } else {
+                title.setAttribute("disabled", "true");
+            }
+        }
     </script>
 
 </div>
