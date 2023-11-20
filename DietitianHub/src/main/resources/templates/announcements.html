@@ -38,7 +38,7 @@
                     <h4 class="modal-title" id="custom-title" style="width: 90%">
                         <label for="title">Title:</label>
                         <input type="text" id="title" name="title" oninput="this.size = this.value.length"
-                               style="margin-left: 5px; max-width: 90%;" disabled>
+                               style="margin-left: 5px; max-width: 90%; min-width: 206px" disabled>
                     </h4>
                     <button type="button" class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"
                             aria-hidden="true" onclick="clearEditorContent()"><i class="mdi mdi-close"></i></button>
@@ -71,24 +71,7 @@
                                                 <div class="col-12">
                                                     <div class="card">
                                                         <div class="card-body">
-                                                            <div id="bubble-editor">
-                                                                <h3><span class="ql-size-large">Hello World!</span></h3>
-                                                                <p><br></p>
-                                                                <h3>This is a simple editable area.</h3>
-                                                                <p><br></p>
-                                                                <ul>
-                                                                    <li>
-                                                                        Select a text to reveal the toolbar.
-                                                                    </li>
-                                                                    <li>
-                                                                        Edit rich document on-the-fly, so elastic!
-                                                                    </li>
-                                                                </ul>
-                                                                <p><br></p>
-                                                                <p>
-                                                                    End of simple area
-                                                                </p>
-                                                            </div> <!-- end Snow-editor-->
+                                                            <div id="bubble-editor"></div> <!-- end Snow-editor-->
                                                         </div> <!-- end card-body-->
                                                     </div> <!-- end card-->
                                                 </div><!-- end col -->
@@ -99,22 +82,7 @@
                                                     <div class="card">
                                                         <div class="card-body">
                                                             <div id="snow-editor">
-                                                                <h3><span class="ql-size-large">Hello World!</span></h3>
-                                                                <p><br></p>
-                                                                <h3>This is a simple editable area.</h3>
-                                                                <p><br></p>
-                                                                <ul>
-                                                                    <li>
-                                                                        Select a text to reveal the toolbar.
-                                                                    </li>
-                                                                    <li>
-                                                                        Edit rich document on-the-fly, so elastic!
-                                                                    </li>
-                                                                </ul>
-                                                                <p><br></p>
-                                                                <p>
-                                                                    End of simple area
-                                                                </p>
+                                                                <h3>Your announcement content here...</h3>
                                                             </div> <!-- end Snow-editor-->
                                                         </div> <!-- end card-body-->
                                                     </div> <!-- end card-->
@@ -381,7 +349,8 @@
 
     <!-- Custom script -->
     <script>
-        let announcementType = "update"; // Variable that stores the type of the announcement (new or update).
+        // Variable that stores the type of the announcement (new or update).
+        let announcementType;
 
         // Change page title.
         const pageTitle = document.getElementsByClassName("page-title-main");
@@ -453,9 +422,10 @@
 
             if (title.hasAttribute("disabled")) {
                 title.removeAttribute("disabled");
-
             } else {
                 title.setAttribute("disabled", "true");
+                // Copy the content of the edit announcement editor to the view announcement editor.
+                editors[0].innerHTML = editors[1].innerHTML;
             }
         }
 
@@ -473,12 +443,12 @@
 
         // Function that clear the content of the editor.
         function clearEditorContent() {
-            if (announcementType === "new") {
-                document.getElementById("title").value = "";
-                editors.forEach(function (item) {
-                    item.innerHTML = "";
-                });
-            }
+            const title = document.getElementById("title");
+            title.value = "";
+            title.removeAttribute("size"); // Reset the size of the input.
+            editors.forEach(function (item) {
+                item.innerHTML = "<h3>Your announcement content here...</h3>";
+            });
         }
     </script>
 </div>
