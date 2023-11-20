@@ -14,7 +14,7 @@
     <!-- Custom Css -->
     <style>
         .custom-overlay {
-            transition: all 0.5s ease-in-out;
+            transition: all 0.4s ease-in-out;
             opacity: 0;
         }
 
@@ -30,17 +30,18 @@
 </head>
 
 <div layout:fragment="main">
-    <div class="modal fade" id="custom-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="custom-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-light">
                     <h4 class="modal-title" id="custom-title" style="width: 90%">
                         <label for="title">Title:</label>
                         <input type="text" id="title" name="title" oninput="this.size = this.value.length"
-                               style="margin-left: 5px; max-width: 90%" disabled>
+                               style="margin-left: 5px; max-width: 90%;" disabled>
                     </h4>
                     <button type="button" class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"
-                            aria-hidden="true"><i class="mdi mdi-close"></i></button>
+                            aria-hidden="true" onclick="clearEditorContent()"><i class="mdi mdi-close"></i></button>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -146,7 +147,7 @@
     </div><!-- /.modal -->
 
     <button class="btn btn-lg font-16 btn-success" id="btn-new-event" data-bs-toggle="modal"
-            data-bs-target="#custom-modal" onclick="expandEditAnnouncementTab()">
+            data-bs-target="#custom-modal" onclick="expandEditAnnouncementTab(); announcementType='new'">
         <i class="fa fa-plus me-1"></i> Create new
     </button>
 
@@ -161,19 +162,20 @@
 
                 <article class="timeline-item alt">
                     <div class="timeline-desk">
-                        <div class="panel box" onmouseover=showButtonsDiv("buttons-div") onmouseout=hideButtonsDiv("buttons-div")>
+                        <div class="panel box" onmouseover=showButtonsDiv("buttons-div-1")
+                             onmouseout=hideButtonsDiv("buttons-div-1")>
                             <div class="panel-body">
                                 <span class="arrow-alt"></span>
                                 <span class="timeline-icon bg-purple"><i class="mdi mdi-circle"></i></span>
                                 <h4>Announcement title here</h4>
                                 <p class="text-purple mt-1">1 hour ago</p>
                                 <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                <div id="buttons-div" class="custom-overlay hidden"
+                                <div id="buttons-div-1" class="custom-overlay hidden"
                                      style="float: right;margin-top: 10px;">
                                     <button type="button"
                                             class="btn btn-sm btn-info waves-effect waves-light rounded-pill"
                                             data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                            onclick="expandViewAnnouncementTab()">View
+                                            onclick="expandViewAnnouncementTab(); announcementType='update'">View
                                     </button>
                                     &nbsp;
                                     <button type="button"
@@ -188,96 +190,20 @@
 
                 <article class="timeline-item">
                     <div class="timeline-desk">
-                        <div class="panel">
+                        <div class="panel box" onmouseover=showButtonsDiv("buttons-div-2")
+                             onmouseout=hideButtonsDiv("buttons-div-2")>
                             <div class="panel-body">
                                 <span class="arrow"></span>
                                 <span class="timeline-icon bg-purple"><i class="mdi mdi-circle"></i></span>
                                 <h4>Announcement title here</h4>
                                 <p class="text-purple mt-1">1 hour ago</p>
                                 <p class="timeline-date text-muted" style="margin-top: 10px"><small>08:25 am</small></p>
-                                <div style="float: left; margin-top: 10px">
+                                <div id="buttons-div-2" class="custom-overlay hidden"
+                                     style="float: left; margin-top: 10px">
                                     <button type="button"
                                             class="btn btn-sm btn-info waves-effect waves-light rounded-pill"
                                             data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                            onclick="expandViewAnnouncementTab()">View
-                                    </button>
-                                    &nbsp;
-                                    <button type="button"
-                                            class="btn btn-sm btn-danger waves-effect waves-light rounded-pill">
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="timeline-item alt">
-                    <div class="timeline-desk">
-                        <div class="panel">
-                            <div class="panel-body">
-                                <span class="arrow-alt"></span>
-                                <span class="timeline-icon bg-purple"><i class="mdi mdi-circle"></i></span>
-                                <h4>Announcement title here</h4>
-                                <p class="text-purple mt-1">1 hour ago</p>
-                                <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                <div style="float: right; margin-top: 10px">
-                                    <button type="button"
-                                            class="btn btn-sm btn-info waves-effect waves-light rounded-pill"
-                                            data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                            onclick="expandViewAnnouncementTab()">View
-                                    </button>
-                                    &nbsp;
-                                    <button type="button"
-                                            class="btn btn-sm btn-danger waves-effect waves-light rounded-pill">
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="timeline-item">
-                    <div class="timeline-desk">
-                        <div class="panel">
-                            <div class="panel-body">
-                                <span class="arrow"></span>
-                                <span class="timeline-icon bg-purple"><i class="mdi mdi-circle"></i></span>
-                                <h4>Announcement title here</h4>
-                                <p class="text-purple mt-1">1 hour ago</p>
-                                <p class="timeline-date text-muted" style="margin-top: 10px"><small>08:25 am</small></p>
-                                <div style="float: left; margin-top: 10px">
-                                    <button type="button"
-                                            class="btn btn-sm btn-info waves-effect waves-light rounded-pill"
-                                            data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                            onclick="expandViewAnnouncementTab()">View
-                                    </button>
-                                    &nbsp;
-                                    <button type="button"
-                                            class="btn btn-sm btn-danger waves-effect waves-light rounded-pill">
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="timeline-item alt">
-                    <div class="timeline-desk">
-                        <div class="panel">
-                            <div class="panel-body">
-                                <span class="arrow-alt"></span>
-                                <span class="timeline-icon bg-purple"><i class="mdi mdi-circle"></i></span>
-                                <h4>Announcement title here</h4>
-                                <p class="text-purple mt-1">1 hour ago</p>
-                                <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                <div style="float: right; margin-top: 10px">
-                                    <button type="button"
-                                            class="btn btn-sm btn-info waves-effect waves-light rounded-pill"
-                                            data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                            onclick="expandViewAnnouncementTab()">View
+                                            onclick="expandViewAnnouncementTab(); announcementType='update'">View
                                     </button>
                                     &nbsp;
                                     <button type="button"
@@ -296,20 +222,50 @@
                     </div>
                 </article>
 
+                <article class="timeline-item alt">
+                    <div class="timeline-desk">
+                        <div class="panel box" onmouseover=showButtonsDiv("buttons-div-3")
+                             onmouseout=hideButtonsDiv("buttons-div-3")>
+                            <div class="panel-body">
+                                <span class="arrow-alt"></span>
+                                <span class="timeline-icon bg-warning"><i class="mdi mdi-circle"></i></span>
+                                <h4>Announcement title here</h4>
+                                <p class="text-warning mt-1">07 January 2016</p>
+                                <p class="timeline-date text-muted"><small>08:25 am</small></p>
+                                <div id="buttons-div-3" class="custom-overlay hidden"
+                                     style="float: right; margin-top: 10px">
+                                    <button type="button"
+                                            class="btn btn-sm btn-info waves-effect waves-light rounded-pill"
+                                            data-bs-toggle="modal" data-bs-target="#custom-modal"
+                                            onclick="expandViewAnnouncementTab(); announcementType='update'">View
+                                    </button>
+                                    &nbsp;
+                                    <button type="button"
+                                            class="btn btn-sm btn-danger waves-effect waves-light rounded-pill">
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
                 <article class="timeline-item">
                     <div class="timeline-desk">
-                        <div class="panel">
+                        <div class="panel box" onmouseover=showButtonsDiv("buttons-div-4")
+                             onmouseout=hideButtonsDiv("buttons-div-4")>
                             <div class="panel-body">
                                 <span class="arrow"></span>
                                 <span class="timeline-icon bg-warning"><i class="mdi mdi-circle"></i></span>
                                 <h4>Announcement title here</h4>
                                 <p class="text-warning mt-1">07 January 2016</p>
                                 <p class="timeline-date text-muted" style="margin-top: 10px"><small>08:25 am</small></p>
-                                <div style="float: left; margin-top: 10px">
+                                <div id="buttons-div-4" class="custom-overlay hidden"
+                                     style="float: left; margin-top: 10px">
                                     <button type="button"
                                             class="btn btn-sm btn-info waves-effect waves-light rounded-pill"
                                             data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                            onclick="expandViewAnnouncementTab()">View
+                                            onclick="expandViewAnnouncementTab(); announcementType='update'">View
                                     </button>
                                     &nbsp;
                                     <button type="button"
@@ -324,44 +280,20 @@
 
                 <article class="timeline-item alt">
                     <div class="timeline-desk">
-                        <div class="panel">
+                        <div class="panel box" onmouseover=showButtonsDiv("buttons-div-5")
+                             onmouseout=hideButtonsDiv("buttons-div-5")>
                             <div class="panel-body">
-                                <span class="arrow-alt"></span>
+                                <span class="arrow alt"></span>
                                 <span class="timeline-icon bg-warning"><i class="mdi mdi-circle"></i></span>
                                 <h4>Announcement title here</h4>
                                 <p class="text-warning mt-1">07 January 2016</p>
                                 <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                <div style="float: right; margin-top: 10px">
+                                <div id="buttons-div-5" class="custom-overlay hidden"
+                                     style="float: right; margin-top: 10px">
                                     <button type="button"
                                             class="btn btn-sm btn-info waves-effect waves-light rounded-pill"
                                             data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                            onclick="expandViewAnnouncementTab()">View
-                                    </button>
-                                    &nbsp;
-                                    <button type="button"
-                                            class="btn btn-sm btn-danger waves-effect waves-light rounded-pill">
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="timeline-item">
-                    <div class="timeline-desk">
-                        <div class="panel">
-                            <div class="panel-body">
-                                <span class="arrow"></span>
-                                <span class="timeline-icon bg-warning"><i class="mdi mdi-circle"></i></span>
-                                <h4>Announcement title here</h4>
-                                <p class="text-warning mt-1">07 January 2016</p>
-                                <p class="timeline-date text-muted" style="margin-top: 10px"><small>08:25 am</small></p>
-                                <div style="float: left; margin-top: 10px">
-                                    <button type="button"
-                                            class="btn btn-sm btn-info waves-effect waves-light rounded-pill"
-                                            data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                            onclick="expandViewAnnouncementTab()">View
+                                            onclick="expandViewAnnouncementTab(); announcementType='update'">View
                                     </button>
                                     &nbsp;
                                     <button type="button"
@@ -380,20 +312,22 @@
                     </div>
                 </article>
 
-                <article class="timeline-item alt">
+                <article class="timeline-item">
                     <div class="timeline-desk">
-                        <div class="panel">
+                        <div class="panel box" onmouseover=showButtonsDiv("buttons-div-6")
+                             onmouseout=hideButtonsDiv("buttons-div-6")>
                             <div class="panel-body">
-                                <span class="arrow-alt"></span>
+                                <span class="arrow"></span>
                                 <span class="timeline-icon bg-pink"><i class="mdi mdi-circle"></i></span>
                                 <h4>Announcement title here</h4>
                                 <p class="text-pink mt-1">31 December 2015</p>
-                                <p class="timeline-date text-muted"><small>08:25 am</small></p>
-                                <div style="float: right; margin-top: 10px">
+                                <p class="timeline-date text-muted" style="margin-top: 10px"><small>08:25 am</small></p>
+                                <div id="buttons-div-6" class="custom-overlay hidden"
+                                     style="float: left; margin-top: 10px">
                                     <button type="button"
                                             class="btn btn-sm btn-info waves-effect waves-light rounded-pill"
                                             data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                            onclick="expandViewAnnouncementTab()">View
+                                            onclick="expandViewAnnouncementTab(); announcementType='update'">View
                                     </button>
                                     &nbsp;
                                     <button type="button"
@@ -406,20 +340,22 @@
                     </div>
                 </article>
 
-                <article class="timeline-item">
+                <article class="timeline-item alt">
                     <div class="timeline-desk">
-                        <div class="panel">
+                        <div class="panel box" onmouseover=showButtonsDiv("buttons-div-7")
+                             onmouseout=hideButtonsDiv("buttons-div-7")>
                             <div class="panel-body">
-                                <span class="arrow"></span>
+                                <span class="arrow-alt"></span>
                                 <span class="timeline-icon bg-pink"><i class="mdi mdi-circle"></i></span>
                                 <h4>Announcement title here</h4>
                                 <p class="text-pink mt-1">31 December 2015</p>
-                                <p class="timeline-date text-muted" style="margin-top: 10px"><small>08:25 am</small></p>
-                                <div style="float: left; margin-top: 10px">
+                                <p class="timeline-date text-muted"><small>08:25 am</small></p>
+                                <div id="buttons-div-7" class="custom-overlay hidden"
+                                     style="float: right; margin-top: 10px">
                                     <button type="button"
                                             class="btn btn-sm btn-info waves-effect waves-light rounded-pill"
                                             data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                            onclick="expandViewAnnouncementTab()">View
+                                            onclick="expandViewAnnouncementTab(); announcementType='update'">View
                                     </button>
                                     &nbsp;
                                     <button type="button"
@@ -445,9 +381,11 @@
 
     <!-- Custom script -->
     <script>
+        let announcementType = "update"; // Variable that stores the type of the announcement (new or update).
+
         // Change page title.
-        const title = document.getElementsByClassName("page-title-main");
-        title[0].textContent = "Announcements";
+        const pageTitle = document.getElementsByClassName("page-title-main");
+        pageTitle[0].textContent = "Announcements";
 
         // Disable the editor of the view announcement.
         const editors = document.getElementsByClassName("ql-editor");
@@ -515,6 +453,7 @@
 
             if (title.hasAttribute("disabled")) {
                 title.removeAttribute("disabled");
+
             } else {
                 title.setAttribute("disabled", "true");
             }
@@ -530,6 +469,16 @@
         function hideButtonsDiv(id) {
             const buttonsDiv = document.getElementById(id);
             buttonsDiv.classList.add("hidden");
+        }
+
+        // Function that clear the content of the editor.
+        function clearEditorContent() {
+            if (announcementType === "new") {
+                document.getElementById("title").value = "";
+                editors.forEach(function (item) {
+                    item.innerHTML = "";
+                });
+            }
         }
     </script>
 </div>
