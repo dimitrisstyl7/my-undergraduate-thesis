@@ -1,6 +1,6 @@
 package com.dimstyl.dietitianhub.Controllers;
 
-import com.dimstyl.dietitianhub.Constants;
+import com.dimstyl.dietitianhub.Endpoints;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @NoArgsConstructor
 public class MainController {
-    @GetMapping({Constants.INDEX_URL})
+    @GetMapping({Endpoints.INDEX_ENDPOINT})
     public String indexPage() {
-        return Constants.INDEX_HTML;
+        return Endpoints.INDEX_HTML;
     }
 }

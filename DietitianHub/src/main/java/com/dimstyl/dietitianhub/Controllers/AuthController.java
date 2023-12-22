@@ -1,13 +1,13 @@
 package com.dimstyl.dietitianhub.Controllers;
 
-import com.dimstyl.dietitianhub.Constants;
+import com.dimstyl.dietitianhub.Endpoints;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AuthController {
-    @GetMapping(Constants.LOGIN_URL)
+    @GetMapping(Endpoints.LOGIN_ENDPOINT)
     public String loginPage() {
-        return Constants.LOGIN_HTML;
+        return Endpoints.LOGIN_HTML;
     }
 }

@@ -1,13 +1,13 @@
 package com.dimstyl.dietitianhub.Controllers;
 
-import com.dimstyl.dietitianhub.Constants;
+import com.dimstyl.dietitianhub.Endpoints;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AppointmentsController {
-    @GetMapping(Constants.APPOINTMENTS_URL)
+    @GetMapping(Endpoints.APPOINTMENTS_ENDPOINT)
     public String appointmentsPage() {
-        return Constants.APPOINTMENTS_HTML;
+        return Endpoints.APPOINTMENTS_HTML;
     }
 }
