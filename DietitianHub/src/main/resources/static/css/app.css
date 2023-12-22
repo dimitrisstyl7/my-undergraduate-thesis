@@ -188,26 +188,26 @@ File: Main Css File
   --ct-kbd-bg: #323a46;
   --ct-pre-color: ;
   --ct-bg-leftbar: #fff;
-  --ct-bg-leftbar-dark: #343a40;
+  --ct-bg-leftbar-dark: #113537;
   --ct-bg-leftbar-brand: #4a81d4;
   --ct-bg-leftbar-gradient: #5b69bc;
   --ct-left-menu-user-box-border: #f5f5f5;
   --ct-left-menu-dark-user-box-border: rgba(255, 255, 255, 0.2);
-  --ct-menu-item-color-dark: #9097a7;
+  --ct-menu-item-color-dark: #ffffff;
   --ct-menu-item-hover-color-dark: #c8cddc;
   --ct-menu-item-active-color-dark: #fff;
   --ct-menu-item: #6e768e;
   --ct-menu-item-hover: #71b6f9;
-  --ct-menu-item-active: #71b6f9;
+  --ct-menu-item-active: #ffc40e;
   --ct-menu-sub-item-active: #71b6f9;
   --ct-hori-menu-item-color: #6e7488;
   --ct-rightbar-bg: #fff;
   --ct-bg-topbar-light: #fff;
-  --ct-bg-topbar-dark: #38414a;
+  --ct-bg-topbar-dark: #ffc40e;
   --ct-box-shadow-condensed: 3px 5px 10px 0 rgba(154,161,171,.2);
-  --ct-page-title-color: #f8f9fa;
+  --ct-page-title-color: #000000;
   --ct-topbar-search-bg: #e2e6ea;
-  --ct-topbar-search-bg-dark: #414b56;
+  --ct-topbar-search-bg-dark: #113537;
   --ct-footer-bg: #e3e9ed;
   --ct-footer-color: #6c757d;
   --ct-footer-link-hover-color: #636b72;
@@ -13568,7 +13568,7 @@ body[data-topbar-color=dark] .navbar-custom {
   /* Search */
 }
 body[data-topbar-color=dark] .navbar-custom .topnav-menu .nav-link {
-  color: #ced4da;
+  color: #000000;
 }
 body[data-topbar-color=dark] .navbar-custom .dropdown .nav-link.show {
   background-color: rgba(255, 255, 255, 0.03);
@@ -13583,16 +13583,16 @@ body[data-topbar-color=dark] .navbar-custom .page-title-main {
   color: #f8f9fa;
 }
 body[data-topbar-color=dark] .navbar-custom .app-search input::placeholder {
-  color: rgba(255, 255, 255, 0.7) !important;
+  color: white !important;
 }
 body[data-topbar-color=dark] .navbar-custom .app-search .form-control {
-  color: #fff;
+  color: #ffffff;
   background-color: var(--ct-topbar-search-bg-dark);
   border-color: var(--ct-topbar-search-bg-dark);
 }
 body[data-topbar-color=dark] .navbar-custom .app-search .btn {
   background-color: var(--ct-topbar-search-bg-dark);
-  color: rgba(255, 255, 255, 0.7);
+  color: white;
 }
 
 body[data-topbar-color=dark] .navbar-custom .page-title-main {
@@ -16806,6 +16806,10 @@ body[data-layout-color=dark] .progress-bar-alt-blue {
 body {
   padding-right: 0px !important;
   padding-left: 0px !important;
+}
+body.loading {
+  visibility: hidden;
+  opacity: 0;
 }
 
 label {
