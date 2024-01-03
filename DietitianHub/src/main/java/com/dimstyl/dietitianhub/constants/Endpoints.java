@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub;
+package com.dimstyl.dietitianhub.constants;
 
 public class Endpoints {
     public static final String INDEX_ENDPOINT = "index";
