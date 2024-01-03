@@ -9,7 +9,7 @@ import static com.dimstyl.dietitianhub.constants.HtmlFileNames.INDEX_HTML;
 
 @Controller
 @NoArgsConstructor
-public class MainController {
+public class IndexController {
     @GetMapping({INDEX_ENDPOINT})
     public String indexPage() {
         return INDEX_HTML;
