@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.controllers;
+package com.dimstyl.dietitianhub.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
