@@ -1,18 +1,20 @@
 package com.dimstyl.dietitianhub.Controllers;
 
-import com.dimstyl.dietitianhub.Endpoints;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import static com.dimstyl.dietitianhub.constants.Endpoints.UPLOAD_FILE_ENDPOINT;
+import static com.dimstyl.dietitianhub.constants.HtmlFileNames.UPLOAD_FILE_HTML;
+
 @Controller
 public class FileUploaderController {
-    @GetMapping(Endpoints.UPLOAD_FILE_ENDPOINT)
+    @GetMapping(UPLOAD_FILE_ENDPOINT)
     public String uploadFilePage() {
-        return Endpoints.UPLOAD_FILE_HTML;
+        return UPLOAD_FILE_HTML;
     }
 
-    @PostMapping(Endpoints.UPLOAD_FILE_ENDPOINT)
+    @PostMapping(UPLOAD_FILE_ENDPOINT)
     public void uploadFile() {
         System.out.println("Uploading file...");
     }
