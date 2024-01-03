@@ -11,14 +11,14 @@ create table "user"
     enabled  boolean     not null default true
 );
 
-create table user_details
+create table user_info
 (
-    user_details_id serial      not null unique primary key,
-    user_id         int         not null unique references "user" (user_id),
-    first_name      varchar(50) not null,
-    last_name       varchar(50) not null,
-    email           varchar(50) not null,
-    phone           varchar(10) not null
+    user_info_id serial      not null unique primary key,
+    user_id      int         not null unique references "user" (user_id),
+    first_name   varchar(50) not null,
+    last_name    varchar(50) not null,
+    email        varchar(50) not null,
+    phone        varchar(10) not null
 );
 
 create table role
