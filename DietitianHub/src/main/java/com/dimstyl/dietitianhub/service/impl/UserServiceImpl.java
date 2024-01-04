@@ -1,14 +1,39 @@
 package com.dimstyl.dietitianhub.service.impl;
 
+import com.dimstyl.dietitianhub.entity.Role;
+import com.dimstyl.dietitianhub.entity.User;
+import com.dimstyl.dietitianhub.repository.UserRepository;
 import com.dimstyl.dietitianhub.service.UserService;
+import lombok.AllArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+@AllArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
+    private final UserRepository userRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("Invalid username or password.");
+        }
+
+        return new org.springframework.security.core.userdetails.User(
+                username, user.getPassword(), mapRoleToAuthority(user.getRole())
+        );
+    }
+
+    private Collection<? extends GrantedAuthority> mapRoleToAuthority(Role role) {
+        return Stream.of(role).map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
     }
 }
