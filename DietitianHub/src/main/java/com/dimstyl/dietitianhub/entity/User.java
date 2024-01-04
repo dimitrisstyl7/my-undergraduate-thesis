@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 @Getter
-@Entity(name = "user")
+@Entity
+@Table(name = "user", schema = "public")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
