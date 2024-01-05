@@ -38,7 +38,7 @@
                             <h4 class="text-uppercase mt-0">Sign In</h4>
                         </div>
 
-                        <form action="#">
+                        <form th:action="@{/authenticate-user}" method="post">
                             <div class="mb-3">
                                 <label for="emailaddress" class="form-label">Email address</label>
                                 <input class="form-control" type="email" id="emailaddress" required=""
