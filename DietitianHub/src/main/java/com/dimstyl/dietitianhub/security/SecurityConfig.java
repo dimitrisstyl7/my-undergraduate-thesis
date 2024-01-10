@@ -8,8 +8,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import static com.dimstyl.dietitianhub.constants.Endpoints.LOGIN_ENDPOINT;
+import static com.dimstyl.dietitianhub.constants.Endpoints.*;
 
 @Configuration
 @EnableWebSecurity
@@ -31,15 +32,21 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(configurer ->
-                        configurer.anyRequest().authenticated()
+                        configurer
+                                .requestMatchers(
+                                        "/css/**", "/data/**", "/fonts/**",
+                                        "/images/**", "/js/**", "/libs/**"
+                                ).permitAll()
+                                .anyRequest().authenticated()
                 )
                 .formLogin(form ->
                         form
                                 .loginPage(LOGIN_ENDPOINT)
-                                .loginProcessingUrl("/authenticate-user")
                                 .permitAll()
+                                .loginProcessingUrl("/authenticate-user")
+                                .defaultSuccessUrl(INDEX_ENDPOINT, true)
                 )
-                .logout(logout -> logout.permitAll())
+                .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher(LOGOUT_ENDPOINT)))
                 .build();
     }
 }
