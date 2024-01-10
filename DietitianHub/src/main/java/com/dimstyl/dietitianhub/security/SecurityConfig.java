@@ -52,6 +52,7 @@ public class SecurityConfig {
                 .formLogin(form ->
                         form
                                 .loginPage(LOGIN_ENDPOINT)
+                                .loginProcessingUrl(AUTHENTICATE_USER_ENDPOINT)
                                 .successHandler(this::customLoginSuccessHandler)
                                 .permitAll()
                 )
