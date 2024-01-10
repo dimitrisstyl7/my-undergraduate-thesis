@@ -1,6 +1,6 @@
 insert into role (id, name)
-values (1, 'ROLE_CLIENT'),
-       (2, 'ROLE_DIETITIAN');
+values (1, 'CLIENT'),
+       (2, 'DIETITIAN');
 
 -- username: dietitian123, password: dietitian123
 -- username: client123, password: client123
