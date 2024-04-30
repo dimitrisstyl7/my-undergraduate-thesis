@@ -9,7 +9,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - postgres_data:/var/lib/postgres/data
+      - postgres_data:/var/lib/postgresql/data
       # Initialize the database with the following scripts
       - ../sql-scripts/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
       - ../sql-scripts/insert_data.sql:/docker-entrypoint-initdb.d/insert_data.sql
@@ -20,4 +20,4 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: /c/Users/dimit/postgres-data
+      device: ~/postgres-data
