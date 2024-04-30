@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.service;
+package com.dimstyl.dietitianhub.services;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 

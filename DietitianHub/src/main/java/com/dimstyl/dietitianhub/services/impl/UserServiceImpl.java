@@ -1,9 +1,9 @@
-package com.dimstyl.dietitianhub.service.impl;
+package com.dimstyl.dietitianhub.services.impl;
 
-import com.dimstyl.dietitianhub.entity.Role;
-import com.dimstyl.dietitianhub.entity.User;
-import com.dimstyl.dietitianhub.repository.UserRepository;
-import com.dimstyl.dietitianhub.service.UserService;
+import com.dimstyl.dietitianhub.entities.Role;
+import com.dimstyl.dietitianhub.entities.User;
+import com.dimstyl.dietitianhub.repositories.UserRepository;
+import com.dimstyl.dietitianhub.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

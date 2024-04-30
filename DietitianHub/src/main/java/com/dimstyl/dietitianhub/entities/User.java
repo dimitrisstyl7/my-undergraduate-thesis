@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.entity;
+package com.dimstyl.dietitianhub.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;

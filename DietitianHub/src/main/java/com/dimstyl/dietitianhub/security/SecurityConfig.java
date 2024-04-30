@@ -1,6 +1,6 @@
 package com.dimstyl.dietitianhub.security;
 
-import com.dimstyl.dietitianhub.service.UserService;
+import com.dimstyl.dietitianhub.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
