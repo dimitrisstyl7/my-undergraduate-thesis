@@ -40,8 +40,8 @@ public class SecurityConfig {
                 )
                 .formLogin(form ->
                         form
-                                .loginPage("/login")
-                                .loginProcessingUrl("/authenticate-user")
+                                .loginPage("/auth/login")
+                                .loginProcessingUrl("/auth/authenticate-user")
                                 .permitAll()
                 )
                 .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")))
