@@ -5,7 +5,7 @@ public class Endpoints {
     public static final String APPOINTMENTS_ENDPOINT = "/appointments";
     public static final String MESSAGES_ENDPOINT = "/messages";
     public static final String REGISTER_CLIENT_ENDPOINT = "/register-client";
-    public static final String VIEW_CLIENTS_ENDPOINT = "/view-clients";
+    public static final String VIEW_CLIENTS_ENDPOINT = "/clients";
     public static final String REMOVE_CLIENT_ENDPOINT = "/remove-client";
     public static final String LOGIN_ENDPOINT = "/login";
     public static final String AUTHENTICATE_USER_ENDPOINT = "/authenticate-user";
