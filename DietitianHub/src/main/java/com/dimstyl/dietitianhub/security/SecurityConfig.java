@@ -42,11 +42,11 @@ public class SecurityConfig {
                 )
                 .formLogin(form ->
                         form
-                                .loginPage(LOGIN_ENDPOINT)
-                                .loginProcessingUrl(AUTHENTICATE_USER_ENDPOINT)
+                                .loginPage("/login")
+                                .loginProcessingUrl("/authenticate-user")
                                 .permitAll()
                 )
-                .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher(LOGOUT_ENDPOINT)))
+                .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")))
                 .build();
     }
 }

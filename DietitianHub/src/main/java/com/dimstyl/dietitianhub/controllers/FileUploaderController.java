@@ -4,17 +4,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import static com.dimstyl.dietitianhub.constants.Endpoints.UPLOAD_FILE_ENDPOINT;
-import static com.dimstyl.dietitianhub.constants.HtmlFiles.UPLOAD_FILE_HTML;
-
 @Controller
 public class FileUploaderController {
-    @GetMapping(UPLOAD_FILE_ENDPOINT)
+    @GetMapping("/upload-file")
     public String uploadFilePage() {
-        return UPLOAD_FILE_HTML;
+        return "upload-file";
     }
 
-    @PostMapping(UPLOAD_FILE_ENDPOINT)
+    @PostMapping("/upload-file")
     public void uploadFile() {
         System.out.println("Uploading file...");
     }
