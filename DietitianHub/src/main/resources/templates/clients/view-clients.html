@@ -7,7 +7,7 @@
 </head>
 
 <div layout:fragment="main">
-    <!-- Modal -->
+    <!-- Modal for client registration -->
     <div class="modal fade" id="custom-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -61,11 +61,9 @@
                                 <label for="status-select" class="me-2">Sort By</label>
                                 <div class="me-sm-2">
                                     <select class="form-select my-1 my-md-0" id="status-select">
-                                        <option selected="">All</option>
-                                        <option value="1">Name</option>
-                                        <option value="2">Post</option>
-                                        <option value="3">Followers</option>
-                                        <option value="4">Followings</option>
+                                        <option value="1" selected>First Name</option>
+                                        <option value="2">Last Name</option>
+                                        <option value="3">Gender</option>
                                     </select>
                                 </div>
                                 <label for="inputPassword2" class="visually-hidden">Search</label>
@@ -98,26 +96,26 @@
                         </div>
                     </div>
                     <div>
-                        <img th:src="@{/images/users/user-10.jpg}"
+                        <img th:src="@{/images/users/female.png}"
                              class="rounded-circle avatar-xl img-thumbnail mb-2" alt="profile-image">
 
-                        <p class="text-muted font-13 mb-3">
-                            Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type.
-                        </p>
-
                         <div class="text-start">
-                            <p class="text-muted font-13"><strong>Full Name :</strong> <span
-                                    class="ms-2">Johnathan Deo</span>
+                            <p class="text-muted font-13"><strong>First Name :</strong> <span
+                                    class="ms-1">Maria</span>
                             </p>
 
-                            <p class="text-muted font-13"><strong>Mobile :</strong><span
-                                    class="ms-2">(123) 123 1234</span></p>
-
-                            <p class="text-muted font-13"><strong>Email :</strong> <span class="ms-2">coderthemes@gmail.com</span>
+                            <p class="text-muted font-13"><strong>Last Name :</strong> <span
+                                    class="ms-1">Georgiou</span>
                             </p>
 
-                            <p class="text-muted font-13"><strong>Location :</strong> <span class="ms-2">USA</span>
+                            <p class="text-muted font-13"><strong>Date Of Birth :</strong> <span
+                                    class="ms-1">12/03/1990</span>
+                            </p>
+
+                            <p class="text-muted font-13"><strong>Phone :</strong><span
+                                    class="ms-1">6974568657</span></p>
+
+                            <p class="text-muted font-13"><strong>Email :</strong> <span class="ms-1">mariageorgiou90@email.com</span>
                             </p>
                         </div>
 
@@ -127,8 +125,6 @@
                     </div>
                 </div>
             </div>
-
-
         </div> <!-- end col -->
 
         <div class="col-xl-4">
@@ -147,26 +143,26 @@
                         </div>
                     </div>
                     <div>
-                        <img th:src="@{/images/users/user-9.jpg}"
+                        <img th:src="@{/images/users/male.png}"
                              class="rounded-circle avatar-xl img-thumbnail mb-2" alt="profile-image">
 
-                        <p class="text-muted font-13 mb-3">
-                            Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type.
-                        </p>
-
                         <div class="text-start">
-                            <p class="text-muted font-13"><strong>Full Name :</strong> <span
-                                    class="ms-2">Johnathan Deo</span>
+                            <p class="text-muted font-13"><strong>First Name :</strong> <span
+                                    class="ms-1">Antonis</span>
                             </p>
 
-                            <p class="text-muted font-13"><strong>Mobile :</strong><span
-                                    class="ms-2">(123) 123 1234</span></p>
-
-                            <p class="text-muted font-13"><strong>Email :</strong> <span class="ms-2">coderthemes@gmail.com</span>
+                            <p class="text-muted font-13"><strong>Last Name :</strong> <span
+                                    class="ms-1">Louka</span>
                             </p>
 
-                            <p class="text-muted font-13"><strong>Location :</strong> <span class="ms-2">USA</span>
+                            <p class="text-muted font-13"><strong>Date Of Birth :</strong> <span
+                                    class="ms-1">26/09/1989</span>
+                            </p>
+
+                            <p class="text-muted font-13"><strong>Phone :</strong><span
+                                    class="ms-1">6987451542</span></p>
+
+                            <p class="text-muted font-13"><strong>Email :</strong> <span class="ms-1">antonislouka89@email.com</span>
                             </p>
                         </div>
 
