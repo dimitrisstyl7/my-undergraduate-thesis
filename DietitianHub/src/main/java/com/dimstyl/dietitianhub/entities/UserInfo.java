@@ -1,11 +1,13 @@
 package com.dimstyl.dietitianhub.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.sql.Date;
 
 @Entity
 @Table(name = "user_info", schema = "public")
+@Getter
 public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
