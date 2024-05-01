@@ -19,8 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 
 import static com.dimstyl.dietitianhub.constants.Endpoints.*;
-import static com.dimstyl.dietitianhub.constants.UserRoles.CLIENT_ROLE;
-import static com.dimstyl.dietitianhub.constants.UserRoles.DIETITIAN_ROLE;
+import static com.dimstyl.dietitianhub.enums.UserRole.DIETITIAN;
 
 @Configuration
 @EnableWebSecurity
@@ -47,7 +46,7 @@ public class SecurityConfig {
                                         "/css/**", "/data/**", "/fonts/**",
                                         "/images/**", "/js/**", "/libs/**"
                                 ).permitAll()
-                                .anyRequest().hasAnyAuthority(DIETITIAN_ROLE, CLIENT_ROLE)
+                                .anyRequest().hasAuthority(DIETITIAN.name())
                 )
                 .formLogin(form ->
                         form
