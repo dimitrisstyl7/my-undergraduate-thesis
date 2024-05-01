@@ -1,6 +1,9 @@
 package com.dimstyl.dietitianhub.services;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
+import com.dimstyl.dietitianhub.dtos.ClientDto;
 
-public interface UserService extends UserDetailsService {
+import java.util.List;
+
+public interface UserService {
+    List<ClientDto> getAllClients();
 }
