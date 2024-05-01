@@ -4,9 +4,8 @@ drop table if exists role;
 
 create table role
 (
-    id   serial      not null unique primary key,
-    name varchar(14) not null unique
--- ROLE_CLIENT, ROLE_DIETITIAN
+    id   serial     not null unique primary key,
+    name varchar(9) not null unique -- CLIENT, DIETITIAN
 );
 
 create table "user"
@@ -20,10 +19,12 @@ create table "user"
 
 create table user_info
 (
-    id         serial      not null unique primary key,
-    user_id    int         not null unique references "user" (id),
-    first_name varchar(50) not null,
-    last_name  varchar(50) not null,
-    email      varchar(50) not null,
-    phone      varchar(10) not null
+    id            serial      not null unique primary key,
+    user_id       int         not null unique references "user" (id),
+    first_name    varchar(50) not null,
+    last_name     varchar(50) not null,
+    gender        char(1)     not null, -- M (Male), F (Female)
+    date_of_birth date        not null,
+    email         varchar(50) not null,
+    phone         varchar(20) not null
 );

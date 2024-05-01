@@ -2,6 +2,8 @@ package com.dimstyl.dietitianhub.entities;
 
 import jakarta.persistence.*;
 
+import java.sql.Date;
+
 @Entity
 @Table(name = "user_info", schema = "public")
 public class UserInfo {
@@ -19,9 +21,15 @@ public class UserInfo {
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
+    @Column(name = "gender", nullable = false)
+    private char gender;
+
+    @Column(name = "date_of_birth", nullable = false)
+    private Date dateOfBirth;
+
     @Column(name = "email", nullable = false, length = 50)
     private String email;
 
-    @Column(name = "phone", nullable = false, length = 10)
+    @Column(name = "phone", nullable = false, length = 20)
     private String phone;
 }
