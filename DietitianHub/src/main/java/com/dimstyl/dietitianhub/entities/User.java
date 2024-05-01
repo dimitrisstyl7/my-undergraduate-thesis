@@ -3,9 +3,9 @@ package com.dimstyl.dietitianhub.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-@Getter
 @Entity
 @Table(name = "user", schema = "public")
+@Getter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
