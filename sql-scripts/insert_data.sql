@@ -2,13 +2,13 @@ insert into role (id, name)
 values (1, 'CLIENT'),
        (2, 'DIETITIAN');
 
--- username: dietitian123, password: dietitian123
--- username: client123, password: client123
+-- DIETITIAN -> username: aliceWhite95, password: aliceWhite95
+-- CLIENT -> username: johnBrown90, password: johnBrown90
 insert into "user" (id, username, password, role_id)
-values (1, 'dietitian123', '$2a$10$yy.ltCDSA2L1.3KAwmVeAeFxrZwxNf2sfLY3Kue/8bPJ4P9gpk5iG', 2),
-       (2, 'client123', '$2a$10$S91gR8EWTTINPl2dHt/VkOhFWAHZ9jDlI5cJG9tAGc7oaRJJwIIcm', 1);
+values (1, 'aliceWhite95', '$2a$10$6cZ5L3DqviiLHWV.8ci8leDRKd9nk1nv0xAz/B.Qm2/E6.uQEmaHO', 2),
+       (2, 'johnBrown90', '$2a$10$d/./JcM59U/3vh4eDy/.9uRb7zA.tJmD267s17BJufVjXN0ZfkKDa', 1);
 
 
-insert into user_info (user_id, first_name, last_name, email, phone)
-values (1, 'Dietitian', 'Dietitian', 'dietitian@email.com', '1234567890'),
-       (2, 'Client', 'Client', 'client@email.com', '0987654321');
+insert into user_info (user_id, first_name, last_name, gender, date_of_birth, email, phone)
+values (1, 'Alice', 'White', 'F', '1995-06-16', 'aliceWhite95@email.com', '1234567890'),
+       (2, 'John', 'Brown', 'M', '1990-01-11', 'johnbrown90@email.com', '0987654321');
