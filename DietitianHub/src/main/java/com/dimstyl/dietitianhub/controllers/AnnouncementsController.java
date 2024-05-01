@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import static com.dimstyl.dietitianhub.constants.Endpoints.ANNOUNCEMENTS_ENDPOINT;
-import static com.dimstyl.dietitianhub.constants.HtmlFileNames.ANNOUNCEMENTS_HTML;
+import static com.dimstyl.dietitianhub.constants.HtmlFiles.ANNOUNCEMENTS_HTML;
 
 @Controller
 public class AnnouncementsController {

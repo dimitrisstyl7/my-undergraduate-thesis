@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import static com.dimstyl.dietitianhub.constants.Endpoints.UPLOAD_FILE_ENDPOINT;
-import static com.dimstyl.dietitianhub.constants.HtmlFileNames.UPLOAD_FILE_HTML;
+import static com.dimstyl.dietitianhub.constants.HtmlFiles.UPLOAD_FILE_HTML;
 
 @Controller
 public class FileUploaderController {

@@ -1,6 +1,6 @@
 package com.dimstyl.dietitianhub.constants;
 
-public class HtmlFileNames {
+public class HtmlFiles {
     public static final String INDEX_HTML = "index";
     public static final String APPOINTMENTS_HTML = "appointments";
     public static final String MESSAGES_HTML = "messages";
