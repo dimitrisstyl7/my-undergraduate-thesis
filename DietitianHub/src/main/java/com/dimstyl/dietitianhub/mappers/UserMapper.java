@@ -9,6 +9,7 @@ public class UserMapper {
                 .phone(user.getUserInfo().getPhone())
                 .email(user.getUserInfo().getEmail())
                 .dateOfBirth(user.getUserInfo().getDateOfBirth())
+                .gender(user.getUserInfo().getGender())
                 .firstName(user.getUserInfo().getFirstName())
                 .lastName(user.getUserInfo().getLastName())
                 .build();

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{page-layout}">
 <head>
@@ -79,8 +80,8 @@
         </div><!-- end col-->
     </div>
     <!-- end row -->
-    <div class="row">
-        <div class="col-xl-4">
+    <div class="row" th:with="maleImg=@{/images/users/male.png}, femaleImg=@{/images/users/female.png}">
+        <div class="col-xl-4" th:each="client :${clients}">
             <div class="card">
                 <div class="text-center card-body">
                     <div class="dropdown float-end">
@@ -96,26 +97,27 @@
                         </div>
                     </div>
                     <div>
-                        <img th:src="@{/images/users/female.png}"
+                        <img th:src="${client.gender.toString() == 'F'} ? ${femaleImg} : ${maleImg}"
                              class="rounded-circle avatar-xl img-thumbnail mb-2" alt="profile-image">
 
                         <div class="text-start">
                             <p class="text-muted font-13"><strong>First Name :</strong> <span
-                                    class="ms-1">Maria</span>
+                                    class="ms-1" th:text="${client.firstName}"></span>
                             </p>
 
                             <p class="text-muted font-13"><strong>Last Name :</strong> <span
-                                    class="ms-1">Georgiou</span>
+                                    class="ms-1" th:text="${client.lastName}"></span>
                             </p>
 
                             <p class="text-muted font-13"><strong>Date Of Birth :</strong> <span
-                                    class="ms-1">12/03/1990</span>
+                                    class="ms-1" th:text="${client.dateOfBirth}"></span>
                             </p>
 
                             <p class="text-muted font-13"><strong>Phone :</strong><span
-                                    class="ms-1">6974568657</span></p>
+                                    class="ms-1" th:text="${client.phone}"></span></p>
 
-                            <p class="text-muted font-13"><strong>Email :</strong> <span class="ms-1">mariageorgiou90@email.com</span>
+                            <p class="text-muted font-13"><strong>Email :</strong> <span class="ms-1"
+                                                                                         th:text="${client.email}"></span>
                             </p>
                         </div>
 
@@ -123,249 +125,6 @@
                             Message
                         </button>
                     </div>
-                </div>
-            </div>
-        </div> <!-- end col -->
-
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="text-center card-body">
-                    <div class="dropdown float-end">
-                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            <i class="mdi mdi-dots-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <!-- item-->
-                            <a class="dropdown-item">Edit profile</a>
-                            <!-- item-->
-                            <a class="dropdown-item">Remove client</a>
-                        </div>
-                    </div>
-                    <div>
-                        <img th:src="@{/images/users/male.png}"
-                             class="rounded-circle avatar-xl img-thumbnail mb-2" alt="profile-image">
-
-                        <div class="text-start">
-                            <p class="text-muted font-13"><strong>First Name :</strong> <span
-                                    class="ms-1">Antonis</span>
-                            </p>
-
-                            <p class="text-muted font-13"><strong>Last Name :</strong> <span
-                                    class="ms-1">Louka</span>
-                            </p>
-
-                            <p class="text-muted font-13"><strong>Date Of Birth :</strong> <span
-                                    class="ms-1">26/09/1989</span>
-                            </p>
-
-                            <p class="text-muted font-13"><strong>Phone :</strong><span
-                                    class="ms-1">6987451542</span></p>
-
-                            <p class="text-muted font-13"><strong>Email :</strong> <span class="ms-1">antonislouka89@email.com</span>
-                            </p>
-                        </div>
-
-                        <button type="button" class="btn btn-primary rounded-pill waves-effect waves-light">Send
-                            Message
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-        </div> <!-- end col -->
-
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="text-center card-body">
-                    <div class="dropdown float-end">
-                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            <i class="mdi mdi-dots-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <!-- item-->
-                            <a class="dropdown-item">Edit profile</a>
-                            <!-- item-->
-                            <a class="dropdown-item">Remove client</a>
-                        </div>
-                    </div>
-                    <div>
-                        <img th:src="@{/images/users/user-8.jpg}"
-                             class="rounded-circle avatar-xl img-thumbnail mb-2" alt="profile-image">
-
-                        <p class="text-muted font-13 mb-3">
-                            Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type.
-                        </p>
-
-                        <div class="text-start">
-                            <p class="text-muted font-13"><strong>Full Name :</strong> <span
-                                    class="ms-2">Johnathan Deo</span>
-                            </p>
-
-                            <p class="text-muted font-13"><strong>Mobile :</strong><span
-                                    class="ms-2">(123) 123 1234</span></p>
-
-                            <p class="text-muted font-13"><strong>Email :</strong> <span class="ms-2">coderthemes@gmail.com</span>
-                            </p>
-
-                            <p class="text-muted font-13"><strong>Location :</strong> <span class="ms-2">USA</span>
-                            </p>
-                        </div>
-
-                        <button type="button" class="btn btn-primary rounded-pill waves-effect waves-light">Send
-                            Message
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-        </div> <!-- end col -->
-    </div>
-    <!-- end row -->
-
-    <div class="row">
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="text-center card-body">
-                    <div class="dropdown float-end">
-                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            <i class="mdi mdi-dots-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <!-- item-->
-                            <a class="dropdown-item">Edit profile</a>
-                            <!-- item-->
-                            <a class="dropdown-item">Remove client</a>
-                        </div>
-                    </div>
-                    <div>
-                        <img th:src="@{/images/users/user-7.jpg}"
-                             class="rounded-circle avatar-xl img-thumbnail mb-2" alt="profile-image">
-
-                        <p class="text-muted font-13 mb-3">
-                            Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type.
-                        </p>
-
-                        <div class="text-start">
-                            <p class="text-muted font-13"><strong>Full Name :</strong> <span
-                                    class="ms-2">Johnathan Deo</span>
-                            </p>
-
-                            <p class="text-muted font-13"><strong>Mobile :</strong><span
-                                    class="ms-2">(123) 123 1234</span></p>
-
-                            <p class="text-muted font-13"><strong>Email :</strong> <span class="ms-2">coderthemes@gmail.com</span>
-                            </p>
-
-                            <p class="text-muted font-13"><strong>Location :</strong> <span class="ms-2">USA</span>
-                            </p>
-                        </div>
-
-                        <button type="button" class="btn btn-primary rounded-pill waves-effect waves-light">Send
-                            Message
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-        </div> <!-- end col -->
-
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="text-center card-body">
-                    <div class="dropdown float-end">
-                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            <i class="mdi mdi-dots-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <!-- item-->
-                            <a class="dropdown-item">Edit profile</a>
-                            <!-- item-->
-                            <a class="dropdown-item">Remove client</a>
-                        </div>
-                    </div>
-                    <div>
-                        <img th:src="@{/images/users/user-6.jpg}"
-                             class="rounded-circle avatar-xl img-thumbnail mb-2" alt="profile-image">
-
-                        <p class="text-muted font-13 mb-3">
-                            Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type.
-                        </p>
-
-                        <div class="text-start">
-                            <p class="text-muted font-13"><strong>Full Name :</strong> <span
-                                    class="ms-2">Johnathan Deo</span>
-                            </p>
-
-                            <p class="text-muted font-13"><strong>Mobile :</strong><span
-                                    class="ms-2">(123) 123 1234</span></p>
-
-                            <p class="text-muted font-13"><strong>Email :</strong> <span class="ms-2">coderthemes@gmail.com</span>
-                            </p>
-
-                            <p class="text-muted font-13"><strong>Location :</strong> <span class="ms-2">USA</span>
-                            </p>
-                        </div>
-
-                        <button type="button" class="btn btn-primary rounded-pill waves-effect waves-light">Send
-                            Message
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-        </div> <!-- end col -->
-
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="text-center card-body">
-                    <div class="dropdown float-end">
-                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
-                           aria-expanded="false">
-                            <i class="mdi mdi-dots-vertical"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end">
-                            <!-- item-->
-                            <a class="dropdown-item">Edit profile</a>
-                            <!-- item-->
-                            <a class="dropdown-item">Remove client</a>
-                        </div>
-                    </div>
-                    <div>
-                        <img th:src="@{/images/users/user-5.jpg}"
-                             class="rounded-circle avatar-xl img-thumbnail mb-2" alt="profile-image">
-
-                        <p class="text-muted font-13 mb-3">
-                            Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the 1500s,
-                            when an unknown printer took a galley of type.
-                        </p>
-
-                        <div class="text-start">
-                            <p class="text-muted font-13"><strong>Full Name :</strong> <span
-                                    class="ms-2">Johnathan Deo</span>
-                            </p>
-
-                            <p class="text-muted font-13"><strong>Mobile :</strong><span
-                                    class="ms-2">(123) 123 1234</span></p>
-
-                            <p class="text-muted font-13"><strong>Email :</strong> <span class="ms-2">coderthemes@gmail.com</span>
-                            </p>
-
-                            <p class="text-muted font-13"><strong>Location :</strong> <span class="ms-2">USA</span>
-                            </p>
-                        </div>
-
-                        <button type="button" class="btn btn-primary rounded-pill waves-effect waves-light">Send
-                            Message
-                        </button>
-                    </div>
-
                 </div>
             </div>
         </div> <!-- end col -->

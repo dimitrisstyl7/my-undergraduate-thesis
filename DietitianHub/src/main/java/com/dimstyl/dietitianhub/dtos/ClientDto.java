@@ -18,6 +18,8 @@ public class ClientDto {
     @Size(min = 1, max = 50)
     private String lastName;
 
+    private char gender;
+
     @NotNull
     @Past
     private Date dateOfBirth;
