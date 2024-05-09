@@ -1,24 +1,28 @@
 package com.dimstyl.dietitianhub.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 @Entity
 @Table(name = "user", schema = "public")
 @Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "username", unique = true, nullable = false, length = 50)
+    @Column(name = "username", unique = true, nullable = false, length = 102)
     private String username;
 
-    @Column(name = "password", nullable = false, length = 80)
+    @Column(name = "password", nullable = false, length = 60)
     private String password;
 
-    @Column(name = "enabled", nullable = false)
+    @Column(name = "enabled", nullable = false, columnDefinition = "boolean default false")
     private boolean enabled;
 
     @OneToOne(fetch = FetchType.EAGER)

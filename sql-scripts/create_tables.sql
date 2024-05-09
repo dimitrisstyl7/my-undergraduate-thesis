@@ -10,11 +10,11 @@ create table role
 
 create table "user"
 (
-    id       serial      not null unique primary key,
-    username varchar(50) not null unique,
-    password varchar(80) not null,
-    enabled  boolean     not null default true,
-    role_id  int         not null references role (id)
+    id       serial       not null unique primary key,
+    username varchar(102) not null unique,
+    password varchar(60)  not null,
+    enabled  boolean      not null default false,
+    role_id  int          not null references role (id)
 );
 
 create table user_info
