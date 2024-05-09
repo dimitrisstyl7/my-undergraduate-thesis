@@ -8,5 +8,5 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
 
-    List<User> findAllByRole_Name(String role_name);
+    List<User> findAllByRole_NameAndEnabledIsTrue(String role_name);
 }
