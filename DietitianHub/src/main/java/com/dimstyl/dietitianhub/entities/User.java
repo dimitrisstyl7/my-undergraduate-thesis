@@ -25,7 +25,6 @@ public class User {
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     private UserInfo userInfo;
 }

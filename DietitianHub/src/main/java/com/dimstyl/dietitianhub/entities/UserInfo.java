@@ -20,8 +20,9 @@ public class UserInfo {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "user_id", unique = true, nullable = false)
-    private int userId;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, unique = true)
+    private User user;
 
     @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
