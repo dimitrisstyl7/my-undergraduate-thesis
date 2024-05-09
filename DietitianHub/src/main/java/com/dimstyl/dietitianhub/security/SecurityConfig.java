@@ -36,7 +36,7 @@ public class SecurityConfig {
                                         "/css/**", "/data/**", "/fonts/**",
                                         "/images/**", "/js/**", "/libs/**"
                                 ).permitAll()
-                                .anyRequest().hasAuthority(DIETITIAN.name())
+                                .anyRequest().hasAuthority(DIETITIAN.getRole())
                 )
                 .formLogin(form ->
                         form
