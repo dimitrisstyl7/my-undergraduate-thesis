@@ -1,14 +1,15 @@
 package com.dimstyl.dietitianhub.dtos;
 
 import jakarta.validation.constraints.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Builder
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ClientDto {
     @NotBlank
     @Size(min = 1, max = 50)
