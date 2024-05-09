@@ -1,5 +1,6 @@
 package com.dimstyl.dietitianhub.dtos;
 
+import com.dimstyl.dietitianhub.customValidators.GenderConstraint;
 import com.dimstyl.dietitianhub.enums.Month;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -22,6 +23,7 @@ public class ClientDto {
     @Pattern(regexp = "^[a-zA-Z]{2,50}$", message = "Last Name must contain only letters.")
     private String lastName;
 
+    @GenderConstraint(message = "Gender is required.")
     private char gender;
 
     @NotNull(message = "Date of birth is required.")
