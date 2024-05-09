@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ClientDto> getAllClients() {
-        List<User> clients = userRepository.findAllByRole_Name(CLIENT.name());
+        List<User> clients = userRepository.findAllByRole_NameAndEnabledIsTrue(CLIENT.getRole());
         return clients.stream()
                 .map(UserMapper::mapToClientDto)
                 .collect(Collectors.toList());
