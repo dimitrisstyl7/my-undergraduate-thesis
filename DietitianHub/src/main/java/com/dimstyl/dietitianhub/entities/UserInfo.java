@@ -1,13 +1,19 @@
 package com.dimstyl.dietitianhub.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "user_info", schema = "public")
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +33,7 @@ public class UserInfo {
     private char gender;
 
     @Column(name = "date_of_birth", nullable = false)
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column(name = "email", nullable = false, length = 50)
     private String email;
