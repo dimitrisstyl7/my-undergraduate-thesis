@@ -5,45 +5,95 @@
       layout:decorate="~{page-layout}">
 <head>
     <title>View clients</title>
+
+    <style>
+        .validation-error {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
 </head>
 
 <div layout:fragment="main">
     <!-- Modal for client registration -->
-    <div class="modal fade" id="custom-modal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-light">
-                    <h4 class="modal-title" id="myCenterModalLabel">Register client</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
+    <form id="registration-form" th:action="@{/clients/register}" th:object="${newClient}"
+          onsubmit="return validateGender();" method="post">
+        <div class="modal fade" id="custom-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title" id="myCenterModalLabel">Register client</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                    <div class="modal-body">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" placeholder="Enter name">
+                            <label id="firstNameLabel" for="firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="Enter first name"
+                                   th:field="*{firstName}" minlength="2" maxlength="50" pattern="^[a-zA-Z]{2,50}$"
+                                   title="First name must be between 2 and 50 characters long." required>
+                            <span class="validation-error" th:if="${#fields.hasErrors('firstName')}"
+                                  th:errors="*{firstName}"></span>
                         </div>
                         <div class="mb-3">
-                            <label for="position" class="form-label">Position</label>
-                            <input type="text" class="form-control" id="position" placeholder="Enter position">
+                            <label id="lastNameLabel" for="lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="Enter last name"
+                                   th:field="*{lastName}" minlength="2" maxlength="50" pattern="^[a-zA-Z]{2,50}$"
+                                   title="Last name must be between 2 and 50 characters long." required>
+                            <span class="validation-error" th:if="${#fields.hasErrors('lastName')}"
+                                  th:errors="*{lastName}"></span>
                         </div>
                         <div class="mb-3">
-                            <label for="company" class="form-label">Company</label>
-                            <input type="text" class="form-control" id="company" placeholder="Enter company">
+                            <label id="dateOfBirthLabel" for="dateOfBirth" class="form-label">Date Of Birth</label>
+                            <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" required>
+                            <span class="validation-error" th:if="${#fields.hasErrors('dateOfBirth')}"
+                                  th:errors="*{dateOfBirth}"></span>
+                        </div>
+                        <div>
+                            <label class="form-label">Gender</label>
+                            <div class="form-check mb-1">
+                                <label>Male
+                                    <input type="radio" id="maleRadioButton" name="gender"
+                                           class="form-check-input" value="M" th:field="*{gender}">
+                                </label>
+                            </div>
+                            <div class="form-check form-check-pink">
+                                <label>Female
+                                    <input type="radio" id="femaleRadioButton" name="gender" value="F"
+                                           th:field="*{gender}" class="form-check-input">
+                                </label><br>
+                            </div>
+                            <div class="mb-3" th:switch="${#fields.hasErrors('gender')}">
+                                <!--suppress XmlDuplicatedId -->
+                                <span id="genderError" class="validation-error" th:case="${true}"
+                                      th:errors="*{gender}"></span>
+                                <!--suppress XmlDuplicatedId -->
+                                <span id="genderError" class="validation-error" th:case="*"></span>
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                            <label id="emailLabel" for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter email"
+                                   th:field="*{email}" minlength="3" maxlength="50" required>
+                            <span class="validation-error" th:if="${#fields.hasErrors('email')}"
+                                  th:errors="*{email}"></span>
                         </div>
-
-                        <button type="submit" class="btn btn-success waves-effect waves-light">Register</button>
-                        <button type="button" class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal">
-                            Cancel
-                        </button>
-                    </form>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+                        <div class="mb-3">
+                            <label id="phoneLabel" for="phone" class="form-label">Phone</label>
+                            <input type="tel" class="form-control" id="phone" placeholder="Enter phone"
+                                   th:field="*{phone}" minlength="8" maxlength="20" pattern="^[0-9]{8,20}$"
+                                   title="Phone number must be between 8 and 20 digits long." required>
+                            <span class="validation-error" th:if="${#fields.hasErrors('phone')}"
+                                  th:errors="*{phone}"></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Register</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </form>
 
     <div class="row">
         <div class="col-12">
@@ -53,7 +103,8 @@
                         <div class="col-md-4">
                             <div class="mt-3 mt-md-0">
                                 <button class="btn btn-lg font-16 btn-success" data-bs-toggle="modal"
-                                        data-bs-target="#custom-modal"><i class="fa fa-plus me-1"></i> Register client
+                                        id="registrationFormButton" data-bs-target="#custom-modal"><i
+                                        class="fa fa-plus me-1"></i> Register client
                                 </button>
                             </div>
                         </div><!-- end col-->
@@ -131,11 +182,40 @@
     </div>
     <!-- end row -->
 
-    <!-- Custom script -->
+    <!-- Custom scripts -->
+    <th:block th:if="${validationFailed}">
+        <script>
+            <!-- Server-side validation returned errors. Open the registration form modal -->
+            window.onload = function () {
+                document.getElementById('registrationFormButton').click();
+            }
+        </script>
+    </th:block>
+
     <script>
         // Change page title.
         const title = document.getElementsByClassName("page-title-main");
         title[0].textContent = "Clients";
+
+        // Reset registration form and validation errors on modal close.
+        document.getElementById("custom-modal").onhidden = function () {
+            document.getElementById("registration-form").reset();
+            document.getElementsByClassName("validation-error").forEach(element => {
+                element.textContent = "";
+            });
+        }
+
+        function validateGender() {
+            // Validate gender radio buttons, if none is selected, display an error message and prevent form submission.
+            const maleRadioButton = document.getElementById("maleRadioButton");
+            const femaleRadioButton = document.getElementById("femaleRadioButton");
+            if (maleRadioButton.checked || femaleRadioButton.checked) {
+                document.getElementById("genderError").textContent = "";
+                return true;
+            }
+            document.getElementById("genderError").textContent = "Gender is required.";
+            return false;
+        }
     </script>
 </div>
 </html>
