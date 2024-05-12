@@ -95,6 +95,26 @@
         </div><!-- /.modal -->
     </form>
 
+    <!-- Warning Alert Modal -->
+    <form id="delete-client-form" method="get">
+        <div id="warning-alert-modal" class="modal fade" tabindex="-1" role="dialog"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <i class="dripicons-warning h1 text-warning"></i>
+                            <h4 id="client-fullname-delete-modal" class="mt-2"></h4>
+                            <p class="mt-3">You are about to delete this client. Do you want to continue?</p>
+                            <button type="submit" class="btn btn-warning my-2">Continue</button>
+                            <button type="button" class="btn btn-danger my-2" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </form>
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -136,15 +156,16 @@
             <div class="card">
                 <div class="text-center card-body">
                     <div class="dropdown float-end">
-                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
+                        <a class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown"
                            aria-expanded="false">
                             <i class="mdi mdi-dots-vertical"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <!-- item-->
                             <a class="dropdown-item">Edit profile</a>
-                            <!-- item-->
-                            <a class="dropdown-item">Remove client</a>
+                            <a class="dropdown-item" data-bs-toggle="modal"
+                               data-bs-target="#warning-alert-modal"
+                               th:onclick="fillDeleteModal([[${client.getFullName()}]],[[${client.id}]])">Delete
+                                client</a>
                         </div>
                     </div>
                     <div>
@@ -215,6 +236,12 @@
             }
             document.getElementById("genderError").textContent = "Gender is required.";
             return false;
+        }
+
+        function fillDeleteModal(clientName, id) {
+            // Fill the delete modal with the client's full name and set the form action to the client's id.
+            document.getElementById("client-fullname-delete-modal").textContent = clientName;
+            document.getElementById("delete-client-form").setAttribute("action", "/clients/delete/" + id)
         }
     </script>
 </div>
