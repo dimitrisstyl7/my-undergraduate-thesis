@@ -40,4 +40,13 @@ public class UserServiceImpl implements UserService {
         UserInfo userInfo = ClientDtoMapper.mapToUserInfo(clientDto, newUser);
         userInfoService.saveUserInfo(userInfo);
     }
+
+    @Override
+    public void deleteClient(Long id) {
+        // Find the user by id and set the enabled field to false.
+        // Todo: Catch the exception in custom exception handler and handle it properly.
+        User user = userRepository.findById(id).orElseThrow();
+        user.setEnabled(false);
+        userRepository.save(user);
+    }
 }

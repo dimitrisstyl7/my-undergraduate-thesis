@@ -8,4 +8,6 @@ public interface UserService {
     List<ClientDto> getAllClients();
 
     void registerClient(ClientDto clientDto);
+
+    void deleteClient(Long id);
 }
