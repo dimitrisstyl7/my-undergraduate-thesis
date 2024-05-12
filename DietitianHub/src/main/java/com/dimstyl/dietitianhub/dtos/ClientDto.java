@@ -13,6 +13,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClientDto {
+    private Long id;
+
     @NotBlank(message = "First Name cannot be empty.")
     @Size(min = 2, max = 50, message = "First Name must be between 2 and 50 characters.")
     @Pattern(regexp = "^[a-zA-Z]{2,50}$", message = "First Name must contain only letters.")
@@ -45,5 +47,9 @@ public class ClientDto {
         String month = Month.byNumber(dateOfBirth.getMonthValue());
         String year = String.valueOf(dateOfBirth.getYear());
         return day + " " + month + " " + year;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
 }

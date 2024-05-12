@@ -6,6 +6,7 @@ import com.dimstyl.dietitianhub.entities.User;
 public class UserMapper {
     public static ClientDto mapToClientDto(User user) {
         return ClientDto.builder()
+                .id(user.getId())
                 .phone(user.getUserInfo().getPhone())
                 .email(user.getUserInfo().getEmail())
                 .dateOfBirth(user.getUserInfo().getDateOfBirth())
