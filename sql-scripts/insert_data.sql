@@ -4,9 +4,9 @@ values (1, 'CLIENT'),
 
 -- DIETITIAN -> username: aliceWhite95, password: aliceWhite95
 -- CLIENT -> username: johnBrown90, password: johnBrown90
-insert into "user" (id, username, password, role_id)
-values (1, 'aliceWhite95', '$2a$10$6cZ5L3DqviiLHWV.8ci8leDRKd9nk1nv0xAz/B.Qm2/E6.uQEmaHO', 2),
-       (2, 'johnBrown90', '$2a$10$d/./JcM59U/3vh4eDy/.9uRb7zA.tJmD267s17BJufVjXN0ZfkKDa', 1);
+insert into "user" (id, username, password, enabled, role_id)
+values (1, 'aliceWhite95', '$2a$10$6cZ5L3DqviiLHWV.8ci8leDRKd9nk1nv0xAz/B.Qm2/E6.uQEmaHO', true, 2),
+       (2, 'johnBrown90', '$2a$10$d/./JcM59U/3vh4eDy/.9uRb7zA.tJmD267s17BJufVjXN0ZfkKDa', true, 1);
 
 
 insert into user_info (user_id, first_name, last_name, gender, date_of_birth, email, phone)
