@@ -25,7 +25,7 @@ public class User {
     @Column(name = "enabled", nullable = false, columnDefinition = "boolean default false")
     private boolean enabled;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
