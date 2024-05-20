@@ -20,4 +20,4 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: ~/postgres-data
+      device: ~/postgres-data/dietitianHub
