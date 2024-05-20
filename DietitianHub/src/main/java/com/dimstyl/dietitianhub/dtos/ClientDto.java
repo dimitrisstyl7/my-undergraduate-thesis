@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClientDto {
-    private Long id;
+    private Integer id;
 
     @NotBlank(message = "First Name cannot be empty.")
     @Size(min = 2, max = 50, message = "First Name must be between 2 and 50 characters.")

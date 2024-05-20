@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum UserRole {
-    CLIENT(1L), DIETITIAN(2L);
+    CLIENT(1), DIETITIAN(2);
 
-    private final Long id;
+    private final Integer id;
 
     public String getRole() {
         return this.name();
