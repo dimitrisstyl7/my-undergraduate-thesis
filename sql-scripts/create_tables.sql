@@ -25,6 +25,7 @@ create table user_info
     last_name     varchar(50) not null,
     gender        char(1)     not null, -- M (Male), F (Female)
     date_of_birth date        not null,
+    created_on    timestamp   not null default now(),
     email         varchar(50) not null,
     phone         varchar(20) not null
 );

@@ -5,7 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SourceType;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
@@ -35,6 +38,10 @@ public class UserInfo {
 
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
+
+    @Column(name = "created_on", nullable = false)
+    @CreationTimestamp(source = SourceType.DB)
+    private Instant createdOn;
 
     @Column(name = "email", nullable = false, length = 50)
     private String email;
