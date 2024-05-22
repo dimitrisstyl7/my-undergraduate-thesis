@@ -27,24 +27,29 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label id="firstNameLabel" for="firstName" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="firstName" placeholder="Enter first name"
-                                   th:field="*{firstName}" minlength="2" maxlength="50" pattern="^[a-zA-Z]{2,50}$"
+                            <label id="firstNameLabel" for="registration-first-name" class="form-label">First
+                                Name</label>
+                            <input type="text" class="form-control" id="registration-first-name"
+                                   placeholder="Enter first name" th:field="*{firstName}" minlength="2"
+                                   maxlength="50" pattern="^[a-zA-Z]{2,50}$"
                                    title="First name must be between 2 and 50 characters long." required>
                             <span class="validation-error" th:if="${#fields.hasErrors('firstName')}"
                                   th:errors="*{firstName}"></span>
                         </div>
                         <div class="mb-3">
-                            <label id="lastNameLabel" for="lastName" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="lastName" placeholder="Enter last name"
-                                   th:field="*{lastName}" minlength="2" maxlength="50" pattern="^[a-zA-Z]{2,50}$"
+                            <label id="lastNameLabel" for="registration-last-name" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="registration-last-name"
+                                   placeholder="Enter last name" th:field="*{lastName}" minlength="2"
+                                   maxlength="50" pattern="^[a-zA-Z]{2,50}$"
                                    title="Last name must be between 2 and 50 characters long." required>
                             <span class="validation-error" th:if="${#fields.hasErrors('lastName')}"
                                   th:errors="*{lastName}"></span>
                         </div>
                         <div class="mb-3">
-                            <label id="dateOfBirthLabel" for="dateOfBirth" class="form-label">Date Of Birth</label>
-                            <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" required>
+                            <label id="dateOfBirthLabel" for="registration-date-of-birth" class="form-label">Date Of
+                                Birth</label>
+                            <input type="date" class="form-control" id="registration-date-of-birth"
+                                   th:field="*{dateOfBirth}" required>
                             <span class="validation-error" th:if="${#fields.hasErrors('dateOfBirth')}"
                                   th:errors="*{dateOfBirth}"></span>
                         </div>
@@ -52,13 +57,13 @@
                             <label class="form-label">Gender</label>
                             <div class="form-check mb-1">
                                 <label>Male
-                                    <input type="radio" id="maleRadioButton" name="gender"
+                                    <input type="radio" id="registration-male-radio-button" name="gender"
                                            class="form-check-input" value="M" th:field="*{gender}">
                                 </label>
                             </div>
                             <div class="form-check form-check-pink">
                                 <label>Female
-                                    <input type="radio" id="femaleRadioButton" name="gender" value="F"
+                                    <input type="radio" id="registration-female-radio-button" name="gender" value="F"
                                            th:field="*{gender}" class="form-check-input">
                                 </label><br>
                             </div>
@@ -71,15 +76,15 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label id="emailLabel" for="email" class="form-label">Email Address</label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter email"
+                            <label id="emailLabel" for="registration-email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="registration-email" placeholder="Enter email"
                                    th:field="*{email}" minlength="3" maxlength="50" required>
                             <span class="validation-error" th:if="${#fields.hasErrors('email')}"
                                   th:errors="*{email}"></span>
                         </div>
                         <div class="mb-3">
-                            <label id="phoneLabel" for="phone" class="form-label">Phone</label>
-                            <input type="tel" class="form-control" id="phone" placeholder="Enter phone"
+                            <label id="phoneLabel" for="registration-phone" class="form-label">Phone</label>
+                            <input type="tel" class="form-control" id="registration-phone" placeholder="Enter phone"
                                    th:field="*{phone}" minlength="8" maxlength="20" pattern="^[0-9]{8,20}$"
                                    title="Phone number must be between 8 and 20 digits long." required>
                             <span class="validation-error" th:if="${#fields.hasErrors('phone')}"
@@ -95,7 +100,7 @@
         </div><!-- /.modal -->
     </form>
 
-    <!-- Warning Alert Modal -->
+    <!-- Modal for client deletion -->
     <form id="delete-client-form" method="get">
         <div id="warning-alert-modal" class="modal fade" tabindex="-1" role="dialog"
              aria-hidden="true">
@@ -113,6 +118,11 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
+    </form>
+
+    <!-- Modal for edit client -->
+    <form id="edit-client-form" method="get">
+
     </form>
 
     <div class="row">
@@ -206,7 +216,7 @@
     <!-- Custom scripts -->
     <th:block th:if="${registrationValidationFailed}">
         <script>
-            <!-- Server-side validation returned errors. Open the registration form modal -->
+            <!-- Server-side registration validation returned errors. Open the registration form modal -->
             window.onload = function () {
                 document.getElementById('registrationFormButton').click();
             }
