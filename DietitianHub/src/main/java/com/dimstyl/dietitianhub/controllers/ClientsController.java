@@ -29,7 +29,7 @@ public class ClientsController {
             Model model) {
         if (result.hasErrors()) {
             model.addAttribute("clients", userService.getAllClients());
-            model.addAttribute("validationFailed", true);
+            model.addAttribute("registrationValidationFailed", true);
             return "clients/view-clients";
         }
         userService.registerClient(clientDto);

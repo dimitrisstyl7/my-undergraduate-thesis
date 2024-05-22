@@ -204,7 +204,7 @@
     <!-- end row -->
 
     <!-- Custom scripts -->
-    <th:block th:if="${validationFailed}">
+    <th:block th:if="${registrationValidationFailed}">
         <script>
             <!-- Server-side validation returned errors. Open the registration form modal -->
             window.onload = function () {
