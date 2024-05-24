@@ -2,7 +2,6 @@ package com.dimstyl.dietitianhub.services.impl;
 
 import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.entities.User;
-import com.dimstyl.dietitianhub.entities.UserInfo;
 import com.dimstyl.dietitianhub.mappers.ClientDtoMapper;
 import com.dimstyl.dietitianhub.mappers.UserMapper;
 import com.dimstyl.dietitianhub.repositories.UserRepository;
@@ -39,16 +38,13 @@ public class UserServiceImpl implements UserService {
         User newUser = userRepository.save(user);
 
         //Todo: What if the save operation fails? Rollback the transaction.
-
-        // Create a UserInfo entity from the ClientDto and newUser entity and save it to the database.
-        UserInfo userInfo = ClientDtoMapper.mapToUserInfo(clientDto, newUser);
-        userInfoService.saveUserInfo(userInfo);
+        userInfoService.save(clientDto, newUser);
     }
 
     @Override
-    public void deleteClient(Long id) {
+    public void disableClient(Long id) {
         // Find the user by id and set the enabled field to false.
-        // Todo: Catch the exception in custom exception handler and handle it properly.
+        // Todo: Catch the exception (NoSuchElementException) in custom exception handler and handle it properly.
         User user = userRepository.findById(id).orElseThrow();
         user.setEnabled(false);
         userRepository.save(user);

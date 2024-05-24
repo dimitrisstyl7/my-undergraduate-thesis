@@ -1,6 +1,7 @@
 package com.dimstyl.dietitianhub.services;
 
 import com.dimstyl.dietitianhub.dtos.ClientDto;
+import com.dimstyl.dietitianhub.entities.User;
 
 import java.util.List;
 
@@ -9,5 +10,7 @@ public interface UserService {
 
     void registerClient(ClientDto clientDto);
 
-    void deleteClient(Long id);
+    void disableClient(Long id);
+
+    User findById(Long id);
 }
