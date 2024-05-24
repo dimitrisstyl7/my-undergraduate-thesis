@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{page-layout}">
+      layout:decorate="~{fragments/_page-layout}">
 <head>
     <title>View clients</title>
 
@@ -11,25 +11,30 @@
             color: red;
             font-size: 12px;
         }
+
+        .custom-form-label {
+            font-weight: bold;
+            color: #404040;
+        }
     </style>
 </head>
 
 <div layout:fragment="main">
-    <!-- Modal for client registration -->
-    <form id="registration-form" th:action="@{/clients/register}" th:object="${newClient}"
-          onsubmit="return validateGender();" method="post">
-        <div class="modal fade" id="custom-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Modal for client registration/edit -->
+    <form id="main-form" th:object="${client}" onsubmit="return validateGender();" method="post">
+        <th:block th:replace="~{fragments/_csrf :: csrf}"></th:block>
+        <div class="modal fade" id="main-modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header bg-light">
-                        <h4 class="modal-title" id="myCenterModalLabel">Register client</h4>
+                        <h4 class="modal-title" id="main-modal-title"></h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label id="firstNameLabel" for="registration-first-name" class="form-label">First
+                            <label id="first-name-label" for="first-name" class="form-label custom-form-label">First
                                 Name</label>
-                            <input type="text" class="form-control" id="registration-first-name"
+                            <input type="text" class="form-control" id="first-name"
                                    placeholder="Enter first name" th:field="*{firstName}" minlength="2"
                                    maxlength="50" pattern="^[a-zA-Z]{2,50}$"
                                    title="First name must be between 2 and 50 characters long." required>
@@ -37,8 +42,9 @@
                                   th:errors="*{firstName}"></span>
                         </div>
                         <div class="mb-3">
-                            <label id="lastNameLabel" for="registration-last-name" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="registration-last-name"
+                            <label id="last-name-label" for="last-name" class="form-label custom-form-label">
+                                Last Name</label>
+                            <input type="text" class="form-control" id="last-name"
                                    placeholder="Enter last name" th:field="*{lastName}" minlength="2"
                                    maxlength="50" pattern="^[a-zA-Z]{2,50}$"
                                    title="Last name must be between 2 and 50 characters long." required>
@@ -46,53 +52,57 @@
                                   th:errors="*{lastName}"></span>
                         </div>
                         <div class="mb-3">
-                            <label id="dateOfBirthLabel" for="registration-date-of-birth" class="form-label">Date Of
-                                Birth</label>
-                            <input type="date" class="form-control" id="registration-date-of-birth"
-                                   th:field="*{dateOfBirth}" required>
+                            <label id="date-of-birth-label" for="date-of-birth" class="form-label custom-form-label">
+                                Date Of Birth</label>
+                            <input type="date" class="form-control" id="date-of-birth" th:field="*{dateOfBirth}"
+                                   required>
                             <span class="validation-error" th:if="${#fields.hasErrors('dateOfBirth')}"
                                   th:errors="*{dateOfBirth}"></span>
                         </div>
                         <div>
-                            <label class="form-label">Gender</label>
+                            <label class="form-label custom-form-label">Gender</label>
                             <div class="form-check mb-1">
                                 <label>Male
-                                    <input type="radio" id="registration-male-radio-button" name="gender"
+                                    <input type="radio" id="male-radio-button" name="gender"
                                            class="form-check-input" value="M" th:field="*{gender}">
                                 </label>
                             </div>
                             <div class="form-check form-check-pink">
                                 <label>Female
-                                    <input type="radio" id="registration-female-radio-button" name="gender" value="F"
+                                    <input type="radio" id="female-radio-button" name="gender" value="F"
                                            th:field="*{gender}" class="form-check-input">
                                 </label><br>
                             </div>
                             <div class="mb-3" th:switch="${#fields.hasErrors('gender')}">
                                 <!--suppress XmlDuplicatedId -->
-                                <span id="genderError" class="validation-error" th:case="${true}"
+                                <span id="gender-error" class="validation-error" th:case="${true}"
                                       th:errors="*{gender}"></span>
                                 <!--suppress XmlDuplicatedId -->
-                                <span id="genderError" class="validation-error" th:case="*"></span>
+                                <span id="gender-error" class="validation-error" th:case="*"></span>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label id="emailLabel" for="registration-email" class="form-label">Email Address</label>
-                            <input type="email" class="form-control" id="registration-email" placeholder="Enter email"
+                            <label id="email-label" for="email" class="form-label custom-form-label">
+                                Email Address</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter email"
                                    th:field="*{email}" minlength="3" maxlength="50" required>
                             <span class="validation-error" th:if="${#fields.hasErrors('email')}"
                                   th:errors="*{email}"></span>
                         </div>
                         <div class="mb-3">
-                            <label id="phoneLabel" for="registration-phone" class="form-label">Phone</label>
-                            <input type="tel" class="form-control" id="registration-phone" placeholder="Enter phone"
+                            <label id="phone-label" for="phone" class="form-label custom-form-label">Phone</label>
+                            <input type="tel" class="form-control" id="phone" placeholder="Enter phone"
                                    th:field="*{phone}" minlength="8" maxlength="20" pattern="^[0-9]{8,20}$"
                                    title="Phone number must be between 8 and 20 digits long." required>
                             <span class="validation-error" th:if="${#fields.hasErrors('phone')}"
                                   th:errors="*{phone}"></span>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Register</button>
+                    <div class="modal-footer d-flex">
+                        <button type="button" class="btn btn-info me-auto"
+                                onclick="document.getElementById('main-form').reset();">Reset
+                        </button>
+                        <button type="submit" class="btn btn-success"></button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div><!-- /.modal-content -->
@@ -102,7 +112,8 @@
 
     <!-- Modal for client deletion -->
     <form id="delete-client-form" method="get">
-        <div id="warning-alert-modal" class="modal fade" tabindex="-1" role="dialog"
+        <th:block th:replace="~{fragments/_csrf :: csrf}"></th:block>
+        <div id="delete-client-modal" class="modal fade" tabindex="-1" role="dialog"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -120,11 +131,6 @@
         </div><!-- /.modal -->
     </form>
 
-    <!-- Modal for edit client -->
-    <form id="edit-client-form" method="get">
-
-    </form>
-
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -133,8 +139,9 @@
                         <div class="col-md-4">
                             <div class="mt-3 mt-md-0">
                                 <button class="btn btn-lg font-16 btn-success" data-bs-toggle="modal"
-                                        id="registrationFormButton" data-bs-target="#custom-modal"><i
-                                        class="fa fa-plus me-1"></i> Register client
+                                        id="registration-button" data-bs-target="#main-modal"
+                                        onclick="fillMainModal('/clients/register', 'Register client', 'Register')">
+                                    <i class="fa fa-plus me-1"></i> Register client
                                 </button>
                             </div>
                         </div><!-- end col-->
@@ -161,8 +168,9 @@
         </div><!-- end col-->
     </div>
     <!-- end row -->
+
     <div class="row" th:with="maleImg=@{/images/users/male.png}, femaleImg=@{/images/users/female.png}">
-        <div class="col-xl-4" th:each="client :${clients}">
+        <div class="col-xl-4" th:each="c :${clients}">
             <div class="card">
                 <div class="text-center card-body">
                     <div class="dropdown float-end">
@@ -171,35 +179,43 @@
                             <i class="mdi mdi-dots-vertical"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item">Edit profile</a>
+                            <a th:id="${'update-anchor-button-'+c.id}" class="dropdown-item" data-bs-toggle="modal"
+                               data-bs-target="#main-modal"
+                               th:onclick="fillMainModal(
+                               [['/clients/update/'+${c.id}]], 'Edit profile', 'Update',
+                               [[${c.firstName}]], [[${c.lastName}]], [[${c.dateOfBirth}]],
+                               [[${c.gender}]], [[${c.email}]], [[${c.phone}]], true
+                               )">
+                                Edit profile</a>
+                            <a class="dropdown-item">Client tags</a>
                             <a class="dropdown-item" data-bs-toggle="modal"
-                               data-bs-target="#warning-alert-modal"
-                               th:onclick="fillDeleteModal([[${client.getFullName()}]],[[${client.id}]])">Delete
+                               data-bs-target="#delete-client-modal"
+                               th:onclick="fillDeleteModal([[${c.getFullName()}]],[[${c.id}]])">Delete
                                 client</a>
                         </div>
                     </div>
                     <div>
-                        <img th:src="${client.gender.toString() == 'F'} ? ${femaleImg} : ${maleImg}"
+                        <img th:src="${c.gender.toString() == 'F'} ? ${femaleImg} : ${maleImg}"
                              class="rounded-circle avatar-xl img-thumbnail mb-2" alt="profile-image">
 
                         <div class="text-start">
                             <p class="text-muted font-13"><strong>First Name :</strong> <span
-                                    class="ms-1" th:text="${client.firstName}"></span>
+                                    class="ms-1" th:text="${c.firstName}"></span>
                             </p>
 
                             <p class="text-muted font-13"><strong>Last Name :</strong> <span
-                                    class="ms-1" th:text="${client.lastName}"></span>
+                                    class="ms-1" th:text="${c.lastName}"></span>
                             </p>
 
                             <p class="text-muted font-13"><strong>Date Of Birth :</strong> <span
-                                    class="ms-1" th:text="${client.getFormattedDateOfBirth()}"></span>
+                                    class="ms-1" th:text="${c.getFormattedDateOfBirth()}"></span>
                             </p>
 
                             <p class="text-muted font-13"><strong>Phone :</strong><span
-                                    class="ms-1" th:text="${client.phone}"></span></p>
+                                    class="ms-1" th:text="${c.phone}"></span></p>
 
                             <p class="text-muted font-13"><strong>Email :</strong> <span class="ms-1"
-                                                                                         th:text="${client.email}"></span>
+                                                                                         th:text="${c.email}"></span>
                             </p>
                         </div>
 
@@ -214,11 +230,29 @@
     <!-- end row -->
 
     <!-- Custom scripts -->
-    <th:block th:if="${registrationValidationFailed}">
-        <script>
-            <!-- Server-side registration validation returned errors. Open the registration form modal -->
+    <th:block th:if="${registerValidationsFailed}">
+        <!-- Server-side register client validations returned errors. Open the main modal. -->
+        <script th:inline="javascript">
             window.onload = function () {
-                document.getElementById('registrationFormButton').click();
+                document.getElementById('registration-button').click();
+                document.getElementById('date-of-birth').value = [[${dateOfBirth}]];
+            }
+        </script>
+    </th:block>
+
+    <th:block th:if="${updateValidationsFailed}">
+        <!-- Server-side update client validations returned errors. -->
+        <script th:inline="javascript">
+            // Open the main modal and fill it with the edited client's data.
+            window.onload = () => {
+                document.getElementById('update-anchor-button-' + [[${editedClient.id}]]).click();
+                document.getElementById("first-name").value = [[${editedClient.firstName}]];
+                document.getElementById("last-name").value = [[${editedClient.lastName}]];
+                document.getElementById("date-of-birth").value = [[${editedClient.dateOfBirth}]];
+                document.getElementById("email").value = [[${editedClient.email}]];
+                document.getElementById("phone").value = [[${editedClient.phone}]];
+                document.getElementById("male-radio-button").checked = [[${editedClient.gender}]] === 'M';
+                document.getElementById("female-radio-button").checked = [[${editedClient.gender}]] === 'F';
             }
         </script>
     </th:block>
@@ -228,9 +262,9 @@
         const title = document.getElementsByClassName("page-title-main");
         title[0].textContent = "Clients";
 
-        // Reset registration form and validation errors on modal close.
-        document.getElementById("custom-modal").onhidden = function () {
-            document.getElementById("registration-form").reset();
+        // Reset main form and validation errors on main modal close.
+        document.getElementById("main-modal").onhidden = function () {
+            document.getElementById("main-form").reset();
             document.getElementsByClassName("validation-error").forEach(element => {
                 element.textContent = "";
             });
@@ -238,14 +272,38 @@
 
         function validateGender() {
             // Validate gender radio buttons, if none is selected, display an error message and prevent form submission.
-            const maleRadioButton = document.getElementById("maleRadioButton");
-            const femaleRadioButton = document.getElementById("femaleRadioButton");
+            const maleRadioButton = document.getElementById("male-radio-button");
+            const femaleRadioButton = document.getElementById("female-radio-button");
             if (maleRadioButton.checked || femaleRadioButton.checked) {
-                document.getElementById("genderError").textContent = "";
+                document.getElementById("gender-error").textContent = "";
                 return true;
             }
-            document.getElementById("genderError").textContent = "Gender is required.";
+            document.getElementById("gender-error").textContent = "Gender is required.";
             return false;
+        }
+
+        function fillMainModal(
+            action, title, actionButtonText,
+            firstName = '', lastName = '', dateOfBirth = '',
+            gender = '', email = '', phone = '',
+            edit = false
+        ) {
+            //  Fill the main modal with the provided form action, title, and action button text.
+            document.getElementById("main-form").setAttribute("action", action);
+            document.querySelector("#main-modal-title").textContent = title;
+            document.querySelector("#main-modal .btn-success").textContent = actionButtonText;
+
+            // If the modal is for registering a new client, return.
+            if (!edit) return;
+
+            // If the modal is for editing a client, fill the form fields with the client's data.
+            document.getElementById("first-name").value = firstName;
+            document.getElementById("last-name").value = lastName;
+            document.getElementById("date-of-birth").value = dateOfBirth;
+            document.getElementById("email").value = email;
+            document.getElementById("phone").value = phone;
+            document.getElementById("male-radio-button").checked = gender === 'M';
+            document.getElementById("female-radio-button").checked = gender === 'F';
         }
 
         function fillDeleteModal(clientName, id) {
