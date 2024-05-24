@@ -49,4 +49,10 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(false);
         userRepository.save(user);
     }
+
+    @Override
+    public User findById(Long id) {
+        // Todo: Catch the exception (NoSuchElementException) in custom exception handler and handle it properly.
+        return userRepository.findById(id).orElseThrow();
+    }
 }
