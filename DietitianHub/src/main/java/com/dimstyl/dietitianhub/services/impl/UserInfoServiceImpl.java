@@ -1,6 +1,9 @@
 package com.dimstyl.dietitianhub.services.impl;
 
+import com.dimstyl.dietitianhub.dtos.ClientDto;
+import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.entities.UserInfo;
+import com.dimstyl.dietitianhub.mappers.ClientDtoMapper;
 import com.dimstyl.dietitianhub.repositories.UserInfoRepository;
 import com.dimstyl.dietitianhub.services.UserInfoService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +15,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     private final UserInfoRepository userInfoRepository;
 
     @Override
-    public void saveUserInfo(UserInfo userInfo) {
+    public void save(ClientDto clientDto, User user) {
+        // Create a UserInfo entity and save it to the database.
+        UserInfo userInfo = ClientDtoMapper.mapToUserInfo(clientDto, user);
         userInfoRepository.save(userInfo);
     }
 }

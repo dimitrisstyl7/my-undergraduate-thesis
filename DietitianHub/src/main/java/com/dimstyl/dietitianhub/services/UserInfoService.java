@@ -1,7 +1,8 @@
 package com.dimstyl.dietitianhub.services;
 
-import com.dimstyl.dietitianhub.entities.UserInfo;
+import com.dimstyl.dietitianhub.dtos.ClientDto;
+import com.dimstyl.dietitianhub.entities.User;
 
 public interface UserInfoService {
-    public void saveUserInfo(UserInfo userInfo);
+    void save(ClientDto clientDto, User user);
 }
