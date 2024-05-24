@@ -18,19 +18,20 @@ public class ClientsController {
     @GetMapping
     public String viewClientsPage(Model model) {
         model.addAttribute("clients", userService.getAllClients());
-        model.addAttribute("newClient", new ClientDto());
-        return "clients/view-clients";
+        model.addAttribute("client", new ClientDto());
+        return "view-clients";
     }
 
     @PostMapping("/register")
     public String registerClient(
-            @Valid @ModelAttribute("newClient") ClientDto clientDto,
+            @Valid @ModelAttribute("client") ClientDto clientDto,
             BindingResult result,
             Model model) {
         if (result.hasErrors()) {
             model.addAttribute("clients", userService.getAllClients());
-            model.addAttribute("registrationValidationFailed", true);
-            return "clients/view-clients";
+            model.addAttribute("dateOfBirth", clientDto.getDateOfBirth());
+            model.addAttribute("registerValidationsFailed", true);
+            return "view-clients";
         }
         userService.registerClient(clientDto);
         return "redirect:/clients";
@@ -38,7 +39,7 @@ public class ClientsController {
 
     @GetMapping("/delete/{id}")
     public String deleteClient(@PathVariable("id") Long id) {
-        userService.deleteClient(id);
+        userService.disableClient(id);
         return "redirect:/clients";
     }
 }
