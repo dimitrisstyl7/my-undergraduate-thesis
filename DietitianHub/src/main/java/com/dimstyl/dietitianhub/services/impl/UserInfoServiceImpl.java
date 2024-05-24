@@ -20,4 +20,16 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo userInfo = ClientDtoMapper.mapToUserInfo(clientDto, user);
         userInfoRepository.save(userInfo);
     }
+
+    @Override
+    public void update(ClientDto clientDto, User user) {
+        UserInfo existingUserInfo = userInfoRepository.findByUser(user);
+        existingUserInfo.setFirstName(clientDto.getFirstName());
+        existingUserInfo.setLastName(clientDto.getLastName());
+        existingUserInfo.setGender(clientDto.getGender());
+        existingUserInfo.setDateOfBirth(clientDto.getDateOfBirth());
+        existingUserInfo.setEmail(clientDto.getEmail());
+        existingUserInfo.setPhone(clientDto.getPhone());
+        userInfoRepository.save(existingUserInfo);
+    }
 }
