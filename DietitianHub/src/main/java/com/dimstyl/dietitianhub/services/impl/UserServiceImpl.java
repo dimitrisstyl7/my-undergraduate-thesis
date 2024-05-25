@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.dimstyl.dietitianhub.enums.UserRole.CLIENT;
 
@@ -26,7 +25,7 @@ public class UserServiceImpl implements UserService {
         List<User> clients = userRepository.findAllByRole_NameAndEnabledIsTrue(CLIENT.getRole());
         return clients.stream()
                 .map(UserMapper::mapToClientDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
