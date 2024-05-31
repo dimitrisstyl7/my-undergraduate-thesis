@@ -30,8 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerClient(ClientDto clientDto) {
-        // Create a User entity from the ClientDto and save it to the database.
-        User user = ClientDtoMapper.mapToUserOfRoleClient(clientDto);
+        User user = ClientDtoMapper.mapToNewRegistrationUser(clientDto);
 
         //Todo: Firstly check if the username is already in use and throw an exception if it is.
         User newUser = userRepository.save(user);

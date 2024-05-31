@@ -9,7 +9,7 @@ import static com.dimstyl.dietitianhub.enums.UserRole.CLIENT;
 import static com.dimstyl.dietitianhub.utilities.RegistrationUtil.generateUsername;
 
 public class ClientDtoMapper {
-    public static User mapToUserOfRoleClient(ClientDto clientDto) {
+    public static User mapToNewRegistrationUser(ClientDto clientDto) {
         return User.builder()
                 .username(generateUsername(
                         clientDto.getFirstName(),
