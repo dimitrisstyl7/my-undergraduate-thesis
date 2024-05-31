@@ -1,10 +1,10 @@
-package com.dimstyl.dietitianhub.controllers;
+package com.dimstyl.dietitianhub.mvcControllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class AnnouncementsController {
+public class MvcAnnouncementsController {
     @GetMapping("/announcements")
     public String announcementsPage() {
         return "announcements";

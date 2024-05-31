@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.controllers;
+package com.dimstyl.dietitianhub.mvcControllers;
 
 import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.entities.User;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/clients")
 @RequiredArgsConstructor
-public class ClientsController {
+public class MvcClientsController {
     private final UserService userService;
     private final UserInfoService userInfoService;
 

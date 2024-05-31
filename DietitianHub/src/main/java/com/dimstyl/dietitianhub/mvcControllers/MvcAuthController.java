@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.controllers;
+package com.dimstyl.dietitianhub.mvcControllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/auth")
-public class AuthController {
+public class MvcAuthController {
     @GetMapping("/login")
     public String loginPage() {
         return "auth/login";

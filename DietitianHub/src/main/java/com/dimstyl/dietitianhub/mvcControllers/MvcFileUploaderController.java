@@ -1,11 +1,11 @@
-package com.dimstyl.dietitianhub.controllers;
+package com.dimstyl.dietitianhub.mvcControllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class FileUploaderController {
+public class MvcFileUploaderController {
     @GetMapping("/upload-file")
     public String uploadFilePage() {
         return "upload-file";
