@@ -1,3 +1,6 @@
+drop table if exists client_tag_association;
+drop table if exists client_tag;
+drop table if exists tag_category;
 drop table if exists user_info;
 drop table if exists "user";
 drop table if exists role;
@@ -28,4 +31,25 @@ create table user_info
     created_on    timestamp   not null default now(),
     email         varchar(50) not null,
     phone         varchar(20) not null
+);
+
+create table tag_category
+(
+    id   serial       not null unique primary key,
+    name varchar(100) not null unique
+);
+
+create table tag
+(
+    id              serial       not null unique primary key,
+    tag_category_id int          not null references tag_category (id),
+    name            varchar(100) not null unique
+);
+
+create table client_tag_association
+(
+    user_info_id int       not null references user_info (id),
+    tag_id       int       not null references tag (id),
+    created_on   timestamp not null default now(),
+    primary key (user_info_id, tag_id)
 );

@@ -7,6 +7,7 @@ import org.hibernate.annotations.SourceType;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "user_info", schema = "public")
@@ -46,4 +47,13 @@ public class UserInfo {
 
     @Column(name = "phone", nullable = false, length = 20)
     private String phone;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "client_tag_association",
+            joinColumns = @JoinColumn(name = "user_info_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_info_id", "tag_id"})
+    )
+    private List<Tag> tags;
 }
