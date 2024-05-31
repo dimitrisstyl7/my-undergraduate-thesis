@@ -1,13 +1,18 @@
 package com.dimstyl.dietitianhub.services.impl;
 
 import com.dimstyl.dietitianhub.dtos.ClientDto;
+import com.dimstyl.dietitianhub.dtos.TagDto;
 import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.entities.UserInfo;
 import com.dimstyl.dietitianhub.mappers.ClientDtoMapper;
+import com.dimstyl.dietitianhub.mappers.TagMapper;
 import com.dimstyl.dietitianhub.repositories.UserInfoRepository;
+import com.dimstyl.dietitianhub.services.TagService;
 import com.dimstyl.dietitianhub.services.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,5 +40,18 @@ public class UserInfoServiceImpl implements UserInfoService {
         existingUserInfo.setEmail(clientDto.getEmail());
         existingUserInfo.setPhone(clientDto.getPhone());
         userInfoRepository.save(existingUserInfo);
+    }
+
+    @Override
+    public List<TagDto> getClientTags(Integer id) {
+        UserInfo userInfo = userInfoRepository.getUserInfoByUserId(id);
+
+        if (userInfo == null) {
+            // Todo: Throw a custom exception if user info not found and handle it in the custom exception handler.
+        }
+
+        return userInfo.getTags().stream()
+                .map(TagMapper::mapToTagDto)
+                .toList();
     }
 }
