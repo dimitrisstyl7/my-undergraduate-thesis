@@ -53,7 +53,7 @@ public class MvcClientsController {
             return "view-clients";
         }
         User user = userService.findById(id);
-        userInfoService.update(clientDto, user);
+        userInfoService.updateUserInfo(clientDto, user);
         return "redirect:/clients";
     }
 }

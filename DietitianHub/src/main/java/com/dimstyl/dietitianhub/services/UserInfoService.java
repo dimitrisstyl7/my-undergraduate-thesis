@@ -4,7 +4,7 @@ import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.entities.User;
 
 public interface UserInfoService {
-    void save(ClientDto clientDto, User user);
+    void saveUserInfo(ClientDto clientDto, User user);
 
-    void update(ClientDto clientDto, User user);
+    void updateUserInfo(ClientDto clientDto, User user);
 }

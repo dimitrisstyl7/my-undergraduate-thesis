@@ -36,7 +36,8 @@ public class UserServiceImpl implements UserService {
         User newUser = userRepository.save(user);
 
         //Todo: What if the save operation fails? Rollback the transaction.
-        userInfoService.save(clientDto, newUser);
+        User newUser = userRepository.save(user);
+        userInfoService.saveUserInfo(clientDto, newUser);
     }
 
     @Override

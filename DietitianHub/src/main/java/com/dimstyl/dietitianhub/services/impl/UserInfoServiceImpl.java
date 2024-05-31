@@ -15,15 +15,20 @@ public class UserInfoServiceImpl implements UserInfoService {
     private final UserInfoRepository userInfoRepository;
 
     @Override
-    public void save(ClientDto clientDto, User user) {
-        // Create a UserInfo entity and save it to the database.
+    public void saveUserInfo(ClientDto clientDto, User user) {
         UserInfo userInfo = ClientDtoMapper.mapToUserInfo(clientDto, user);
         userInfoRepository.save(userInfo);
     }
 
     @Override
     public void update(ClientDto clientDto, User user) {
+    public void updateUserInfo(ClientDto clientDto, User user) {
         UserInfo existingUserInfo = userInfoRepository.findByUser(user);
+
+        if (existingUserInfo == null) {
+            // Todo: Throw a custom exception if user info not found and handle it in the custom exception handler.
+        }
+
         existingUserInfo.setFirstName(clientDto.getFirstName());
         existingUserInfo.setLastName(clientDto.getLastName());
         existingUserInfo.setGender(clientDto.getGender());
