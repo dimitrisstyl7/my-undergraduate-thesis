@@ -10,7 +10,7 @@ public interface UserService {
 
     void registerClient(ClientDto clientDto);
 
-    void disableClient(Long id);
+    void disableClient(Integer id);
 
-    User findById(Long id);
+    User findById(Integer id);
 }

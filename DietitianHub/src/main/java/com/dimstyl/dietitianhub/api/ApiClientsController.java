@@ -14,7 +14,7 @@ public class ApiClientsController {
     private final UserService userService;
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> disableClient(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> disableClient(@PathVariable("id") Integer id) {
         userService.disableClient(id);
         return ResponseEntity.noContent().build();
     }

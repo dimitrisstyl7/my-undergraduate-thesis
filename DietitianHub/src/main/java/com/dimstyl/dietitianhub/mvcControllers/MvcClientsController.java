@@ -42,7 +42,7 @@ public class MvcClientsController {
 
     @PostMapping("/update/{id}")
     public String updateClient(
-            @PathVariable("id") Long id,
+            @PathVariable("id") Integer id,
             @Valid @ModelAttribute("client") ClientDto clientDto,
             BindingResult result,
             Model model) {

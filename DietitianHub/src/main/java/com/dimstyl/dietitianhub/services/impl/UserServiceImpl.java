@@ -50,8 +50,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long id) {
-        // Todo: Catch the exception (NoSuchElementException) in custom exception handler and handle it properly.
+    public User findById(Integer id) {
+        // Todo: Throw a custom exception if the user is not found and handle it in the custom exception handler.
         return userRepository.findById(id).orElseThrow();
     }
 }
