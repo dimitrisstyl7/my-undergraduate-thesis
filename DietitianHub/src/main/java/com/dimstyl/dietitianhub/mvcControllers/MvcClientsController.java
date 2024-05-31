@@ -40,12 +40,6 @@ public class MvcClientsController {
         return "redirect:/clients";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteClient(@PathVariable("id") Long id) {
-        userService.disableClient(id);
-        return "redirect:/clients";
-    }
-
     @PostMapping("/update/{id}")
     public String updateClient(
             @PathVariable("id") Long id,

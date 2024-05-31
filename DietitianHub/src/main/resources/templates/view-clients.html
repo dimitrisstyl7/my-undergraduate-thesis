@@ -111,25 +111,24 @@
     </form>
 
     <!-- Modal for client deletion -->
-    <form id="delete-client-form" method="get">
-        <th:block th:replace="~{fragments/_csrf :: csrf}"></th:block>
-        <div id="delete-client-modal" class="modal fade" tabindex="-1" role="dialog"
-             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="text-center">
-                            <i class="dripicons-warning h1 text-warning"></i>
-                            <h4 id="client-fullname-delete-modal" class="mt-2"></h4>
-                            <p class="mt-3">You are about to delete this client. Do you want to continue?</p>
-                            <button type="submit" class="btn btn-warning my-2">Continue</button>
-                            <button type="button" class="btn btn-danger my-2" data-bs-dismiss="modal">Cancel</button>
-                        </div>
+    <div id="delete-client-modal" class="modal fade" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="dripicons-warning h1 text-warning"></i>
+                        <h4 id="client-fullname-delete-modal" class="mt-2"></h4>
+                        <p class="mt-3">You are about to delete this client. Do you want to continue?</p>
+                        <button id="confirm-client-deletion-button" type="button" class="btn btn-warning my-2">
+                            Continue
+                        </button>
+                        <button type="button" class="btn btn-danger my-2" data-bs-dismiss="modal">Cancel</button>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <div class="row">
         <div class="col-12">
@@ -307,9 +306,28 @@
         }
 
         function fillDeleteModal(clientName, id) {
-            // Fill the delete modal with the client's full name and set the form action to the client's id.
+            // Set the client's full name who is about to be deleted.
             document.getElementById("client-fullname-delete-modal").textContent = clientName;
-            document.getElementById("delete-client-form").setAttribute("action", "/clients/delete/" + id)
+
+            // Set onclick event for the delete button.
+            document.getElementById("confirm-client-deletion-button").onclick = () => deleteClient(id);
+        }
+
+        async function deleteClient(id) {
+            // Delete the client with the provided id.
+            const response = await fetch('/api/clients/' + id, {
+                method: 'DELETE',
+                headers: {
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                }
+            });
+            if (response.ok) {
+                location.reload(); // Reload the page to reflect the changes.
+            } else {
+                console.error(response.status, response.statusText);
+                // Todo: Maybe I can show a failure modal.
+                alert("An error occurred while deleting the client.");
+            }
         }
     </script>
 </div>
