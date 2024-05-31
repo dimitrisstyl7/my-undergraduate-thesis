@@ -41,9 +41,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void disableClient(Long id) {
-        // Find the user by id and set the enabled field to false.
-        // Todo: Catch the exception (NoSuchElementException) in custom exception handler and handle it properly.
+    public void disableClient(Integer id) {
+        // Todo: Throw a custom exception if the user is not found and handle it in the custom exception handler.
         User user = userRepository.findById(id).orElseThrow();
         user.setEnabled(false);
         userRepository.save(user);
