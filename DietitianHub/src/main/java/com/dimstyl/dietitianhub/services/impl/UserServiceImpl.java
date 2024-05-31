@@ -7,6 +7,7 @@ import com.dimstyl.dietitianhub.mappers.UserMapper;
 import com.dimstyl.dietitianhub.repositories.UserRepository;
 import com.dimstyl.dietitianhub.services.UserInfoService;
 import com.dimstyl.dietitianhub.services.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,13 +30,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void registerClient(ClientDto clientDto) {
         User user = ClientDtoMapper.mapToNewRegistrationUser(clientDto);
 
-        //Todo: Firstly check if the username is already in use and throw an exception if it is.
-        User newUser = userRepository.save(user);
+        if (userRepository.existsByUsername(user.getUsername())) {
+            // Todo: Throw a custom exception if the username is already taken and handle it in the custom exception handler.
+        }
 
-        //Todo: What if the save operation fails? Rollback the transaction.
         User newUser = userRepository.save(user);
         userInfoService.saveUserInfo(clientDto, newUser);
     }
