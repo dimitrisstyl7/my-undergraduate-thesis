@@ -25,7 +25,7 @@ public class MvcClientsController {
         return "view-clients";
     }
 
-    @PostMapping("/register")
+    @PostMapping("/registerClient")
     public String registerClient(
             @Valid @ModelAttribute("client") ClientDto clientDto,
             BindingResult result,
@@ -40,7 +40,7 @@ public class MvcClientsController {
         return "redirect:/clients";
     }
 
-    @PostMapping("/update/{id}")
+    @PostMapping("/updateClient/{id}")
     public String updateClient(
             @PathVariable("id") Integer id,
             @Valid @ModelAttribute("client") ClientDto clientDto,
