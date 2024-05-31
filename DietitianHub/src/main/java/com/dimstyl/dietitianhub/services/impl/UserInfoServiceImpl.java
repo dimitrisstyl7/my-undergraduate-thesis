@@ -21,7 +21,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void update(ClientDto clientDto, User user) {
     public void updateUserInfo(ClientDto clientDto, User user) {
         UserInfo existingUserInfo = userInfoRepository.findByUser(user);
 
