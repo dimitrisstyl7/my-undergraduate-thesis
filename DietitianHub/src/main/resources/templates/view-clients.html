@@ -99,7 +99,7 @@
                         </div>
                     </div>
                     <div class="modal-footer d-flex">
-                        <button type="button" class="btn btn-info me-auto"
+                        <button type="button" class="btn btn-secondary me-auto"
                                 onclick="document.getElementById('main-form').reset();">Reset
                         </button>
                         <button type="submit" class="btn btn-success"></button>
@@ -382,11 +382,40 @@
                 tags.forEach(tag => {
                     document.getElementById("tag-" + tag.id).checked = true;
                 });
+
+                // Set onclick event for the save tags button.
+                document.getElementById("save-tags-button").onclick = () => saveTags(id);
             } else {
                 console.error(response.status, response.statusText);
                 // Todo: Maybe I can show a failure modal.
                 alert("An error occurred while fetching the client tags. Please try again later.");
                 location.reload();
+            }
+        }
+
+        async function saveTags(id) {
+            // Save the selected tags for the client.
+            const tags = [];
+            document.querySelectorAll("#client-tags-modal input[type='checkbox']:checked").forEach(tag => {
+                tags.push(tag.value);
+            });
+
+            const response = await fetch('/api/clients/' + id + '/tags', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                },
+                body: JSON.stringify(tags)
+            });
+
+            if (response.ok) {
+                // Todo: Maybe I can show a success modal.
+                alert("Client tags saved successfully.");
+            } else {
+                console.error(response.status, response.statusText);
+                // Todo: Maybe I can show a failure modal.
+                alert("An error occurred while saving the client tags.");
             }
         }
     </script>

@@ -2,6 +2,7 @@ package com.dimstyl.dietitianhub.services.impl;
 
 import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.dtos.TagDto;
+import com.dimstyl.dietitianhub.entities.Tag;
 import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.entities.UserInfo;
 import com.dimstyl.dietitianhub.mappers.ClientDtoMapper;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserInfoServiceImpl implements UserInfoService {
     private final UserInfoRepository userInfoRepository;
+    private final TagService tagService;
 
     @Override
     public void saveUserInfo(ClientDto clientDto, User user) {
@@ -53,5 +55,18 @@ public class UserInfoServiceImpl implements UserInfoService {
         return userInfo.getTags().stream()
                 .map(TagMapper::mapToTagDto)
                 .toList();
+    }
+
+    @Override
+    public void updateClientTags(Integer id, List<Integer> tagIds) {
+        List<Tag> tags = tagService.getTagsByIds(tagIds);
+        UserInfo userInfo = userInfoRepository.getUserInfoByUserId(id);
+
+        if (userInfo == null) {
+            // Todo: Throw a custom exception if user info not found and handle it in the custom exception handler.
+        }
+
+        userInfo.setTags(tags);
+        userInfoRepository.save(userInfo);
     }
 }

@@ -11,4 +11,7 @@ public interface UserInfoService {
 
     void updateUserInfo(ClientDto clientDto, User user);
 
+    List<TagDto> getClientTags(Integer id);
+
+    void updateClientTags(Integer id, List<Integer> tagIds);
 }

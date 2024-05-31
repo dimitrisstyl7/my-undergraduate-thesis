@@ -22,4 +22,10 @@ public class TagCategoryServiceImpl implements TagCategoryService {
                 .map(TagCategoryMapper::mapToTagCategoryDto)
                 .toList();
     }
+
+    @Override
+    public TagCategory findById(Integer id) {
+        // Todo: Throw a custom exception if the tag category is not found and handle it in the custom exception handler.
+        return tagCategoryRepository.findById(id).orElseThrow();
+    }
 }

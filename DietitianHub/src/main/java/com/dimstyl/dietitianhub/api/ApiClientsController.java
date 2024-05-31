@@ -26,4 +26,10 @@ public class ApiClientsController {
     public ResponseEntity<List<TagDto>> getClientTags(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(userInfoService.getClientTags(id));
     }
+
+    @PutMapping("/{id}/tags")
+    public ResponseEntity<Void> updateClientTags(@PathVariable("id") Integer id, @RequestBody List<Integer> tagIds) {
+        userInfoService.updateClientTags(id, tagIds);
+        return ResponseEntity.noContent().build();
+    }
 }
