@@ -44,7 +44,10 @@ public class SecurityConfig {
                                 .loginProcessingUrl("/auth/authenticate-user")
                                 .permitAll()
                 )
-                .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")))
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/auth/login")
+                )
                 .build();
     }
 }
