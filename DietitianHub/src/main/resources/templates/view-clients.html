@@ -130,6 +130,42 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+    <!-- Modal for client tags -->
+    <form id="client-tags-form">
+        <div id="client-tags-modal" class="modal fade" tabindex="-1" role="dialog"
+             aria-labelledby="client-tags-modal-label"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="client-tags-modal-title">Client tags</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-4" th:each="tagCategory: ${tagCategories}">
+                            <div class="row">
+                                <h5 class="form-label custom-form-label mb-2" th:text="${tagCategory.name}"></h5>
+                                <div th:each="tag: ${tagCategory.tags}" class="col-lg-4">
+                                    <input th:id="${'tag-'+tag.id}" th:value="${tag.id}" type="checkbox"
+                                           class="form-check-input rounded-circle">
+                                    <label th:for="${'tag-'+tag.id}" class="form-check-label"
+                                           th:text="${tag.name}"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary me-auto"
+                                onclick="document.getElementById('client-tags-form').reset();">Reset
+                        </button>
+                        <button id="save-tags-button" type="button" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </form>
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -186,7 +222,9 @@
                                [[${c.gender}]], [[${c.email}]], [[${c.phone}]], true
                                )">
                                 Edit profile</a>
-                            <a class="dropdown-item">Client tags</a>
+                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#client-tags-modal"
+                               th:onclick="fillClientTagsModal([[${c.id}]])">
+                                Client tags</a>
                             <a class="dropdown-item" data-bs-toggle="modal"
                                data-bs-target="#delete-client-modal"
                                th:onclick="fillDeleteModal([[${c.getFullName()}]],[[${c.id}]])">Delete
@@ -269,6 +307,11 @@
             });
         }
 
+        // Reset client tags form on client tags modal close.
+        document.getElementById("client-tags-modal").onhidden = function () {
+            document.getElementById("client-tags-form").reset();
+        }
+
         function validateGender() {
             // Validate gender radio buttons, if none is selected, display an error message and prevent form submission.
             const maleRadioButton = document.getElementById("male-radio-button");
@@ -327,6 +370,23 @@
                 console.error(response.status, response.statusText);
                 // Todo: Maybe I can show a failure modal.
                 alert("An error occurred while deleting the client.");
+            }
+        }
+
+        async function fillClientTagsModal(id) {
+            // Fill the client tags modal with the client's tags.
+            const response = await fetch('/api/clients/' + id + '/tags');
+
+            if (response.ok) {
+                const tags = await response.json();
+                tags.forEach(tag => {
+                    document.getElementById("tag-" + tag.id).checked = true;
+                });
+            } else {
+                console.error(response.status, response.statusText);
+                // Todo: Maybe I can show a failure modal.
+                alert("An error occurred while fetching the client tags. Please try again later.");
+                location.reload();
             }
         }
     </script>
