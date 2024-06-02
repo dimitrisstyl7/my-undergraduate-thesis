@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 public class TagCategory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -21,4 +22,5 @@ public class TagCategory {
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Tag> tags;
+
 }

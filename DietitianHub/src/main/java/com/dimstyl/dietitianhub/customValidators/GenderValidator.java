@@ -17,4 +17,5 @@ public class GenderValidator implements ConstraintValidator<GenderConstraint, Ch
     public boolean isValid(Character character, ConstraintValidatorContext constraintValidatorContext) {
         return character != null && (List.of('M', 'F').contains(character));
     }
+
 }

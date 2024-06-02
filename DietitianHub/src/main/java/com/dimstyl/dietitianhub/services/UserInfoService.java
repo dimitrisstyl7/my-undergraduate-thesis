@@ -7,6 +7,7 @@ import com.dimstyl.dietitianhub.entities.User;
 import java.util.List;
 
 public interface UserInfoService {
+
     void saveUserInfo(ClientDto clientDto, User user);
 
     void updateUserInfo(ClientDto clientDto, User user);
@@ -14,4 +15,5 @@ public interface UserInfoService {
     List<TagDto> getClientTags(Integer id);
 
     void updateClientTags(Integer id, List<Integer> tagIds);
+
 }

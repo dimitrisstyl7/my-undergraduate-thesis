@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -18,4 +19,5 @@ public class Role {
 
     @Column(name = "name", unique = true, nullable = false, length = 9)
     private String name;
+
 }

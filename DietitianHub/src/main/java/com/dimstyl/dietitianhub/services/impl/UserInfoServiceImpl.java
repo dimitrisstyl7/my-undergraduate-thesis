@@ -18,6 +18,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserInfoServiceImpl implements UserInfoService {
+
     private final UserInfoRepository userInfoRepository;
     private final TagService tagService;
 
@@ -69,4 +70,5 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfo.setTags(tags);
         userInfoRepository.save(userInfo);
     }
+
 }

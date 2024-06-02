@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 @UtilityClass
 public class RegistrationUtil {
+
     public static String generateUsername(String firstName, String lastName, LocalDate dateOfBirth) {
         /*
         - This code snippet demonstrates the basic principle of username generation using the client's
@@ -19,4 +20,5 @@ public class RegistrationUtil {
         String dob = String.valueOf(dateOfBirth.getYear()).substring(2);
         return fn + ln + dob;
     }
+
 }

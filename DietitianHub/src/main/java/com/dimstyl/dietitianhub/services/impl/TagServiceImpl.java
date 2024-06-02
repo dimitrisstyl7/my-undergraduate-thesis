@@ -11,6 +11,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TagServiceImpl implements TagService {
+
     private final TagRepository tagRepository;
 
     @Override
@@ -23,4 +24,5 @@ public class TagServiceImpl implements TagService {
 
         return tags;
     }
+
 }

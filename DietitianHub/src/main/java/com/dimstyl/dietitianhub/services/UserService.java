@@ -6,6 +6,7 @@ import com.dimstyl.dietitianhub.entities.User;
 import java.util.List;
 
 public interface UserService {
+
     List<ClientDto> getAllClients();
 
     void registerClient(ClientDto clientDto);
@@ -13,4 +14,5 @@ public interface UserService {
     void disableClient(Integer id);
 
     User findById(Integer id);
+
 }

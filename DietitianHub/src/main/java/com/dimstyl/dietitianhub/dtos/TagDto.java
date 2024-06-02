@@ -8,7 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TagDto {
+
     Integer id;
     Integer categoryId;
     String name;
+
 }

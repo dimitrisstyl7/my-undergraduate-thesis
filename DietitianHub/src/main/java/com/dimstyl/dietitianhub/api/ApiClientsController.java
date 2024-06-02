@@ -13,6 +13,7 @@ import java.util.List;
 @RequestMapping("/api/clients")
 @RequiredArgsConstructor
 public class ApiClientsController {
+
     private final UserService userService;
     private final UserInfoService userInfoService;
 
@@ -32,4 +33,5 @@ public class ApiClientsController {
         userInfoService.updateClientTags(id, tagIds);
         return ResponseEntity.noContent().build();
     }
+
 }

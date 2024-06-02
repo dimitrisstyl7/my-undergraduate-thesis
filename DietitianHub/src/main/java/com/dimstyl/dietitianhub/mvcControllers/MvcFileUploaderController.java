@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class MvcFileUploaderController {
+
     @GetMapping("/upload-file")
     public String uploadFilePage() {
         return "upload-file";
@@ -15,4 +16,5 @@ public class MvcFileUploaderController {
     public void uploadFile() {
         System.out.println("Uploading file...");
     }
+
 }

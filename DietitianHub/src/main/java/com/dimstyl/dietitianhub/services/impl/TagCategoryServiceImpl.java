@@ -13,6 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TagCategoryServiceImpl implements TagCategoryService {
+
     private final TagCategoryRepository tagCategoryRepository;
 
     @Override

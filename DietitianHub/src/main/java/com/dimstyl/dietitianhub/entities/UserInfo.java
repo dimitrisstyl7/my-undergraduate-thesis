@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserInfo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -56,4 +57,5 @@ public class UserInfo {
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_info_id", "tag_id"})
     )
     private List<Tag> tags;
+
 }

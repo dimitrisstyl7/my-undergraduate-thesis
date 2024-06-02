@@ -10,6 +10,8 @@ import java.util.List;
 @Getter
 @Setter
 public class TagCategoryDto {
+
     private String name;
     private List<TagDto> tags;
+
 }

@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClientDto {
+
     private Integer id;
 
     @NotBlank(message = "First Name cannot be empty.")
@@ -52,4 +53,5 @@ public class ClientDto {
     public String getFullName() {
         return firstName + " " + lastName;
     }
+
 }

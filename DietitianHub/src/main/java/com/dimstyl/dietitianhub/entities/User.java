@@ -11,6 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -31,4 +32,5 @@ public class User {
 
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     private UserInfo userInfo;
+
 }

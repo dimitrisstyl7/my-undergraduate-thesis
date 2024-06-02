@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/clients")
 @RequiredArgsConstructor
 public class MvcClientsController {
+
     private final UserService userService;
     private final UserInfoService userInfoService;
     private final TagCategoryService tagCategoryService;
@@ -59,4 +60,5 @@ public class MvcClientsController {
         userInfoService.updateUserInfo(clientDto, user);
         return "redirect:/clients";
     }
+
 }

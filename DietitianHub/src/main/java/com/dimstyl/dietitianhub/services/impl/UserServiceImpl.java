@@ -18,6 +18,7 @@ import static com.dimstyl.dietitianhub.enums.UserRole.CLIENT;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final UserInfoService userInfoService;
 
@@ -55,4 +56,5 @@ public class UserServiceImpl implements UserService {
         // Todo: Throw a custom exception if the user is not found and handle it in the custom exception handler.
         return userRepository.findById(id).orElseThrow();
     }
+
 }

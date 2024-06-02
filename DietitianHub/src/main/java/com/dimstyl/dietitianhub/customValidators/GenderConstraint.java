@@ -10,9 +10,11 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = GenderValidator.class)
 public @interface GenderConstraint {
+
     String message() default "Acceptable gender values are 'M' or 'F'";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+
 }

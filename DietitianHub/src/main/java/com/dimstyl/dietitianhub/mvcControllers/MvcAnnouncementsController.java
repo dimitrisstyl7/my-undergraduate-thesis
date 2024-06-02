@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MvcAnnouncementsController {
+
     @GetMapping("/announcements")
     public String announcementsPage() {
         return "announcements";
     }
+
 }

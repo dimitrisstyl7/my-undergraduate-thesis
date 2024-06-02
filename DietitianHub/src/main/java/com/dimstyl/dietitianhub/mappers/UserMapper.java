@@ -4,6 +4,7 @@ import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.entities.User;
 
 public class UserMapper {
+
     public static ClientDto mapToClientDto(User user) {
         return ClientDto.builder()
                 .id(user.getId())
@@ -15,4 +16,5 @@ public class UserMapper {
                 .lastName(user.getUserInfo().getLastName())
                 .build();
     }
+    
 }

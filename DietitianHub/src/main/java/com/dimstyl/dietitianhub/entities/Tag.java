@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Tag {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -22,4 +23,5 @@ public class Tag {
 
     @Column(name = "name", unique = true, nullable = false, length = 100)
     private String name;
+
 }

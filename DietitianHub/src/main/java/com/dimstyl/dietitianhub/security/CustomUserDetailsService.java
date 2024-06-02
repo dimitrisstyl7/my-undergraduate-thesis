@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
+
     private final UserRepository userRepository;
 
     @Override
@@ -42,4 +43,5 @@ public class CustomUserDetailsService implements UserDetailsService {
     private Collection<? extends GrantedAuthority> mapRoleToAuthority(Role role) {
         return Stream.of(role).map(r -> new SimpleGrantedAuthority(r.getName())).toList();
     }
+
 }

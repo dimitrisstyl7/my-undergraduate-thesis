@@ -4,6 +4,7 @@ import com.dimstyl.dietitianhub.dtos.TagDto;
 import com.dimstyl.dietitianhub.entities.Tag;
 
 public class TagMapper {
+
     public static TagDto mapToTagDto(Tag tag) {
         return TagDto.builder()
                 .id(tag.getId())
@@ -11,4 +12,5 @@ public class TagMapper {
                 .name(tag.getName())
                 .build();
     }
+    
 }
