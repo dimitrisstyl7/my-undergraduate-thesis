@@ -1,5 +1,5 @@
 drop table if exists client_tag_association;
-drop table if exists client_tag;
+drop table if exists tag;
 drop table if exists tag_category;
 drop table if exists user_info;
 drop table if exists "user";
