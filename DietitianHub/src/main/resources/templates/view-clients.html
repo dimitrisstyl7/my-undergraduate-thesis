@@ -270,7 +270,7 @@
     <th:block th:if="${registerValidationsFailed}">
         <!-- Server-side register client validations returned errors. Open the main modal. -->
         <script th:inline="javascript">
-            window.onload = function () {
+            window.onload = () => {
                 document.getElementById('registration-button').click();
                 document.getElementById('date-of-birth').value = [[${dateOfBirth}]];
             }
@@ -300,7 +300,7 @@
         title[0].textContent = "Clients";
 
         // Reset main form and validation errors on main modal close.
-        document.getElementById("main-modal").onhidden = function () {
+        document.getElementById("main-modal").onhidden = () => {
             document.getElementById("main-form").reset();
             document.getElementsByClassName("validation-error").forEach(element => {
                 element.textContent = "";
@@ -308,9 +308,7 @@
         }
 
         // Reset client tags form on client tags modal close.
-        document.getElementById("client-tags-modal").onhidden = function () {
-            document.getElementById("client-tags-form").reset();
-        }
+        document.getElementById("client-tags-modal").onhidden = () => document.getElementById("client-tags-form").reset();
 
         function validateGender() {
             // Validate gender radio buttons, if none is selected, display an error message and prevent form submission.
