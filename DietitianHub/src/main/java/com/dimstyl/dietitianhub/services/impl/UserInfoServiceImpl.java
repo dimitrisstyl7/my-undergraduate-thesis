@@ -1,5 +1,7 @@
 package com.dimstyl.dietitianhub.services.impl;
 
+import com.dimstyl.dietitianhub.customExceptions.ApiUserInfoNotFoundException;
+import com.dimstyl.dietitianhub.customExceptions.MvcUserInfoNotFoundException;
 import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.dtos.TagDto;
 import com.dimstyl.dietitianhub.entities.Tag;
@@ -33,7 +35,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo existingUserInfo = userInfoRepository.findByUser(user);
 
         if (existingUserInfo == null) {
-            // Todo: Throw a custom exception if user info not found and handle it in the custom exception handler.
+            throw new MvcUserInfoNotFoundException("User info not found for user id: " + user.getId());
         }
 
         existingUserInfo.setFirstName(clientDto.getFirstName());
@@ -50,7 +52,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo userInfo = userInfoRepository.getUserInfoByUserId(id);
 
         if (userInfo == null) {
-            // Todo: Throw a custom exception if user info not found and handle it in the custom exception handler.
+            throw new ApiUserInfoNotFoundException("User info not found for user id: " + id);
         }
 
         return userInfo.getTags().stream()
@@ -64,7 +66,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo userInfo = userInfoRepository.getUserInfoByUserId(id);
 
         if (userInfo == null) {
-            // Todo: Throw a custom exception if user info not found and handle it in the custom exception handler.
+            throw new ApiUserInfoNotFoundException("User info not found for user id: " + id);
         }
 
         userInfo.setTags(tags);

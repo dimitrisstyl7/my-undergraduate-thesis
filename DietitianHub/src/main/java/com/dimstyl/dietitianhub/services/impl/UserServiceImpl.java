@@ -1,5 +1,7 @@
 package com.dimstyl.dietitianhub.services.impl;
 
+import com.dimstyl.dietitianhub.customExceptions.ApiUserNotFoundException;
+import com.dimstyl.dietitianhub.customExceptions.MvcUserNotFoundException;
 import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.mappers.ClientDtoMapper;
@@ -45,16 +47,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void disableClient(Integer id) {
-        // Todo: Throw a custom exception if the user is not found and handle it in the custom exception handler.
-        User user = userRepository.findById(id).orElseThrow();
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new ApiUserNotFoundException("User with id " + id + " not found."));
         user.setEnabled(false);
         userRepository.save(user);
     }
 
     @Override
     public User findById(Integer id) {
-        // Todo: Throw a custom exception if the user is not found and handle it in the custom exception handler.
-        return userRepository.findById(id).orElseThrow();
+        return userRepository.findById(id).orElseThrow(() ->
+                new MvcUserNotFoundException("User with id " + id + " not found."));
     }
 
 }
