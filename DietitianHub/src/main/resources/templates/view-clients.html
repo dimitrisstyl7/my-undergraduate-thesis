@@ -362,12 +362,12 @@
                     [[${_csrf.headerName}]]: [[${_csrf.token}]]
                 }
             });
+
             if (response.ok) {
                 location.reload(); // Reload the page to reflect the changes.
             } else {
-                console.error(response.status, response.statusText);
                 // Todo: Maybe I can show a failure modal.
-                alert("An error occurred while deleting the client.");
+                alert("Client deletion failed. Please try again later. If the problem persists, contact support.");
             }
         }
 
@@ -384,9 +384,9 @@
                 // Set onclick event for the save tags button.
                 document.getElementById("save-tags-button").onclick = () => saveTags(id);
             } else {
-                console.error(response.status, response.statusText);
                 // Todo: Maybe I can show a failure modal.
-                alert("An error occurred while fetching the client tags. Please try again later.");
+                alert("An error occurred while fetching the client tags. Please try again later." +
+                    "If the problem persists, contact support.");
                 location.reload();
             }
         }
@@ -411,9 +411,9 @@
                 // Todo: Maybe I can show a success modal.
                 alert("Client tags saved successfully.");
             } else {
-                console.error(response.status, response.statusText);
                 // Todo: Maybe I can show a failure modal.
-                alert("An error occurred while saving the client tags.");
+                alert("An error occurred while saving the client tags. Please try again later." +
+                    "If the problem persists, contact support.");
             }
         }
     </script>
