@@ -364,11 +364,28 @@
                 }
             });
 
-            if (response.ok) {
-                location.reload(); // Reload the page to reflect the changes.
+            const result = await handleDeleteClientResponse(response);
+            if (result?.error) {
+                alert(result.error);
+            }
+        }
+
+        async function handleDeleteClientResponse(response) {
+            if (!response.ok) {
+                try {
+                    const errorMessage = await response.json();
+                    if (errorMessage.redirectUrl) {
+                        window.location.href = errorMessage.redirectUrl;
+                        return; // Exit the function after redirect
+                    }
+                    return {error: errorMessage.message || "Client deletion failed. Please try again."};
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                }
             } else {
-                // Todo: Maybe I can show a failure modal.
-                alert("Client deletion failed. Please try again later. If the problem persists, contact support.");
+                // Success: Reload the page to reflect the changes.
+                console.log("Client deleted successfully.");
+                location.reload();
             }
         }
 
@@ -376,7 +393,25 @@
             // Fill the client tags modal with the client's tags.
             const response = await fetch('/api/clients/' + id + '/tags');
 
-            if (response.ok) {
+            const result = await handleFillClientTagsResponse(response, id);
+            if (result?.error) {
+                alert(result.error);
+            }
+        }
+
+        async function handleFillClientTagsResponse(response, id) {
+            if (!response.ok) {
+                try {
+                    const errorMessage = await response.json();
+                    if (errorMessage.redirectUrl) {
+                        window.location.href = errorMessage.redirectUrl;
+                        return; // Exit the function after redirect
+                    }
+                    return {error: errorMessage.message || "An error occurred while fetching client tags. Please try again."};
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                }
+            } else {
                 const tags = await response.json();
                 tags.forEach(tag => {
                     document.getElementById("tag-" + tag.id).checked = true;
@@ -384,11 +419,6 @@
 
                 // Set onclick event for the save tags button.
                 document.getElementById("save-tags-button").onclick = () => saveTags(id);
-            } else {
-                // Todo: Maybe I can show a failure modal.
-                alert("An error occurred while fetching the client tags. Please try again later." +
-                    "If the problem persists, contact support.");
-                location.reload();
             }
         }
 
@@ -408,13 +438,27 @@
                 body: JSON.stringify(tags)
             });
 
-            if (response.ok) {
-                // Todo: Maybe I can show a success modal.
-                alert("Client tags saved successfully.");
+            const result = await handleSaveTagsResponse(response);
+            if (result?.error) {
+                alert(result.error);
+            }
+        }
+
+        async function handleSaveTagsResponse(response) {
+            if (!response.ok) {
+                try {
+                    const errorMessage = await response.json();
+                    if (errorMessage.redirectUrl) {
+                        window.location.href = errorMessage.redirectUrl;
+                        return; // Exit the function after redirect
+                    }
+                    return {error: errorMessage.message || "Client tags were not saved. Please try again."};
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                }
             } else {
-                // Todo: Maybe I can show a failure modal.
-                alert("An error occurred while saving the client tags. Please try again later." +
-                    "If the problem persists, contact support.");
+                // Todo: Show a success modal.
+                console.debug("Client tags saved successfully.");
             }
         }
     </script>
