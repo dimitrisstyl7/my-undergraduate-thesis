@@ -43,12 +43,13 @@ public class SecurityConfig {
                         form
                                 .loginPage("/auth/login")
                                 .loginProcessingUrl("/auth/authenticate-user")
+                                .failureUrl("/auth/login?error")
                                 .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
                         .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
-                        .logoutSuccessUrl("/auth/login")
+                        .logoutSuccessUrl("/auth/login?logout").permitAll()
                 )
                 .build();
     }
