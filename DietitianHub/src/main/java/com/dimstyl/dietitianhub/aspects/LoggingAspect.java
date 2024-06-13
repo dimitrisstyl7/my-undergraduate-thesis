@@ -11,14 +11,20 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class LoggingAspect {
+
     @Pointcut("execution(public * com.dimstyl.dietitianhub.services.impl.*.*(..))")
     public void serviceMethods() {
     }
 
-    @AfterThrowing(pointcut = "serviceMethods()", throwing = "ex")
+    @Pointcut("execution(public * com.dimstyl.dietitianhub.security.CustomUserDetailsService.loadUserByUsername(..))")
+    public void userDetailsServiceMethod() {
+    }
+
+    @AfterThrowing(pointcut = "serviceMethods() || userDetailsServiceMethod()", throwing = "ex")
     public void logException(JoinPoint joinPoint, Throwable ex) throws Throwable {
         String methodName = joinPoint.getSignature().toLongString();
         log.error("Exception thrown in method: {}. Exception message: {}", methodName, ex.getMessage());
         throw ex;
     }
+
 }
