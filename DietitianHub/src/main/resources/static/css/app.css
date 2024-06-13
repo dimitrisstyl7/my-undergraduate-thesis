@@ -13574,7 +13574,7 @@ body[data-topbar-color=dark] .navbar-custom .dropdown .nav-link.show {
   background-color: rgba(255, 255, 255, 0.03);
 }
 body[data-topbar-color=dark] .navbar-custom .button-menu-mobile {
-  color: #fff;
+  color: #000000;
 }
 body[data-topbar-color=dark] .navbar-custom .page-title-main {
   margin: 0;
