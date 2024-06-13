@@ -33,8 +33,12 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new DisabledException("User with username %s is disabled.".formatted(username));
         }
 
-        return new org.springframework.security.core.userdetails.User(
-                username, user.getPassword(), mapRoleToAuthority(user.getRole())
+        return new CustomUserDetails(
+                user.getUsername(),
+                user.getPassword(),
+                mapRoleToAuthority(user.getRole()),
+                "%s %s".formatted(user.getUserInfo().getFirstName(), user.getUserInfo().getLastName()),
+                user.getUserInfo().getGender()
         );
     }
 
