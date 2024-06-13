@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @UtilityClass
 public class RegistrationUtil {
 
-    public static String generateUsername(String firstName, String lastName, LocalDate dateOfBirth) {
+    public String generateUsername(String firstName, String lastName, LocalDate dateOfBirth) {
         /*
         - This code snippet demonstrates the basic principle of username generation using the client's
         first name, last name and year of birth. Additional logic would be required for real-world use,
