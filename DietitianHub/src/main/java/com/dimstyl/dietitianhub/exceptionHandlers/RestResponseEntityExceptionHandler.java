@@ -48,9 +48,10 @@ public class RestResponseEntityExceptionHandler {
         return new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
-                "The operation could not be completed because no tags were found." +
-                        " Please try again. If the problem persists," +
-                        "please contact our Support.",
+                """
+                         The operation could not be completed because no tags were found.\
+                         Please try again. If the problem persists,\
+                        please contact our Support.""",
                 "/error/tagsNotFound"
         );
     }
@@ -61,9 +62,10 @@ public class RestResponseEntityExceptionHandler {
         return new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
-                "The operation could not be completed because the request was invalid." +
-                        " Please try again. If the problem persists," +
-                        "please contact our Support.",
+                """
+                        The operation could not be completed because the request was invalid.\
+                         Please try again. If the problem persists,\
+                        please contact our Support.""",
                 "/error/400"
         );
     }

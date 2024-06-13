@@ -35,7 +35,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo existingUserInfo = userInfoRepository.findByUser(user);
 
         if (existingUserInfo == null) {
-            throw new MvcUserInfoNotFoundException("User info not found for user id: " + user.getId());
+            throw new MvcUserInfoNotFoundException("User info not found for user id: %d".formatted(user.getId()));
         }
 
         existingUserInfo.setFirstName(clientDto.getFirstName());

@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void disableClient(Integer id) {
         User user = userRepository.findById(id).orElseThrow(() ->
-                new ApiUserNotFoundException("User with id " + id + " not found."));
+                new ApiUserNotFoundException("User with id %d not found.".formatted(id)));
         user.setEnabled(false);
         userRepository.save(user);
     }
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Integer id) {
         return userRepository.findById(id).orElseThrow(() ->
-                new MvcUserNotFoundException("User with id " + id + " not found."));
+                new MvcUserNotFoundException("User with id %d not found.".formatted(id)));
     }
 
 }

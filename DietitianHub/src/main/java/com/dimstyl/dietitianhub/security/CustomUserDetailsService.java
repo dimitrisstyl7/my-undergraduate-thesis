@@ -26,13 +26,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(username);
 
         if (user == null) {
-            // Todo: Handle it from a global exception handler
-            throw new UsernameNotFoundException("Invalid username or password.");
+            throw new UsernameNotFoundException("User with username %s not found.".formatted(username));
         }
 
         if (!user.isEnabled()) {
-            // Todo: Handle it from a global exception handler
-            throw new DisabledException("Your account is disabled, please contact the administrator.");
+            throw new DisabledException("User with username %s is disabled.".formatted(username));
         }
 
         return new org.springframework.security.core.userdetails.User(

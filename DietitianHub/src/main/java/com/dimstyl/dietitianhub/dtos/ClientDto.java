@@ -51,7 +51,7 @@ public class ClientDto {
     }
 
     public String getFullName() {
-        return firstName + " " + lastName;
+        return "%s %s".formatted(firstName, lastName);
     }
 
 }
