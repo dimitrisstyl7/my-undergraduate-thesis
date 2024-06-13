@@ -15,6 +15,27 @@
 
     <!-- icons -->
     <link th:href="@{/css/icons.min.css}" rel="stylesheet" type="text/css"/>
+
+    <!-- Custom styles for alert -->
+    <style>
+        .alert-danger {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-success {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+    </style>
 </head>
 
 <body class="loading authentication-bg authentication-bg-pattern">
@@ -37,6 +58,14 @@
                             <h4 class="text-uppercase mt-0">Sign In</h4>
                         </div>
 
+                        <div th:if="${param.error}" class="alert-danger" role="alert">
+                            Invalid username or password.
+                        </div>
+
+                        <div th:if="${param.logout}" class="alert-success" role="alert">
+                            You have been logged out.
+                        </div>
+
                         <form th:action="@{/auth/authenticate-user}" method="post">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
@@ -48,7 +77,8 @@
                                 <label for="password" class="form-label">Password</label>
                                 <div class="input-group input-group-merge">
                                     <input type="password" id="password" name="password" class="form-control"
-                                           placeholder="Enter your password" autocomplete="current-password" required>
+                                           placeholder="Enter your password" autocomplete="current-password"
+                                           required>
                                     <div class="input-group-text" data-password="false">
                                         <span class="password-eye"></span>
                                     </div>
