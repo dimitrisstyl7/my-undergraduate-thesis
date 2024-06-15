@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset=" utf-8"/>
-    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Dietitian Hub</title>
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">DietitianHub</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
@@ -140,7 +140,7 @@
                     </div>
 
                     <!-- item-->
-                    <a href="contacts-profile.html" class="dropdown-item notify-item">
+                    <a href="#" class="dropdown-item notify-item">
                         <i class="fe-user"></i>
                         <span>My Account</span>
                     </a>
@@ -202,25 +202,13 @@
                     <div class="dropdown-menu user-pro-dropdown">
 
                         <!-- item-->
-                        <a class="dropdown-item notify-item">
+                        <a class="dropdown-item notify-item" href="#">
                             <i class="fe-user me-1"></i>
                             <span>My Account</span>
                         </a>
 
                         <!-- item-->
-                        <a class="dropdown-item notify-item">
-                            <i class="fe-settings me-1"></i>
-                            <span>Settings</span>
-                        </a>
-
-                        <!-- item-->
-                        <a class="dropdown-item notify-item">
-                            <i class="fe-lock me-1"></i>
-                            <span>Lock Screen</span>
-                        </a>
-
-                        <!-- item-->
-                        <a class="dropdown-item notify-item">
+                        <a class="dropdown-item notify-item" th:href="@{/auth/logout}">
                             <i class="fe-log-out me-1"></i>
                             <span>Logout</span>
                         </a>
@@ -239,7 +227,6 @@
                     <li>
                         <a th:href="@{/index}">
                             <i class="mdi mdi-view-dashboard-outline"></i>
-                            <span class="badge bg-success rounded-pill float-end">9+</span>
                             <span> Dashboard </span>
                         </a>
                     </li>
@@ -254,6 +241,7 @@
                     <li>
                         <a th:href="@{/messages}">
                             <i class="mdi mdi-forum-outline"></i>
+                            <span class="badge bg-primary rounded-pill float-end">9+</span>
                             <span> Messages </span>
                         </a>
                     </li>
