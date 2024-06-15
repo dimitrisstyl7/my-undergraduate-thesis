@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.mvcControllers;
+package com.dimstyl.dietitianhub.controllers.mvc;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

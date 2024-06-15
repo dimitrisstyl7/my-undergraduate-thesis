@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.mvcControllers;
+package com.dimstyl.dietitianhub.controllers.mvc;
 
 import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.entities.User;

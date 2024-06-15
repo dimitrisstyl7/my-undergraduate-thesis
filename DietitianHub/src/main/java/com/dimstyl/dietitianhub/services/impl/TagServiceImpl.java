@@ -1,6 +1,6 @@
 package com.dimstyl.dietitianhub.services.impl;
 
-import com.dimstyl.dietitianhub.customExceptions.ApiTagsMismatchException;
+import com.dimstyl.dietitianhub.customExceptions.api.ApiTagsMismatchException;
 import com.dimstyl.dietitianhub.entities.Tag;
 import com.dimstyl.dietitianhub.repositories.TagRepository;
 import com.dimstyl.dietitianhub.services.TagService;

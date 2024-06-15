@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.api;
+package com.dimstyl.dietitianhub.controllers.api;
 
 import com.dimstyl.dietitianhub.dtos.TagDto;
 import com.dimstyl.dietitianhub.services.UserInfoService;

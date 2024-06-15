@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.customExceptions;
+package com.dimstyl.dietitianhub.customExceptions.api;
 
 public class ApiTagCategoriesNotFoundException extends RuntimeException {
 

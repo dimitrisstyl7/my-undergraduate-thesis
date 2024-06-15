@@ -1,7 +1,7 @@
 package com.dimstyl.dietitianhub.services.impl;
 
-import com.dimstyl.dietitianhub.customExceptions.ApiUserNotFoundException;
-import com.dimstyl.dietitianhub.customExceptions.MvcUserNotFoundException;
+import com.dimstyl.dietitianhub.customExceptions.api.ApiUserNotFoundException;
+import com.dimstyl.dietitianhub.customExceptions.mvc.MvcUserNotFoundException;
 import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.mappers.ClientDtoMapper;
