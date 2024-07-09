@@ -111,18 +111,18 @@
         <!-- end col-12 -->
     </div> <!-- end row -->
 
-    <!-- Calendar init -->
-    <script th:src="@{/js/pages/calendar.init.js}" defer></script>
-
-    <!-- plugin js -->
-    <script th:src="@{/libs/moment/min/moment.min.js}"></script>
-    <script th:src="@{/libs/fullcalendar/main.min.js}"></script>
-
     <!-- Custom script -->
     <script>
         // Change page title.
         const title = document.getElementsByClassName("page-title-main");
         title[0].textContent = "Appointments";
     </script>
+
+    <!-- plugin js -->
+    <script th:src="@{/libs/moment/min/moment.min.js}"></script>
+    <script th:src="@{/libs/fullcalendar/main.min.js}"></script>
+
+    <!-- Calendar init -->
+    <script th:src="@{/js/pages/calendar.init.js}" defer></script>
 </div>
 </html>
