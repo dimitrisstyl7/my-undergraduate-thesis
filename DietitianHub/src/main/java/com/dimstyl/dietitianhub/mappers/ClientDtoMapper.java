@@ -5,12 +5,11 @@ import com.dimstyl.dietitianhub.entities.Role;
 import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.entities.UserInfo;
 
-import static com.dimstyl.dietitianhub.enums.UserRole.CLIENT;
 import static com.dimstyl.dietitianhub.utilities.RegistrationUtil.generateUsername;
 
 public class ClientDtoMapper {
 
-    public static User mapToNewRegistrationUser(ClientDto clientDto) {
+    public static User mapToNewRegistrationUser(ClientDto clientDto, Role role) {
         return User.builder()
                 .username(generateUsername(
                         clientDto.getFirstName(),
@@ -21,7 +20,7 @@ public class ClientDtoMapper {
                     with a link to set a password.
                  */
                 .password("")
-                .role(new Role(CLIENT.getId(), CLIENT.getRole()))
+                .role(role)
                 .build();
     }
 

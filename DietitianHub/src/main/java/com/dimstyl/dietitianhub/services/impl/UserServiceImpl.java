@@ -3,6 +3,7 @@ package com.dimstyl.dietitianhub.services.impl;
 import com.dimstyl.dietitianhub.exceptions.api.ApiUserNotFoundException;
 import com.dimstyl.dietitianhub.exceptions.mvc.MvcUserNotFoundException;
 import com.dimstyl.dietitianhub.dtos.ClientDto;
+import com.dimstyl.dietitianhub.entities.Role;
 import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.mappers.ClientDtoMapper;
 import com.dimstyl.dietitianhub.mappers.UserMapper;
@@ -35,7 +36,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void registerClient(ClientDto clientDto) {
-        User user = ClientDtoMapper.mapToNewRegistrationUser(clientDto);
+        Role role = new Role(CLIENT.getId(), CLIENT.getRole());
+        User user = ClientDtoMapper.mapToNewRegistrationUser(clientDto, role);
 
         if (userRepository.existsByUsername(user.getUsername())) {
             // Todo: Throw a custom exception if the username is already taken and handle it in the custom exception handler.
