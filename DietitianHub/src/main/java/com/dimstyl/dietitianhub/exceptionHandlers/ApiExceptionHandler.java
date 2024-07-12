@@ -14,7 +14,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
-public class RestResponseEntityExceptionHandler {
+public class ApiExceptionHandler {
 
     @ExceptionHandler(value = {ApiUserNotFoundException.class, ApiUserInfoNotFoundException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
