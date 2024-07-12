@@ -1,7 +1,7 @@
 package com.dimstyl.dietitianhub.services.impl;
 
-import com.dimstyl.dietitianhub.customExceptions.api.ApiUserInfoNotFoundException;
-import com.dimstyl.dietitianhub.customExceptions.mvc.MvcUserInfoNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.api.ApiUserInfoNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.mvc.MvcUserInfoNotFoundException;
 import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.dtos.TagDto;
 import com.dimstyl.dietitianhub.entities.Tag;

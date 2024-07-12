@@ -1,7 +1,7 @@
 package com.dimstyl.dietitianhub.exceptionHandlers;
 
-import com.dimstyl.dietitianhub.customExceptions.mvc.MvcUserInfoNotFoundException;
-import com.dimstyl.dietitianhub.customExceptions.mvc.MvcUserNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.mvc.MvcUserInfoNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.mvc.MvcUserNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;

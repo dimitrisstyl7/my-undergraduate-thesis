@@ -1,9 +1,9 @@
 package com.dimstyl.dietitianhub.exceptionHandlers;
 
-import com.dimstyl.dietitianhub.customExceptions.api.ApiTagCategoriesNotFoundException;
-import com.dimstyl.dietitianhub.customExceptions.api.ApiTagsMismatchException;
-import com.dimstyl.dietitianhub.customExceptions.api.ApiUserInfoNotFoundException;
-import com.dimstyl.dietitianhub.customExceptions.api.ApiUserNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.api.ApiTagCategoriesNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.api.ApiTagsMismatchException;
+import com.dimstyl.dietitianhub.exceptions.api.ApiUserInfoNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.api.ApiUserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

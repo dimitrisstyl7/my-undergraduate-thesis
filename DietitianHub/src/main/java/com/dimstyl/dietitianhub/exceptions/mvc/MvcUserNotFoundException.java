@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.customExceptions.mvc;
+package com.dimstyl.dietitianhub.exceptions.mvc;
 
 public class MvcUserNotFoundException extends RuntimeException {
 
