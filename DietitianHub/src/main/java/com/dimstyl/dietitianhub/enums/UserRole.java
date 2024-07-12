@@ -7,12 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum UserRole {
 
-    CLIENT(1), DIETITIAN(2);
+    CLIENT(1, "CLIENT"), DIETITIAN(2, "DIETITIAN");
 
     private final Integer id;
-
-    public String getRole() {
-        return this.name();
-    }
+    private final String role;
 
 }
