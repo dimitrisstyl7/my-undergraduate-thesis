@@ -30,10 +30,9 @@ public class MvcClientsController {
     }
 
     @PostMapping("/registerClient")
-    public String registerClient(
-            @Valid @ModelAttribute("client") ClientDto clientDto,
-            BindingResult result,
-            Model model) {
+    public String registerClient(@Valid @ModelAttribute("client") ClientDto clientDto,
+                                 BindingResult result,
+                                 Model model) {
         if (result.hasErrors()) {
             model.addAttribute("clients", userService.getAllClients());
             model.addAttribute("dateOfBirth", clientDto.getDateOfBirth());
@@ -45,11 +44,10 @@ public class MvcClientsController {
     }
 
     @PostMapping("/updateClient/{id}")
-    public String updateClient(
-            @PathVariable("id") Integer id,
-            @Valid @ModelAttribute("client") ClientDto clientDto,
-            BindingResult result,
-            Model model) {
+    public String updateClient(@PathVariable("id") Integer id,
+                               @Valid @ModelAttribute("client") ClientDto clientDto,
+                               BindingResult result,
+                               Model model) {
         if (result.hasErrors()) {
             model.addAttribute("clients", userService.getAllClients());
             model.addAttribute("editedClient", clientDto);
