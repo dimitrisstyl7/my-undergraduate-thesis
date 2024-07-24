@@ -357,7 +357,7 @@
 
         async function deleteClient(id) {
             // Delete the client with the provided id.
-            const response = await fetch('/api/clients/' + id, {
+            const response = await fetch('/api/v1/clients/' + id, {
                 method: 'DELETE',
                 headers: {
                     [[${_csrf.headerName}]]: [[${_csrf.token}]]
@@ -391,7 +391,7 @@
 
         async function fillClientTagsModal(id) {
             // Fill the client tags modal with the client's tags.
-            const response = await fetch('/api/clients/' + id + '/tags');
+            const response = await fetch('/api/v1/clients/' + id + '/tags');
 
             const result = await handleFillClientTagsResponse(response, id);
             if (result?.error) {
@@ -429,7 +429,7 @@
                 tags.push(tag.value);
             });
 
-            const response = await fetch('/api/clients/' + id + '/tags', {
+            const response = await fetch('/api/v1/clients/' + id + '/tags', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
