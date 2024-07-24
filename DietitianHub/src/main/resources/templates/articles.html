@@ -11,7 +11,8 @@
     <link th:href="@{/libs/quill/quill.snow.css}" rel="stylesheet" type="text/css"/>
 </head>
 
-<div layout:fragment="main">
+<body>
+<div layout:fragment="main-content">
     <div class="modal fade" id="custom-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
          role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -591,4 +592,5 @@
     <!-- Init js -->
     <script th:src="@{/js/pages/form-quilljs.init.js}"></script>
 </div>
+</body>
 </html>

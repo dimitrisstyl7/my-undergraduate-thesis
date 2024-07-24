@@ -19,7 +19,8 @@
     </style>
 </head>
 
-<div layout:fragment="main">
+<body>
+<div layout:fragment="main-content">
     <!-- Modal for client registration/edit -->
     <form id="main-form" th:object="${client}" onsubmit="return validateGender();" method="post">
         <th:block th:replace="~{fragments/_csrf :: csrf}"></th:block>
@@ -463,4 +464,5 @@
         }
     </script>
 </div>
+</body>
 </html>

@@ -5,14 +5,15 @@
 
 <head>
     <meta charset="utf-8"/>
-    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">DietitianHub</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">DietitianHub</title>
+
     <!-- App favicon -->
     <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
 
     <!-- App css -->
-
     <link th:href="@{/css/app.min.css}" rel="stylesheet" type="text/css" id="app-style"/>
 
     <!-- icons -->
@@ -33,7 +34,7 @@
                 <div class="card">
                     <div class="card-body p-4">
                         <div class="text-center">
-                            <div layout:fragment="main"></div>
+                            <div layout:fragment="main-content"></div>
                             <a th:href="@{/}" class="btn btn-danger waves-effect waves-light"><i
                                     class="fas fa-home me-1"></i> Back to Home</a>
                         </div>
