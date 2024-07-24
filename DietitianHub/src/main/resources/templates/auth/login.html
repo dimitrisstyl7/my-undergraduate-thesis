@@ -19,18 +19,12 @@
     <!-- Custom styles for alert -->
     <style>
         .alert-danger {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
             background-color: #f8d7da;
             border-color: #f5c6cb;
             color: #721c24;
         }
 
         .alert-success {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
             background-color: #d4edda;
             border-color: #c3e6cb;
             color: #155724;
@@ -58,12 +52,14 @@
                             <h4 class="text-uppercase mt-0">Sign In</h4>
                         </div>
 
-                        <div th:if="${param.error}" class="alert-danger" role="alert">
+                        <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
                             Invalid username or password.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-
-                        <div th:if="${param.logout}" class="alert-success" role="alert">
+                        <div th:if="${param.logout}" class="alert alert-success alert-dismissible fade show"
+                             role="alert">
                             You have been logged out.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
 
                         <form th:action="@{/auth/authenticate-user}" method="post">
