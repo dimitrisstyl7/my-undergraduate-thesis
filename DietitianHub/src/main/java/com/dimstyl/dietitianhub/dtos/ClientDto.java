@@ -43,7 +43,7 @@ public class ClientDto {
     private String phone;
 
     public String getFormattedDateOfBirth() {
-        // Return the date of birth in the format "day month year".
+        // Return the date of birth in the format "day month year"
         String day = String.valueOf(dateOfBirth.getDayOfMonth());
         String month = Month.byNumber(dateOfBirth.getMonthValue());
         String year = String.valueOf(dateOfBirth.getYear());
