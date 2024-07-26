@@ -39,9 +39,9 @@ public class UserInfo {
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
-    @Column(name = "created_on", nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp(source = SourceType.DB)
-    private Instant createdOn;
+    private Instant createdAt;
 
     @Column(name = "email", nullable = false, length = 50)
     private String email;

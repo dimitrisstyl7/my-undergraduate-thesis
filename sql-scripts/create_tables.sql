@@ -28,7 +28,7 @@ create table user_info
     last_name     varchar(50) not null,
     gender        char(1)     not null, -- M (Male), F (Female)
     date_of_birth date        not null,
-    created_on    timestamp   not null default now(),
+    created_at    timestamp   not null default now(),
     email         varchar(50) not null,
     phone         varchar(20) not null
 );
@@ -50,6 +50,6 @@ create table client_tag_association
 (
     user_info_id int       not null references user_info (id),
     tag_id       int       not null references tag (id),
-    created_on   timestamp not null default now(),
+    created_at   timestamp not null default now(),
     primary key (user_info_id, tag_id)
 );
