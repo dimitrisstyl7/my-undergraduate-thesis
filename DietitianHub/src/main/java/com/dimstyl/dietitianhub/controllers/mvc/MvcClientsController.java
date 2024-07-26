@@ -54,7 +54,7 @@ public class MvcClientsController {
             model.addAttribute("updateValidationsFailed", true);
             return "view-clients";
         }
-        int userId = userService.findById(id).getId();
+        int userId = userService.getUserById(id).getId();
         userInfoService.updateUserInfo(clientDto, userId);
         return "redirect:/clients";
     }
