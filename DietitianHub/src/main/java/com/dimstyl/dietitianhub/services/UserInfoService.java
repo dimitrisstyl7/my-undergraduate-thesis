@@ -10,10 +10,10 @@ public interface UserInfoService {
 
     void saveUserInfo(ClientDto clientDto, User user);
 
-    void updateUserInfo(ClientDto clientDto, User user);
+    void updateUserInfo(ClientDto clientDto, int userId);
 
-    List<TagDto> getClientTags(Integer id);
+    List<TagDto> getClientTags(int id);
 
-    void updateClientTags(Integer id, List<Integer> tagIds);
+    void updateClientTags(int id, List<Integer> tagIds);
 
 }

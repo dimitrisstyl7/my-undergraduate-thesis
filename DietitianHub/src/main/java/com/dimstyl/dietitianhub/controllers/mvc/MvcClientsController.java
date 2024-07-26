@@ -44,7 +44,7 @@ public class MvcClientsController {
     }
 
     @PostMapping("/updateClient/{id}")
-    public String updateClient(@PathVariable("id") Integer id,
+    public String updateClient(@PathVariable("id") int id,
                                @Valid @ModelAttribute("client") ClientDto clientDto,
                                BindingResult result,
                                Model model) {
@@ -54,8 +54,8 @@ public class MvcClientsController {
             model.addAttribute("updateValidationsFailed", true);
             return "view-clients";
         }
-        User user = userService.findById(id);
-        userInfoService.updateUserInfo(clientDto, user);
+        int userId = userService.findById(id).getId();
+        userInfoService.updateUserInfo(clientDto, userId);
         return "redirect:/clients";
     }
 

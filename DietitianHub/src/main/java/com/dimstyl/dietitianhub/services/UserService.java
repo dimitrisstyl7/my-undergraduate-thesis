@@ -11,8 +11,8 @@ public interface UserService {
 
     void registerClient(ClientDto clientDto);
 
-    void disableClient(Integer id);
+    void disableClient(int id);
 
-    User findById(Integer id);
+    User findById(int id);
 
 }
