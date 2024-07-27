@@ -37,7 +37,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(configurer -> configurer
                         .requestMatchers(
                                 "/css/**", "/data/**", "/fonts/**",
-                                "/images/**", "/js/**", "/libs/**"
+                                "/images/**", "/js/**", "/libs/**",
+                                "error/**"
                         ).permitAll()
                         .anyRequest().hasAuthority(DIETITIAN.getRole())
                 )
@@ -48,9 +49,9 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout(logout -> logout
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
-                                .logoutSuccessUrl("/auth/login?logout")
-                                .permitAll()
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
+                        .logoutSuccessUrl("/auth/login?logout")
+                        .permitAll()
                 )
                 .build();
     }
