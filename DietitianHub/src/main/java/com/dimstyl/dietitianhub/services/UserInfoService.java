@@ -3,6 +3,7 @@ package com.dimstyl.dietitianhub.services;
 import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.dtos.TagDto;
 import com.dimstyl.dietitianhub.entities.User;
+import com.dimstyl.dietitianhub.entities.UserInfo;
 
 import java.util.List;
 
@@ -15,5 +16,7 @@ public interface UserInfoService {
     List<TagDto> getClientTags(int id);
 
     void updateClientTags(int id, List<Integer> tagIds);
+
+    UserInfo getUserInfoByUserId(int userId);
 
 }
