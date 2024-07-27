@@ -14,7 +14,7 @@ public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false, updatable = false)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
