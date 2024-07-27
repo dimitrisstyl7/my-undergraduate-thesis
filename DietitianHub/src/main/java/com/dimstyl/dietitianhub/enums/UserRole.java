@@ -9,7 +9,7 @@ public enum UserRole {
 
     CLIENT(1, "CLIENT"), DIETITIAN(2, "DIETITIAN");
 
-    private final Integer id;
+    private final int id;
     private final String role;
 
 }
