@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragments/_page-layout}">
 <head>
-    <title>View clients</title>
+    <title>Clients</title>
 
     <style>
         .validation-error {
@@ -112,8 +112,7 @@
     </form>
 
     <!-- Modal for client deletion -->
-    <div id="delete-client-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-hidden="true">
+    <div id="client-delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
@@ -227,9 +226,11 @@
                                th:onclick="fillClientTagsModal([[${c.id}]])">
                                 Client tags</a>
                             <a class="dropdown-item" data-bs-toggle="modal"
-                               data-bs-target="#delete-client-modal"
-                               th:onclick="fillDeleteModal([[${c.getFullName()}]],[[${c.id}]])">Delete
-                                client</a>
+                               th:onclick="redirectToDietPage([[${c.id}]])">
+                                Upload diet plan</a>
+                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#client-delete-modal"
+                               style="color: red" th:onclick="fillDeleteModal([[${c.getFullName()}]],[[${c.id}]])">
+                                Delete client</a>
                         </div>
                     </div>
                     <div>
@@ -269,32 +270,28 @@
     <!-- end row -->
 
     <!-- Custom scripts -->
-    <th:block th:if="${registerValidationsFailed}">
-        <!-- Server-side register client validations returned errors. Open the main modal. -->
-        <script th:inline="javascript">
-            window.onload = () => {
-                document.getElementById('registration-button').click();
-                document.getElementById('date-of-birth').value = [[${dateOfBirth}]];
-            }
-        </script>
-    </th:block>
+    <script th:inline="javascript" th:if="${registerValidationsFailed}">
+        // Server-side register client validations returned errors. Open the main modal.
+        window.onload = () => {
+            document.getElementById('registration-button').click();
+            document.getElementById('date-of-birth').value = [[${dateOfBirth}]];
+        }
+    </script>
 
-    <th:block th:if="${updateValidationsFailed}">
-        <!-- Server-side update client validations returned errors. -->
-        <script th:inline="javascript">
-            // Open the main modal and fill it with the edited client's data.
-            window.onload = () => {
-                document.getElementById('update-anchor-button-' + [[${editedClient.id}]]).click();
-                document.getElementById("first-name").value = [[${editedClient.firstName}]];
-                document.getElementById("last-name").value = [[${editedClient.lastName}]];
-                document.getElementById("date-of-birth").value = [[${editedClient.dateOfBirth}]];
-                document.getElementById("email").value = [[${editedClient.email}]];
-                document.getElementById("phone").value = [[${editedClient.phone}]];
-                document.getElementById("male-radio-button").checked = [[${editedClient.gender}]] === 'M';
-                document.getElementById("female-radio-button").checked = [[${editedClient.gender}]] === 'F';
-            }
-        </script>
-    </th:block>
+    <script th:inline="javascript" th:if="${updateValidationsFailed}">
+        // Server-side update client validations returned errors.
+        // Open the main modal and fill it with the edited client's data.
+        window.onload = () => {
+            document.getElementById('update-anchor-button-' + [[${editedClient.id}]]).click();
+            document.getElementById("first-name").value = [[${editedClient.firstName}]];
+            document.getElementById("last-name").value = [[${editedClient.lastName}]];
+            document.getElementById("date-of-birth").value = [[${editedClient.dateOfBirth}]];
+            document.getElementById("email").value = [[${editedClient.email}]];
+            document.getElementById("phone").value = [[${editedClient.phone}]];
+            document.getElementById("male-radio-button").checked = [[${editedClient.gender}]] === 'M';
+            document.getElementById("female-radio-button").checked = [[${editedClient.gender}]] === 'F';
+        }
+    </script>
 
     <script th:inline="javascript">
         // Change page title.
@@ -356,6 +353,11 @@
             document.getElementById("confirm-client-deletion-button").onclick = () => deleteClient(id);
         }
 
+        function redirectToDietPage(id) {
+            // Redirect to the diet upload page for the selected client.
+            window.location.href = '/clients/' + id + '/dietPlans/upload';
+        }
+
         async function deleteClient(id) {
             // Delete the client with the provided id.
             const response = await fetch('/api/v1/clients/' + id, {
@@ -366,7 +368,7 @@
             });
 
             const result = await handleDeleteClientResponse(response);
-            if (result?.error) {
+            if (result?.error) { // TODO: Check the error logic
                 alert(result.error);
             }
         }
@@ -395,7 +397,7 @@
             const response = await fetch('/api/v1/clients/' + id + '/tags');
 
             const result = await handleFillClientTagsResponse(response, id);
-            if (result?.error) {
+            if (result?.error) { // TODO: Check the error logic
                 alert(result.error);
             }
         }
@@ -440,7 +442,7 @@
             });
 
             const result = await handleSaveTagsResponse(response);
-            if (result?.error) {
+            if (result?.error) { // TODO: Check the error logic
                 alert(result.error);
             }
         }
