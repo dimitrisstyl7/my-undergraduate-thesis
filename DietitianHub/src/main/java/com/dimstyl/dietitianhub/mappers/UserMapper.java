@@ -2,8 +2,10 @@ package com.dimstyl.dietitianhub.mappers;
 
 import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.entities.User;
+import lombok.experimental.UtilityClass;
 
-public class UserMapper {
+@UtilityClass
+public final class UserMapper {
 
     public static ClientDto mapToClientDto(User user) {
         return ClientDto.builder()

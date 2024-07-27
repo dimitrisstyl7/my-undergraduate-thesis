@@ -4,10 +4,12 @@ import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.entities.Role;
 import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.entities.UserInfo;
+import lombok.experimental.UtilityClass;
 
 import static com.dimstyl.dietitianhub.utilities.RegistrationUtil.generateUsername;
 
-public class ClientDtoMapper {
+@UtilityClass
+public final class ClientDtoMapper {
 
     public static User mapToNewRegistrationUser(ClientDto clientDto, Role role) {
         return User.builder()
