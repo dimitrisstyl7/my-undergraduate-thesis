@@ -1,10 +1,10 @@
 package com.dimstyl.dietitianhub.services.impl;
 
-import com.dimstyl.dietitianhub.exceptions.api.ApiUserNotFoundException;
-import com.dimstyl.dietitianhub.exceptions.mvc.MvcUserNotFoundException;
 import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.entities.Role;
 import com.dimstyl.dietitianhub.entities.User;
+import com.dimstyl.dietitianhub.exceptions.api.ApiUserNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.mvc.MvcUserNotFoundException;
 import com.dimstyl.dietitianhub.mappers.ClientDtoMapper;
 import com.dimstyl.dietitianhub.mappers.UserMapper;
 import com.dimstyl.dietitianhub.repositories.UserRepository;
@@ -37,10 +37,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void registerClient(ClientDto clientDto) {
         Role role = new Role(CLIENT.getId(), CLIENT.getRole());
-        User user = ClientDtoMapper.mapToNewRegistrationUser(clientDto, role);
+        User user = ClientDtoMapper.mapForUserRegistration(clientDto, role);
 
         if (userRepository.existsByUsername(user.getUsername())) {
-            // Todo: Throw a custom exception if the username is already taken and handle it in the custom exception handler.
+            // TODO: Throw a custom exception if the username is already taken and handle it in the custom exception handler.
         }
 
         User newUser = userRepository.save(user);
@@ -49,16 +49,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void disableUser(int id) {
-        User user = userRepository.findById(id).orElseThrow(() ->
-                new ApiUserNotFoundException("User with id %d not found.".formatted(id)));
+        User user = userRepository
+                .findById(id)
+                .orElseThrow(() -> new ApiUserNotFoundException("User with id %d not found.".formatted(id)));
         user.setEnabled(false);
         userRepository.save(user);
     }
 
     @Override
     public User getUserById(int id) {
-        return userRepository.findById(id).orElseThrow(() ->
-                new MvcUserNotFoundException("User with id %d not found.".formatted(id)));
+        return userRepository
+                .findById(id)
+                .orElseThrow(() -> new MvcUserNotFoundException("User with id %d not found.".formatted(id)));
     }
 
 }
