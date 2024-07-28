@@ -11,13 +11,13 @@ import static com.dimstyl.dietitianhub.utilities.RegistrationUtil.generateUserna
 @UtilityClass
 public final class ClientDtoMapper {
 
-    public static User mapToNewRegistrationUser(ClientDto clientDto, Role role) {
+    public static User mapForUserRegistration(ClientDto clientDto, Role role) {
         return User.builder()
                 .username(generateUsername(
                         clientDto.getFirstName(),
                         clientDto.getLastName(),
                         clientDto.getDateOfBirth()))
-                /* Todo: For new clients, the password will by empty.
+                /* TODO: For new clients, the password will by empty.
                     A registration email will be sent to the client
                     with a link to set a password.
                  */
