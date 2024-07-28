@@ -1,6 +1,5 @@
 package com.dimstyl.dietitianhub.repositories;
 
-import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.entities.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
