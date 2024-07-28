@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/_page-layout}">
+<head>
+    <title>Upload Diet Plan</title>
+
+    <!-- Plugin css -->
+    <link th:href="@{/libs/dropify/css/dropify.min.css}" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<div layout:fragment="main-content">
+    <!-- Alert messages -->
+    <div th:if="${param.noFile}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> Please select a file to upload.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${param.invalidFile}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> Invalid file format. Please upload a PDF file.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${param.uploadSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> Diet plan uploaded successfully.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- file preview template -->
+    <div class="d-none" id="uploadPreviewTemplate">
+        <div class="card mt-1 mb-0 shadow-none border">
+            <div class="p-2">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <img data-dz-thumbnail src="#" class="avatar-sm rounded bg-light" alt="">
+                    </div>
+                    <div class="col ps-0">
+                        <a href="javascript:void(0);" class="text-muted fw-bold" data-dz-name></a>
+                        <p class="mb-0" data-dz-size></p>
+                    </div>
+                    <div class="col-auto">
+                        <!-- Button -->
+                        <a href="" class="btn btn-link btn-lg text-muted" data-dz-remove>
+                            <i class="dripicons-cross"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title">Upload Diet Plan</h4>
+                    <p class="sub-header">
+                        Here you can upload the diet plan for <strong>[[${clientFullName}]]</strong>.<br>
+                        Accepted file format: <strong>PDF</strong>
+                    </p>
+
+                    <form th:action="@{/clients/{clientId}/dietPlans/upload(clientId=${clientId})}"
+                          enctype="multipart/form-data" method="post">
+                        <input type="file" name="dietPlanFile" data-plugins="dropify" data-height="300"/>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-success mt-3">Upload</button>
+                        </div>
+                    </form>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div><!-- end col -->
+    </div>
+    <!-- end row -->
+
+    <!-- Alert message for diet plan deletion -->
+    <div th:if="${param.deleteSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> Diet plan deleted successfully.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Diet Plans History -->
+    <div class="row">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mt-0 header-title">Diet Plans History</h4>
+                <div class="table-responsive-sm">
+                    <table class="table table-striped mb-0">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Uploaded On</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="dietPlan, iterStat : ${dietPlans}">
+                            <th th:text="${iterStat.count}"></th>
+                            <th th:text="${dietPlan.title}"></th>
+                            <td th:text="${dietPlan.getFormattedDate()}"></td>
+                            <td>
+                                <a th:href="@{/clients/{clientId}/dietPlans/{dietPlanId}/download(clientId=${clientId},dietPlanId=${dietPlan.id()})}"
+                                   download>Download</a> |
+                                <a th:href="@{/clients/{clientId}/dietPlans/{dietPlanId}/view(clientId=${clientId},dietPlanId=${dietPlan.id()})}"
+                                   target="_blank">View</a> |
+                                <a href="" data-bs-toggle="modal" data-bs-target="#diet-plan-delete-modal"
+                                   style="color: red"
+                                   th:onclick="fillDeleteModal([[${dietPlan.getFormattedDate()}]],[[${dietPlan.id}]])">
+                                    Delete</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+
+    <!-- Modal for diet plan deletion -->
+    <div id="diet-plan-delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="dripicons-warning h1 text-warning"></i>
+                        <h4 id="title-delete-modal" class="mt-2"></h4>
+                        <p class="mt-3">You are about to delete the diet plan. This action cannot be undone.</p>
+                        <button id="confirm-diet-plan-deletion-button" type="button" class="btn btn-warning my-2">
+                            Continue
+                        </button>
+                        <button type="button" class="btn btn-danger my-2" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Custom script -->
+    <script th:inline="javascript">
+        function fillDeleteModal(date, dietPlanId) {
+            // Set the title of the modal.
+            document.getElementById("title-delete-modal").textContent = "Delete Diet Plan (" + date + ")";
+
+            // Set onclick event for the delete button.
+            document.getElementById("confirm-diet-plan-deletion-button").onclick = () => deleteDietPlan(dietPlanId);
+        }
+
+        async function deleteDietPlan(dietPlanId) {
+            // Delete the diet plan for the given user
+            const response = await fetch('/api/v1/clients/' + [[${clientId}]] + '/dietPlans/' + dietPlanId, {
+                method: 'DELETE',
+                headers: {
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                }
+            });
+
+            const result = await handleDeleteClientPlanResponse(response);
+            if (result?.error) { // TODO: Check the error logic
+                alert(result.error);
+            }
+        }
+
+        async function handleDeleteClientPlanResponse(response) {
+            if (!response.ok) {
+                try {
+                    const errorMessage = await response.json();
+                    if (errorMessage.redirectUrl) {
+                        window.location.href = errorMessage.redirectUrl;
+                        return; // Exit the function after redirect
+                    }
+                    return {error: errorMessage.message || "Diet plan deletion failed. Please try again."};
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                }
+            } else {
+                // Success: Reload the page to reflect the changes.
+                console.debug("Diet plan deleted successfully.");
+                window.location.href = '/clients/' + [[${clientId}]] + '/dietPlans/upload?deleteSuccess';
+            }
+        }
+    </script>
+
+    <!-- plugin js -->
+    <script th:src="@{/libs/dropzone/min/dropzone.min.js}" defer></script>
+    <script th:src="@{/libs/dropify/js/dropify.min.js}" defer></script>
+
+    <!-- Init js -->
+    <script th:src="@{/js/pages/form-fileuploads.init.js}" defer></script>
+</div>
+</body>
+</html>
