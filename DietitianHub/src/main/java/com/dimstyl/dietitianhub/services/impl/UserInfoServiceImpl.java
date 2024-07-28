@@ -73,10 +73,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         return userInfoRepository
                 .findByUserId(userId)
                 .orElseThrow(() -> {
+                    String message = "User info not found for user id: %s".formatted(userId);
                     if (requestType.equals(RequestType.API)) {
-                        return new ApiUserInfoNotFoundException("User info not found for user id: " + userId);
+                        return new ApiUserInfoNotFoundException(message);
                     } else {
-                        return new MvcUserInfoNotFoundException("User info not found for user id: " + userId);
+                        return new MvcUserInfoNotFoundException(message);
                     }
                 });
     }
