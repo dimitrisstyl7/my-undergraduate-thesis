@@ -166,6 +166,27 @@
         </div><!-- /.modal -->
     </form>
 
+    <!-- Alert messages -->
+    <div th:if="${param.registerClientSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> Client registered successfully. A verification email has been sent to the client.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div th:if="${param.updateClientSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> Client updated successfully.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div th:if="${param.deleteClientSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> Client deleted successfully.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div th:if="${param.updateTagsSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> Client tags updated successfully.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -386,9 +407,8 @@
                     console.error("An error occurred while parsing the response: ", error);
                 }
             } else {
-                // Success: Reload the page to reflect the changes.
                 console.debug("Client deleted successfully.");
-                location.reload();
+                window.location.href = '/clients?deleteClientSuccess';
             }
         }
 
@@ -460,8 +480,8 @@
                     console.error("An error occurred while parsing the response: ", error);
                 }
             } else {
-                // Todo: Show a success modal.
                 console.debug("Client tags saved successfully.");
+                window.location.href = '/clients?updateTagsSuccess';
             }
         }
     </script>
