@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.dimstyl.dietitianhub.enums.UserRole.CLIENT;
@@ -26,12 +27,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        Optional<User> optionalUser = userRepository.findByUsername(username);
 
         // Check if user exists
-        if (user == null) {
-            throw new UsernameNotFoundException("User with username %s not found.".formatted(username));
-        }
+        User user = optionalUser.orElseThrow(() ->
+                new UsernameNotFoundException("User with username %s not found.".formatted(username)));
 
         // TODO: May I handle differently the following checks?
 
