@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-    @ExceptionHandler(value = {ApiUserNotFoundException.class, ApiUserInfoNotFoundException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     protected ErrorResponse handleUserNotFoundException() {
         return new ErrorResponse(
