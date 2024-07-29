@@ -11,7 +11,7 @@ import static com.dimstyl.dietitianhub.utilities.RegistrationUtil.generateUserna
 @UtilityClass
 public final class ClientDtoMapper {
 
-    public static User mapForUserRegistration(ClientDto clientDto, Role role) {
+    public static User mapToUserForRegistration(ClientDto clientDto, Role role) {
         return User.builder()
                 .username(generateUsername(
                         clientDto.getFirstName(),

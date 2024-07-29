@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void registerClient(ClientDto clientDto) {
         Role role = new Role(CLIENT.getId(), CLIENT.getRole());
-        User user = ClientDtoMapper.mapForUserRegistration(clientDto, role);
+        User user = ClientDtoMapper.mapToUserForRegistration(clientDto, role);
 
         if (userRepository.existsByUsername(user.getUsername())) {
             // TODO: Throw a custom exception if the username is already taken and handle it in the custom exception handler.
