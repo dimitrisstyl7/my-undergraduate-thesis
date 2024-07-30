@@ -44,7 +44,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/auth/login")
-                        .loginProcessingUrl("/auth/authenticate-user")
+                        .loginProcessingUrl("/auth/authenticateUser")
                         .failureUrl("/auth/login?error")
                         .permitAll()
                 )
