@@ -22,9 +22,9 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class StorageServiceImpl implements StorageService {
 
-    private final Path DIET_PLANS_DIRECTORY;
+    private final static Path DIET_PLANS_DIRECTORY;
 
-    public StorageServiceImpl() {
+    static {
         // Directory: /{project-root}/../diet-plans
         DIET_PLANS_DIRECTORY = Paths.get("").toAbsolutePath().getParent().resolve("diet-plans");
         File dietPlansDirectoryFile = DIET_PLANS_DIRECTORY.toFile();
@@ -61,6 +61,7 @@ public class StorageServiceImpl implements StorageService {
             } else {
                 throw new StorageFileNotFoundException("Could not read file: %s".formatted(fileName));
             }
+
         } catch (MalformedURLException e) {
             throw new StorageFileNotFoundException("Could not read file: %s".formatted(fileName), e);
         }
