@@ -3,7 +3,6 @@ package com.dimstyl.dietitianhub.services.impl;
 import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.entities.Role;
 import com.dimstyl.dietitianhub.entities.User;
-import com.dimstyl.dietitianhub.exceptions.api.ApiUserNotFoundException;
 import com.dimstyl.dietitianhub.exceptions.mvc.MvcUserNotFoundException;
 import com.dimstyl.dietitianhub.mappers.ClientDtoMapper;
 import com.dimstyl.dietitianhub.mappers.UserMapper;
@@ -49,9 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void disableUser(int id) {
-        User user = userRepository
-                .findById(id)
-                .orElseThrow(() -> new ApiUserNotFoundException("User with id %d not found.".formatted(id)));
+        User user = getUserById(id);
         user.setEnabled(false);
         userRepository.save(user);
     }
