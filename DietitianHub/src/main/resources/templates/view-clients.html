@@ -21,6 +21,12 @@
 
 <body>
 <div layout:fragment="main-content">
+    <!-- Alert messages -->
+    <div th:if="${alertMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> [[${alertMessage}]]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <!-- Modal for client registration/edit -->
     <form id="main-form" th:object="${client}" onsubmit="return validateGender();" method="post">
         <th:block th:replace="~{fragments/_csrf :: csrf}"></th:block>
@@ -35,20 +41,20 @@
                         <div class="mb-3">
                             <label id="first-name-label" for="first-name" class="form-label custom-form-label">First
                                 Name</label>
-                            <input type="text" class="form-control" id="first-name"
-                                   placeholder="Enter first name" th:field="*{firstName}" minlength="2"
-                                   maxlength="50" pattern="^[a-zA-Z]{2,50}$"
-                                   title="First name must be between 2 and 50 characters long." required>
+                            <input type="text" class="form-control" id="first-name" placeholder="Enter first name"
+                                   th:field="*{firstName}" minlength="2" maxlength="50" pattern="^[a-zA-Z]{2,50}$"
+                                   title="First name must be between 2 and 50 characters long."
+                                   autocomplete="given-name" required>
                             <span class="validation-error" th:if="${#fields.hasErrors('firstName')}"
                                   th:errors="*{firstName}"></span>
                         </div>
                         <div class="mb-3">
                             <label id="last-name-label" for="last-name" class="form-label custom-form-label">
                                 Last Name</label>
-                            <input type="text" class="form-control" id="last-name"
-                                   placeholder="Enter last name" th:field="*{lastName}" minlength="2"
-                                   maxlength="50" pattern="^[a-zA-Z]{2,50}$"
-                                   title="Last name must be between 2 and 50 characters long." required>
+                            <input type="text" class="form-control" id="last-name" placeholder="Enter last name"
+                                   th:field="*{lastName}" minlength="2" maxlength="50" pattern="^[a-zA-Z]{2,50}$"
+                                   title="Last name must be between 2 and 50 characters long."
+                                   autocomplete="family-name" required>
                             <span class="validation-error" th:if="${#fields.hasErrors('lastName')}"
                                   th:errors="*{lastName}"></span>
                         </div>
@@ -56,7 +62,7 @@
                             <label id="date-of-birth-label" for="date-of-birth" class="form-label custom-form-label">
                                 Date Of Birth</label>
                             <input type="date" class="form-control" id="date-of-birth" th:field="*{dateOfBirth}"
-                                   required>
+                                   autocomplete="bday" required>
                             <span class="validation-error" th:if="${#fields.hasErrors('dateOfBirth')}"
                                   th:errors="*{dateOfBirth}"></span>
                         </div>
@@ -86,7 +92,7 @@
                             <label id="email-label" for="email" class="form-label custom-form-label">
                                 Email Address</label>
                             <input type="email" class="form-control" id="email" placeholder="Enter email"
-                                   th:field="*{email}" minlength="3" maxlength="50" required>
+                                   autocomplete="email" th:field="*{email}" minlength="3" maxlength="50" required>
                             <span class="validation-error" th:if="${#fields.hasErrors('email')}"
                                   th:errors="*{email}"></span>
                         </div>
@@ -94,7 +100,8 @@
                             <label id="phone-label" for="phone" class="form-label custom-form-label">Phone</label>
                             <input type="tel" class="form-control" id="phone" placeholder="Enter phone"
                                    th:field="*{phone}" minlength="8" maxlength="20" pattern="^[0-9]{8,20}$"
-                                   title="Phone number must be between 8 and 20 digits long." required>
+                                   title="Phone number must be between 8 and 20 digits long."
+                                   autocomplete="tel" required>
                             <span class="validation-error" th:if="${#fields.hasErrors('phone')}"
                                   th:errors="*{phone}"></span>
                         </div>
@@ -144,12 +151,12 @@
                     <div class="modal-body">
                         <div class="mb-4" th:each="tagCategory: ${tagCategories}">
                             <div class="row">
-                                <h5 class="form-label custom-form-label mb-2" th:text="${tagCategory.name}"></h5>
-                                <div th:each="tag: ${tagCategory.tags}" class="col-lg-4">
-                                    <input th:id="${'tag-'+tag.id}" th:value="${tag.id}" type="checkbox"
+                                <h5 class="form-label custom-form-label mb-2" th:text="${tagCategory.name()}"></h5>
+                                <div th:each="tag: ${tagCategory.tags()}" class="col-lg-4">
+                                    <input th:id="${'tag-'+tag.id()}" th:value="${tag.id()}" type="checkbox"
                                            class="form-check-input rounded-circle">
-                                    <label th:for="${'tag-'+tag.id}" class="form-check-label"
-                                           th:text="${tag.name}"></label>
+                                    <label th:for="${'tag-'+tag.id()}" class="form-check-label"
+                                           th:text="${tag.name()}"></label>
                                 </div>
                             </div>
                         </div>
@@ -158,34 +165,15 @@
                         <button type="button" class="btn btn-secondary me-auto"
                                 onclick="document.getElementById('client-tags-form').reset();">Reset
                         </button>
-                        <button id="save-tags-button" type="button" class="btn btn-success">Save</button>
+                        <form>
+                            <button id="save-tags-button" type="button" class="btn btn-success">Save</button>
+                        </form>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
     </form>
-
-    <!-- Alert messages -->
-    <div th:if="${param.registerClientSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Success!</strong> Client registered successfully. A verification email has been sent to the client.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
-    <div th:if="${param.updateClientSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Success!</strong> Client updated successfully.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
-    <div th:if="${param.deleteClientSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Success!</strong> Client deleted successfully.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
-    <div th:if="${param.updateTagsSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Success!</strong> Client tags updated successfully.
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
 
     <div class="row">
         <div class="col-12">
@@ -196,7 +184,7 @@
                             <div class="mt-3 mt-md-0">
                                 <button class="btn btn-lg font-16 btn-success" data-bs-toggle="modal"
                                         id="registration-button" data-bs-target="#main-modal"
-                                        onclick="fillMainModal('/clients/registerClient', 'Register client', 'Register')">
+                                        onclick="fillMainModal('/clients/register', 'Register client', 'Register')">
                                     <i class="fa fa-plus me-1"></i> Register client
                                 </button>
                             </div>
@@ -238,7 +226,7 @@
                             <a th:id="${'update-anchor-button-'+c.id}" class="dropdown-item" data-bs-toggle="modal"
                                data-bs-target="#main-modal"
                                th:onclick="fillMainModal(
-                               [['/clients/updateClient/'+${c.id}]], 'Edit profile', 'Save',
+                               [['/clients/'+${c.id}+'/update']], 'Edit profile', 'Save',
                                [[${c.firstName}]], [[${c.lastName}]], [[${c.dateOfBirth}]],
                                [[${c.gender}]], [[${c.email}]], [[${c.phone}]], true
                                )">
@@ -249,9 +237,12 @@
                             <a class="dropdown-item" data-bs-toggle="modal"
                                th:onclick="redirectToDietPage([[${c.id}]])">
                                 Upload diet plan</a>
-                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#client-delete-modal"
-                               style="color: red" th:onclick="fillDeleteModal([[${c.getFullName()}]],[[${c.id}]])">
-                                Delete client</a>
+                            <form th:id="${'delete-form-'+c.id}" th:action="@{/clients/{id}/delete(id=${c.id})}"
+                                  method="get">
+                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#client-delete-modal"
+                                   style="color: red" th:onclick="fillDeleteModal([[${c.getFullName()}]],[[${c.id}]])">
+                                    Delete client</a>
+                            </form>
                         </div>
                     </div>
                     <div>
@@ -371,45 +362,13 @@
             document.getElementById("client-fullname-delete-modal").textContent = clientName;
 
             // Set onclick event for the delete button.
-            document.getElementById("confirm-client-deletion-button").onclick = () => deleteClient(id);
+            document.getElementById("confirm-client-deletion-button").onclick =
+                () => document.getElementById("delete-form-" + id).submit();
         }
 
         function redirectToDietPage(id) {
             // Redirect to the diet upload page for the selected client.
             window.location.href = '/clients/' + id + '/dietPlans/upload';
-        }
-
-        async function deleteClient(id) {
-            // Delete the client with the provided id.
-            const response = await fetch('/api/v1/clients/' + id, {
-                method: 'DELETE',
-                headers: {
-                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
-                }
-            });
-
-            const result = await handleDeleteClientResponse(response);
-            if (result?.error) { // TODO: Check the error logic
-                alert(result.error);
-            }
-        }
-
-        async function handleDeleteClientResponse(response) {
-            if (!response.ok) {
-                try {
-                    const errorMessage = await response.json();
-                    if (errorMessage.redirectUrl) {
-                        window.location.href = errorMessage.redirectUrl;
-                        return; // Exit the function after redirect
-                    }
-                    return {error: errorMessage.message || "Client deletion failed. Please try again."};
-                } catch (error) {
-                    console.error("An error occurred while parsing the response: ", error);
-                }
-            } else {
-                console.debug("Client deleted successfully.");
-                window.location.href = '/clients?deleteClientSuccess';
-            }
         }
 
         async function fillClientTagsModal(id) {
@@ -448,9 +407,9 @@
         async function saveTags(id) {
             // Save the selected tags for the client.
             const tags = [];
-            document.querySelectorAll("#client-tags-modal input[type='checkbox']:checked").forEach(tag => {
-                tags.push(tag.value);
-            });
+            document
+                .querySelectorAll("#client-tags-modal input[type='checkbox']:checked")
+                .forEach(tag => tags.push(tag.value));
 
             const response = await fetch('/api/v1/clients/' + id + '/tags', {
                 method: 'PUT',
@@ -462,26 +421,31 @@
             });
 
             const result = await handleSaveTagsResponse(response);
-            if (result?.error) { // TODO: Check the error logic
+            if (result?.error) {
                 alert(result.error);
             }
         }
 
         async function handleSaveTagsResponse(response) {
             if (!response.ok) {
+                const defaultMessage = "Something went wrong while saving the tags. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+
                 try {
                     const errorMessage = await response.json();
                     if (errorMessage.redirectUrl) {
                         window.location.href = errorMessage.redirectUrl;
                         return; // Exit the function after redirect
                     }
-                    return {error: errorMessage.message || "Client tags were not saved. Please try again."};
+                    return {
+                        error: errorMessage.message || defaultMessage
+                    };
                 } catch (error) {
                     console.error("An error occurred while parsing the response: ", error);
+                    alert(defaultMessage);
                 }
             } else {
-                console.debug("Client tags saved successfully.");
-                window.location.href = '/clients?updateTagsSuccess';
+                window.location.href = response.headers.get('Location');
             }
         }
     </script>
