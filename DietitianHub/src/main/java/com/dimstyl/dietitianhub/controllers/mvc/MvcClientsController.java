@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/clients")
@@ -22,15 +24,26 @@ public class MvcClientsController {
     private final TagCategoryService tagCategoryService;
 
     @GetMapping
-    public String viewClientsPage(Model model) {
+    public String viewClientsPage(@RequestParam("success") Optional<String> success,
+                                  @RequestParam("tagsUpdateSuccess") Optional<String> tagsUpdateSuccess,
+                                  @ModelAttribute("flashAttribute") Object flashAttribute,
+                                  Model model) {
+        if (success.isPresent() &&
+                flashAttribute instanceof String alertMessage && !alertMessage.isEmpty()) {
+            model.addAttribute("alertMessage", alertMessage);
+        } else if (tagsUpdateSuccess.isPresent()) {
+            model.addAttribute("alertMessage", "Tags updated successfully.");
+        }
+
         model.addAttribute("clients", userService.getAllClients());
         model.addAttribute("client", new ClientDto());
         model.addAttribute("tagCategories", tagCategoryService.getAllTagCategoriesAndTags());
         return "view-clients";
     }
 
-    @PostMapping("/registerClient")
+    @PostMapping("/register")
     public String registerClient(@Valid @ModelAttribute("client") ClientDto clientDto,
+                                 RedirectAttributes redirectAttributes,
                                  BindingResult result,
                                  Model model) {
         if (result.hasErrors()) {
@@ -40,12 +53,15 @@ public class MvcClientsController {
             return "view-clients";
         }
         userService.registerClient(clientDto);
-        return "redirect:/clients";
+        redirectAttributes.addFlashAttribute("flashAttribute",
+                "Client registered successfully. A verification email has been sent to the client.");
+        return "redirect:/clients?success";
     }
 
-    @PostMapping("/updateClient/{id}")
+    @PostMapping("/{id}/update")
     public String updateClient(@PathVariable("id") int id,
                                @Valid @ModelAttribute("client") ClientDto clientDto,
+                               RedirectAttributes redirectAttributes,
                                BindingResult result,
                                Model model) {
         if (result.hasErrors()) {
@@ -56,7 +72,15 @@ public class MvcClientsController {
         }
         int userId = userService.getUserById(id).getId();
         userInfoService.updateUserInfo(clientDto, userId);
-        return "redirect:/clients";
+        redirectAttributes.addFlashAttribute("flashAttribute", "Client updated successfully.");
+        return "redirect:/clients?success";
+    }
+
+    @GetMapping("/{id}/delete")
+    public String disableClient(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
+        userService.disableUser(id);
+        redirectAttributes.addFlashAttribute("flashAttribute", "Client deleted successfully.");
+        return "redirect:/clients?success";
     }
 
 }
