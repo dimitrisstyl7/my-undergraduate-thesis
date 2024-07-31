@@ -38,11 +38,6 @@ public class MvcErrorController {
         return "error/tags-mismatch";
     }
 
-    @GetMapping("/tagsNotFound")
-    public String TagsNotFoundPage() {
-        return "error/tags-not-found";
-    }
-
     @GetMapping("/dietPlanNotFound")
     public String DietPlanNotFoundPage() {
         return "error/diet-plan-not-found";
