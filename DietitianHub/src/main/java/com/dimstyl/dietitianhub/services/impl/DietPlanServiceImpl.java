@@ -3,17 +3,12 @@ package com.dimstyl.dietitianhub.services.impl;
 import com.dimstyl.dietitianhub.dtos.DietPlanDto;
 import com.dimstyl.dietitianhub.entities.DietPlan;
 import com.dimstyl.dietitianhub.entities.UserInfo;
-import com.dimstyl.dietitianhub.enums.RequestType;
-import com.dimstyl.dietitianhub.exceptions.api.ApiDietPlanNotFoundException;
-import com.dimstyl.dietitianhub.exceptions.mvc.MvcDietPlanNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.DietPlanNotFoundException;
 import com.dimstyl.dietitianhub.mappers.DietPlanMapper;
 import com.dimstyl.dietitianhub.repositories.DietPlanRepository;
 import com.dimstyl.dietitianhub.services.DietPlanService;
 import com.dimstyl.dietitianhub.services.StorageService;
-import com.dimstyl.dietitianhub.services.UserInfoService;
 import com.dimstyl.dietitianhub.utilities.FileUtil;
-import com.dimstyl.dietitianhub.utilities.RequestTypeUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -27,15 +22,10 @@ import java.util.List;
 public class DietPlanServiceImpl implements DietPlanService {
 
     private final DietPlanRepository dietPlanRepository;
-    private final UserInfoService userInfoService;
     private final StorageService storageService;
-    private final HttpServletRequest request;
 
     @Override
-    public void saveDietPlan(int clientId, MultipartFile file) {
-        // Get the user info by the client id
-        UserInfo userInfo = userInfoService.getUserInfoByUserId(clientId);
-
+    public void saveDietPlan(UserInfo userInfo, MultipartFile file) {
         // Generate a file name for the diet plan file
         String fileName = FileUtil.generateFileName(userInfo.getId());
 
@@ -54,18 +44,11 @@ public class DietPlanServiceImpl implements DietPlanService {
 
     @Override
     public DietPlan getDietPlan(int userInfoId, int dietPlanId) {
-        RequestType requestType = RequestTypeUtil.getRequestType(request.getRequestURI());
-
         return dietPlanRepository
                 .findByIdAndUserInfo_Id(dietPlanId, userInfoId)
-                .orElseThrow(() -> {
-                    String message = "Diet plan with id %d and user info id %d not found".formatted(dietPlanId, userInfoId);
-                    if (requestType.equals(RequestType.API)) {
-                        return new ApiDietPlanNotFoundException(message);
-                    } else {
-                        return new MvcDietPlanNotFoundException(message);
-                    }
-                });
+                .orElseThrow(() -> new DietPlanNotFoundException(
+                        "Diet plan with id %d and user info id %d not found".formatted(dietPlanId, userInfoId))
+                );
     }
 
     @Override
@@ -78,10 +61,7 @@ public class DietPlanServiceImpl implements DietPlanService {
     }
 
     @Override
-    public Resource getDietPlanFileAsResource(int dietPlanId, int clientId) {
-        // Get the user info by the client id
-        UserInfo userInfo = userInfoService.getUserInfoByUserId(clientId);
-
+    public Resource getDietPlanFileAsResource(int dietPlanId, UserInfo userInfo) {
         // Get the diet plan by the user info id and diet plan id
         DietPlan dietPlan = getDietPlan(userInfo.getId(), dietPlanId);
 
@@ -90,10 +70,7 @@ public class DietPlanServiceImpl implements DietPlanService {
     }
 
     @Override
-    public void deleteDietPlan(int dietPlanId, int clientId) {
-        // Get the user info by the client id
-        UserInfo userInfo = userInfoService.getUserInfoByUserId(clientId);
-
+    public void deleteDietPlan(int dietPlanId, UserInfo userInfo) {
         // Get the diet plan by the user info id and diet plan id
         DietPlan dietPlan = getDietPlan(userInfo.getId(), dietPlanId);
         String fileName = dietPlan.getTitle();
