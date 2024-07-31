@@ -1,23 +1,46 @@
 package com.dimstyl.dietitianhub.exceptionHandlers;
 
-import com.dimstyl.dietitianhub.exceptions.mvc.MvcUserInfoNotFoundException;
-import com.dimstyl.dietitianhub.exceptions.mvc.MvcUserNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
+
+import java.net.URI;
 
 @ControllerAdvice
-public class MvcExceptionHandler {
+    public class MvcExceptionHandler {
 
-    @ExceptionHandler(value = {MvcUserInfoNotFoundException.class, MvcUserNotFoundException.class})
-    protected ModelAndView handleUserNotFoundException() {
-        return new ModelAndView("error/user-not-found");
-    }
+        @ExceptionHandler({MvcUserInfoNotFoundException.class, UserNotFoundException.class})
+        protected ResponseEntity<Void> handleUserNotFoundException() {
+            return ResponseEntity
+                    .status(HttpStatus.SEE_OTHER)
+                    .location(URI.create("/error/userNotFound"))
+                    .build();
+        }
 
-    @ExceptionHandler(value = NoResourceFoundException.class)
-    protected ModelAndView handleNoResourceFoundException() {
-        return new ModelAndView("error/404");
-    }
+        @ExceptionHandler(FileStorageException.class)
+        protected ResponseEntity<Void> handleFileStorageException() {
+            return ResponseEntity
+                    .status(HttpStatus.SEE_OTHER)
+                    .location(URI.create("/error/dietPlanUploadFailed"))
+                    .build();
+        }
+
+        @ExceptionHandler({DietPlanNotFoundException.class, StorageFileNotFoundException.class})
+        protected ResponseEntity<Void> handleDietPlanNotFoundException() {
+            return ResponseEntity
+                    .status(HttpStatus.SEE_OTHER)
+                    .location(URI.create("/error/dietPlanNotFound"))
+                    .build();
+        }
+
+        @ExceptionHandler(FileDeletionException.class)
+        protected ResponseEntity<Void> handleFileDeletionException() {
+            return ResponseEntity
+                    .status(HttpStatus.SEE_OTHER)
+                    .location(URI.create("/error/dietPlanDeleteFailed"))
+                    .build();
+        }
 
 }
