@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.exceptions.api;
+package com.dimstyl.dietitianhub.exceptions;
 
 public class ApiUserInfoNotFoundException extends RuntimeException {
 
