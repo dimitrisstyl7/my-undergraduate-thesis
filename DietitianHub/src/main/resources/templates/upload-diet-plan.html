@@ -61,7 +61,7 @@
 
                     <form th:action="@{/clients/{clientId}/dietPlans/upload(clientId=${clientId})}"
                           enctype="multipart/form-data" method="post">
-                        <input type="file" name="dietPlanFile" data-plugins="dropify" data-height="300"/>
+                        <input type="file" name="file" data-plugins="dropify" data-height="300"/>
                         <div class="d-flex justify-content-center">
                             <button type="submit" class="btn btn-success mt-3">Upload</button>
                         </div>
@@ -87,26 +87,29 @@
                     <table class="table table-striped mb-0">
                         <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Title</th>
-                            <th>Uploaded On</th>
-                            <th>Actions</th>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Uploaded On</th>
+                            <th scope="col">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="dietPlan, iterStat : ${dietPlans}">
-                            <th th:text="${iterStat.count}"></th>
-                            <th th:text="${dietPlan.title}"></th>
+                            <th scope="row" th:text="${iterStat.count}"></th>
+                            <td th:text="${dietPlan.title()}"></td>
                             <td th:text="${dietPlan.getFormattedDate()}"></td>
                             <td>
-                                <a th:href="@{/clients/{clientId}/dietPlans/{dietPlanId}/download(clientId=${clientId},dietPlanId=${dietPlan.id()})}"
-                                   download>Download</a> |
+                                <a th:href="@{/clients/{clientId}/dietPlans/{dietPlanId}/download(clientId=${clientId},dietPlanId=${dietPlan.id()})}">
+                                    Download</a> |
                                 <a th:href="@{/clients/{clientId}/dietPlans/{dietPlanId}/view(clientId=${clientId},dietPlanId=${dietPlan.id()})}"
                                    target="_blank">View</a> |
-                                <a href="" data-bs-toggle="modal" data-bs-target="#diet-plan-delete-modal"
-                                   style="color: red"
-                                   th:onclick="fillDeleteModal([[${dietPlan.getFormattedDate()}]],[[${dietPlan.id}]])">
-                                    Delete</a>
+                                <form th:action="@{/clients/{clientId}/dietPlans/{dietPlanId}/delete(clientId=${clientId},dietPlanId=${dietPlan.id()})}"
+                                      th:id="${'delete-form-'+dietPlan.id()}" method="get" style="display: inline;">
+                                    <a href="" data-bs-toggle="modal" data-bs-target="#diet-plan-delete-modal"
+                                       style="color: red"
+                                       th:onclick="fillDeleteModal([[${dietPlan.getFormattedDate()}]],[[${dietPlan.id()}]])">
+                                        Delete</a>
+                                </form>
                             </td>
                         </tr>
                         </tbody>
@@ -138,46 +141,13 @@
 
     <!-- Custom script -->
     <script th:inline="javascript">
-        function fillDeleteModal(date, dietPlanId) {
+        function fillDeleteModal(date, id) {
             // Set the title of the modal.
             document.getElementById("title-delete-modal").textContent = "Delete Diet Plan (" + date + ")";
 
             // Set onclick event for the delete button.
-            document.getElementById("confirm-diet-plan-deletion-button").onclick = () => deleteDietPlan(dietPlanId);
-        }
-
-        async function deleteDietPlan(dietPlanId) {
-            // Delete the diet plan for the given user
-            const response = await fetch('/api/v1/clients/' + [[${clientId}]] + '/dietPlans/' + dietPlanId, {
-                method: 'DELETE',
-                headers: {
-                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
-                }
-            });
-
-            const result = await handleDeleteClientPlanResponse(response);
-            if (result?.error) { // TODO: Check the error logic
-                alert(result.error);
-            }
-        }
-
-        async function handleDeleteClientPlanResponse(response) {
-            if (!response.ok) {
-                try {
-                    const errorMessage = await response.json();
-                    if (errorMessage.redirectUrl) {
-                        window.location.href = errorMessage.redirectUrl;
-                        return; // Exit the function after redirect
-                    }
-                    return {error: errorMessage.message || "Diet plan deletion failed. Please try again."};
-                } catch (error) {
-                    console.error("An error occurred while parsing the response: ", error);
-                }
-            } else {
-                // Success: Reload the page to reflect the changes.
-                console.debug("Diet plan deleted successfully.");
-                window.location.href = '/clients/' + [[${clientId}]] + '/dietPlans/upload?deleteSuccess';
-            }
+            document.getElementById("confirm-diet-plan-deletion-button").onclick =
+                () => document.getElementById("delete-form-" + id).submit();
         }
     </script>
 
