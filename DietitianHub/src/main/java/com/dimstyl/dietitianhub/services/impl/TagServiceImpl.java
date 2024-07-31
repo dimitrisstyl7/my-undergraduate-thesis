@@ -1,7 +1,7 @@
 package com.dimstyl.dietitianhub.services.impl;
 
 import com.dimstyl.dietitianhub.entities.Tag;
-import com.dimstyl.dietitianhub.exceptions.api.ApiTagsMismatchException;
+import com.dimstyl.dietitianhub.exceptions.TagsMismatchException;
 import com.dimstyl.dietitianhub.repositories.TagRepository;
 import com.dimstyl.dietitianhub.services.TagService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class TagServiceImpl implements TagService {
         List<Tag> tags = tagRepository.findAllById(tagIds);
 
         if (tags.isEmpty() || tags.size() != tagIds.size()) {
-            throw new ApiTagsMismatchException(
+            throw new TagsMismatchException(
                     "Tag list size mismatch (provided: %d, found: %d)".formatted(tagIds.size(), tags.size())
             );
         }
