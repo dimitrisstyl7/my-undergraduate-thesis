@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">DietitianHub</title>
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+
+    <!-- App css -->
+    <link th:href="@{/css/app.min.css}" rel="stylesheet" type="text/css" id="app-style"/>
+
+    <!-- icons -->
+    <link th:href="@{/css/icons.min.css}" rel="stylesheet" type="text/css"/>
+
+    <!-- Custom styles for alert -->
+    <style>
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+    </style>
+</head>
+
+<body class="loading authentication-bg authentication-bg-pattern">
+
+<div class="account-pages my-5">
+    <div class="container">
+
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-4">
+                <div class="text-center mb-4">
+                    <a href="https://coderthemes.com/adminto/" target=”_blank”>
+                        <img th:src="@{/images/logo-dark.png}" alt="" height="22" class="mx-auto">
+                    </a>
+                </div>
+
+                <div class="card">
+                    <div class="card-body p-4">
+                        <div layout:fragment="main-content"></div>
+                    </div>
+                    <!-- end card-body -->
+                </div>
+                <!-- end card -->
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</div>
+<!-- end page -->
+
+<!-- Vendor -->
+<script th:src="@{/libs/jquery/jquery.min.js}"></script>
+<script th:src="@{/libs/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/libs/simplebar/simplebar.min.js}"></script>
+<script th:src="@{/libs/node-waves/waves.min.js}"></script>
+<script th:src="@{/libs/waypoints/lib/jquery.waypoints.min.js}"></script>
+<script th:src="@{/libs/jquery.counterup/jquery.counterup.min.js}"></script>
+<script th:src="@{/libs/feather-icons/feather.min.js}"></script>
+
+<!-- App js -->
+<script th:src="@{/js/app.min.js}"></script>
+
+</body>
+</html>
