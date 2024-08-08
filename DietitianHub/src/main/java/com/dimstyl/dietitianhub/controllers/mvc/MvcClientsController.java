@@ -48,7 +48,7 @@ public class MvcClientsController {
         model.addAttribute("clients", userService.getAllClients());
         model.addAttribute("client", new ClientDto());
         model.addAttribute("tagCategories", tagCategoryService.getAllTagCategoriesAndTags());
-        return "view-clients";
+        return "clients";
     }
 
     @PostMapping("/register")
@@ -60,7 +60,7 @@ public class MvcClientsController {
             model.addAttribute("clients", userService.getAllClients());
             model.addAttribute("dateOfBirth", clientDto.getDateOfBirth());
             model.addAttribute("registerValidationsFailed", true);
-            return "view-clients";
+            return "clients";
         }
         userService.registerClient(clientDto);
         redirectAttributes.addFlashAttribute("flashAttribute",
@@ -78,7 +78,7 @@ public class MvcClientsController {
             model.addAttribute("clients", userService.getAllClients());
             model.addAttribute("editedClient", clientDto);
             model.addAttribute("updateValidationsFailed", true);
-            return "view-clients";
+            return "clients";
         }
         int userId = userService.getUserById(id).getId();
         userInfoService.updateUserInfo(clientDto, userId);

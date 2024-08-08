@@ -28,7 +28,7 @@
     </div>
 
     <!-- Modal for client registration/edit -->
-    <form id="main-form" th:object="${client}" onsubmit="return validateGender();" method="post">
+    <form id="main-form" th:object="${client}" onsubmit="return validateGender()" method="post">
         <th:block th:replace="~{fragments/_csrf :: csrf}"></th:block>
         <div class="modal fade" id="main-modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable">
@@ -214,7 +214,7 @@
     <!-- end row -->
 
     <div class="row" th:with="maleImg=@{/images/users/male.png}, femaleImg=@{/images/users/female.png}">
-        <div class="col-xl-4" th:each="c :${clients}">
+        <div class="col-xl-4" th:each="c: ${clients}">
             <div class="card">
                 <div class="text-center card-body">
                     <div class="dropdown float-end">
