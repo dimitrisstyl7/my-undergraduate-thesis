@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.net.URI;
 
@@ -41,6 +42,11 @@ public class MvcExceptionHandler {
                 .status(HttpStatus.SEE_OTHER)
                 .location(URI.create("/error/dietPlanDeleteFailed"))
                 .build();
+    }
+
+    @ExceptionHandler(RegistrationFailedException.class)
+    protected ModelAndView handleRegistrationFailedException() {
+        return new ModelAndView("error/registration-failed");
     }
 
 }
