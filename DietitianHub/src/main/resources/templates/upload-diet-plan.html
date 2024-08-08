@@ -94,7 +94,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="dietPlan, iterStat : ${dietPlans}">
+                        <tr th:each="dietPlan, iterStat: ${dietPlans}">
                             <th scope="row" th:text="${iterStat.count}"></th>
                             <td th:text="${dietPlan.title()}"></td>
                             <td th:text="${dietPlan.getFormattedDate()}"></td>
