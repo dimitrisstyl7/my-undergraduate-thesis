@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import static com.dimstyl.dietitianhub.enums.UserRole.CLIENT;
 import static com.dimstyl.dietitianhub.enums.UserRole.DIETITIAN;
 
 @Configuration
@@ -38,8 +39,9 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/css/**", "/data/**", "/fonts/**",
                                 "/images/**", "/js/**", "/libs/**",
-                                "error/**"
+                                "error/**", "/auth/updateCredentials/confirmation"
                         ).permitAll()
+                        .requestMatchers("auth/updateCredentials").hasAuthority(CLIENT.getRole())
                         .anyRequest().hasAuthority(DIETITIAN.getRole())
                 )
                 .formLogin(form -> form
