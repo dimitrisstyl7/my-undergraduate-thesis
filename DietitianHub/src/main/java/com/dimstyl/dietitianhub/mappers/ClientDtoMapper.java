@@ -6,22 +6,23 @@ import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.entities.UserInfo;
 import lombok.experimental.UtilityClass;
 
+import static com.dimstyl.dietitianhub.utilities.RegistrationUtil.generatePassword;
 import static com.dimstyl.dietitianhub.utilities.RegistrationUtil.generateUsername;
 
 @UtilityClass
 public final class ClientDtoMapper {
 
     public static User mapToUserForRegistration(ClientDto clientDto, Role role) {
+        String username = generateUsername(
+                clientDto.getFirstName(),
+                clientDto.getLastName(),
+                clientDto.getDateOfBirth()
+        );
+        String password = generatePassword();
+
         return User.builder()
-                .username(generateUsername(
-                        clientDto.getFirstName(),
-                        clientDto.getLastName(),
-                        clientDto.getDateOfBirth()))
-                /* TODO: For new clients, the password will by empty.
-                    A registration email will be sent to the client
-                    with a link to set a password.
-                 */
-                .password("")
+                .username(username)
+                .password(password)
                 .role(role)
                 .build();
     }
