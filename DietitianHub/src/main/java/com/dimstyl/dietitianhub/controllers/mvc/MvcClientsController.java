@@ -7,6 +7,7 @@ import com.dimstyl.dietitianhub.services.DietPlanService;
 import com.dimstyl.dietitianhub.services.TagCategoryService;
 import com.dimstyl.dietitianhub.services.UserInfoService;
 import com.dimstyl.dietitianhub.services.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -39,7 +40,7 @@ public class MvcClientsController {
                                   @ModelAttribute("flashAttribute") Object flashAttribute,
                                   Model model) {
         if (success.isPresent() &&
-                flashAttribute instanceof String alertMessage && !alertMessage.isEmpty()) {
+            flashAttribute instanceof String alertMessage && !alertMessage.isEmpty()) {
             model.addAttribute("alertMessage", alertMessage);
         } else if (tagsUpdateSuccess.isPresent()) {
             model.addAttribute("alertMessage", "Tags updated successfully.");
@@ -55,7 +56,7 @@ public class MvcClientsController {
     public String registerClient(@Valid @ModelAttribute("client") ClientDto clientDto,
                                  RedirectAttributes redirectAttributes,
                                  BindingResult result,
-                                 Model model) {
+                                 Model model) throws MessagingException {
         if (result.hasErrors()) {
             model.addAttribute("clients", userService.getAllClients());
             model.addAttribute("dateOfBirth", clientDto.getDateOfBirth());
@@ -63,8 +64,9 @@ public class MvcClientsController {
             return "clients";
         }
         userService.registerClient(clientDto);
-        redirectAttributes.addFlashAttribute("flashAttribute",
-                "Client registered successfully. A verification email has been sent to the client.");
+        redirectAttributes.addFlashAttribute("flashAttribute", """
+                The client has been registered successfully, \
+                and an activation email has been sent to their inbox.""");
         return "redirect:/clients?success";
     }
 
