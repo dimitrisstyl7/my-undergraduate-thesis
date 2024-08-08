@@ -3,11 +3,14 @@ package com.dimstyl.dietitianhub.security;
 import com.dimstyl.dietitianhub.entities.Role;
 import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.repositories.UserRepository;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,17 +36,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = optionalUser.orElseThrow(() ->
                 new UsernameNotFoundException("User with username %s not found.".formatted(username)));
 
-        // TODO: May I handle differently the following checks?
+        // TODO: May I handle differently the following check?
 
-        // Check if user has unauthorized role
+        // Check if the user has the role CLIENT and is already enabled
         String role = user.getRole().getName();
-        if (role.equals(CLIENT.getRole())) {
-            throw new AccessDeniedException("User with username %s has unauthorized role (%s).".formatted(username, role));
-        }
-
-        // Check if user is enabled
-        if (!user.isEnabled()) {
-            throw new DisabledException("User with username %s is disabled.".formatted(username));
+        if (role.equals(CLIENT.getRole()) && user.isEnabled()) {
+            throw new AccessDeniedException("The client with username %s is already enabled.".formatted(username));
         }
 
         return new CustomUserDetails(
@@ -57,6 +55,22 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private Collection<? extends GrantedAuthority> mapRoleToAuthority(Role role) {
         return Stream.of(role).map(r -> new SimpleGrantedAuthority(r.getName())).toList();
+    }
+
+    public static CustomUserDetails getUserDetails() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (CustomUserDetails) authentication.getPrincipal();
+    }
+
+    public static void logout(HttpServletRequest request) throws ServletException {
+        // Invalidate the session to clear all session data
+        request.getSession().invalidate();
+
+        // Perform the actual logout process
+        request.logout();
+
+        // Clear the security context to remove authentication details
+        SecurityContextHolder.clearContext();
     }
 
 }
