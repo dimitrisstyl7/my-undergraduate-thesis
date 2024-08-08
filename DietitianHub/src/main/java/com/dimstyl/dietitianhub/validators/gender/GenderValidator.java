@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.validators;
+package com.dimstyl.dietitianhub.validators.gender;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

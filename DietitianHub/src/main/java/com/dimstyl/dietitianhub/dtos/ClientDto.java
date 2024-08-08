@@ -1,7 +1,7 @@
 package com.dimstyl.dietitianhub.dtos;
 
 import com.dimstyl.dietitianhub.enums.Month;
-import com.dimstyl.dietitianhub.validators.GenderConstraint;
+import com.dimstyl.dietitianhub.validators.gender.GenderConstraint;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
