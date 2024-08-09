@@ -1,6 +1,7 @@
 package com.dimstyl.dietitianhub.exceptionHandlers;
 
 import com.dimstyl.dietitianhub.exceptions.*;
+import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -44,7 +45,7 @@ public class MvcExceptionHandler {
                 .build();
     }
 
-    @ExceptionHandler(RegistrationFailedException.class)
+    @ExceptionHandler({RegistrationFailedException.class, MessagingException.class})
     protected ModelAndView handleRegistrationFailedException() {
         return new ModelAndView("error/registration-failed");
     }
