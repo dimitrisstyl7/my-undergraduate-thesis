@@ -89,8 +89,8 @@ public class MvcClientsController {
     }
 
     @GetMapping("/{id}/delete")
-    public String disableClient(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
-        userService.disableUser(id);
+    public String deleteClient(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
+        userService.deleteUser(id);
         redirectAttributes.addFlashAttribute("flashAttribute", "Client deleted successfully.");
         return "redirect:/clients?success";
     }

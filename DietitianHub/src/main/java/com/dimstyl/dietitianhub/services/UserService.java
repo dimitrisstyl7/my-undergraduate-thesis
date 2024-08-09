@@ -13,7 +13,7 @@ public interface UserService {
 
     void registerClient(ClientDto clientDto) throws MessagingException;
 
-    void disableUser(int id);
+    void deleteUser(int id);
 
     User getUserById(int id);
 

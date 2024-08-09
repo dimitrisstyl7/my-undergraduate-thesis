@@ -3,6 +3,7 @@ package com.dimstyl.dietitianhub.services.impl;
 import com.dimstyl.dietitianhub.dtos.ClientCredentialChangeDto;
 import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.email.EmailService;
+import com.dimstyl.dietitianhub.entities.DietPlan;
 import com.dimstyl.dietitianhub.entities.Role;
 import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.exceptions.RegistrationFailedException;
@@ -10,6 +11,7 @@ import com.dimstyl.dietitianhub.exceptions.UserNotFoundException;
 import com.dimstyl.dietitianhub.mappers.ClientDtoMapper;
 import com.dimstyl.dietitianhub.mappers.UserMapper;
 import com.dimstyl.dietitianhub.repositories.UserRepository;
+import com.dimstyl.dietitianhub.services.StorageService;
 import com.dimstyl.dietitianhub.services.UserInfoService;
 import com.dimstyl.dietitianhub.services.UserService;
 import jakarta.mail.MessagingException;
@@ -30,8 +32,9 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserInfoService userInfoService;
-    private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final StorageService storageService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<ClientDto> getAllClients() {
@@ -74,10 +77,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void disableUser(int id) {
+    @Transactional
+    public void deleteUser(int id) {
         User user = getUserById(id);
-        user.setEnabled(false);
-        userRepository.save(user);
+        List<DietPlan> dietPlans = user.getUserInfo().getDietPlans();
+        dietPlans.forEach(dietPlan -> storageService.deleteDietPlanFile(dietPlan.getName()));
+        userRepository.delete(user);
     }
 
     @Override
