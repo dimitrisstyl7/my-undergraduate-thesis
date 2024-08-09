@@ -19,7 +19,7 @@ public class TagServiceImpl implements TagService {
     public List<Tag> getTagsByIds(List<Integer> tagIds) {
         List<Tag> tags = tagRepository.findAllById(tagIds);
 
-        if (tags.isEmpty() || tags.size() != tagIds.size()) {
+        if (tags.size() != tagIds.size()) {
             throw new TagsMismatchException(
                     "Tag list size mismatch (provided: %d, found: %d)".formatted(tagIds.size(), tags.size())
             );
