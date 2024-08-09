@@ -12,6 +12,7 @@ import com.dimstyl.dietitianhub.utilities.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ public class DietPlanServiceImpl implements DietPlanService {
     private final StorageService storageService;
 
     @Override
+    @Transactional
     public void saveDietPlan(UserInfo userInfo, MultipartFile file) {
         // Generate a file name for the diet plan file
         String fileName = FileUtil.generateFileName(userInfo.getId());
@@ -70,6 +72,7 @@ public class DietPlanServiceImpl implements DietPlanService {
     }
 
     @Override
+    @Transactional
     public void deleteDietPlan(int dietPlanId, UserInfo userInfo) {
         // Get the diet plan by the user info id and diet plan id
         DietPlan dietPlan = getDietPlan(userInfo.getId(), dietPlanId);

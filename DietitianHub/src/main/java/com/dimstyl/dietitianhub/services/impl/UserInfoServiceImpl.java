@@ -17,6 +17,7 @@ import com.dimstyl.dietitianhub.utilities.RequestTypeUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    @Transactional
     public void updateUserInfo(ClientDto clientDto, int userId) {
         UserInfo existingUserInfo = getUserInfoByUserId(userId);
 
@@ -57,6 +59,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    @Transactional
     public void updateClientTags(int userId, List<Integer> tagIds) {
         UserInfo userInfo = getUserInfoByUserId(userId);
         List<Tag> tags = tagService.getTagsByIds(tagIds);

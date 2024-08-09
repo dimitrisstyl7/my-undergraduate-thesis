@@ -13,10 +13,10 @@ import com.dimstyl.dietitianhub.repositories.UserRepository;
 import com.dimstyl.dietitianhub.services.UserInfoService;
 import com.dimstyl.dietitianhub.services.UserService;
 import jakarta.mail.MessagingException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -93,6 +93,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void updateClientCredentials(ClientCredentialChangeDto credentialChangeDto) {
         String oldUsername = getUserDetails().getUsername();
         String newUsername = credentialChangeDto.getUsername();
