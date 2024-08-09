@@ -4,7 +4,7 @@ import com.dimstyl.dietitianhub.enums.Month;
 
 import java.time.LocalDate;
 
-public record DietPlanDto(int id, String title, LocalDate createdOn) {
+public record DietPlanDto(int id, String name, LocalDate createdOn) {
 
     public String getFormattedDate() {
         // Return the date in the format "day month year"

@@ -36,7 +36,7 @@ public class DietPlanServiceImpl implements DietPlanService {
         if (!dietPlanRepository.existsByUserInfo_IdAndCreatedOn(userInfo.getId(), LocalDate.now())) {
             dietPlanRepository.save(DietPlan.builder()
                     .userInfo(userInfo)
-                    .title(fileName)
+                    .name(fileName)
                     .build()
             );
         }
@@ -66,14 +66,14 @@ public class DietPlanServiceImpl implements DietPlanService {
         DietPlan dietPlan = getDietPlan(userInfo.getId(), dietPlanId);
 
         // Load and return the diet plan file as a resource
-        return storageService.loadDietPlanFileAsResource(dietPlan.getTitle());
+        return storageService.loadDietPlanFileAsResource(dietPlan.getName());
     }
 
     @Override
     public void deleteDietPlan(int dietPlanId, UserInfo userInfo) {
         // Get the diet plan by the user info id and diet plan id
         DietPlan dietPlan = getDietPlan(userInfo.getId(), dietPlanId);
-        String fileName = dietPlan.getTitle();
+        String fileName = dietPlan.getName();
 
         // Delete the diet plan file from the file system
         storageService.deleteDietPlanFile(fileName);

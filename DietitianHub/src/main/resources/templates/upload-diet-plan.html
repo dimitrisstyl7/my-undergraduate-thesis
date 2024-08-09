@@ -96,7 +96,7 @@
                         <tbody>
                         <tr th:each="dietPlan, iterStat: ${dietPlans}">
                             <th scope="row" th:text="${iterStat.count}"></th>
-                            <td th:text="${dietPlan.title()}"></td>
+                            <td th:text="${dietPlan.name()}"></td>
                             <td th:text="${dietPlan.getFormattedDate()}"></td>
                             <td>
                                 <a th:href="@{/clients/{clientId}/dietPlans/{dietPlanId}/download(clientId=${clientId},dietPlanId=${dietPlan.id()})}">

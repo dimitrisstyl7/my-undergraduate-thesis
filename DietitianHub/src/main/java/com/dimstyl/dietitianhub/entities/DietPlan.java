@@ -24,8 +24,8 @@ public class DietPlan {
     @JoinColumn(name = "user_info_id", referencedColumnName = "id", nullable = false)
     private UserInfo userInfo;
 
-    @Column(name = "title", unique = true, nullable = false, length = 50)
-    private String title;
+    @Column(name = "name", unique = true, nullable = false, length = 50)
+    private String name;
 
     @CreationTimestamp
     @Column(name = "created_on", nullable = false, updatable = false)

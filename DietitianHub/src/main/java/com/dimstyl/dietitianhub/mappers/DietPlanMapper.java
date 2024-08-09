@@ -8,7 +8,7 @@ import lombok.experimental.UtilityClass;
 public final class DietPlanMapper {
 
     public static DietPlanDto mapToDietPlanDto(DietPlan dietPlan) {
-        return new DietPlanDto(dietPlan.getId(), dietPlan.getTitle(), dietPlan.getCreatedOn());
+        return new DietPlanDto(dietPlan.getId(), dietPlan.getName(), dietPlan.getCreatedOn());
     }
 
 }

@@ -51,7 +51,6 @@ create table client_tag_association
 (
     user_info_id int       not null references user_info (id),
     tag_id       int       not null references tag (id),
-    created_at   timestamp not null default now(),
     primary key (user_info_id, tag_id)
 );
 
@@ -59,7 +58,7 @@ create table diet_plan
 (
     id           serial      not null unique primary key,
     user_info_id int         not null references user_info (id),
-    title        varchar(50) not null unique,
+    name        varchar(50) not null unique,
     created_on   date        not null default current_date,
     unique (user_info_id, created_on)
 );
