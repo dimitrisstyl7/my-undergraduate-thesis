@@ -4,7 +4,6 @@ import com.dimstyl.dietitianhub.dtos.DietPlanDto;
 import com.dimstyl.dietitianhub.entities.DietPlan;
 import com.dimstyl.dietitianhub.entities.UserInfo;
 import com.dimstyl.dietitianhub.exceptions.DietPlanNotFoundException;
-import com.dimstyl.dietitianhub.mappers.DietPlanMapper;
 import com.dimstyl.dietitianhub.repositories.DietPlanRepository;
 import com.dimstyl.dietitianhub.services.DietPlanService;
 import com.dimstyl.dietitianhub.services.StorageService;
@@ -58,7 +57,7 @@ public class DietPlanServiceImpl implements DietPlanService {
         return dietPlanRepository
                 .findAllByUserInfo_IdOrderByCreatedOnDesc(userInfoId)
                 .stream()
-                .map(DietPlanMapper::mapToDietPlanDto)
+                .map(DietPlan::toDto)
                 .toList();
     }
 

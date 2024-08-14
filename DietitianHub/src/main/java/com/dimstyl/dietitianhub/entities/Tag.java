@@ -1,5 +1,6 @@
 package com.dimstyl.dietitianhub.entities;
 
+import com.dimstyl.dietitianhub.dtos.TagDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,5 +24,9 @@ public class Tag {
 
     @Column(name = "name", unique = true, nullable = false, length = 100)
     private String name;
+
+    public TagDto toDto() {
+        return new TagDto(id, category.getId(), name);
+    }
 
 }

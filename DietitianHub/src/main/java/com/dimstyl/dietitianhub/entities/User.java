@@ -1,5 +1,6 @@
 package com.dimstyl.dietitianhub.entities;
 
+import com.dimstyl.dietitianhub.dtos.ClientDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,5 +33,17 @@ public class User {
 
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private UserInfo userInfo;
+
+    public ClientDto toClientDto() {
+        return ClientDto.builder()
+                .id(id)
+                .phone(userInfo.getPhone())
+                .email(userInfo.getEmail())
+                .dateOfBirth(userInfo.getDateOfBirth())
+                .gender(userInfo.getGender())
+                .firstName(userInfo.getFirstName())
+                .lastName(userInfo.getLastName())
+                .build();
+    }
 
 }

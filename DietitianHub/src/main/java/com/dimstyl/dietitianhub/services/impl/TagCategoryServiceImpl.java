@@ -2,7 +2,6 @@ package com.dimstyl.dietitianhub.services.impl;
 
 import com.dimstyl.dietitianhub.dtos.TagCategoryDto;
 import com.dimstyl.dietitianhub.entities.TagCategory;
-import com.dimstyl.dietitianhub.mappers.TagCategoryMapper;
 import com.dimstyl.dietitianhub.repositories.TagCategoryRepository;
 import com.dimstyl.dietitianhub.services.TagCategoryService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ public class TagCategoryServiceImpl implements TagCategoryService {
     public List<TagCategoryDto> getAllTagCategoriesAndTags() {
         List<TagCategory> tagCategories = tagCategoryRepository.getAllTagCategoriesAndTags();
         return tagCategories.stream()
-                .map(TagCategoryMapper::mapToTagCategoryDto)
+                .map(TagCategory::toDto)
                 .toList();
     }
 

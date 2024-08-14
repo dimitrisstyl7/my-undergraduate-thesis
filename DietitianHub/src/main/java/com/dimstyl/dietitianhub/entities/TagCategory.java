@@ -1,5 +1,6 @@
 package com.dimstyl.dietitianhub.entities;
 
+import com.dimstyl.dietitianhub.dtos.TagCategoryDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,5 +23,9 @@ public class TagCategory {
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Tag> tags;
+
+    public TagCategoryDto toDto() {
+        return new TagCategoryDto(name, tags.stream().map(Tag::toDto).toList());
+    }
 
 }

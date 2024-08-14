@@ -8,8 +8,6 @@ import com.dimstyl.dietitianhub.entities.UserInfo;
 import com.dimstyl.dietitianhub.enums.RequestType;
 import com.dimstyl.dietitianhub.exceptions.ApiUserInfoNotFoundException;
 import com.dimstyl.dietitianhub.exceptions.MvcUserInfoNotFoundException;
-import com.dimstyl.dietitianhub.mappers.ClientDtoMapper;
-import com.dimstyl.dietitianhub.mappers.TagMapper;
 import com.dimstyl.dietitianhub.repositories.UserInfoRepository;
 import com.dimstyl.dietitianhub.services.TagService;
 import com.dimstyl.dietitianhub.services.UserInfoService;
@@ -31,7 +29,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public void saveUserInfo(ClientDto clientDto, User user) {
-        UserInfo userInfo = ClientDtoMapper.mapToUserInfo(clientDto, user);
+        UserInfo userInfo = clientDto.toUserInfo(user);
         userInfoRepository.save(userInfo);
     }
 
@@ -54,7 +52,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     public List<TagDto> getClientTags(int userId) {
         UserInfo userInfo = getUserInfoByUserId(userId);
         return userInfo.getTags().stream()
-                .map(TagMapper::mapToTagDto)
+                .map(Tag::toDto)
                 .toList();
     }
 

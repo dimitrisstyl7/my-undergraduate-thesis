@@ -1,5 +1,7 @@
 package com.dimstyl.dietitianhub.entities;
 
+import com.dimstyl.dietitianhub.dtos.DietPlanDto;
+import com.dimstyl.dietitianhub.utilities.DateUtil;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,5 +33,9 @@ public class DietPlan {
     @CreationTimestamp(source = SourceType.DB)
     @Column(name = "created_on", nullable = false, updatable = false)
     private LocalDate createdOn;
+
+    public DietPlanDto toDto() {
+        return new DietPlanDto(id, name, DateUtil.getFormattedDate(createdOn));
+    }
 
 }
