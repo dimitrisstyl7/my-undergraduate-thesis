@@ -54,8 +54,8 @@ public class MvcClientsController {
 
     @PostMapping("/register")
     public String registerClient(@Valid @ModelAttribute("client") ClientDto clientDto,
-                                 RedirectAttributes redirectAttributes,
                                  BindingResult result,
+                                 RedirectAttributes redirectAttributes,
                                  Model model) throws MessagingException {
         if (result.hasErrors()) {
             model.addAttribute("clients", userService.getAllClients());
@@ -73,8 +73,8 @@ public class MvcClientsController {
     @PostMapping("/{id}/update")
     public String updateClient(@PathVariable("id") int id,
                                @Valid @ModelAttribute("client") ClientDto clientDto,
-                               RedirectAttributes redirectAttributes,
                                BindingResult result,
+                               RedirectAttributes redirectAttributes,
                                Model model) {
         if (result.hasErrors()) {
             model.addAttribute("clients", userService.getAllClients());
