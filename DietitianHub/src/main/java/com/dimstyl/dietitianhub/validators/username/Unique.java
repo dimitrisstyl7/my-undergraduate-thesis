@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = UsernameExistenceValidator.class)
 public @interface Unique {
 
-    String message() default "Username already exists.";
+    String message() default "Username already exists";
 
     Class<?>[] groups() default {};
 
