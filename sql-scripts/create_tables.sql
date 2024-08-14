@@ -1,3 +1,5 @@
+drop table if exists article_tag_association;
+drop table if exists article;
 drop table if exists diet_plan;
 drop table if exists client_tag_association;
 drop table if exists tag;
@@ -49,8 +51,8 @@ create table tag
 
 create table client_tag_association
 (
-    user_info_id int       not null references user_info (id),
-    tag_id       int       not null references tag (id),
+    user_info_id int not null references user_info (id),
+    tag_id       int not null references tag (id),
     primary key (user_info_id, tag_id)
 );
 
@@ -58,7 +60,22 @@ create table diet_plan
 (
     id           serial      not null unique primary key,
     user_info_id int         not null references user_info (id),
-    name        varchar(50) not null unique,
+    name         varchar(50) not null unique,
     created_on   date        not null default current_date,
     unique (user_info_id, created_on)
+);
+
+create table article
+(
+    id         serial       not null unique primary key,
+    title      varchar(100) not null unique,
+    content    text         not null,
+    created_at timestamp    not null default now()
+);
+
+create table article_tag_association
+(
+    article_id int not null references article (id),
+    tag_id     int not null references tag (id),
+    primary key (article_id, tag_id)
 );
