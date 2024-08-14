@@ -3,6 +3,7 @@ package com.dimstyl.dietitianhub.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SourceType;
 
 import java.time.LocalDate;
 
@@ -27,7 +28,7 @@ public class DietPlan {
     @Column(name = "name", unique = true, nullable = false, length = 50)
     private String name;
 
-    @CreationTimestamp
+    @CreationTimestamp(source = SourceType.DB)
     @Column(name = "created_on", nullable = false, updatable = false)
     private LocalDate createdOn;
 
