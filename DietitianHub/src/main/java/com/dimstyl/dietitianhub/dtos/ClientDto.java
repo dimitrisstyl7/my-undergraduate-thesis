@@ -1,6 +1,5 @@
 package com.dimstyl.dietitianhub.dtos;
 
-import com.dimstyl.dietitianhub.enums.Month;
 import com.dimstyl.dietitianhub.validators.gender.GenderConstraint;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -43,11 +42,7 @@ public class ClientDto {
     private String phone;
 
     public String getFormattedDateOfBirth() {
-        // Return the date of birth in the format "day month year"
-        String day = String.valueOf(dateOfBirth.getDayOfMonth());
-        String month = Month.byNumber(dateOfBirth.getMonthValue());
-        String year = String.valueOf(dateOfBirth.getYear());
-        return "%s %s %s".formatted(day, month, year);
+        return DateUtil.getFormattedDate(dateOfBirth);
     }
 
     public String getFullName() {
