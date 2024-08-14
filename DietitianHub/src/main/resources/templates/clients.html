@@ -6,6 +6,7 @@
 <head>
     <title>Clients</title>
 
+    <!-- Custom css -->
     <style>
         .validation-error {
             color: red;
@@ -106,7 +107,7 @@
                                   th:errors="*{phone}"></span>
                         </div>
                     </div>
-                    <div class="modal-footer d-flex">
+                    <div class="modal-footer bg-light d-flex">
                         <button type="button" class="btn btn-secondary me-auto"
                                 onclick="document.getElementById('main-form').reset();">Reset
                         </button>
@@ -130,7 +131,7 @@
                         <button id="confirm-client-deletion-button" type="button" class="btn btn-warning my-2">
                             Continue
                         </button>
-                        <button type="button" class="btn btn-danger my-2" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger ms-1" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div><!-- /.modal-content -->
@@ -140,17 +141,16 @@
     <!-- Modal for client tags -->
     <form id="client-tags-form">
         <div id="client-tags-modal" class="modal fade" tabindex="-1" role="dialog"
-             aria-labelledby="client-tags-modal-label"
-             aria-hidden="true">
+             aria-labelledby="client-tags-modal-label" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header bg-light">
                         <h4 class="modal-title" id="client-tags-modal-title">Client tags</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="mb-4" th:each="tagCategory: ${tagCategories}">
-                            <div class="row">
+                        <div th:each="tagCategory: ${tagCategories}">
+                            <div class="row mb-4">
                                 <h5 class="form-label custom-form-label mb-2" th:text="${tagCategory.name()}"></h5>
                                 <div th:each="tag: ${tagCategory.tags()}" class="col-lg-4">
                                     <input th:id="${'tag-'+tag.id()}" th:value="${tag.id()}" type="checkbox"
@@ -161,10 +161,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary me-auto"
-                                onclick="document.getElementById('client-tags-form').reset();">Reset
-                        </button>
+                    <div class="modal-footer bg-light">
+                        <button type="reset" class="btn btn-secondary me-auto">Reset</button>
                         <form>
                             <button id="save-tags-button" type="button" class="btn btn-success">Save</button>
                         </form>
@@ -189,7 +187,7 @@
                                 </button>
                             </div>
                         </div><!-- end col-->
-                        <div class="col-md-8">
+                        <div class="col-md-8"> <!-- TODO Should be removed if not implemented -->
                             <form class="d-flex flex-wrap align-items-center justify-content-sm-end">
                                 <label for="status-select" class="me-2">Sort By</label>
                                 <div class="me-sm-2">
@@ -239,8 +237,9 @@
                                 Upload diet plan</a>
                             <form th:id="${'delete-form-'+c.id}" th:action="@{/clients/{id}/delete(id=${c.id})}"
                                   method="get">
-                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#client-delete-modal"
-                                   style="color: red" th:onclick="fillDeleteModal([[${c.getFullName()}]],[[${c.id}]])">
+                                <a class="dropdown-item text-danger" data-bs-toggle="modal"
+                                   data-bs-target="#client-delete-modal"
+                                   th:onclick="fillDeleteModal([[${c.getFullName()}]],[[${c.id}]])">
                                     Delete client</a>
                             </form>
                         </div>
@@ -285,8 +284,8 @@
     <script th:inline="javascript" th:if="${registerValidationsFailed}">
         // Server-side register client validations returned errors. Open the main modal.
         window.onload = () => {
-            document.getElementById('registration-button').click();
-            document.getElementById('date-of-birth').value = [[${dateOfBirth}]];
+            document.getElementById("registration-button").click();
+            document.getElementById("date-of-birth").value = [[${dateOfBirth}]];
         }
     </script>
 
@@ -321,25 +320,28 @@
         // Reset client tags form on client tags modal close.
         document.getElementById("client-tags-modal").onhidden = () => document.getElementById("client-tags-form").reset();
 
+        // Function that validates the gender selection in the form and displays an error if none is selected.
         function validateGender() {
-            // Validate gender radio buttons, if none is selected, display an error message and prevent form submission.
+            // Validate gender radio buttons; if none are selected, display an error message and prevent form submission.
             const maleRadioButton = document.getElementById("male-radio-button");
             const femaleRadioButton = document.getElementById("female-radio-button");
             if (maleRadioButton.checked || femaleRadioButton.checked) {
                 document.getElementById("gender-error").textContent = "";
+                addSpinner(document.querySelector("#main-modal .btn-success")); // Add spinner to the submit button
                 return true;
             }
             document.getElementById("gender-error").textContent = "Gender is required.";
             return false;
         }
 
+        // Function that fills the main modal with the provided data for creating or editing a client.
         function fillMainModal(
             action, title, actionButtonText,
             firstName = '', lastName = '', dateOfBirth = '',
             gender = '', email = '', phone = '',
             edit = false
         ) {
-            //  Fill the main modal with the provided form action, title, and action button text.
+            // Fill the main modal with the provided form action, title, and action button text.
             document.getElementById("main-form").setAttribute("action", action);
             document.querySelector("#main-modal-title").textContent = title;
             document.querySelector("#main-modal .btn-success").textContent = actionButtonText;
@@ -357,61 +359,76 @@
             document.getElementById("female-radio-button").checked = gender === 'F';
         }
 
+        // Function that fills the delete modal with the client's name and sets up the deletion confirmation.
         function fillDeleteModal(clientName, id) {
             // Set the client's full name who is about to be deleted.
             document.getElementById("client-fullname-delete-modal").textContent = clientName;
 
             // Set onclick event for the delete button.
-            document.getElementById("confirm-client-deletion-button").onclick =
-                () => document.getElementById("delete-form-" + id).submit();
+            const confirmClientDeletionButton = document.getElementById("confirm-client-deletion-button");
+            confirmClientDeletionButton.onclick = () => {
+                // Add spinner to the delete button and submit the delete form.
+                addSpinner(confirmClientDeletionButton);
+                document.getElementById(`delete-form-${id}`).submit();
+            };
         }
 
+        // Function that redirects the user to the diet plan upload page for the selected client.
         function redirectToDietPage(id) {
-            // Redirect to the diet upload page for the selected client.
-            window.location.href = '/clients/' + id + '/dietPlans/upload';
+            window.location.href = `/clients/${id}/dietPlans/upload`;
         }
 
+        // Function that fetches and fills the client tags modal with the client's existing tags.
         async function fillClientTagsModal(id) {
-            // Fill the client tags modal with the client's tags.
-            const response = await fetch('/api/v1/clients/' + id + '/tags');
+            const response = await fetch(`/api/v1/clients/${id}/tags`);
 
             const result = await handleFillClientTagsResponse(response, id);
-            if (result?.error) { // TODO: Check the error logic
+            if (result?.error) {
                 alert(result.error);
             }
         }
 
+        // Function that handles the response from the client tags fetch and updates the modal accordingly.
         async function handleFillClientTagsResponse(response, id) {
             if (!response.ok) {
+                const defaultMessage = "Something went wrong while fetching client tags. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+
                 try {
-                    const errorMessage = await response.json();
-                    if (errorMessage.redirectUrl) {
-                        window.location.href = errorMessage.redirectUrl;
+                    const errorResponse = await response.json();
+
+                    // If the errorResponse object contains the "redirectUrl" key, redirect to the specified URL.
+                    if ("redirectUrl" in errorResponse) {
+                        window.location.href = errorResponse.redirectUrl;
                         return; // Exit the function after redirect
                     }
-                    return {error: errorMessage.message || "An error occurred while fetching client tags. Please try again."};
+
+                    // Otherwise, return the error message (if exists) or the default message.
+                    return {error: errorResponse.message || defaultMessage};
                 } catch (error) {
                     console.error("An error occurred while parsing the response: ", error);
+                    alert(defaultMessage);
                 }
             } else {
                 const tags = await response.json();
-                tags.forEach(tag => {
-                    document.getElementById("tag-" + tag.id).checked = true;
-                });
+                tags.forEach(tag => document.getElementById(`tag-${tag.id}`).checked = true);
 
                 // Set onclick event for the save tags button.
                 document.getElementById("save-tags-button").onclick = () => saveTags(id);
             }
         }
 
+        // Function that saves the selected tags for the client via an API request.
         async function saveTags(id) {
-            // Save the selected tags for the client.
             const tags = [];
             document
                 .querySelectorAll("#client-tags-modal input[type='checkbox']:checked")
                 .forEach(tag => tags.push(tag.value));
 
-            const response = await fetch('/api/v1/clients/' + id + '/tags', {
+            const saveTagsButton = document.getElementById("save-tags-button");
+            addSpinner(saveTagsButton); // Add spinner to the save button
+
+            const response = await fetch(`/api/v1/clients/${id}/tags`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -420,26 +437,32 @@
                 body: JSON.stringify(tags)
             });
 
-            const result = await handleSaveTagsResponse(response);
+            const result = await handleSaveTagsResponse(response, saveTagsButton);
             if (result?.error) {
                 alert(result.error);
             }
         }
 
-        async function handleSaveTagsResponse(response) {
+        // Function that handles the response from the save tags request and updates the UI accordingly.
+        async function handleSaveTagsResponse(response, saveTagsButton) {
             if (!response.ok) {
+                // Remove the spinner and set the button text back to "Save".
+                removeSpinner(saveTagsButton, "Save");
+
                 const defaultMessage = "Something went wrong while saving the tags. " +
                     "Please try again. If the problem persists, please contact our Support.";
 
                 try {
-                    const errorMessage = await response.json();
-                    if (errorMessage.redirectUrl) {
-                        window.location.href = errorMessage.redirectUrl;
+                    const errorResponse = await response.json();
+
+                    // If the errorResponse object contains the "redirectUrl" key, redirect to the specified URL.
+                    if ("redirectUrl" in errorResponse) {
+                        window.location.href = errorResponse.redirectUrl;
                         return; // Exit the function after redirect
                     }
-                    return {
-                        error: errorMessage.message || defaultMessage
-                    };
+
+                    // Otherwise, return the error message (if exists) or the default message.
+                    return {error: errorResponse.message || defaultMessage};
                 } catch (error) {
                     console.error("An error occurred while parsing the response: ", error);
                     alert(defaultMessage);
