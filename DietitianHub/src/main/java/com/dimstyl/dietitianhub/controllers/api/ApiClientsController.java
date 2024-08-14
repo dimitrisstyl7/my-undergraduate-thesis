@@ -10,7 +10,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/clients/")
+@RequestMapping("/api/v1/clients")
 @RequiredArgsConstructor
 public class ApiClientsController {
 
