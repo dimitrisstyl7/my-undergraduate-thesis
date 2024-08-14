@@ -5,8 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SourceType;
 
-import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -41,7 +41,7 @@ public class UserInfo {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp(source = SourceType.DB)
-    private Instant createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "email", nullable = false, length = 50)
     private String email;
