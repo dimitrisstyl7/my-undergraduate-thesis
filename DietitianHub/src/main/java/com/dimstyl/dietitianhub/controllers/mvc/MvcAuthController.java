@@ -35,8 +35,8 @@ public class MvcAuthController {
 
     @PostMapping("/updateCredentials")
     public String updateCredentials(@Valid @ModelAttribute("client") ClientCredentialChangeDto credentialChangeDto,
-                                    HttpServletRequest request,
                                     BindingResult result,
+                                    HttpServletRequest request,
                                     Model model) throws ServletException {
         if (result.hasErrors()) {
             model.addAttribute("client", credentialChangeDto);
