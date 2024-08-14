@@ -1,6 +1,7 @@
 package com.dimstyl.dietitianhub.exceptionHandlers;
 
 import com.dimstyl.dietitianhub.exceptions.ApiUserInfoNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.ArticleNotFoundException;
 import com.dimstyl.dietitianhub.exceptions.TagsMismatchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,6 +36,19 @@ public class ApiExceptionHandler {
                         Something went wrong while processing the tags. Please try again. \
                         If the problem persists, please contact our Support.""",
                 "/error/tagsMismatch"
+        );
+    }
+
+    @ExceptionHandler(ArticleNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    protected ErrorResponse handleArticleNotFoundException() {
+        return new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                """
+                        The operation could not be completed because the article was not found. \
+                        Please try again. If the problem persists, please contact our Support.""",
+                "/error/articleNotFound"
         );
     }
 
