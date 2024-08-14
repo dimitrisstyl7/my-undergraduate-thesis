@@ -63,7 +63,9 @@
                           enctype="multipart/form-data" method="post">
                         <input type="file" name="file" data-plugins="dropify" data-height="300"/>
                         <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-success mt-3">Upload</button>
+                            <button id="upload-button" type="submit" class="btn btn-success mt-3"
+                                    onclick="addSpinner(document.getElementById('upload-button'))">Upload
+                            </button>
                         </div>
                     </form>
                 </div> <!-- end card-body-->
@@ -97,7 +99,7 @@
                         <tr th:each="dietPlan, iterStat: ${dietPlans}">
                             <th scope="row" th:text="${iterStat.count}"></th>
                             <td th:text="${dietPlan.name()}"></td>
-                            <td th:text="${dietPlan.getFormattedDate()}"></td>
+                            <td th:text="${dietPlan.createdOn()}"></td>
                             <td>
                                 <a th:href="@{/clients/{clientId}/dietPlans/{dietPlanId}/download(clientId=${clientId},dietPlanId=${dietPlan.id()})}">
                                     Download</a> |
@@ -105,9 +107,9 @@
                                    target="_blank">View</a> |
                                 <form th:action="@{/clients/{clientId}/dietPlans/{dietPlanId}/delete(clientId=${clientId},dietPlanId=${dietPlan.id()})}"
                                       th:id="${'delete-form-'+dietPlan.id()}" method="get" style="display: inline;">
-                                    <a href="" data-bs-toggle="modal" data-bs-target="#diet-plan-delete-modal"
-                                       style="color: red"
-                                       th:onclick="fillDeleteModal([[${dietPlan.getFormattedDate()}]],[[${dietPlan.id()}]])">
+                                    <a href="" class="text-danger" data-bs-toggle="modal"
+                                       data-bs-target="#diet-plan-delete-modal"
+                                       th:onclick="fillDeleteModal([[${dietPlan.name()}]], [[${dietPlan.createdOn()}]],[[${dietPlan.id()}]])">
                                         Delete</a>
                                 </form>
                             </td>
@@ -129,10 +131,10 @@
                         <i class="dripicons-warning h1 text-warning"></i>
                         <h4 id="title-delete-modal" class="mt-2"></h4>
                         <p class="mt-3">You are about to delete the diet plan. This action cannot be undone.</p>
-                        <button id="confirm-diet-plan-deletion-button" type="button" class="btn btn-warning my-2">
+                        <button id="confirm-deletion-button" type="button" class="btn btn-warning my-2">
                             Continue
                         </button>
-                        <button type="button" class="btn btn-danger my-2" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger ms-1" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div><!-- /.modal-content -->
@@ -141,13 +143,16 @@
 
     <!-- Custom script -->
     <script th:inline="javascript">
-        function fillDeleteModal(date, id) {
+        function fillDeleteModal(name, date, id) {
             // Set the title of the modal.
-            document.getElementById("title-delete-modal").textContent = "Delete Diet Plan (" + date + ")";
+            document.getElementById("title-delete-modal").textContent = `${name} (${date})`;
 
             // Set onclick event for the delete button.
-            document.getElementById("confirm-diet-plan-deletion-button").onclick =
-                () => document.getElementById("delete-form-" + id).submit();
+            const confirmDeletionButton = document.getElementById("confirm-deletion-button");
+            confirmDeletionButton.onclick = () => {
+                addSpinner(confirmDeletionButton);
+                document.getElementById(`delete-form-${id}`).submit();
+            };
         }
     </script>
 
