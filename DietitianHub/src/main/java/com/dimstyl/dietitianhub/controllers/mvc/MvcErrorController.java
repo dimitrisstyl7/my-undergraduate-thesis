@@ -53,4 +53,9 @@ public class MvcErrorController {
         return "error/diet-plan-delete-failed";
     }
 
+    @GetMapping("/articleNotFound")
+    public String ArticleNotFoundPage() {
+        return "error/article-not-found";
+    }
+
 }
