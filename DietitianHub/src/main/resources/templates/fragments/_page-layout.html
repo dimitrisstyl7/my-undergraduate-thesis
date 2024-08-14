@@ -21,7 +21,7 @@
     <!-- icons -->
     <link th:href="@{/css/icons.min.css}" rel="stylesheet" type="text/css"/>
 
-    <!-- Custom styles for alert -->
+    <!-- Custom css for alert -->
     <style>
         .alert-danger {
             background-color: #f8d7da;
@@ -334,6 +334,19 @@
 
 </div>
 <!-- END wrapper -->
+
+<!-- Common js -->
+<script>
+    function addSpinner(element) {
+        element.innerHTML =
+            `<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                 <span class="visually-hidden">Loading...</span>`;
+    }
+
+    function removeSpinner(element, value) {
+        element.innerHTML = value;
+    }
+</script>
 
 <!-- Vendor -->
 <script th:src="@{/libs/jquery/jquery.min.js}"></script>
