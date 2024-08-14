@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragments/_page-layout}">
 <head>
@@ -9,480 +10,213 @@
     <link th:href="@{/libs/quill/quill.core.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/libs/quill/quill.bubble.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/libs/quill/quill.snow.css}" rel="stylesheet" type="text/css"/>
+
+    <!-- Custom css -->
+    <style>
+        .custom-form-label {
+            font-weight: bold;
+            color: #404040;
+        }
+
+        .validation-error {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
 </head>
 
 <body>
 <div layout:fragment="main-content">
-    <div class="modal fade" id="custom-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    <div th:if="${param.publishSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> The article has been published successfully.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${param.updateSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> The article has been updated successfully.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${param.deleteSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> The article has been deleted successfully.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <button class="btn btn-lg font-16 btn-success mb-3" id="btn-new-event" data-bs-toggle="modal"
+            data-bs-target="#article-modal" onclick="configureModalForCreation()">
+        <i class="fa fa-plus me-1"></i> Create new
+    </button>
+
+    <!-- Modal for creating and viewing/updating an article -->
+    <div class="modal fade" id="article-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
          role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header bg-light">
                     <h4 class="modal-title" id="custom-title" style="width: 90%">
                         <label for="title">Title:</label>
                         <input type="text" id="title" name="title" oninput="this.size = this.value.length"
-                               style="margin-left: 5px; max-width: 90%; min-width: 206px" disabled>
+                               class="ms-1" style="max-width: 90%; min-width: 205px">
+                        <span id="title-error-message" class="validation-error ps-1" hidden></span>
                     </h4>
                     <button type="button" class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"
-                            aria-hidden="true" onclick="clearEditorContent()"><i class="mdi mdi-close"></i></button>
+                            aria-hidden="true" onclick="clearArticleContent()"><i class="mdi mdi-close"></i></button>
                 </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <ul class="nav nav-tabs">
-                                            <li class="nav-item">
-                                                <a id="view-article-tab" href="#view-article"
-                                                   data-bs-toggle="tab" aria-expanded="false"
-                                                   class="nav-link active" onclick="toggleTitleEditing()">
-                                                    View article
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a id="edit-article-tab" href="#edit-article"
-                                                   data-bs-toggle="tab" aria-expanded="true"
-                                                   class="nav-link" onclick="toggleTitleEditing()">
-                                                    Edit article
-                                                </a>
-                                            </li>
-                                        </ul>
 
-                                        <div class="tab-content">
-                                            <div class="tab-pane show active" id="view-article">
-                                                <div class="col-12">
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <div id="bubble-editor"></div> <!-- end Snow-editor-->
-                                                        </div> <!-- end card-body-->
-                                                    </div> <!-- end card-->
-                                                </div><!-- end col -->
-                                            </div>
+                <div class="modal-body px-0">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-body py-0 px-4">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item">
+                                        <a id="preview-article-tab" href="#preview-article"
+                                           data-bs-toggle="tab" aria-expanded="false"
+                                           class="nav-link active" onclick="toggleTitleEditing(false)">
+                                            Preview
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a id="edit-article-tab" href="#edit-article"
+                                           data-bs-toggle="tab" aria-expanded="true"
+                                           class="nav-link" onclick="toggleTitleEditing(true)">
+                                            Edit
+                                        </a>
+                                    </li>
+                                </ul>
 
-                                            <div class="tab-pane" id="edit-article">
-                                                <div class="col-12">
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            <div id="snow-editor">
-                                                                <h3>Your article content here...</h3>
-                                                            </div> <!-- end Snow-editor-->
-                                                        </div> <!-- end card-body-->
-                                                    </div> <!-- end card-->
-                                                </div><!-- end col -->
-                                            </div>
-
-                                            <div id="publish-button-div" style="text-align: center;">
-                                                <button type="button" class="btn btn-success waves-effect waves-light">
-                                                    Publish now
-                                                    <span class="btn-label-right"><i
-                                                            class="mdi mdi-18px mdi-publish"></i></span>
-                                                </button>
-                                            </div>
-                                            <div id="update-button-div" style="text-align: center;">
-                                                <button type="button" class="btn btn-info waves-effect waves-light">
-                                                    Update
-                                                    <span class="btn-label-right"><i
-                                                            class="mdi mdi-18px mdi-update"></i></span>
-                                                </button>
+                                <div class="tab-content">
+                                    <div class="col-11 mx-auto">
+                                        <div class="accordion custom-accordion" id="custom-accordion">
+                                            <div class="card pb-0">
+                                                <div class="card-header" id="tags-collapse-heading">
+                                                    <h5 class="m-0 position-relative">
+                                                        <a class="text-center custom-accordion-title text-reset collapsed d-block"
+                                                           data-bs-toggle="collapse" href="#tags-div"
+                                                           aria-expanded="false" aria-controls="tags-div">
+                                                            Article tags
+                                                            <i class="mdi mdi-chevron-down accordion-arrow"></i>
+                                                        </a>
+                                                    </h5>
+                                                </div>
+                                                <div id="tags-div" class="collapse"
+                                                     aria-labelledby="tags-collapse-heading"
+                                                     data-bs-parent="#custom-accordion">
+                                                    <div class="card-body">
+                                                        <form id="tags-form">
+                                                            <div th:each="tagCategory: ${tagCategories}">
+                                                                <div class="row mb-4">
+                                                                    <h5 class="form-label custom-form-label mb-2"
+                                                                        th:text="${tagCategory.name()}"></h5>
+                                                                    <div th:each="tag: ${tagCategory.tags()}"
+                                                                         class="col-lg-4">
+                                                                        <input th:id="${'tag-'+tag.id()}"
+                                                                               th:value="${tag.id()}"
+                                                                               type="checkbox"
+                                                                               class="form-check-input rounded-circle">
+                                                                        <label th:for="${'tag-'+tag.id()}"
+                                                                               class="form-check-label"
+                                                                               th:text="${tag.name()}"></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <button type="reset" class="btn btn-secondary">
+                                                                Reset
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+                                    </div> <!-- end col-->
+
+                                    <h4 id="editors-error-message" class="validation-error" hidden></h4>
+                                    <div class="tab-pane show active pb-0" id="preview-article">
+                                        <div class="col-12">
+                                            <div class="card pb-0" id="preview-article-card">
+                                                <div class="card-body p-0">
+                                                    <div id="bubble-editor"></div>
+                                                    <!-- end Snow-editor-->
+                                                </div> <!-- end card-body-->
+                                            </div> <!-- end card-->
+                                        </div><!-- end col -->
                                     </div>
-                                </div> <!-- end card-->
-                            </div> <!-- end col -->
-                        </div> <!-- end row -->
-                    </form>
+                                    <div class="tab-pane pb-0" id="edit-article">
+                                        <div class="col-12">
+                                            <div class="card pb-0" id="edit-article-card">
+                                                <div class="card-body p-0">
+                                                    <div id="snow-editor">
+                                                        <p>Your article content goes here...</p>
+                                                    </div> <!-- end Snow-editor-->
+                                                </div> <!-- end card-body-->
+                                            </div> <!-- end card-->
+                                        </div><!-- end col -->
+                                    </div>
+                                </div>
+                            </div> <!-- end card-body-->
+                        </div> <!-- end card-->
+                    </div> <!-- end col -->
+                </div> <!-- end modal-body -->
+
+                <div class="modal-footer bg-light d-flex justify-content-center">
+                    <div id="publish-button-div">
+                        <button id="publish-button" type="button" class="btn btn-success waves-effect waves-light"
+                                onclick="publishArticle()">
+                            Publish now
+                            <span class="btn-label-right"><i class="mdi mdi-publish"></i></span>
+                        </button>
+                    </div>
+                    <div id="update-button-div">
+                        <button id="update-button" type="button" class="btn btn-info waves-effect waves-light">
+                            Update
+                            <span class="btn-label-right"><i class="mdi mdi-update"></i></span>
+                        </button>
+                    </div>
+                </div> <!-- end modal-footer -->
+            </div> <!-- /.modal-content -->
+        </div> <!-- /.modal-dialog -->
+    </div>
+
+    <!-- Modal for diet plan deletion -->
+    <div id="article-delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="dripicons-warning h1 text-warning"></i>
+                        <h4 id="title-delete-modal" class="mt-2"></h4>
+                        <p class="mt-3">You are about to delete the article. This action cannot be undone.</p>
+                        <button id="confirm-deletion-button" type="button" class="btn btn-warning my-2">
+                            Continue
+                        </button>
+                        <button type="button" class="btn btn-danger ms-1" data-bs-dismiss="modal">Cancel</button>
+                    </div>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <button class="btn btn-lg font-16 btn-success" id="btn-new-event" data-bs-toggle="modal" style="margin-bottom: 30px"
-            data-bs-target="#custom-modal" onclick="expandEditArticleTab(); articleType='new'">
-        <i class="fa fa-plus me-1"></i> Create new
-    </button>
-    <br>
+    <!-- Articles -->
     <div class="row">
-        <div class="col-xl-4">
+        <div id="articles-div" class="col-xl-4" th:each="article: ${articles}">
             <div class="card">
-                <div class="card-body project-box">
-                    <div class="badge bg-success float-end">Completed</div>
-                    <h4 class="mt-0"><a href="" class="text-dark">New Admin Design</a></h4>
-                    <p class="text-success text-uppercase font-13">Web Design</p>
-                    <p class="text-muted font-13">If several languages coalesce the grammar is more simple and regular
-                        than that of the individual languages...<a href="#" class="text-primary">View more</a>
-                    </p>
-
-                    <ul class="list-inline">
-                        <li class="list-inline-item me-4">
-                            <h4 class="mb-0">56</h4>
-                            <p class="text-muted">Questions</p>
-                        </li>
-                        <li class="list-inline-item">
-                            <h4 class="mb-0">452</h4>
-                            <p class="text-muted">Comments</p>
-                        </li>
-                    </ul>
-
-                    <div class="project-members mb-2">
-                        <h5 class="float-start me-3">Team :</h5>
-                        <div class="avatar-group">
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Mat Helme">
-                                <img th:src="@{/images/users/user-1.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Michael Zenaty">
-                                <img th:src="@{/images/users/user-2.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="James Anderson">
-                                <img th:src="@{/images/users/user-3.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Mat Helme">
-                                <img th:src="@{/images/users/user-4.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
+                <div class="card-body project-box text-center">
+                    <div class="mb-2">
+                        <h4 class="mt-0"><span class="text-dark" th:text="${article.title}"></span></h4>
+                        <div class="text-uppercase font-12">
+                            <span th:each="tag, itemStat: ${article.tagNames()}"
+                                  th:text="${tag} + ${itemStat.last ? '' : ' | '}"></span>
                         </div>
+                        <p class="text-muted font-13 mt-2 mb-2">
+                            <strong>Created Date :</strong> <span class="ms-1" th:text="${article.createdAt()}"></span>
+                        </p>
                     </div>
 
-                    <div style="text-align: center;">
+                    <div>
                         <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
-                                data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                onclick="expandViewArticleTab(); articleType='update'">View
+                                data-bs-toggle="modal" data-bs-target="#article-modal"
+                                th:onclick="configureModalForViewing([[${article.id()}]])">View
                         </button>
-                        &nbsp;
-                        <button type="button" class="btn btn-danger waves-effect waves-light rounded-pill">
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div><!-- end col-->
-
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="card-body project-box">
-                    <div class="badge bg-primary float-end">Completed</div>
-                    <h4 class="mt-0"><a href="" class="text-dark">App Design and Develop</a></h4>
-                    <p class="text-primary text-uppercase font-13">Android</p>
-                    <p class="text-muted font-13">New common language will be more simple and regular than the existing
-                        European languages...<a href="#" class="text-primary">View more</a>
-                    </p>
-
-                    <ul class="list-inline">
-                        <li class="list-inline-item me-4">
-                            <h4 class="mb-0">77</h4>
-                            <p class="text-muted">Questions</p>
-                        </li>
-                        <li class="list-inline-item">
-                            <h4 class="mb-0">875</h4>
-                            <p class="text-muted">Comments</p>
-                        </li>
-                    </ul>
-
-                    <div class="project-members mb-2">
-                        <h5 class="float-start me-3">Team :</h5>
-                        <div class="avatar-group">
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Mat Helme">
-                                <img th:src="@{/images/users/user-5.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Michael Zenaty">
-                                <img th:src="@{/images/users/user-6.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="James Anderson">
-                                <img th:src="@{/images/users/user-7.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div style="text-align: center;">
-                        <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
-                                data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                onclick="expandViewArticleTab(); articleType='update'">View
-                        </button>
-                        &nbsp;
-                        <button type="button" class="btn btn-danger waves-effect waves-light rounded-pill">
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div><!-- end col-->
-
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="card-body project-box">
-                    <div class="badge bg-pink float-end">Completed</div>
-                    <h4 class="mt-0"><a href="" class="text-dark">Landing page Design</a></h4>
-                    <p class="text-pink text-uppercase font-13">Web Design</p>
-                    <p class="text-muted font-13">It will be as simple as occidental in fact it will be to an english
-                        person it will seem like simplified English...<a href="#" class="text-primary">view more</a>
-                    </p>
-
-                    <ul class="list-inline">
-                        <li class="list-inline-item me-4">
-                            <h4 class="mb-0">87</h4>
-                            <p class="text-muted">Questions</p>
-                        </li>
-                        <li class="list-inline-item">
-                            <h4 class="mb-0">125</h4>
-                            <p class="text-muted">Comments</p>
-                        </li>
-                    </ul>
-
-                    <div class="project-members mb-2">
-                        <h5 class="float-start me-3">Team :</h5>
-                        <div class="avatar-group">
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Mat Helme">
-                                <img th:src="@{/images/users/user-8.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Michael Zenaty">
-                                <img th:src="@{/images/users/user-9.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="James Anderson">
-                                <img th:src="@{/images/users/user-10.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Mat Helme">
-                                <img th:src="@{/images/users/user-1.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Joel Heffner">
-                                <img th:src="@{/images/users/user-2.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div style="text-align: center;">
-                        <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
-                                data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                onclick="expandViewArticleTab(); articleType='update'">View
-                        </button>
-                        &nbsp;
-                        <button type="button" class="btn btn-danger waves-effect waves-light rounded-pill">
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div><!-- end col-->
-    </div>
-    <!-- end row -->
-
-    <div class="row">
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="card-body project-box">
-                    <div class="badge bg-purple float-end">Completed</div>
-                    <h4 class="mt-0"><a href="" class="text-dark">App Design and Develop</a></h4>
-                    <p class="text-purple text-uppercase font-13">Android</p>
-                    <p class="text-muted font-13">Everyone realizes why a new common language would be desirable one
-                        could refuse to pay expensive translators...<a href="#" class="text-primary">view more</a>
-                    </p>
-
-                    <ul class="list-inline">
-                        <li class="list-inline-item me-4">
-                            <h4 class="mb-0">77</h4>
-                            <p class="text-muted">Questions</p>
-                        </li>
-                        <li class="list-inline-item">
-                            <h4 class="mb-0">875</h4>
-                            <p class="text-muted">Comments</p>
-                        </li>
-                    </ul>
-
-                    <div class="project-members mb-2">
-                        <h5 class="float-start me-3">Team :</h5>
-                        <div class="avatar-group">
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Mat Helme">
-                                <img th:src="@{/images/users/user-8.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Michael Zenaty">
-                                <img th:src="@{/images/users/user-9.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="James Anderson">
-                                <img th:src="@{/images/users/user-10.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Mat Helme">
-                                <img th:src="@{/images/users/user-1.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Joel Heffner">
-                                <img th:src="@{/images/users/user-2.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div style="text-align: center;">
-                        <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
-                                data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                onclick="expandViewArticleTab(); articleType='update'">View
-                        </button>
-                        &nbsp;
-                        <button type="button" class="btn btn-danger waves-effect waves-light rounded-pill">
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div><!-- end col-->
-
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="card-body project-box">
-                    <div class="badge bg-danger float-end">Completed</div>
-                    <h4 class="mt-0"><a href="" class="text-dark">Landing page Design</a></h4>
-                    <p class="text-danger text-uppercase font-13">Web Design</p>
-                    <p class="text-muted font-13">At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                        blanditiis praesentium deleniti...<a href="#" class="text-primary">view more</a>
-                    </p>
-
-                    <ul class="list-inline">
-                        <li class="list-inline-item me-4">
-                            <h4 class="mb-0">87</h4>
-                            <p class="text-muted">Questions</p>
-                        </li>
-                        <li class="list-inline-item">
-                            <h4 class="mb-0">125</h4>
-                            <p class="text-muted">Comments</p>
-                        </li>
-                    </ul>
-
-                    <div class="project-members mb-2">
-                        <h5 class="float-start me-3">Team :</h5>
-                        <div class="avatar-group">
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Mat Helme">
-                                <img th:src="@{/images/users/user-6.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Michael Zenaty">
-                                <img th:src="@{/images/users/user-7.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="James Anderson">
-                                <img th:src="@{/images/users/user-8.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Mat Helme">
-                                <img th:src="@{/images/users/user-9.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div style="text-align: center;">
-                        <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
-                                data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                onclick="expandViewArticleTab(); articleType='update'">View
-                        </button>
-                        &nbsp;
-                        <button type="button" class="btn btn-danger waves-effect waves-light rounded-pill">
-                            Delete
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div><!-- end col-->
-
-        <div class="col-xl-4">
-            <div class="card">
-                <div class="card-body project-box">
-                    <div class="badge bg-warning float-end">Completed</div>
-                    <h4 class="mt-0"><a href="" class="text-dark">New Admin Design</a></h4>
-                    <p class="text-warning text-uppercase font-13">Web Design</p>
-                    <p class="text-muted font-13">Their separate existence is a myth. For science, music, sport, etc,
-                        Europe uses the same vocabulary....<a href="#" class="text-primary">view more</a>
-                    </p>
-
-                    <ul class="list-inline">
-                        <li class="list-inline-item me-4">
-                            <h4 class="mb-0">56</h4>
-                            <p class="text-muted">Questions</p>
-                        </li>
-                        <li class="list-inline-item">
-                            <h4 class="mb-0">452</h4>
-                            <p class="text-muted">Comments</p>
-                        </li>
-                    </ul>
-
-                    <div class="project-members mb-2">
-                        <h5 class="float-start me-3">Team :</h5>
-                        <div class="avatar-group">
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Mat Helme">
-                                <img th:src="@{/images/users/user-1.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="Michael Zenaty">
-                                <img th:src="@{/images/users/user-2.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-
-                            <a href="#" class="avatar-group-item" data-bs-toggle="tooltip" data-bs-placement="top"
-                               title="James Anderson">
-                                <img th:src="@{/images/users/user-3.jpg}" class="rounded-circle avatar-sm"
-                                     alt="friend"/>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div style="text-align: center;">
-                        <button type="button" class="btn btn-info waves-effect waves-light rounded-pill"
-                                data-bs-toggle="modal" data-bs-target="#custom-modal"
-                                onclick="expandViewArticleTab(); articleType='update'">View
-                        </button>
-                        &nbsp;
-                        <button type="button" class="btn btn-danger waves-effect waves-light rounded-pill">
+                        <button type="button" class="btn btn-danger waves-effect waves-light rounded-pill ms-1"
+                                data-bs-toggle="modal" data-bs-target="#article-delete-modal"
+                                th:onclick="fillDeleteModal([[${article.title()}]],[[${article.id()}]])">
                             Delete
                         </button>
                     </div>
@@ -493,95 +227,428 @@
     <!-- end row -->
 
     <!-- Custom script -->
-    <script>
-        // Variable that stores the type of the article (new or update).
-        let articleType;
-
+    <script th:inline="javascript">
         // Change page title.
         const title = document.getElementsByClassName("page-title-main");
         title[0].textContent = "Articles";
 
-        // Disable the editor of the view announcement.
-        const editors = document.getElementsByClassName("ql-editor");
-        editors[0].setAttribute("contenteditable", "false");
+        // Common elements that will be used in multiple functions.
+        const editors = document.getElementsByClassName("ql-editor");  // editors[0] -> preview, editors[1] -> edit
+        const editorsErrorMessage = document.getElementById("editors-error-message");
 
-        // Function that expands the edit article tab.
-        function expandEditArticleTab() {
-            const editArticleTab = document.getElementById("edit-article-tab");
-            const viewArticleTab = document.getElementById("view-article-tab");
-            const editArticleTabContent = document.getElementById("edit-article");
-            const viewArticleTabContent = document.getElementById("view-article");
-            const title = document.getElementById("title");
+        const editArticle = document.getElementById("edit-article");
+        const previewArticle = document.getElementById("preview-article");
+        const editArticleTab = document.getElementById("edit-article-tab");
+        const previewArticleTab = document.getElementById("preview-article-tab");
+        const editArticleCard = document.getElementById("edit-article-card");
+        const previewArticleCard = document.getElementById("preview-article-card");
 
+        const articleTitle = document.getElementById("title");
+        const articleTitleErrorMessage = document.getElementById("title-error-message");
+
+        const publishButtonDiv = document.getElementById("publish-button-div");
+        const updateButtonDiv = document.getElementById("update-button-div");
+
+        // Function that configures the modal for creating a new article.
+        function configureModalForCreation() {
             editArticleTab.setAttribute("aria-expanded", "true");
             editArticleTab.classList.add("active");
-            editArticleTabContent.classList.add("show", "active");
-            viewArticleTab.setAttribute("aria-expanded", "false");
-            viewArticleTab.classList.remove("active");
-            viewArticleTabContent.classList.remove("show", "active");
-            title.removeAttribute("disabled");
+            editArticle.classList.add("show", "active");
+            previewArticleTab.setAttribute("aria-expanded", "false");
+            previewArticleTab.classList.remove("active");
+            previewArticle.classList.remove("show", "active");
+            articleTitle.removeAttribute("disabled");
 
+            enableTagCheckboxes();
             showPublishButton();
         }
 
-        // Function that expands the view article tab.
-        function expandViewArticleTab() {
-            const editArticleTab = document.getElementById("edit-article-tab");
-            const viewArticleTab = document.getElementById("view-article-tab");
-            const editArticleTabContent = document.getElementById("edit-article");
-            const viewArticleTabContent = document.getElementById("view-article");
-            const title = document.getElementById("title");
+        // Function that configures the modal for viewing/updating an existing article.
+        async function configureModalForViewing(articleId) {
+            const previewEditor = document.getElementById("preview-article");
+            const previewEditorInnerHtml = previewEditor.innerHTML;
+            addSpinner(previewEditor);  // Add spinner to the preview editor
+
+            // Fetch the article by its ID.
+            await fetchArticle(articleId, previewEditor, previewEditorInnerHtml);
+
+            // Disable the contenteditable attribute of the edit article editor.
+            editors[0].setAttribute("contenteditable", "false");
 
             editArticleTab.setAttribute("aria-expanded", "false");
             editArticleTab.classList.remove("active");
-            editArticleTabContent.classList.remove("show", "active");
-            viewArticleTab.setAttribute("aria-expanded", "true");
-            viewArticleTab.classList.add("active");
-            viewArticleTabContent.classList.add("show", "active");
-            title.setAttribute("disabled", "true");
+            editArticle.classList.remove("show", "active");
+            previewArticleTab.setAttribute("aria-expanded", "true");
+            previewArticleTab.classList.add("active");
+            previewArticle.classList.add("show", "active");
+            articleTitle.setAttribute("disabled", "true");
 
+            // Set onclick event for the update button.
+            document.getElementById("update-button").onclick = () => updateArticle(articleId);
+
+            disableTagCheckboxes();
             showUpdateButton();
         }
 
         // Function that shows publish button.
         function showPublishButton() {
-            const publishButtonDiv = document.getElementById("publish-button-div");
-            const updateButtonDiv = document.getElementById("update-button-div");
-
             publishButtonDiv.style.display = "block";
             updateButtonDiv.style.display = "none";
         }
 
         // Function that shows update button.
         function showUpdateButton() {
-            const publishButtonDiv = document.getElementById("publish-button-div");
-            const updateButtonDiv = document.getElementById("update-button-div");
-
             publishButtonDiv.style.display = "none";
             updateButtonDiv.style.display = "block";
         }
 
-        // Function that enable/disable editing of an article title.
-        function toggleTitleEditing() {
-            const title = document.getElementById("title");
+        // Function that enables or disables editing of the article title.
+        function toggleTitleEditing(editing) {
+            if (editing) {
+                // Enable the input field for the article title.
+                articleTitle.removeAttribute("disabled");
 
-            if (title.hasAttribute("disabled")) {
-                title.removeAttribute("disabled");
+                enableTagCheckboxes();
             } else {
-                title.setAttribute("disabled", "true");
+                // Disable the input field for the article title.
+                articleTitle.setAttribute("disabled", "true");
+
+                // Disable the contenteditable attribute of the edit article editor.
+                editors[0].setAttribute("contenteditable", "false");
+
                 // Copy the content of the edit article editor to the view article editor.
                 editors[0].innerHTML = editors[1].innerHTML;
+
+                disableTagCheckboxes();
+
             }
         }
 
-        // Function that clear the content of the editor.
-        function clearEditorContent() {
-            const title = document.getElementById("title");
-            title.value = "";
-            title.removeAttribute("size"); // Reset the size of the input.
-            editors.forEach(function (item) {
-                item.innerHTML = "<h3>Your article content here...</h3>";
+        // Function that enables all tag checkboxes.
+        function enableTagCheckboxes() {
+            document.querySelectorAll("input[type='checkbox']").forEach(function (item) {
+                item.removeAttribute("disabled");
             });
+        }
+
+        // Function that disables all tag checkboxes.
+        function disableTagCheckboxes() {
+            document.querySelectorAll("input[type='checkbox']").forEach(function (item) {
+                item.setAttribute("disabled", "true");
+            });
+        }
+
+        // Function that clears the article content.
+        function clearArticleContent() {
+            // Clear the article title and article error message.
+            articleTitle.value = "";
+            articleTitle.removeAttribute("size"); // Reset the size of the input.
+            articleTitle.classList.remove("border-danger", "border-2");
+            articleTitleErrorMessage.textContent = "";
+            articleTitleErrorMessage.setAttribute("hidden", "true");
+
+            // Clear the article content and article error message.
+            editorsErrorMessage.textContent = "";
+            editorsErrorMessage.setAttribute("hidden", "true");
+            previewArticleCard.classList.remove("border-danger", "border-2");
+            editArticleCard.classList.remove("border-danger", "border-2");
+
+            // Set the content of the editors to the default value.
+            editors.forEach(function (item) {
+                item.innerHTML = "<p>Your article content goes here...</p>";
+            });
+
+            // Reset the tags form.
+            document.getElementById("tags-form").reset();
+
+            // Collapse the tags div.
+            document.getElementById("tags-div").classList.remove("show");
+        }
+
+        // Function that validates the article.
+        function validateArticle() {
+            const titleIsEmpty = articleTitle.value.trim() === "";
+            const contentIsEmpty = editors[1].textContent.trim() === "";
+
+            if (titleIsEmpty) showTitleErrorMessage("Title cannot be empty");
+            if (contentIsEmpty) showContentErrorMessage("Content cannot be empty");
+
+            return !(titleIsEmpty || contentIsEmpty);
+        }
+
+        // Function that shows an error message for the article title.
+        function showTitleErrorMessage(message) {
+            articleTitle.classList.add("border-danger", "border-2");
+            articleTitleErrorMessage.textContent = message;
+            articleTitleErrorMessage.removeAttribute("hidden");
+        }
+
+        // Function that shows an error message for the article content.
+        function showContentErrorMessage(message) {
+            previewArticleCard.classList.add("border-danger", "border-2");
+            editArticleCard.classList.add("border-danger", "border-2");
+            editorsErrorMessage.textContent = message;
+            editorsErrorMessage.removeAttribute("hidden");
+        }
+
+        // Function that publishes an article.
+        async function publishArticle() {
+            // Validate the article.
+            if (!validateArticle()) return;
+
+            // Publish the article.
+            const tags = [];
+
+            // Get all the selected tags and add them to the tags array.
+            document
+                .querySelectorAll("#tags-div input[type='checkbox']:checked")
+                .forEach(tag => tags.push(tag.value));
+
+            // Get the article title and content.
+            const title = articleTitle.value;
+            const content = editors[1].innerHTML;
+
+            // Create an object with the article title, content, and tags.
+            const article = {
+                title: title.trim(),
+                content: content.trim(),
+                tagIds: tags
+            };
+
+            const publishButton = document.getElementById("publish-button");
+            addSpinner(publishButton); // Add spinner to the publish button
+
+            const response = await fetch('/api/v1/articles', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                },
+                body: JSON.stringify(article)
+            });
+
+            const result = await handlePublishArticleResponse(response, publishButton);
+            if (result?.error) {
+                alert(result.error);
+            }
+        }
+
+        // Function that handles the response from the publish article request and updates the UI accordingly.
+        async function handlePublishArticleResponse(response, publishButton) {
+            if (!response.ok) {
+                // Remove the spinner and set the button text back to "Publish now".
+                removeSpinner(publishButton, "Publish now");
+
+                const defaultMessage = "Something went wrong while publishing the article. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+
+                try {
+                    const errorResponse = await response.json();
+
+                    // If the errorResponse object contains the "redirectUrl" key, redirect to the specified URL.
+                    if ("redirectUrl" in errorResponse) {
+                        window.location.href = errorResponse.redirectUrl;
+                        return; // Exit the function after redirect
+                    }
+
+                    // If the errorResponse object contains the "title" key, update the UI accordingly.
+                    const titleKeyExists = "title" in errorResponse;
+                    if (titleKeyExists) showTitleErrorMessage(errorResponse.title);
+
+                    // If the errorResponse object contains the "content" key, update the UI accordingly.
+                    const contentTitleExists = "content" in errorResponse;
+                    if (contentTitleExists) showContentErrorMessage(errorResponse.content);
+
+                    // If the errorResponse object contains the "title" or "content" key, return.
+                    if (titleKeyExists || contentTitleExists) return;
+
+                    // Otherwise, return the error message (if exists) or the default message.
+                    return {error: errorResponse.message || defaultMessage};
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    alert(defaultMessage);
+                }
+            } else {
+                window.location.href = response.headers.get('Location');
+            }
+        }
+
+        // Function that fetches an article by its ID.
+        async function fetchArticle(id, previewEditor, previewEditorInnerHtml) {
+            const response = await fetch(`/api/v1/articles/${id}`);
+
+            const result = await handleFetchArticleResponse(response, previewEditor, previewEditorInnerHtml);
+            if (result?.error) {
+                alert(result.error);
+            }
+        }
+
+        // Function that handles the response from the fetch article request and updates the UI accordingly.
+        async function handleFetchArticleResponse(response, previewEditor, previewEditorInnerHtml) {
+            if (!response.ok) {
+                const defaultMessage = "Something went wrong while fetching the article. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+
+                try {
+                    const errorResponse = await response.json();
+
+                    // If the errorResponse object contains the "redirectUrl" key, redirect to the specified URL.
+                    if ("redirectUrl" in errorResponse) {
+                        window.location.href = errorResponse.redirectUrl;
+                        return; // Exit the function after redirect
+                    }
+
+                    // Otherwise, return the error message (if exists) or the default message.
+                    return {error: errorResponse.message || defaultMessage};
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    alert(defaultMessage);
+                }
+            } else {
+                const article = await response.json();
+                articleTitle.value = article.title;  // Set the article title
+                article.tagIds.forEach(id => document.getElementById(`tag-${id}`).checked = true);  // Set the tags
+                removeSpinner(previewEditor, previewEditorInnerHtml);  // Remove the spinner from the preview editor
+                editors.forEach(editor => editor.innerHTML = article.content);  // Set the article content
+            }
+        }
+
+        // Function that updates an article.
+        async function updateArticle(id) {
+            // Validate the article.
+            if (!validateArticle()) return;
+
+            // Update the article.
+            const tags = [];
+
+            // Get all the selected tags and add them to the tags array.
+            document
+                .querySelectorAll("#tags-div input[type='checkbox']:checked")
+                .forEach(tag => tags.push(tag.value));
+
+            // Get the article title and content.
+            const title = articleTitle.value;
+            const content = editors[1].innerHTML;
+
+            // Create an object with the article title, content, and tags.
+            const article = {
+                title: title.trim(),
+                content: content.trim(),
+                tagIds: tags
+            };
+
+            const updateButton = document.getElementById("update-button");
+            addSpinner(updateButton); // Add spinner to the update button
+
+            const response = await fetch(`/api/v1/articles/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                },
+                body: JSON.stringify(article)
+            });
+
+            const result = await handleUpdateArticleResponse(response, updateButton);
+            if (result?.error) {
+                alert(result.error);
+            }
+        }
+
+        // Function that handles the response from the update article request and updates the UI accordingly.
+        async function handleUpdateArticleResponse(response, updateButton) {
+            if (!response.ok) {
+                // Remove the spinner and set the button text back to "Update".
+                removeSpinner(updateButton, "Update");
+
+                const defaultMessage = "Something went wrong while updating the article. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+
+                try {
+                    const errorResponse = await response.json();
+
+                    // If the errorResponse object contains the "redirectUrl" key, redirect to the specified URL.
+                    if ("redirectUrl" in errorResponse) {
+                        window.location.href = errorResponse.redirectUrl;
+                        return; // Exit the function after redirect
+                    }
+
+                    // If the errorResponse object contains the "title" key, update the UI accordingly.
+                    const titleKeyExists = "title" in errorResponse;
+                    if (titleKeyExists) showTitleErrorMessage(errorResponse.title);
+
+                    // If the errorResponse object contains the "content" key, update the UI accordingly.
+                    const contentTitleExists = "content" in errorResponse;
+                    if (contentTitleExists) showContentErrorMessage(errorResponse.content);
+
+                    // If the errorResponse object contains the "title" or "content" key, return.
+                    if (titleKeyExists || contentTitleExists) return;
+
+                    // Otherwise, return the error message (if exists) or the default message.
+                    return {error: errorResponse.message || defaultMessage};
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    alert(defaultMessage);
+                }
+            } else {
+                window.location.href = response.headers.get('Location');
+            }
+        }
+
+        // Function that fills the delete modal with the article title and sets the onclick event for the delete button.
+        function fillDeleteModal(title, id) {
+            // Set the title of the article to be deleted.
+            document.getElementById("title-delete-modal").textContent = `${title}`;
+
+            // Set the onclick event for the confirm deletion button.
+            const confirmDeletionButton = document.getElementById("confirm-deletion-button");
+            confirmDeletionButton.onclick = () => deleteArticle(id, confirmDeletionButton);
+        }
+
+        // Function that deletes an article.
+        async function deleteArticle(id, confirmDeletionButton) {
+            const response = await fetch(`/api/v1/articles/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                }
+            });
+
+            addSpinner(confirmDeletionButton); // Add spinner to the publish button
+
+            const result = await handleDeleteArticleResponse(response, confirmDeletionButton);
+            if (result?.error) {
+                alert(result.error);
+            }
+        }
+
+        // Function that handles the response from the delete article request and updates the UI accordingly.
+        async function handleDeleteArticleResponse(response, confirmDeletionButton) {
+            if (!response.ok) {
+                // Remove the spinner and set the button text back to "Continue".
+                removeSpinner(confirmDeletionButton, "Continue");
+
+                const defaultMessage = "Something went wrong while deleting the article. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+
+                try {
+                    const errorResponse = await response.json();
+
+                    // If the errorResponse object contains the "redirectUrl" key, redirect to the specified URL.
+                    if ("redirectUrl" in errorResponse) {
+                        window.location.href = errorResponse.redirectUrl;
+                        return; // Exit the function after redirect
+                    }
+
+                    // Otherwise, return the error message (if exists) or the default message.
+                    return {error: errorResponse.message || defaultMessage};
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    alert(defaultMessage);
+                }
+            } else {
+                window.location.href = response.headers.get('Location');
+            }
         }
     </script>
 
