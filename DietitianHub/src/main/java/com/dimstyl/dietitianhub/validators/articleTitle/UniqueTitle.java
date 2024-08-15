@@ -6,10 +6,10 @@ import jakarta.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = TitleExistenceValidator.class)
-public @interface Unique {
+public @interface UniqueTitle {
 
     String message() default "Title already exists";
 

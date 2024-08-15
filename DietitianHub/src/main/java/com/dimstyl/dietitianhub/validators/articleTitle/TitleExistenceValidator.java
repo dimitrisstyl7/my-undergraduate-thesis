@@ -1,23 +1,26 @@
 package com.dimstyl.dietitianhub.validators.articleTitle;
 
-import com.dimstyl.dietitianhub.repositories.ArticleRepository;
+import com.dimstyl.dietitianhub.dtos.ArticleDto;
+import com.dimstyl.dietitianhub.services.ArticleService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class TitleExistenceValidator implements ConstraintValidator<Unique, String> {
+public class TitleExistenceValidator implements ConstraintValidator<UniqueTitle, ArticleDto> {
 
-    private final ArticleRepository articleRepository;
+    private final ArticleService articleService;
 
     @Override
-    public void initialize(Unique constraintAnnotation) {
+    public void initialize(UniqueTitle constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        return !articleRepository.existsByTitle(s);
+    public boolean isValid(ArticleDto articleDto, ConstraintValidatorContext constraintValidatorContext) {
+        String oldTitle = articleService.getArticle(articleDto.id()).title();
+        String newTitle = articleDto.title();
+        return oldTitle.equals(newTitle) || !articleService.existsByTitle(newTitle);
     }
 
 }
