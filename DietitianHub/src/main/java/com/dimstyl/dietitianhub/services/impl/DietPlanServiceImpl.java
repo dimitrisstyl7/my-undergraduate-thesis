@@ -53,7 +53,7 @@ public class DietPlanServiceImpl implements DietPlanService {
     }
 
     @Override
-    public List<DietPlanDto> getDietPlansByUserInfoId(int userInfoId) {
+    public List<DietPlanDto> getDietPlans(int userInfoId) {
         return dietPlanRepository
                 .findAllByUserInfo_IdOrderByCreatedOnDesc(userInfoId)
                 .stream()

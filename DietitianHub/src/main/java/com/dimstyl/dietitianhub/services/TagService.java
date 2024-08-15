@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface TagService {
 
-    List<Tag> getTagsByIds(List<Integer> tagIds);
+    List<Tag> getTags(List<Integer> tagIds);
 
 }

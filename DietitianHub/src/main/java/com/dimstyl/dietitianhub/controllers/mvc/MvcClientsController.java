@@ -82,7 +82,7 @@ public class MvcClientsController {
             model.addAttribute("updateValidationsFailed", true);
             return "clients";
         }
-        int userId = userService.getUserById(id).getId();
+        int userId = userService.getUser(id).getId();
         userInfoService.updateUserInfo(clientDto, userId);
         redirectAttributes.addFlashAttribute("flashAttribute", "Client updated successfully.");
         return "redirect:/clients?success";
@@ -97,8 +97,8 @@ public class MvcClientsController {
 
     @GetMapping("/{id}/dietPlans/upload")
     public String uploadDietPlanPage(@PathVariable("id") int id, Model model) {
-        User user = userService.getUserById(id);
-        List<DietPlanDto> dietPlans = dietPlanService.getDietPlansByUserInfoId(user.getUserInfo().getId());
+        User user = userService.getUser(id);
+        List<DietPlanDto> dietPlans = dietPlanService.getDietPlans(user.getUserInfo().getId());
         model.addAttribute("clientId", id);
         model.addAttribute("dietPlans", dietPlans);
         return "upload-diet-plan";
@@ -118,7 +118,7 @@ public class MvcClientsController {
         }
 
         // Save the diet plan file
-        User user = userService.getUserById(id);
+        User user = userService.getUser(id);
         dietPlanService.saveDietPlan(user.getUserInfo(), file);
 
         // Redirect with success message
@@ -128,7 +128,7 @@ public class MvcClientsController {
     @GetMapping("/{clientId}/dietPlans/{dietPlanId}/download")
     public ResponseEntity<Resource> downloadDietPlan(@PathVariable("clientId") int clientId,
                                                      @PathVariable("dietPlanId") int dietPlanId) {
-        User user = userService.getUserById(clientId);
+        User user = userService.getUser(clientId);
         Resource file = dietPlanService.getDietPlanFileAsResource(dietPlanId, user.getUserInfo());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
@@ -140,7 +140,7 @@ public class MvcClientsController {
     @GetMapping("/{clientId}/dietPlans/{dietPlanId}/view")
     public ResponseEntity<Resource> viewDietPlan(@PathVariable("clientId") int clientId,
                                                  @PathVariable("dietPlanId") int dietPlanId) {
-        User user = userService.getUserById(clientId);
+        User user = userService.getUser(clientId);
         Resource file = dietPlanService.getDietPlanFileAsResource(dietPlanId, user.getUserInfo());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
@@ -152,7 +152,7 @@ public class MvcClientsController {
     @GetMapping("/{clientId}/dietPlans/{dietPlanId}/delete")
     public String deleteDietPlan(@PathVariable("clientId") int clientId,
                                  @PathVariable("dietPlanId") int dietPlanId) {
-        User user = userService.getUserById(clientId);
+        User user = userService.getUser(clientId);
         dietPlanService.deleteDietPlan(dietPlanId, user.getUserInfo());
         return "redirect:/clients/%d/dietPlans/upload?deleteSuccess".formatted(clientId);
     }

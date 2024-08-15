@@ -16,7 +16,7 @@ public class TagServiceImpl implements TagService {
     private final TagRepository tagRepository;
 
     @Override
-    public List<Tag> getTagsByIds(List<Integer> tagIds) {
+    public List<Tag> getTags(List<Integer> tagIds) {
         List<Tag> tags = tagRepository.findAllById(tagIds);
 
         if (tags.size() != tagIds.size()) {

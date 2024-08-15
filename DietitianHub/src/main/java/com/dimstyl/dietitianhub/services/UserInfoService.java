@@ -17,6 +17,6 @@ public interface UserInfoService {
 
     void updateClientTags(int id, List<Integer> tagIds);
 
-    UserInfo getUserInfoByUserId(int userId);
+    UserInfo getUserInfo(int userId);
 
 }

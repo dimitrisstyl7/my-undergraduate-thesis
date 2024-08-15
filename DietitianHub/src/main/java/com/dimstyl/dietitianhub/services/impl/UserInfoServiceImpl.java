@@ -36,7 +36,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     @Transactional
     public void updateUserInfo(ClientDto clientDto, int userId) {
-        UserInfo existingUserInfo = getUserInfoByUserId(userId);
+        UserInfo existingUserInfo = getUserInfo(userId);
 
         existingUserInfo.setFirstName(clientDto.getFirstName());
         existingUserInfo.setLastName(clientDto.getLastName());
@@ -50,7 +50,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public List<TagDto> getClientTags(int userId) {
-        UserInfo userInfo = getUserInfoByUserId(userId);
+        UserInfo userInfo = getUserInfo(userId);
         return userInfo.getTags().stream()
                 .map(Tag::toDto)
                 .toList();
@@ -59,14 +59,14 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     @Transactional
     public void updateClientTags(int userId, List<Integer> tagIds) {
-        UserInfo userInfo = getUserInfoByUserId(userId);
-        List<Tag> tags = tagService.getTagsByIds(tagIds);
+        UserInfo userInfo = getUserInfo(userId);
+        List<Tag> tags = tagService.getTags(tagIds);
         userInfo.setTags(tags);
         userInfoRepository.save(userInfo);
     }
 
     @Override
-    public UserInfo getUserInfoByUserId(int userId) {
+    public UserInfo getUserInfo(int userId) {
         RequestType requestType = RequestTypeUtil.getRequestType(request.getRequestURI());
 
         return userInfoRepository

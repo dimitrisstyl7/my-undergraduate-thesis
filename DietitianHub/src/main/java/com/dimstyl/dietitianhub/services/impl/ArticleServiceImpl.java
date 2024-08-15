@@ -38,7 +38,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public void createArticle(ArticleDto articleDto) {
-        List<Tag> tags = tagService.getTagsByIds(articleDto.tagIds());
+        List<Tag> tags = tagService.getTags(articleDto.tagIds());
         Article article = articleDto.toArticle(tags);
         articleRepository.save(article);
     }
@@ -46,7 +46,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public void updateArticle(int id, ArticleDto articleDto) {
-        List<Tag> tags = tagService.getTagsByIds(articleDto.tagIds());
+        List<Tag> tags = tagService.getTags(articleDto.tagIds());
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException("Article with id %d not found".formatted(id)));
         article.setTitle(articleDto.title());

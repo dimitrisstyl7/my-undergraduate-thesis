@@ -14,7 +14,7 @@ public interface DietPlanService {
 
     DietPlan getDietPlan(int userInfoId, int dietPlanId);
 
-    List<DietPlanDto> getDietPlansByUserInfoId(int userInfoId);
+    List<DietPlanDto> getDietPlans(int userInfoId);
 
     Resource getDietPlanFileAsResource(int dietPlanId, UserInfo userInfo);
 
