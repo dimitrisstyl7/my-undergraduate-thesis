@@ -197,7 +197,7 @@
     <div class="row">
         <div id="articles-div" class="col-xl-4" th:each="article: ${articles}">
             <div class="card">
-                <div class="card-body project-box text-center">
+                <div class="card-body project-box text-center pb-2">
                     <div class="mb-2">
                         <h4 class="mt-0"><span class="text-dark" th:text="${article.title}"></span></h4>
                         <div class="text-uppercase font-12">
@@ -205,7 +205,7 @@
                                   th:text="${tag} + ${itemStat.last ? '' : ' | '}"></span>
                         </div>
                         <p class="text-muted font-13 mt-2 mb-2">
-                            <strong>Created Date :</strong> <span class="ms-1" th:text="${article.createdAt()}"></span>
+                            <strong>Created On :</strong> <span class="ms-1" th:text="${article.createdAt()}"></span>
                         </p>
                     </div>
 
@@ -437,7 +437,10 @@
         async function handlePublishArticleResponse(response, publishButton) {
             if (!response.ok) {
                 // Remove the spinner and set the button text back to "Publish now".
-                removeSpinner(publishButton, "Publish now");
+                removeSpinner(
+                    publishButton,
+                    "Publish now<span class='btn-label-right'><i class='mdi mdi-publish'></i></span>"
+                );
 
                 const defaultMessage = "Something went wrong while publishing the article. " +
                     "Please try again. If the problem persists, please contact our Support.";
@@ -530,8 +533,9 @@
             const title = articleTitle.value;
             const content = editors[1].innerHTML;
 
-            // Create an object with the article title, content, and tags.
+            // Create an object with the article id, title, content, and tags.
             const article = {
+                id: id,
                 title: title.trim(),
                 content: content.trim(),
                 tagIds: tags
@@ -559,7 +563,10 @@
         async function handleUpdateArticleResponse(response, updateButton) {
             if (!response.ok) {
                 // Remove the spinner and set the button text back to "Update".
-                removeSpinner(updateButton, "Update");
+                removeSpinner(
+                    updateButton,
+                    "Update<span class='btn-label-right'><i class='mdi mdi-update'></i></span>"
+                );
 
                 const defaultMessage = "Something went wrong while updating the article. " +
                     "Please try again. If the problem persists, please contact our Support.";
