@@ -61,9 +61,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     public void updateClientTags(int userId, List<Integer> tagIds) {
         UserInfo userInfo = getUserInfoByUserId(userId);
         List<Tag> tags = tagService.getTagsByIds(tagIds);
-
         userInfo.setTags(tags);
-
         userInfoRepository.save(userInfo);
     }
 
