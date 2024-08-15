@@ -33,8 +33,7 @@ public class ApiArticlesController {
             return ResponseEntity.noContent().location(URI.create("/articles?publishSuccess")).build();
         }
 
-        // If there are errors but no default message is found, return a bad request without a body.
-        // Otherwise, return a bad request without a body.
+        // Otherwise, return a bad request.
         var titleError = result.getFieldError("title");
         var contentError = result.getFieldError("content");
         Map<String, String> errors = new HashMap<>() {
@@ -46,6 +45,9 @@ public class ApiArticlesController {
                     && contentError.getDefaultMessage() != null) put("content", contentError.getDefaultMessage());
             }
         };
+
+        // If errors map is empty (no default message found), return a bad request without a body.
+        // Otherwise, return a bad request with the errors map in the body.
         return errors.isEmpty() ? ResponseEntity.badRequest().build() : ResponseEntity.badRequest().body(errors);
     }
 
@@ -59,8 +61,7 @@ public class ApiArticlesController {
             return ResponseEntity.noContent().location(URI.create("/articles?updateSuccess")).build();
         }
 
-        // If there are errors but no default message is found, return a bad request without a body.
-        // Otherwise, return a bad request without a body.
+        // Otherwise, return a bad request.
         var titleError = result.getFieldError("title");
         var contentError = result.getFieldError("content");
         Map<String, String> errors = new HashMap<>() {
@@ -72,6 +73,9 @@ public class ApiArticlesController {
                     && contentError.getDefaultMessage() != null) put("content", contentError.getDefaultMessage());
             }
         };
+
+        // If errors map is empty (no default message found), return a bad request without a body.
+        // Otherwise, return a bad request with the errors map in the body.
         return errors.isEmpty() ? ResponseEntity.badRequest().build() : ResponseEntity.badRequest().body(errors);
     }
 
