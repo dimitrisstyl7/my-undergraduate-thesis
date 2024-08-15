@@ -16,4 +16,6 @@ public interface ArticleService {
 
     void deleteArticle(int id);
 
+    boolean existsByTitle(String title);
+
 }

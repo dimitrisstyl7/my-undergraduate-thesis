@@ -63,4 +63,9 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.delete(article);
     }
 
+    @Override
+    public boolean existsByTitle(String title) {
+        return articleRepository.existsByTitle(title);
+    }
+
 }
