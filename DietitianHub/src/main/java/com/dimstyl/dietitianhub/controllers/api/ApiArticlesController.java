@@ -62,7 +62,7 @@ public class ApiArticlesController {
         }
 
         // Otherwise, return a bad request.
-        var titleError = result.getFieldError("title");
+        var titleError = result.getGlobalError();
         var contentError = result.getFieldError("content");
         Map<String, String> errors = new HashMap<>() {
             {
