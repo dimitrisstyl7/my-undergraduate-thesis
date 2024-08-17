@@ -3,7 +3,7 @@ package com.dimstyl.dietitianhub.dtos;
 import com.dimstyl.dietitianhub.entities.Role;
 import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.entities.UserInfo;
-import com.dimstyl.dietitianhub.utilities.DateUtil;
+import com.dimstyl.dietitianhub.utilities.DateTimeUtil;
 import com.dimstyl.dietitianhub.validators.gender.GenderConstraint;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -49,7 +49,7 @@ public class ClientDto {
     private String phone;
 
     public String getFormattedDateOfBirth() {
-        return DateUtil.getFormattedDate(dateOfBirth);
+        return DateTimeUtil.getFormattedDate(dateOfBirth);
     }
 
     public String getFullName() {
