@@ -33,4 +33,9 @@ public class Announcement {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    public AnnouncementDto toDto() {
+        String createdAt = DateTimeUtil.getFormattedDateTime(this.createdAt);
+        return new AnnouncementDto(id, title, content, createdAt);
+    }
+
 }
