@@ -256,10 +256,6 @@
         async function configureModalForViewing(articleId) {
             const previewEditor = document.getElementById("preview-article");
             const previewEditorInnerHtml = previewEditor.innerHTML;
-            addSpinner(previewEditor);  // Add spinner to the preview editor
-
-            // Fetch the article by its ID.
-            await fetchArticle(articleId, previewEditor, previewEditorInnerHtml);
 
             // Disable the contenteditable attribute of the edit article editor.
             editors[0].setAttribute("contenteditable", "false");
@@ -272,11 +268,15 @@
             previewArticle.classList.add("show", "active");
             articleTitle.setAttribute("disabled", "true");
 
-            // Set onclick event for the update button.
-            document.getElementById("update-button").onclick = () => updateArticle(articleId);
-
             disableTagCheckboxes();
             showUpdateButton();
+            addSpinner(previewEditor);  // Add spinner to the preview editor
+
+            // Fetch the article by its ID.
+            await fetchArticle(articleId, previewEditor, previewEditorInnerHtml);
+
+            // Set onclick event for the update button.
+            document.getElementById("update-button").onclick = () => updateArticle(articleId);
         }
 
         // Function that shows publish button.
