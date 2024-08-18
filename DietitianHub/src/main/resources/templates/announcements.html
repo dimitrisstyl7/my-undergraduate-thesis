@@ -197,7 +197,8 @@
                                             th:onclick="configureModalForViewing([[${announcement.id()}]])">View
                                     </button>
                                     <button type="button"
-                                            class="btn btn-sm btn-danger waves-effect waves-light rounded-pill ms-1">
+                                            class="btn btn-sm btn-danger waves-effect waves-light rounded-pill ms-1"
+                                            th:onclick="fillDeleteModal([[${announcement.title()}]],[[${announcement.id()}]])">
                                         Delete
                                     </button>
                                 </div>
@@ -232,7 +233,8 @@
                                             th:onclick="configureModalForViewing([[${announcement.id()}]])">View
                                     </button>
                                     <button type="button"
-                                            class="btn btn-sm btn-danger waves-effect waves-light rounded-pill ms-1">
+                                            class="btn btn-sm btn-danger waves-effect waves-light rounded-pill ms-1"
+                                            th:onclick="fillDeleteModal([[${announcement.title()}]],[[${announcement.id()}]])">
                                         Delete
                                     </button>
                                 </div>
@@ -267,7 +269,9 @@
                                             th:onclick="configureModalForViewing([[${announcement.id()}]])">View
                                     </button>
                                     <button type="button"
-                                            class="btn btn-sm btn-danger waves-effect waves-light rounded-pill ms-1">
+                                            class="btn btn-sm btn-danger waves-effect waves-light rounded-pill ms-1"
+                                            data-bs-toggle="modal" data-bs-target="#announcement-delete-modal"
+                                            th:onclick="fillDeleteModal([[${announcement.title()}]],[[${announcement.id()}]])">
                                         Delete
                                     </button>
                                 </div>
@@ -621,6 +625,62 @@
                 } else {
                     window.location.href = response.headers.get('Location');
                 }
+            }
+        }
+
+        // Function that fills the delete modal with the announcement title and sets the onclick event for the delete button.
+        function fillDeleteModal(title, id) {
+            // Set the title of the article to be deleted.
+            document.getElementById("title-delete-modal").textContent = `${title}`;
+
+            // Set the onclick event for the confirm deletion button.
+            const confirmDeletionButton = document.getElementById("confirm-deletion-button");
+            confirmDeletionButton.onclick = () => deleteAnnouncement(id, confirmDeletionButton);
+        }
+
+        // Function that deletes an announcement.
+        async function deleteAnnouncement(id, confirmDeletionButton) {
+            const response = await fetch(`/api/v1/announcements/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                }
+            });
+
+            addSpinner(confirmDeletionButton); // Add spinner to the publish button
+
+            const result = await handleDeleteAnnouncementResponse(response, confirmDeletionButton);
+            if (result?.error) {
+                alert(result.error);
+            }
+        }
+
+        // Function that handles the response from the delete announcement request and updates the UI accordingly.
+        async function handleDeleteAnnouncementResponse(response, confirmDeletionButton) {
+            if (!response.ok) {
+                // Remove the spinner and set the button text back to "Continue".
+                removeSpinner(confirmDeletionButton, "Continue");
+
+                const defaultMessage = "Something went wrong while deleting the announcement. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+
+                try {
+                    const errorResponse = await response.json();
+
+                    // If the errorResponse object contains the "redirectUrl" key, redirect to the specified URL.
+                    if ("redirectUrl" in errorResponse) {
+                        window.location.href = errorResponse.redirectUrl;
+                        return; // Exit the function after redirect
+                    }
+
+                    // Otherwise, return the error message (if exists) or the default message.
+                    return {error: errorResponse.message || defaultMessage};
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    alert(defaultMessage);
+                }
+            } else {
+                window.location.href = response.headers.get('Location');
             }
         }
     </script>
