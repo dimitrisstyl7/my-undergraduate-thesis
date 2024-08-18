@@ -18,6 +18,8 @@ public interface AnnouncementService {
 
     void updateAnnouncement(int id, AnnouncementDto announcementDto);
 
+    void deleteAnnouncement(int id);
+
     boolean existsByTitle(String title);
 
 }

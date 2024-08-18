@@ -72,6 +72,14 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     }
 
     @Override
+    @Transactional
+    public void deleteAnnouncement(int id) {
+        Announcement announcement = announcementRepository.findById(id)
+                .orElseThrow(() -> new AnnouncementNotFoundException("Announcement with id %d not found".formatted(id)));
+        announcementRepository.delete(announcement);
+    }
+
+    @Override
     public boolean existsByTitle(String title) {
         return announcementRepository.existsByTitle(title);
     }

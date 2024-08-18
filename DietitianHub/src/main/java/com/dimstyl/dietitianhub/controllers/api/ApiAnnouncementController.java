@@ -79,4 +79,10 @@ public class ApiAnnouncementController {
         return errors.isEmpty() ? ResponseEntity.badRequest().build() : ResponseEntity.badRequest().body(errors);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAnnouncement(@PathVariable("id") int id) {
+        announcementService.deleteAnnouncement(id);
+        return ResponseEntity.noContent().location(URI.create("/announcements?deleteSuccess")).build();
+    }
+
 }
