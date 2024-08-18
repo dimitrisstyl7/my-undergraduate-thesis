@@ -11,7 +11,6 @@ import com.dimstyl.dietitianhub.exceptions.MvcUserInfoNotFoundException;
 import com.dimstyl.dietitianhub.repositories.UserInfoRepository;
 import com.dimstyl.dietitianhub.services.TagService;
 import com.dimstyl.dietitianhub.services.UserInfoService;
-import com.dimstyl.dietitianhub.utilities.RequestTypeUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -67,7 +66,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public UserInfo getUserInfo(int userId) {
-        RequestType requestType = RequestTypeUtil.getRequestType(request.getRequestURI());
+        RequestType requestType = RequestType.byUri(request.getRequestURI());
 
         return userInfoRepository
                 .findByUserId(userId)
