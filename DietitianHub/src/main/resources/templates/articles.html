@@ -10,6 +10,15 @@
     <link th:href="@{/libs/quill/quill.core.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/libs/quill/quill.bubble.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/libs/quill/quill.snow.css}" rel="stylesheet" type="text/css"/>
+
+    <!-- Custom css -->
+    <style>
+        #title {
+            max-width: 90%;
+            min-width: 205px;
+            box-sizing: content-box; /* Ensure padding and border don't affect width */
+        }
+    </style>
 </head>
 
 <body>
@@ -41,7 +50,7 @@
                     <h4 class="modal-title" id="custom-title" style="width: 90%">
                         <label for="title">Title:</label>
                         <input type="text" id="title" name="title" oninput="this.size = this.value.length"
-                               class="ms-1" style="max-width: 90%; min-width: 205px">
+                               class="ms-1">
                         <span id="title-error-message" class="validation-error ps-1" hidden></span>
                     </h4>
                     <button type="button" class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"
@@ -257,9 +266,6 @@
             const previewEditor = document.getElementById("preview-article");
             const previewEditorInnerHtml = previewEditor.innerHTML;
 
-            // Disable the contenteditable attribute of the edit article editor.
-            editors[0].setAttribute("contenteditable", "false");
-
             editArticleTab.setAttribute("aria-expanded", "false");
             editArticleTab.classList.remove("active");
             editArticle.classList.remove("show", "active");
@@ -275,8 +281,14 @@
             // Fetch the article by its ID.
             await fetchArticle(articleId, previewEditor, previewEditorInnerHtml);
 
+            // Adjust the size of the input field for the article title.
+            articleTitle.size = articleTitle.value.length;
+
             // Set onclick event for the update button.
             document.getElementById("update-button").onclick = () => updateArticle(articleId);
+
+            // Disable the contenteditable attribute of the edit article editor.
+            editors[0].setAttribute("contenteditable", "false");
         }
 
         // Function that shows publish button.
@@ -509,10 +521,8 @@
             // Validate the article.
             if (!validateArticle()) return;
 
-            // Update the article.
-            const tags = [];
-
             // Get all the selected tags and add them to the tags array.
+            const tags = [];
             document
                 .querySelectorAll("#tags-div input[type='checkbox']:checked")
                 .forEach(tag => tags.push(tag.value));
