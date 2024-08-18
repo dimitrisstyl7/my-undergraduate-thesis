@@ -10,19 +10,6 @@
     <link th:href="@{/libs/quill/quill.core.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/libs/quill/quill.bubble.css}" rel="stylesheet" type="text/css"/>
     <link th:href="@{/libs/quill/quill.snow.css}" rel="stylesheet" type="text/css"/>
-
-    <!-- Custom css -->
-    <style>
-        .custom-form-label {
-            font-weight: bold;
-            color: #404040;
-        }
-
-        .validation-error {
-            color: red;
-            font-size: 12px;
-        }
-    </style>
 </head>
 
 <body>
@@ -175,7 +162,7 @@
     </div>
     <!-- end modal -->
 
-    <!-- Modal for diet plan deletion -->
+    <!-- Modal for article deletion -->
     <div id="article-delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -193,6 +180,7 @@
             </div><!-- end modal-content -->
         </div><!-- end modal-dialog -->
     </div><!-- end modal -->
+    <!-- end modal -->
 
     <!-- Articles -->
     <div class="row">
@@ -202,11 +190,11 @@
                     <div class="mb-2">
                         <h4 class="mt-0"><span class="text-dark" th:text="${article.title}"></span></h4>
                         <div class="text-uppercase font-12">
-                            <span th:each="tag, itemStat: ${article.tagNames()}"
-                                  th:text="${tag} + ${itemStat.last ? '' : ' | '}"></span>
+                            <span th:each="tag,iterStat: ${article.tagNames()}"
+                                  th:text="${tag} + ${iterStat.last ? '' : ' | '}"></span>
                         </div>
                         <p class="text-muted font-13 mt-2 mb-2">
-                            <strong>Created On :</strong> <span class="ms-1" th:text="${article.createdAt()}"></span>
+                            <strong>Published At :</strong> <span class="ms-1" th:text="${article.createdAt()}"></span>
                         </p>
                     </div>
 
