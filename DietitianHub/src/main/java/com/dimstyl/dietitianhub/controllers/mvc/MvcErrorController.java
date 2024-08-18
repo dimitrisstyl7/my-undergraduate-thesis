@@ -58,4 +58,9 @@ public class MvcErrorController {
         return "error/article-not-found";
     }
 
+    @GetMapping("/announcementNotFound")
+    public String AnnouncementNotFoundPage() {
+        return "error/announcement-not-found";
+    }
+
 }

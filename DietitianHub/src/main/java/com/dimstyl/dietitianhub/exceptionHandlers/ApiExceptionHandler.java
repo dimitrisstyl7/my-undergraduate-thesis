@@ -1,5 +1,6 @@
 package com.dimstyl.dietitianhub.exceptionHandlers;
 
+import com.dimstyl.dietitianhub.exceptions.AnnouncementNotFoundException;
 import com.dimstyl.dietitianhub.exceptions.ApiUserInfoNotFoundException;
 import com.dimstyl.dietitianhub.exceptions.ArticleNotFoundException;
 import com.dimstyl.dietitianhub.exceptions.TagsMismatchException;
@@ -49,6 +50,19 @@ public class ApiExceptionHandler {
                         The operation could not be completed because the article was not found. \
                         Please try again. If the problem persists, please contact our Support.""",
                 "/error/articleNotFound"
+        );
+    }
+
+    @ExceptionHandler(AnnouncementNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    protected ErrorResponse handleAnnouncementNotFoundException() {
+        return new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                """
+                        The operation could not be completed because the announcement was not found. \
+                        Please try again. If the problem persists, please contact our Support.""",
+                "/error/announcementNotFound"
         );
     }
 
