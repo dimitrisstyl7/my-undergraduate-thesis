@@ -128,7 +128,7 @@
                 <div class="modal-footer bg-light d-flex justify-content-center">
                     <div id="publish-button-div">
                         <button id="publish-button" type="button" class="btn btn-success waves-effect waves-light"
-                                onclick=""> <!-- TODO: Implement publish functionality -->
+                                onclick="publishAnnouncement()">
                             Publish now
                             <span class="btn-label-right"><i class="mdi mdi-publish"></i></span>
                         </button>
@@ -430,6 +430,82 @@
             editAnnouncementCard.classList.add("border-danger", "border-2");
             editorsErrorMessage.textContent = message;
             editorsErrorMessage.removeAttribute("hidden");
+        }
+
+        // Function that publishes an announcement.
+        async function publishAnnouncement() {
+            // Validate the announcement.
+            if (!validateAnnouncement()) return;
+
+            // Get the announcement title and content.
+            const title = announcementTitle.value;
+            const content = editors[1].innerHTML;
+
+            // Create an object with the announcement title, and content.
+            const announcement = {
+                title: title.trim(),
+                content: content.trim(),
+            };
+
+            const publishButton = document.getElementById("publish-button");
+            addSpinner(publishButton); // Add spinner to the publish button
+
+            const response = await fetch('/api/v1/announcements', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                },
+                body: JSON.stringify(announcement)
+            });
+
+            const result = await handlePublishAnnouncementResponse(response, publishButton);
+            if (result?.error) {
+                alert(result.error);
+            }
+        }
+
+        // Function that handles the response from the publish announcement request and updates the UI accordingly.
+        async function handlePublishAnnouncementResponse(response, publishButton) {
+            if (!response.ok) {
+                // Remove the spinner and set the button text back to "Publish now".
+                removeSpinner(
+                    publishButton,
+                    "Publish now<span class='btn-label-right'><i class='mdi mdi-publish'></i></span>"
+                );
+
+                const defaultMessage = "Something went wrong while publishing the announcement. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+
+                try {
+                    const errorResponse = await response.json();
+
+                    // If the errorResponse object contains the "redirectUrl" key, redirect to the specified URL.
+                    if ("redirectUrl" in errorResponse) {
+                        window.location.href = errorResponse.redirectUrl;
+                        return; // Exit the function after redirect
+                    }
+
+                    // If the errorResponse object contains the "title" key, update the UI accordingly.
+                    const titleKeyExists = "title" in errorResponse;
+                    if (titleKeyExists) showTitleErrorMessage(errorResponse.title);
+
+                    // If the errorResponse object contains the "content" key, update the UI accordingly.
+                    const contentTitleExists = "content" in errorResponse;
+                    if (contentTitleExists) showContentErrorMessage(errorResponse.content);
+
+                    // If the errorResponse object contains the "title" or "content" key, return.
+                    if (titleKeyExists || contentTitleExists) return;
+
+                    // Otherwise, return the error message (if exists) or the default message.
+                    return {error: errorResponse.message || defaultMessage};
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    alert(defaultMessage);
+                }
+            } else {
+                window.location.href = response.headers.get('Location');
+            }
         }
 
         // Function that fetches an announcement by its ID.
