@@ -7,6 +7,7 @@ import com.dimstyl.dietitianhub.repositories.AnnouncementRepository;
 import com.dimstyl.dietitianhub.services.AnnouncementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,7 +22,8 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     @Override
     public List<AnnouncementDto> getAnnouncementsForToday() {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
-        return announcementRepository.findAnnouncementByCreatedAtAfterOrderByCreatedAtDesc(startOfDay).stream()
+        return announcementRepository
+                .findAnnouncementByCreatedAtAfterOrderByCreatedAtDesc(startOfDay).stream()
                 .map(Announcement::toDto)
                 .toList();
     }
@@ -30,7 +32,8 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     public List<AnnouncementDto> getAnnouncementsForYesterday() {
         LocalDateTime start = LocalDate.now().minusDays(1).atStartOfDay();
         LocalDateTime end = LocalDate.now().atStartOfDay().minusSeconds(1);
-        return announcementRepository.findAnnouncementByCreatedAtBetweenOrderByCreatedAtDesc(start, end).stream()
+        return announcementRepository
+                .findAnnouncementByCreatedAtBetweenOrderByCreatedAtDesc(start, end).stream()
                 .map(Announcement::toDto)
                 .toList();
     }
@@ -38,7 +41,8 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     @Override
     public List<AnnouncementDto> getEarlierAnnouncements() {
         LocalDateTime dateTime = LocalDate.now().minusDays(1).atStartOfDay().minusSeconds(1);
-        return announcementRepository.findFirst10ByCreatedAtBeforeOrderByCreatedAtDesc(dateTime).stream()
+        return announcementRepository
+                .findFirst10ByCreatedAtBeforeOrderByCreatedAtDesc(dateTime).stream()
                 .map(Announcement::toDto)
                 .toList();
     }
@@ -48,6 +52,16 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         return announcementRepository.findById(id)
                 .map(Announcement::toDto)
                 .orElseThrow(() -> new AnnouncementNotFoundException("Announcement with id %d not found".formatted(id)));
+    }
+
+    @Override
+    @Transactional
+    public void updateAnnouncement(int id, AnnouncementDto announcementDto) {
+        Announcement announcement = announcementRepository.findById(id)
+                .orElseThrow(() -> new AnnouncementNotFoundException("Announcement with id %d not found".formatted(id)));
+        announcement.setTitle(announcementDto.title());
+        announcement.setContent(announcementDto.content());
+        announcementRepository.save(announcement);
     }
 
     @Override
