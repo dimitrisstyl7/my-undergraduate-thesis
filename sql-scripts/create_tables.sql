@@ -1,3 +1,4 @@
+drop table if exists announcement;
 drop table if exists article_tag_association;
 drop table if exists article;
 drop table if exists diet_plan;
@@ -78,4 +79,12 @@ create table article_tag_association
     article_id int not null references article (id),
     tag_id     int not null references tag (id),
     primary key (article_id, tag_id)
+);
+
+create table announcement
+(
+    id         serial       not null unique primary key,
+    title      varchar(100) not null unique,
+    content    text         not null,
+    created_at timestamp    not null default now()
 );
