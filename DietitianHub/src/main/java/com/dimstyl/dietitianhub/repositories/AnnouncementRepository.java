@@ -14,4 +14,6 @@ public interface AnnouncementRepository extends JpaRepository<Announcement, Inte
 
     List<Announcement> findFirst10ByCreatedAtBeforeOrderByCreatedAtDesc(LocalDateTime dateTime);
 
+    boolean existsByTitle(String title);
+
 }

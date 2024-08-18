@@ -13,7 +13,7 @@ public record ArticleDto(int id,
                          @NotBlank(message = "Content cannot be empty") String content,
                          List<String> tagNames,
                          String createdAt,
-                         List<Integer> tagIds) {
+                         List<Integer> tagIds) implements IdentifiableAndTitleable {
 
     public Article toArticle(List<Tag> tags) {
         return Article.builder()

@@ -14,4 +14,6 @@ public interface AnnouncementService {
 
     AnnouncementDto getAnnouncement(int id);
 
+    boolean existsByTitle(String title);
+
 }

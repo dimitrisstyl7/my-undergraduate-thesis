@@ -50,4 +50,9 @@ public class AnnouncementServiceImpl implements AnnouncementService {
                 .orElseThrow(() -> new AnnouncementNotFoundException("Announcement with id %d not found".formatted(id)));
     }
 
+    @Override
+    public boolean existsByTitle(String title) {
+        return announcementRepository.existsByTitle(title);
+    }
+
 }
