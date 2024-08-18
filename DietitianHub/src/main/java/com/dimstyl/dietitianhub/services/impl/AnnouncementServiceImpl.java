@@ -56,6 +56,13 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
     @Override
     @Transactional
+    public void createAnnouncement(AnnouncementDto announcementDto) {
+        Announcement announcement = announcementDto.toAnnouncement();
+        announcementRepository.save(announcement);
+    }
+
+    @Override
+    @Transactional
     public void updateAnnouncement(int id, AnnouncementDto announcementDto) {
         Announcement announcement = announcementRepository.findById(id)
                 .orElseThrow(() -> new AnnouncementNotFoundException("Announcement with id %d not found".formatted(id)));
