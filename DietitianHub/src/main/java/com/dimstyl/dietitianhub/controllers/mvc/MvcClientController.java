@@ -27,7 +27,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/clients")
 @RequiredArgsConstructor
-public class MvcClientsController {
+public class MvcClientController {
 
     private final UserService userService;
     private final UserInfoService userInfoService;

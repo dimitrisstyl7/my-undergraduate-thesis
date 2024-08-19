@@ -4,11 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class MvcMessagesController {
+public class MvcAppointmentController {
 
-    @GetMapping("/messages")
-    public String messagesPage() {
-        return "messages";
+    @GetMapping("/appointments")
+    public String appointmentsPage() {
+        return "appointments";
     }
 
 }

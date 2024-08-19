@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/articles")
 @RequiredArgsConstructor
-public class MvcArticlesController {
+public class MvcArticleController {
 
     private final TagCategoryService tagCategoryService;
     private final ArticleService articleService;

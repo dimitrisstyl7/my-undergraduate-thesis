@@ -15,7 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/articles")
 @RequiredArgsConstructor
-public class ApiArticlesController {
+public class ApiArticleController {
 
     private final ArticleService articleService;
 

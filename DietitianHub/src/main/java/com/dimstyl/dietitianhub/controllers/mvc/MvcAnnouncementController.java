@@ -13,7 +13,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/announcements")
 @RequiredArgsConstructor
-public class MvcAnnouncementsController {
+public class MvcAnnouncementController {
 
     private final AnnouncementService announcementService;
 
