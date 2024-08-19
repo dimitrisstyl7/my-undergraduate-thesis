@@ -5,16 +5,17 @@
       layout:decorate="~{fragments/_page-layout}">
 <head>
     <title>Clients</title>
+
+    <!-- Custom css -->
+    <style>
+        #client-delete-modal {
+            overflow-wrap: anywhere; /* Ensure breaking occurs even in long unbroken words */
+        }
+    </style>
 </head>
 
 <body>
 <div layout:fragment="main-content">
-    <!-- Alert messages -->
-    <div th:if="${alertMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Success!</strong> [[${alertMessage}]]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
     <!-- Modal for client registration/edit -->
     <form id="main-form" th:object="${client}" onsubmit="return validateGender()" method="post">
         <th:block th:replace="~{fragments/_csrf :: csrf}"></th:block>
@@ -163,45 +164,32 @@
     </form>
     <!-- end modal -->
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row justify-content-between">
-                        <div class="col-md-4">
-                            <div class="mt-3 mt-md-0">
-                                <button class="btn btn-lg font-16 btn-success" data-bs-toggle="modal"
-                                        id="registration-button" data-bs-target="#main-modal"
-                                        onclick="fillMainModal('/clients/register', 'Register client', 'Register')">
-                                    <i class="fa fa-plus me-1"></i> Register client
-                                </button>
-                            </div>
-                        </div><!-- end col-->
-                        <div class="col-md-8"> <!-- TODO Should be removed if not implemented -->
-                            <form class="d-flex flex-wrap align-items-center justify-content-sm-end">
-                                <label for="status-select" class="me-2">Sort By</label>
-                                <div class="me-sm-2">
-                                    <select class="form-select my-1 my-md-0" id="status-select">
-                                        <option value="1" selected>First Name</option>
-                                        <option value="2">Last Name</option>
-                                        <option value="3">Gender</option>
-                                    </select>
-                                </div>
-                                <label for="inputPassword2" class="visually-hidden">Search</label>
-                                <div>
-                                    <input type="search" class="form-control my-1 my-md-0" id="inputPassword2"
-                                           placeholder="Search...">
-                                </div>
-                            </form>
-                        </div>
-                    </div> <!-- end row -->
-                </div>
-            </div> <!-- end card -->
-        </div><!-- end col-->
+    <!-- Alert messages -->
+    <div th:if="${alertMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="mdi mdi-check-circle me-1"></i>
+        <strong>Success!</strong> [[${alertMessage}]]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    <!-- end row -->
 
-    <div class="row" th:with="maleImg=@{/images/users/male.png}, femaleImg=@{/images/users/female.png}">
+    <!-- Button to register a new client -->
+    <button class="btn btn-lg font-16 btn-success mb-3" data-bs-toggle="modal"
+            id="registration-button" data-bs-target="#main-modal"
+            onclick="fillMainModal('/clients/register', 'Register client', 'Register')">
+        <i class="fa fa-plus me-1"></i> Register client
+    </button>
+
+    <!-- Clients list -->
+    <div th:if="${clients.isEmpty()}" class="row">
+        <div class="alert alert-info text-center" role="alert">
+            <i class="mdi mdi-information me-1"></i>
+            <strong>No clients available!</strong>
+            <br> It looks like you haven't registered any clients yet.
+            <br> To get started, click the <strong>"Register client"</strong> button above to register a new client.
+        </div>
+    </div>
+
+    <div th:unless="${clients.isEmpty()}" class="row"
+         th:with="maleImg=@{/images/users/male.png}, femaleImg=@{/images/users/female.png}">
         <div class="col-xl-4" th:each="c: ${clients}">
             <div class="card">
                 <div class="text-center card-body">
