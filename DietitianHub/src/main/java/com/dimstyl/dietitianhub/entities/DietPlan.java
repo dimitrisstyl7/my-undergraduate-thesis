@@ -1,13 +1,14 @@
 package com.dimstyl.dietitianhub.entities;
 
 import com.dimstyl.dietitianhub.dtos.DietPlanDto;
-import com.dimstyl.dietitianhub.utilities.DateTimeUtil;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SourceType;
 
 import java.time.LocalDate;
+
+import static com.dimstyl.dietitianhub.utilities.DateTimeUtil.getFormattedDate;
 
 @Entity
 @Table(name = "diet_plan", schema = "public", uniqueConstraints = @UniqueConstraint(columnNames = {"user_info_id", "created_on"}))
@@ -35,7 +36,7 @@ public class DietPlan {
     private LocalDate createdOn;
 
     public DietPlanDto toDto() {
-        return new DietPlanDto(id, name, DateTimeUtil.getFormattedDate(createdOn));
+        return new DietPlanDto(id, name, getFormattedDate(createdOn));
     }
 
 }

@@ -1,7 +1,6 @@
 package com.dimstyl.dietitianhub.entities;
 
 import com.dimstyl.dietitianhub.dtos.ArticleDto;
-import com.dimstyl.dietitianhub.utilities.DateTimeUtil;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,6 +8,8 @@ import org.hibernate.annotations.SourceType;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.dimstyl.dietitianhub.utilities.DateTimeUtil.getFormattedDateTime;
 
 @Entity
 @Table(name = "article", schema = "public")
@@ -46,8 +47,8 @@ public class Article {
     public ArticleDto toDto() {
         List<String> tagNames = tags.stream().map(Tag::getName).toList();
         List<Integer> tagIds = tags.stream().map(Tag::getId).toList();
-        String createdAt = DateTimeUtil.getFormattedDateTime(this.createdAt);
-        return new ArticleDto(id, title, content, tagNames, createdAt, tagIds);
+        String createdAt = getFormattedDateTime(this.createdAt);
+        return new ArticleDto(id, title, content, tagIds, tagNames, createdAt);
     }
 
 }
