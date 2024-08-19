@@ -22,10 +22,14 @@ public class MvcAnnouncementController {
         List<AnnouncementDto> announcementsForToday = announcementService.getAnnouncementsForToday();
         List<AnnouncementDto> announcementsForYesterday = announcementService.getAnnouncementsForYesterday();
         List<AnnouncementDto> earlierAnnouncements = announcementService.getEarlierAnnouncements();
+        boolean noAnnouncements = announcementsForToday.isEmpty() &&
+                                  announcementsForYesterday.isEmpty() &&
+                                  earlierAnnouncements.isEmpty();
 
         model.addAttribute("announcementsForToday", announcementsForToday);
         model.addAttribute("announcementsForYesterday", announcementsForYesterday);
         model.addAttribute("earlierAnnouncements", earlierAnnouncements);
+        model.addAttribute("noAnnouncements", noAnnouncements);
 
         return "announcements";
     }
