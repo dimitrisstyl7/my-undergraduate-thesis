@@ -12,16 +12,38 @@
 
 <body>
 <div layout:fragment="main-content">
+    <!-- Modal for diet plan deletion -->
+    <div id="diet-plan-delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="dripicons-warning h1 text-warning"></i>
+                        <h4 id="title-delete-modal" class="mt-2"></h4>
+                        <p class="mt-3">You are about to delete the diet plan. This action cannot be undone.</p>
+                        <button id="confirm-deletion-button" type="button" class="btn btn-warning my-2">
+                            Continue
+                        </button>
+                        <button type="button" class="btn btn-danger ms-1" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div><!-- end modal-content -->
+        </div><!-- end modal-dialog -->
+    </div><!-- end modal -->
+
     <!-- Alert messages -->
     <div th:if="${param.noFile}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-1"></i>
         <strong>Error!</strong> Please select a file to upload.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <div th:if="${param.invalidFile}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-1"></i>
         <strong>Error!</strong> Invalid file format. Please upload a PDF file.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <div th:if="${param.uploadSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="mdi mdi-check-circle me-1"></i>
         <strong>Success!</strong> Diet plan uploaded successfully.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
@@ -76,6 +98,7 @@
 
     <!-- Alert message for diet plan deletion -->
     <div th:if="${param.deleteSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="mdi mdi-check-circle me-1"></i>
         <strong>Success!</strong> Diet plan deleted successfully.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
@@ -121,25 +144,6 @@
         </div>
     </div>
     <!-- end row -->
-
-    <!-- Modal for diet plan deletion -->
-    <div id="diet-plan-delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="text-center">
-                        <i class="dripicons-warning h1 text-warning"></i>
-                        <h4 id="title-delete-modal" class="mt-2"></h4>
-                        <p class="mt-3">You are about to delete the diet plan. This action cannot be undone.</p>
-                        <button id="confirm-deletion-button" type="button" class="btn btn-warning my-2">
-                            Continue
-                        </button>
-                        <button type="button" class="btn btn-danger ms-1" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-            </div><!-- end modal-content -->
-        </div><!-- end modal-dialog -->
-    </div><!-- end modal -->
 
     <!-- Custom script -->
     <script th:inline="javascript">
