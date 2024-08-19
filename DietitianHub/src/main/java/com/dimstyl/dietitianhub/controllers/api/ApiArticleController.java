@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+
+import static com.dimstyl.dietitianhub.utilities.ValidationErrorUtil.getContentError;
+import static com.dimstyl.dietitianhub.utilities.ValidationErrorUtil.getTitleError;
 
 @RestController
 @RequestMapping("/api/v1/articles")
@@ -34,15 +38,12 @@ public class ApiArticleController {
         }
 
         // Otherwise, return a bad request.
-        var titleError = result.getGlobalError();
-        var contentError = result.getFieldError("content");
+        Optional<String> titleError = getTitleError(result);
+        Optional<String> contentError = getContentError(result);
         Map<String, String> errors = new HashMap<>() {
             {
-                if (titleError != null
-                    && titleError.getDefaultMessage() != null) put("title", titleError.getDefaultMessage());
-
-                if (contentError != null
-                    && contentError.getDefaultMessage() != null) put("content", contentError.getDefaultMessage());
+                titleError.ifPresent(s -> put("title", s));
+                contentError.ifPresent(s -> put("title", s));
             }
         };
 
@@ -62,15 +63,12 @@ public class ApiArticleController {
         }
 
         // Otherwise, return a bad request.
-        var titleError = result.getGlobalError();
-        var contentError = result.getFieldError("content");
+        Optional<String> titleError = getTitleError(result);
+        Optional<String> contentError = getContentError(result);
         Map<String, String> errors = new HashMap<>() {
             {
-                if (titleError != null
-                    && titleError.getDefaultMessage() != null) put("title", titleError.getDefaultMessage());
-
-                if (contentError != null
-                    && contentError.getDefaultMessage() != null) put("content", contentError.getDefaultMessage());
+                titleError.ifPresent(s -> put("title", s));
+                contentError.ifPresent(s -> put("title", s));
             }
         };
 
