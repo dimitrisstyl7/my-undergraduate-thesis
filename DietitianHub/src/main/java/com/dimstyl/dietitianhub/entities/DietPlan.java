@@ -11,7 +11,11 @@ import java.time.LocalDate;
 import static com.dimstyl.dietitianhub.utilities.DateTimeUtil.getFormattedDate;
 
 @Entity
-@Table(name = "diet_plan", schema = "public", uniqueConstraints = @UniqueConstraint(columnNames = {"user_info_id", "created_on"}))
+@Table(
+        name = "diet_plan",
+        schema = "public",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"user_info_id", "created_on"})
+)
 @Getter
 @Setter
 @Builder
