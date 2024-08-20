@@ -1,8 +1,11 @@
 package com.dimstyl.dietitianhub.entities;
 
 import com.dimstyl.dietitianhub.dtos.ClientDto;
+import com.dimstyl.dietitianhub.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 @Entity
 @Table(name = "user", schema = "public")
@@ -27,9 +30,10 @@ public class User {
     @Column(name = "enabled", nullable = false, columnDefinition = "boolean default false")
     private boolean enabled;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
-    private Role role;
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    @Column(name = "role", nullable = false, columnDefinition = "role_enum")
+    private UserRole role;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private UserInfo userInfo;

@@ -4,7 +4,6 @@ import com.dimstyl.dietitianhub.dtos.ClientCredentialChangeDto;
 import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.email.EmailService;
 import com.dimstyl.dietitianhub.entities.DietPlan;
-import com.dimstyl.dietitianhub.entities.Role;
 import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.exceptions.RegistrationFailedException;
 import com.dimstyl.dietitianhub.exceptions.UserNotFoundException;
@@ -36,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ClientDto> getAllClients() {
-        List<User> clients = userRepository.findAllByRole_NameAndEnabledIsTrue(CLIENT.getRole());
+        List<User> clients = userRepository.findAllByRoleAndEnabledIsTrue(CLIENT);
         return clients.stream()
                 .map(User::toClientDto)
                 .toList();
@@ -45,8 +44,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void registerClient(ClientDto clientDto) throws MessagingException {
-        Role role = new Role(CLIENT.getId(), CLIENT.getRole());
-        User user = clientDto.toUserForRegistration(role);
+        User user = clientDto.toUserForRegistration(CLIENT);
 
         if (usernameExists(user.getUsername())) {
             throw new RegistrationFailedException(

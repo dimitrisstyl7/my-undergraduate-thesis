@@ -41,8 +41,8 @@ public class SecurityConfig {
                                 "/images/**", "/js/**", "/libs/**",
                                 "error/**", "/auth/updateCredentials/confirmation"
                         ).permitAll()
-                        .requestMatchers("auth/updateCredentials").hasAuthority(CLIENT.getRole())
-                        .anyRequest().hasAuthority(DIETITIAN.getRole())
+                        .requestMatchers("auth/updateCredentials").hasAuthority(CLIENT.toString())
+                        .anyRequest().hasAuthority(DIETITIAN.toString())
                 )
                 .formLogin(form -> form
                         .loginPage("/auth/login")

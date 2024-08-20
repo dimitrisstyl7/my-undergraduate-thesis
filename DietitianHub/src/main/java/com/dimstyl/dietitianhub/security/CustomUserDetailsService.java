@@ -1,7 +1,7 @@
 package com.dimstyl.dietitianhub.security;
 
-import com.dimstyl.dietitianhub.entities.Role;
 import com.dimstyl.dietitianhub.entities.User;
+import com.dimstyl.dietitianhub.enums.UserRole;
 import com.dimstyl.dietitianhub.repositories.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,8 +39,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         // TODO: May I handle differently the following check?
 
         // Check if the user has the role CLIENT and is already enabled
-        String role = user.getRole().getName();
-        if (role.equals(CLIENT.getRole()) && user.isEnabled()) {
+        UserRole role = user.getRole();
+        if (role.equals(CLIENT) && user.isEnabled()) {
             throw new AccessDeniedException("The client with username %s is already enabled.".formatted(username));
         }
 
@@ -53,8 +53,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         );
     }
 
-    private Collection<? extends GrantedAuthority> mapRoleToAuthority(Role role) {
-        return Stream.of(role).map(r -> new SimpleGrantedAuthority(r.getName())).toList();
+    private Collection<? extends GrantedAuthority> mapRoleToAuthority(UserRole role) {
+        return Stream.of(role).map(r -> new SimpleGrantedAuthority(role.toString())).toList();
     }
 
     public static CustomUserDetails getUserDetails() {

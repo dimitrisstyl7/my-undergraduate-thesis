@@ -1,8 +1,8 @@
 package com.dimstyl.dietitianhub.dtos;
 
-import com.dimstyl.dietitianhub.entities.Role;
 import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.entities.UserInfo;
+import com.dimstyl.dietitianhub.enums.UserRole;
 import com.dimstyl.dietitianhub.utilities.DateTimeUtil;
 import com.dimstyl.dietitianhub.validators.gender.GenderConstraint;
 import jakarta.validation.constraints.*;
@@ -56,7 +56,7 @@ public class ClientDto {
         return "%s %s".formatted(firstName, lastName);
     }
 
-    public User toUserForRegistration(Role role) {
+    public User toUserForRegistration(UserRole role) {
         String username = generateUsername(firstName, lastName, dateOfBirth);
         String password = generatePassword();
 
