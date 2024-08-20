@@ -147,6 +147,8 @@
 
     <!-- Custom script -->
     <script th:inline="javascript">
+        "use strict";
+
         function fillDeleteModal(name, date, id) {
             // Set the title of the modal.
             document.getElementById("title-delete-modal").textContent = `${name} (${date})`;
