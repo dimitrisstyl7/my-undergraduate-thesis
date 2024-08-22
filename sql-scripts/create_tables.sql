@@ -1,3 +1,5 @@
+drop table if exists appointment;
+drop type if exists appointment_status_enum;
 drop table if exists announcement;
 drop table if exists article_tag_association;
 drop table if exists article;
@@ -83,4 +85,17 @@ create table announcement
     title      varchar(100) not null unique,
     content    text         not null,
     created_at timestamp    not null default now()
+);
+-- scheduled: green, completed: blue, cancelled: red
+create type appointment_status_enum as enum ('PENDING', 'SCHEDULED', 'COMPLETED', 'CANCELLED');
+
+create table appointment
+(
+    id                  serial                  not null unique primary key,
+    client_user_info_id int                     not null references user_info (id),
+    title               varchar(100)            not null,
+    description         text,
+    scheduled_datetime  timestamp               not null,
+    status              appointment_status_enum not null,
+    unique (client_user_info_id, scheduled_datetime)
 );

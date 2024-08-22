@@ -61,4 +61,7 @@ public class UserInfo {
     @OneToMany(mappedBy = "userInfo", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<DietPlan> dietPlans;
 
+    @OneToMany(mappedBy = "clientUserInfo", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Appointment> appointments;
+
 }
