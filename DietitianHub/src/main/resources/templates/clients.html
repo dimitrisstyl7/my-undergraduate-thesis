@@ -17,10 +17,10 @@
 <body>
 <div layout:fragment="main-content">
     <!-- Modal for client registration/edit -->
-    <form id="main-form" th:object="${client}" onsubmit="return validateGender()" method="post">
-        <th:block th:replace="~{fragments/_csrf :: csrf}"></th:block>
-        <div class="modal fade" id="main-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal fade" id="main-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <form id="main-form" th:object="${client}" onsubmit="return validateGender()" method="post">
+                <th:block th:replace="~{fragments/_csrf :: csrf}"></th:block>
                 <div class="modal-content">
                     <div class="modal-header bg-light">
                         <h4 class="modal-title" id="main-modal-title"></h4>
@@ -98,17 +98,14 @@
                         </div>
                     </div>
                     <div class="modal-footer bg-light d-flex">
-                        <button type="button" class="btn btn-secondary me-auto"
-                                onclick="document.getElementById('main-form').reset();">Reset
-                        </button>
                         <button type="submit" class="btn btn-success"></button>
+                        <button type="reset" class="btn btn-secondary mx-auto">Reset</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div><!-- end modal-content -->
-            </div><!-- end modal-dialog -->
-        </div><!-- end modal -->
-    </form>
-    <!-- end modal -->
+            </form>
+        </div><!-- end modal-dialog -->
+    </div><!-- end modal -->
 
     <!-- Modal for client deletion -->
     <div id="client-delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -131,10 +128,10 @@
     <!-- end modal -->
 
     <!-- Modal for client tags -->
-    <form id="client-tags-form">
-        <div id="client-tags-modal" class="modal fade" tabindex="-1" role="dialog"
-             aria-labelledby="client-tags-modal-label" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+    <div id="client-tags-modal" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="client-tags-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <form id="client-tags-form">
                 <div class="modal-content">
                     <div class="modal-header bg-light">
                         <h4 class="modal-title" id="client-tags-modal-title">Client tags</h4>
@@ -154,17 +151,14 @@
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="reset" class="btn btn-secondary me-auto">Reset</button>
-                        <form>
-                            <button id="save-tags-button" type="button" class="btn btn-success">Save</button>
-                        </form>
+                        <button id="save-tags-button" type="button" class="btn btn-success">Save</button>
+                        <button type="reset" class="btn btn-secondary mx-auto">Reset</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div><!-- end modal-content -->
-            </div><!-- end modal-dialog -->
-        </div><!-- end modal -->
-    </form>
-    <!-- end modal -->
+            </form>
+        </div><!-- end modal-dialog -->
+    </div><!-- end modal -->
 
     <!-- Alert messages -->
     <div th:if="${alertMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
