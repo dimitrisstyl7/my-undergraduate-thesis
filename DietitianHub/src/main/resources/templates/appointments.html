@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragments/_page-layout}">
 <head>
@@ -7,110 +8,34 @@
 
     <!-- Plugin css -->
     <link th:href="@{/libs/fullcalendar/main.min.css}" rel="stylesheet" type="text/css"/>
+
+    <!-- Custom css -->
+    <style>
+        .fc-event {
+            cursor: pointer; /* Add pointer when hovering over events */
+        }
+
+        .custom-event {
+            background-color: #10c469; /* Custom background color */
+            color: #000000; /* Custom text color */
+        }
+    </style>
 </head>
 
 <body>
 <div layout:fragment="main-content">
-    <div class="row">
-        <div class="col-12">
-            <div class="row">
-                <div class="col-lg-3">
-                    <button class="btn btn-lg font-16 btn-success w-100" id="btn-new-event"><i
-                            class="fa fa-plus me-1"></i> Create new
-                    </button>
+    <!-- Button to create a new appointment -->
+    <button class="btn btn-lg font-16 btn-success mb-3" id="btn-new-event" data-bs-toggle="modal"
+            data-bs-target="#create-modal">
+        <i class="fa fa-plus me-1"></i> Create new
+    </button>
 
-                    <div id="external-events">
-                        <br>
-                        <p class="text-muted">Drag and drop your event or click in the calendar</p>
-                        <div class="external-event bg-primary" data-class="bg-primary">
-                            <i class="mdi mdi-checkbox-blank-circle me-2 vertical-middle"></i>New Theme Release
-                        </div>
-                        <div class="external-event bg-pink" data-class="bg-pink">
-                            <i class="mdi mdi-checkbox-blank-circle me-2 vertical-middle"></i>My Event
-                        </div>
-                        <div class="external-event bg-warning" data-class="bg-warning">
-                            <i class="mdi mdi-checkbox-blank-circle me-2 vertical-middle"></i>Meet manager
-                        </div>
-                        <div class="external-event bg-purple" data-class="bg-danger">
-                            <i class="mdi mdi-checkbox-blank-circle me-2 vertical-middle"></i>Create New theme
-                        </div>
-                    </div>
-
-                    <!-- checkbox -->
-                    <div class="form-check mt-3">
-                        <input type="checkbox" class="form-check-input" id="drop-remove">
-                        <label class="form-check-label" for="drop-remove">Remove after drop</label>
-                    </div>
-
-                </div> <!-- end col-->
-
-                <div class="col-lg-9">
-                    <div class="card">
-                        <div class="card-body">
-
-                            <div id="calendar"></div>
-
-                        </div> <!-- end card body-->
-                    </div> <!-- end card -->
-                </div> <!-- end col -->
-
-            </div>  <!-- end row -->
-
-            <!-- Add New Event MODAL -->
-            <div class="modal fade" id="event-modal" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header py-3 px-4 border-bottom-0 d-block">
-                            <button type="button" class="btn-close float-end" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            <h5 class="modal-title" id="modal-title">Event</h5>
-                        </div>
-                        <div class="modal-body px-4 pb-4 pt-0">
-                            <form class="needs-validation" name="event-form" id="form-event" novalidate>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Event Name</label>
-                                            <input class="form-control" placeholder="Insert Event Name"
-                                                   type="text" name="title" id="event-title" required/>
-                                            <div class="invalid-feedback">Please provide a valid event name</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">Category</label>
-                                            <select class="form-select" name="category" id="event-category" required>
-                                                <option value="bg-danger" selected>Danger</option>
-                                                <option value="bg-success">Success</option>
-                                                <option value="bg-primary">Primary</option>
-                                                <option value="bg-info">Info</option>
-                                                <option value="bg-dark">Dark</option>
-                                                <option value="bg-warning">Warning</option>
-                                            </select>
-                                            <div class="invalid-feedback">Please select a valid event category</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-md-6 col-4">
-                                        <button type="button" class="btn btn-danger" id="btn-delete-event">Delete
-                                        </button>
-                                    </div>
-                                    <div class="col-md-6 col-8 text-end">
-                                        <button type="button" class="btn btn-light me-1" data-bs-dismiss="modal">Close
-                                        </button>
-                                        <button type="submit" class="btn btn-success" id="btn-save-event">Save</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div> <!-- end modal-content-->
-                </div> <!-- end modal dialog-->
-            </div>
-            <!-- end modal-->
-        </div>
-        <!-- end col-12 -->
-    </div> <!-- end row -->
+    <!-- calendar -->
+    <div class="card">
+        <div class="card-body">
+            <div id="calendar"></div>
+        </div> <!-- end card body-->
+    </div> <!-- end card -->
 
     <!-- Custom script -->
     <script>
@@ -122,11 +47,10 @@
     </script>
 
     <!-- plugin js -->
-    <script th:src="@{/libs/moment/min/moment.min.js}"></script>
     <script th:src="@{/libs/fullcalendar/main.min.js}"></script>
 
     <!-- Calendar init -->
-    <script th:src="@{/js/pages/calendar.init.js}" defer></script>
+    <script th:src="@{/js/calendar.init.js}" defer></script>
 </div>
 </body>
 </html>
