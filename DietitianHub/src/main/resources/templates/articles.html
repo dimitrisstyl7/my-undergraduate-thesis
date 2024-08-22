@@ -414,6 +414,16 @@
             editorsErrorMessage.removeAttribute("hidden");
         }
 
+        // Function that fills the delete modal with the article title and sets the onclick event for the delete button.
+        function fillDeleteModal(title, id) {
+            // Set the title of the article to be deleted.
+            document.getElementById("delete-modal-title").textContent = `${title}`;
+
+            // Set the onclick event for the confirm deletion button.
+            const confirmDeletionButton = document.getElementById("confirm-deletion-button");
+            confirmDeletionButton.onclick = () => deleteArticle(id, confirmDeletionButton);
+        }
+
         // Function that publishes an article.
         async function publishArticle() {
             // Validate the article.
@@ -471,25 +481,28 @@
                 try {
                     const errorResponse = await response.json();
 
-                    // If the errorResponse object contains the "redirectUrl" key, redirect to the specified URL.
-                    if ("redirectUrl" in errorResponse) {
+                    // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                    // redirect to the specified URL.
+                    if (errorResponse?.redirectUrl) {
                         window.location.href = errorResponse.redirectUrl;
                         return; // Exit the function after redirect
                     }
 
-                    // If the errorResponse object contains the "title" key, update the UI accordingly.
-                    const titleKeyExists = "title" in errorResponse;
+                    // If the errorResponse object contains the "title" key, and "title" has a value,
+                    // update the UI accordingly.
+                    const titleKeyExists = errorResponse?.title;
                     if (titleKeyExists) showTitleErrorMessage(errorResponse.title);
 
-                    // If the errorResponse object contains the "content" key, update the UI accordingly.
-                    const contentTitleExists = "content" in errorResponse;
+                    // If the errorResponse object contains the "content" key, and "content" has a value,
+                    // update the UI accordingly.
+                    const contentTitleExists = errorResponse?.content;
                     if (contentTitleExists) showContentErrorMessage(errorResponse.content);
 
-                    // If the errorResponse object contains the "title" or "content" key, return.
+                    // If the error exists for the title or content, return.
                     if (titleKeyExists || contentTitleExists) return;
 
-                    // Otherwise, return the error message (if exists) or the default message.
-                    return {error: errorResponse.message || defaultMessage};
+                    // Otherwise, return the error message (if exists and has value) or the default message.
+                    return {error: errorResponse?.message || defaultMessage};
                 } catch (error) {
                     console.error("An error occurred while parsing the response: ", error);
                     alert(defaultMessage);
@@ -518,14 +531,15 @@
                 try {
                     const errorResponse = await response.json();
 
-                    // If the errorResponse object contains the "redirectUrl" key, redirect to the specified URL.
-                    if ("redirectUrl" in errorResponse) {
+                    // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                    // redirect to the specified URL.
+                    if (errorResponse?.redirectUrl) {
                         window.location.href = errorResponse.redirectUrl;
                         return; // Exit the function after redirect
                     }
 
-                    // Otherwise, return the error message (if exists) or the default message.
-                    return {error: errorResponse.message || defaultMessage};
+                    // Otherwise, return the error message (if exists and has value) or the default message.
+                    return {error: errorResponse?.message || defaultMessage};
                 } catch (error) {
                     console.error("An error occurred while parsing the response: ", error);
                     alert(defaultMessage);
@@ -595,25 +609,28 @@
                 try {
                     const errorResponse = await response.json();
 
-                    // If the errorResponse object contains the "redirectUrl" key, redirect to the specified URL.
-                    if ("redirectUrl" in errorResponse) {
+                    // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                    // redirect to the specified URL.
+                    if (errorResponse?.redirectUrl) {
                         window.location.href = errorResponse.redirectUrl;
                         return; // Exit the function after redirect
                     }
 
-                    // If the errorResponse object contains the "title" key, update the UI accordingly.
-                    const titleKeyExists = "title" in errorResponse;
+                    // If the errorResponse object contains the "title" key, and "title" has a value,
+                    // update the UI accordingly.
+                    const titleKeyExists = errorResponse?.title;
                     if (titleKeyExists) showTitleErrorMessage(errorResponse.title);
 
-                    // If the errorResponse object contains the "content" key, update the UI accordingly.
-                    const contentTitleExists = "content" in errorResponse;
+                    // If the errorResponse object contains the "content" key, and "content" has a value,
+                    // update the UI accordingly.
+                    const contentTitleExists = errorResponse?.content;
                     if (contentTitleExists) showContentErrorMessage(errorResponse.content);
 
-                    // If the errorResponse object contains the "title" or "content" key, return.
+                    // If the error exists for the title or content, return.
                     if (titleKeyExists || contentTitleExists) return;
 
-                    // Otherwise, return the error message (if exists) or the default message.
-                    return {error: errorResponse.message || defaultMessage};
+                    // Otherwise, return the error message (if exists and has value) or the default message.
+                    return {error: errorResponse?.message || defaultMessage};
                 } catch (error) {
                     console.error("An error occurred while parsing the response: ", error);
                     alert(defaultMessage);
@@ -621,16 +638,6 @@
             } else {
                 window.location.href = response.headers.get('Location');
             }
-        }
-
-        // Function that fills the delete modal with the article title and sets the onclick event for the delete button.
-        function fillDeleteModal(title, id) {
-            // Set the title of the article to be deleted.
-            document.getElementById("delete-modal-title").textContent = `${title}`;
-
-            // Set the onclick event for the confirm deletion button.
-            const confirmDeletionButton = document.getElementById("confirm-deletion-button");
-            confirmDeletionButton.onclick = () => deleteArticle(id, confirmDeletionButton);
         }
 
         // Function that deletes an article.
@@ -662,14 +669,15 @@
                 try {
                     const errorResponse = await response.json();
 
-                    // If the errorResponse object contains the "redirectUrl" key, redirect to the specified URL.
-                    if ("redirectUrl" in errorResponse) {
+                    // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                    // redirect to the specified URL.
+                    if (errorResponse?.redirectUrl) {
                         window.location.href = errorResponse.redirectUrl;
                         return; // Exit the function after redirect
                     }
 
-                    // Otherwise, return the error message (if exists) or the default message.
-                    return {error: errorResponse.message || defaultMessage};
+                    // Otherwise, return the error message (if exists and has value) or the default message.
+                    return {error: errorResponse?.message || defaultMessage};
                 } catch (error) {
                     console.error("An error occurred while parsing the response: ", error);
                     alert(defaultMessage);
