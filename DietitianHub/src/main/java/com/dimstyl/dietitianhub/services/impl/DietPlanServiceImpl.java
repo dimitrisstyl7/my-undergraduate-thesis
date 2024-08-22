@@ -55,8 +55,7 @@ public class DietPlanServiceImpl implements DietPlanService {
     @Override
     public List<DietPlanDto> getDietPlans(int userInfoId) {
         return dietPlanRepository
-                .findAllByUserInfo_IdOrderByCreatedOnDesc(userInfoId)
-                .stream()
+                .findAllByUserInfo_IdOrderByCreatedOnDesc(userInfoId).stream()
                 .map(DietPlan::toDto)
                 .toList();
     }
