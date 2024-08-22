@@ -361,11 +361,8 @@
         // Function that fetches and fills the client tags modal with the client's existing tags.
         async function fillClientTagsModal(id) {
             const response = await fetch(`/api/v1/clients/${id}/tags`);
-
             const result = await handleFillClientTagsResponse(response, id);
-            if (result?.error) {
-                alert(result.error);
-            }
+            if (result?.error) alert(result.error);
         }
 
         // Function that handles the response from the client tags fetch and updates the modal accordingly.
@@ -419,9 +416,7 @@
             });
 
             const result = await handleSaveTagsResponse(response, saveTagsButton);
-            if (result?.error) {
-                alert(result.error);
-            }
+            if (result?.error) alert(result.error);
         }
 
         // Function that handles the response from the save tags request and updates the UI accordingly.
@@ -449,9 +444,7 @@
                     console.error("An error occurred while parsing the response: ", error);
                     alert(defaultMessage);
                 }
-            } else {
-                window.location.href = response.headers.get('Location');
-            }
+            } else window.location.href = response.headers.get('Location');
         }
     </script>
 </div>

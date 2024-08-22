@@ -500,9 +500,7 @@
             });
 
             const result = await handlePublishAnnouncementResponse(response, publishButton);
-            if (result?.error) {
-                alert(result.error);
-            }
+            if (result?.error) alert(result.error);
         }
 
         // Function that handles the response from the publish announcement request and updates the UI accordingly.
@@ -539,19 +537,14 @@
                     console.error("An error occurred while parsing the response: ", error);
                     alert(defaultMessage);
                 }
-            } else {
-                window.location.href = response.headers.get('Location');
-            }
+            } else window.location.href = response.headers.get('Location');
         }
 
         // Function that fetches an announcement by its ID.
         async function fetchAnnouncement(id, previewEditor, previewEditorInnerHtml) {
             const response = await fetch(`/api/v1/announcements/${id}`);
-
             const result = await handleFetchAnnouncementResponse(response, previewEditor, previewEditorInnerHtml);
-            if (result?.error) {
-                alert(result.error);
-            }
+            if (result?.error) alert(result.error);
         }
 
         // Function that handles the response from the fetch announcement request and updates the UI accordingly.
@@ -613,9 +606,7 @@
             });
 
             const result = await handleUpdateAnnouncementResponse(response, updateButton);
-            if (result?.error) {
-                alert(result.error);
-            }
+            if (result?.error) alert(result.error);
         }
 
         // Function that handles the response from the update announcement request and updates the UI accordingly.
@@ -659,9 +650,7 @@
                     console.error("An error occurred while parsing the response: ", error);
                     alert(defaultMessage);
                 }
-            } else {
-                window.location.href = response.headers.get('Location');
-            }
+            } else window.location.href = response.headers.get('Location');
         }
 
         // Function that deletes an announcement.
@@ -676,9 +665,7 @@
             addSpinner(confirmDeletionButton); // Add spinner to the publish button
 
             const result = await handleDeleteAnnouncementResponse(response, confirmDeletionButton);
-            if (result?.error) {
-                alert(result.error);
-            }
+            if (result?.error) alert(result.error);
         }
 
         // Function that handles the response from the delete announcement request and updates the UI accordingly.
@@ -706,9 +693,7 @@
                     console.error("An error occurred while parsing the response: ", error);
                     alert(defaultMessage);
                 }
-            } else {
-                window.location.href = response.headers.get('Location');
-            }
+            } else window.location.href = response.headers.get('Location');
         }
     </script>
 

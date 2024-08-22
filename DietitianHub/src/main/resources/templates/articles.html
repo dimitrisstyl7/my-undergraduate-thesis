@@ -461,9 +461,7 @@
             });
 
             const result = await handlePublishArticleResponse(response, publishButton);
-            if (result?.error) {
-                alert(result.error);
-            }
+            if (result?.error) alert(result.error);
         }
 
         // Function that handles the response from the publish article request and updates the UI accordingly.
@@ -507,19 +505,14 @@
                     console.error("An error occurred while parsing the response: ", error);
                     alert(defaultMessage);
                 }
-            } else {
-                window.location.href = response.headers.get('Location');
-            }
+            } else window.location.href = response.headers.get('Location');
         }
 
         // Function that fetches an article by its ID.
         async function fetchArticle(id, previewEditor, previewEditorInnerHtml) {
             const response = await fetch(`/api/v1/articles/${id}`);
-
             const result = await handleFetchArticleResponse(response, previewEditor, previewEditorInnerHtml);
-            if (result?.error) {
-                alert(result.error);
-            }
+            if (result?.error) alert(result.error);
         }
 
         // Function that handles the response from the fetch article request and updates the UI accordingly.
@@ -589,9 +582,7 @@
             });
 
             const result = await handleUpdateArticleResponse(response, updateButton);
-            if (result?.error) {
-                alert(result.error);
-            }
+            if (result?.error) alert(result.error);
         }
 
         // Function that handles the response from the update article request and updates the UI accordingly.
@@ -635,9 +626,7 @@
                     console.error("An error occurred while parsing the response: ", error);
                     alert(defaultMessage);
                 }
-            } else {
-                window.location.href = response.headers.get('Location');
-            }
+            } else window.location.href = response.headers.get('Location');
         }
 
         // Function that deletes an article.
@@ -652,9 +641,7 @@
             addSpinner(confirmDeletionButton); // Add spinner to the publish button
 
             const result = await handleDeleteArticleResponse(response, confirmDeletionButton);
-            if (result?.error) {
-                alert(result.error);
-            }
+            if (result?.error) alert(result.error);
         }
 
         // Function that handles the response from the delete article request and updates the UI accordingly.
@@ -682,9 +669,7 @@
                     console.error("An error occurred while parsing the response: ", error);
                     alert(defaultMessage);
                 }
-            } else {
-                window.location.href = response.headers.get('Location');
-            }
+            } else window.location.href = response.headers.get('Location');
         }
     </script>
 
