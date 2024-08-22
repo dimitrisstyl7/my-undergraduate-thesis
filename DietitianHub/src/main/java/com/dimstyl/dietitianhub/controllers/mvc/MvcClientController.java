@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +50,8 @@ public class MvcClientController {
         model.addAttribute("clients", userService.getAllClients());
         model.addAttribute("client", new ClientDto());
         model.addAttribute("tagCategories", tagCategoryService.getAllTagCategoriesAndTags());
+        model.addAttribute("maxDateOfBirth", LocalDate.now());
+
         return "clients";
     }
 
@@ -63,10 +66,12 @@ public class MvcClientController {
             model.addAttribute("registerValidationsFailed", true);
             return "clients";
         }
+
         userService.registerClient(clientDto);
         redirectAttributes.addFlashAttribute("flashAttribute", """
                 The client has been registered successfully, \
                 and an activation email has been sent to their inbox.""");
+
         return "redirect:/clients?success";
     }
 
@@ -82,9 +87,11 @@ public class MvcClientController {
             model.addAttribute("updateValidationsFailed", true);
             return "clients";
         }
+
         int userId = userService.getUser(id).getId();
         userInfoService.updateUserInfo(clientDto, userId);
         redirectAttributes.addFlashAttribute("flashAttribute", "Client updated successfully.");
+
         return "redirect:/clients?success";
     }
 
