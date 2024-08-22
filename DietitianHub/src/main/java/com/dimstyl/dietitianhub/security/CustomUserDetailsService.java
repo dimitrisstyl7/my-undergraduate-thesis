@@ -20,8 +20,6 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.dimstyl.dietitianhub.enums.UserRole.CLIENT;
-
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -40,7 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         // Check if the user has the role CLIENT and is already enabled
         UserRole role = user.getRole();
-        if (role.equals(CLIENT) && user.isEnabled()) {
+        if (role.equals(UserRole.CLIENT) && user.isEnabled()) {
             throw new AccessDeniedException("The client with username %s is already enabled.".formatted(username));
         }
 

@@ -5,6 +5,7 @@ import com.dimstyl.dietitianhub.dtos.ClientDto;
 import com.dimstyl.dietitianhub.email.EmailService;
 import com.dimstyl.dietitianhub.entities.DietPlan;
 import com.dimstyl.dietitianhub.entities.User;
+import com.dimstyl.dietitianhub.enums.UserRole;
 import com.dimstyl.dietitianhub.exceptions.RegistrationFailedException;
 import com.dimstyl.dietitianhub.exceptions.UserNotFoundException;
 import com.dimstyl.dietitianhub.repositories.UserRepository;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 
-import static com.dimstyl.dietitianhub.enums.UserRole.CLIENT;
 import static com.dimstyl.dietitianhub.security.CustomUserDetailsService.getUserDetails;
 
 @Service
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ClientDto> getAllClients() {
-        List<User> clients = userRepository.findAllByRoleAndEnabledIsTrue(CLIENT);
+        List<User> clients = userRepository.findAllByRoleAndEnabledIsTrue(UserRole.CLIENT);
         return clients.stream()
                 .map(User::toClientDto)
                 .toList();
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void registerClient(ClientDto clientDto) throws MessagingException {
-        User user = clientDto.toUserForRegistration(CLIENT);
+        User user = clientDto.toUserForRegistration(UserRole.CLIENT);
 
         if (usernameExists(user.getUsername())) {
             throw new RegistrationFailedException(
