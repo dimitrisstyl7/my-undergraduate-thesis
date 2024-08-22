@@ -64,4 +64,8 @@ public class UserInfo {
     @OneToMany(mappedBy = "clientUserInfo", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Appointment> appointments;
 
+    public String getFullName() {
+        return "%s %s".formatted(firstName, lastName);
+    }
+
 }
