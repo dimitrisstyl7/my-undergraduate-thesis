@@ -28,8 +28,8 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label id="first-name-label" for="first-name" class="form-label custom-form-label">First
-                                Name</label>
+                            <label id="first-name-label" for="first-name" class="form-label custom-form-label">
+                                First Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="first-name" placeholder="Enter first name"
                                    th:field="*{firstName}" minlength="2" maxlength="50" pattern="^[a-zA-Z]{2,50}$"
                                    title="First name must be between 2 and 50 characters long."
@@ -39,7 +39,7 @@
                         </div>
                         <div class="mb-3">
                             <label id="last-name-label" for="last-name" class="form-label custom-form-label">
-                                Last Name</label>
+                                Last Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="last-name" placeholder="Enter last name"
                                    th:field="*{lastName}" minlength="2" maxlength="50" pattern="^[a-zA-Z]{2,50}$"
                                    title="Last name must be between 2 and 50 characters long."
@@ -49,14 +49,15 @@
                         </div>
                         <div class="mb-3">
                             <label id="date-of-birth-label" for="date-of-birth" class="form-label custom-form-label">
-                                Date Of Birth</label>
+                                Date Of Birth <span class="text-danger">*</span></label>
                             <input type="date" class="form-control" id="date-of-birth" th:field="*{dateOfBirth}"
-                                   autocomplete="bday" required>
+                                   th:max="${maxDateOfBirth}" autocomplete="bday" required>
                             <span class="validation-error" th:if="${#fields.hasErrors('dateOfBirth')}"
                                   th:errors="*{dateOfBirth}"></span>
                         </div>
                         <div>
-                            <label class="form-label custom-form-label">Gender</label>
+                            <label class="form-label custom-form-label">
+                                Gender <span class="text-danger">*</span></label>
                             <div class="form-check mb-1">
                                 <label>Male
                                     <input type="radio" id="male-radio-button" name="gender"
@@ -79,14 +80,15 @@
                         </div>
                         <div class="mb-3">
                             <label id="email-label" for="email" class="form-label custom-form-label">
-                                Email Address</label>
+                                Email Address <span class="text-danger">*</span></label>
                             <input type="email" class="form-control" id="email" placeholder="Enter email"
                                    autocomplete="email" th:field="*{email}" minlength="3" maxlength="50" required>
                             <span class="validation-error" th:if="${#fields.hasErrors('email')}"
                                   th:errors="*{email}"></span>
                         </div>
                         <div class="mb-3">
-                            <label id="phone-label" for="phone" class="form-label custom-form-label">Phone</label>
+                            <label id="phone-label" for="phone" class="form-label custom-form-label">
+                                Phone <span class="text-danger">*</span></label>
                             <input type="tel" class="form-control" id="phone" placeholder="Enter phone"
                                    th:field="*{phone}" minlength="8" maxlength="20" pattern="^[0-9]{8,20}$"
                                    title="Phone number must be between 8 and 20 digits long."
