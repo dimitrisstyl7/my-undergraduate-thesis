@@ -1,5 +1,6 @@
 package com.dimstyl.dietitianhub.entities;
 
+import com.dimstyl.dietitianhub.dtos.AppointmentDto;
 import com.dimstyl.dietitianhub.enums.AppointmentStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,6 +8,8 @@ import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 import java.time.LocalDateTime;
+
+import static com.dimstyl.dietitianhub.utilities.DateTimeUtil.getFormattedDateTime;
 
 @Entity
 @Table(
@@ -43,5 +46,11 @@ public class Appointment {
     @JdbcType(PostgreSQLEnumJdbcType.class)
     @Column(name = "status", nullable = false, columnDefinition = "appointment_status_enum")
     private AppointmentStatus status;
+
+    public AppointmentDto toDto() {
+        String formattedScheduledDateTime = getFormattedDateTime(scheduledDateTime);
+        String clientFullName = clientUserInfo.getFullName();
+        return new AppointmentDto(id, title, description, scheduledDateTime, formattedScheduledDateTime, clientFullName);
+    }
 
 }
