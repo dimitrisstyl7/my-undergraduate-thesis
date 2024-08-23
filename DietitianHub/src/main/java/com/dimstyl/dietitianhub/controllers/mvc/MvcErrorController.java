@@ -63,4 +63,9 @@ public class MvcErrorController {
         return "error/announcement-not-found";
     }
 
+    @GetMapping("/appointmentNotFound")
+    public String AppointmentNotFoundPage() {
+        return "error/appointment-not-found";
+    }
+
 }

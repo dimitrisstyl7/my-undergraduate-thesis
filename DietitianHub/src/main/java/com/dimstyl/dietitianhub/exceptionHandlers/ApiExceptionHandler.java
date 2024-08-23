@@ -1,9 +1,6 @@
 package com.dimstyl.dietitianhub.exceptionHandlers;
 
-import com.dimstyl.dietitianhub.exceptions.AnnouncementNotFoundException;
-import com.dimstyl.dietitianhub.exceptions.ApiUserInfoNotFoundException;
-import com.dimstyl.dietitianhub.exceptions.ArticleNotFoundException;
-import com.dimstyl.dietitianhub.exceptions.TagsMismatchException;
+import com.dimstyl.dietitianhub.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -63,6 +60,19 @@ public class ApiExceptionHandler {
                         The operation could not be completed because the announcement was not found. \
                         Please try again. If the problem persists, please contact our Support.""",
                 "/error/announcementNotFound"
+        );
+    }
+
+    @ExceptionHandler(AppointmentNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    protected ErrorResponse handleAppointmentNotFoundException() {
+        return new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                """
+                        The operation could not be completed because the appointment was not found. \
+                        Please try again. If the problem persists, please contact our Support.""",
+                "/error/appointmentNotFound"
         );
     }
 
