@@ -19,11 +19,65 @@
             background-color: #10c469; /* Custom background color */
             color: #000000; /* Custom text color */
         }
+
+        .custom-event:hover {
+            background-color: #13e77d; /* Custom background color */
+        }
     </style>
 </head>
 
 <body>
 <div layout:fragment="main-content">
+    <!-- Modal for appointment edit -->
+    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <form>
+                <div class="modal-content">
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title" id="edit-modal-title">Edit Appointment</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label id="edit-title-label" for="edit-title" class="form-label custom-form-label">
+                                Title <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="edit-title" placeholder="Enter title"
+                                   maxlength="100" required>
+                            <span id="edit-title-error" class="validation-error"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label id="edit-description-label" for="edit-description"
+                                   class="form-label custom-form-label">
+                                Description</label>
+                            <textarea class="form-control" id="edit-description"
+                                      placeholder="Enter description"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label id="edit-datetime-label" for="edit-datetime" class="form-label custom-form-label">
+                                Date and Time</label>
+                            <input id="edit-datetime" type="text" class="form-control" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label id="edit-client-fullname-label" for="edit-client-fullname"
+                                   class="form-label custom-form-label">Client</label>
+                            <input id="edit-client-fullname" type="text" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light d-flex">
+                        <button id="edit-save-button" type="button" class="btn btn-success">Save</button>
+                        <button id="edit-reset-button" type="button" class="btn btn-secondary mx-auto"
+                                onclick="resetEditModal()">
+                            Reset
+                        </button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                data-bs-target="#delete-modal">Delete
+                        </button>
+                    </div>
+                </div><!-- end modal-content -->
+            </form>
+        </div><!-- end modal-dialog -->
+    </div><!-- end modal -->
+
     <!-- Button to create a new appointment -->
     <button class="btn btn-lg font-16 btn-success mb-3" id="btn-new-event" data-bs-toggle="modal"
             data-bs-target="#create-modal">
@@ -38,12 +92,127 @@
     </div> <!-- end card -->
 
     <!-- Custom script -->
-    <script>
+    <script th:inline="javascript">
         "use strict";
 
         // Change page title.
         const pageTitle = document.getElementsByClassName("page-title-main");
         pageTitle[0].textContent = "Appointments";
+
+        // Common elements that will be used in multiple functions.
+        const editTitle = document.getElementById("edit-title");
+        const editDescription = document.getElementById("edit-description");
+        const editTitleError = document.getElementById("edit-title-error");
+
+        // Function that resets the edit modal.
+        function resetEditModal() {
+            editTitle.value = "";
+            editDescription.value = "";
+            editTitleError.textContent = "";
+        }
+
+        // Function that shows an error message for the appointment title.
+        function showTitleErrorMessage(message) {
+            editTitleError.textContent = message;
+        }
+
+        // Function that validates the appointment.
+        function validateAppointment(title) {
+            const titleIsEmpty = title.trim() === "";
+            if (titleIsEmpty) showTitleErrorMessage("Title cannot be empty");
+            return !titleIsEmpty;
+        }
+
+        // Function that fetches the appointments.
+        async function fetchAppointments() {
+            const response = await fetch('/api/v1/appointments');
+            const result = await handleFetchAppointmentsResponse(response);
+            if (result?.error) alert(result.error);
+            else return result;
+        }
+
+        // Function that handles the response from the fetch appointments request.
+        async function handleFetchAppointmentsResponse(response) {
+            if (!response.ok) {
+                const message = "Something went wrong while fetching the appointments. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+                return {error: message};
+            } else return await response.json();
+        }
+
+        // Function that updates an appointment.
+        async function updateAppointment(event) {
+            // Validate the appointment.
+            if (!validateAppointment(editTitle.value)) return;
+
+            // Get the appointment title and description.
+            const title = editTitle.value;
+            const description = editDescription.value;
+
+            // Create an object with the appointment title, and description.
+            const appointment = {
+                title: title.trim(),
+                description: description.trim(),
+            };
+
+            const saveButton = document.getElementById("edit-save-button");
+            addSpinner(saveButton); // Add spinner to the save button
+
+            const response = await fetch(`/api/v1/appointments/${event.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                },
+                body: JSON.stringify(appointment)
+            });
+
+            const result = await handleUpdateAppointmentResponse(response, event, appointment, saveButton);
+            if (result?.error) alert(result.error);
+        }
+
+        // Function that handles the response from the update appointment request and updates the UI accordingly.
+        async function handleUpdateAppointmentResponse(response, event, appointment, saveButton) {
+            // Remove the spinner and set the button text back to "Save".
+            removeSpinner(saveButton, "Save");
+
+            if (!response.ok) {
+                const defaultMessage = "Something went wrong while updating the article. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+
+                try {
+                    const errorResponse = await response.json();
+
+                    // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                    // redirect to the specified URL.
+                    if (errorResponse?.redirectUrl) {
+                        window.location.href = errorResponse.redirectUrl;
+                        return; // Exit the function after redirect
+                    }
+
+                    // If the errorResponse object contains the "title" key, and "title" has a value,
+                    // update the UI accordingly and return.
+                    const titleKeyExists = errorResponse?.title;
+                    if (titleKeyExists) {
+                        showTitleErrorMessage(errorResponse.title);
+                        return;
+                    }
+
+                    // Otherwise, return the error message (if exists and has value) or the default message.
+                    return {error: errorResponse?.message || defaultMessage};
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    alert(defaultMessage);
+                }
+            } else {
+                // Update the event in the calendar.
+                event.setProp('title', appointment.title);
+                event.setExtendedProp('description', appointment.description);
+
+                // Hide the edit modal.
+                $("#edit-modal").modal("hide");
+            }
+        }
     </script>
 
     <!-- plugin js -->
