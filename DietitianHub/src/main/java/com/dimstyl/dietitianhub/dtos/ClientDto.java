@@ -4,14 +4,12 @@ import com.dimstyl.dietitianhub.entities.User;
 import com.dimstyl.dietitianhub.entities.UserInfo;
 import com.dimstyl.dietitianhub.enums.UserRole;
 import com.dimstyl.dietitianhub.utilities.DateTimeUtil;
+import com.dimstyl.dietitianhub.utilities.RegistrationUtil;
 import com.dimstyl.dietitianhub.validators.gender.GenderConstraint;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
-
-import static com.dimstyl.dietitianhub.utilities.RegistrationUtil.generatePassword;
-import static com.dimstyl.dietitianhub.utilities.RegistrationUtil.generateUsername;
 
 @Builder
 @Getter
@@ -39,7 +37,7 @@ public class ClientDto {
     @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
 
-    @Email(message = "Invalid email address.")
+    @Email(message = "Invalid email address")
     @Size(min = 3, max = 50, message = "Email must be between 3 and 50 characters")
     private String email;
 
@@ -57,8 +55,8 @@ public class ClientDto {
     }
 
     public User toUserForRegistration(UserRole role) {
-        String username = generateUsername(firstName, lastName, dateOfBirth);
-        String password = generatePassword();
+        String username = RegistrationUtil.generateUsername(firstName, lastName, dateOfBirth);
+        String password = RegistrationUtil.generatePassword();
 
         return User.builder()
                 .username(username)

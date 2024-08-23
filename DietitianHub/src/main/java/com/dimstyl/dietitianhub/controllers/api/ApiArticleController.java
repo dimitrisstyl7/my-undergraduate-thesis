@@ -2,6 +2,7 @@ package com.dimstyl.dietitianhub.controllers.api;
 
 import com.dimstyl.dietitianhub.dtos.ArticleDto;
 import com.dimstyl.dietitianhub.services.ArticleService;
+import com.dimstyl.dietitianhub.utilities.ValidationErrorUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +13,6 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
-import static com.dimstyl.dietitianhub.utilities.ValidationErrorUtil.getContentError;
-import static com.dimstyl.dietitianhub.utilities.ValidationErrorUtil.getTitleError;
 
 @RestController
 @RequestMapping("/api/v1/articles")
@@ -38,8 +36,8 @@ public class ApiArticleController {
         }
 
         // Otherwise, return a bad request.
-        Optional<String> titleError = getTitleError(result);
-        Optional<String> contentError = getContentError(result);
+        Optional<String> titleError = ValidationErrorUtil.getTitleError(result);
+        Optional<String> contentError = ValidationErrorUtil.getContentError(result);
         Map<String, String> errors = new HashMap<>() {
             {
                 titleError.ifPresent(s -> put("title", s));
@@ -63,8 +61,8 @@ public class ApiArticleController {
         }
 
         // Otherwise, return a bad request.
-        Optional<String> titleError = getTitleError(result);
-        Optional<String> contentError = getContentError(result);
+        Optional<String> titleError = ValidationErrorUtil.getTitleError(result);
+        Optional<String> contentError = ValidationErrorUtil.getContentError(result);
         Map<String, String> errors = new HashMap<>() {
             {
                 titleError.ifPresent(s -> put("title", s));

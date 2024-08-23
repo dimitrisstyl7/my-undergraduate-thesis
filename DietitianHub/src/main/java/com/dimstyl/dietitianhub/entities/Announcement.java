@@ -1,6 +1,7 @@
 package com.dimstyl.dietitianhub.entities;
 
 import com.dimstyl.dietitianhub.dtos.AnnouncementDto;
+import com.dimstyl.dietitianhub.utilities.DateTimeUtil;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,7 +9,6 @@ import org.hibernate.annotations.SourceType;
 
 import java.time.LocalDateTime;
 
-import static com.dimstyl.dietitianhub.utilities.DateTimeUtil.getFormattedDateTime;
 
 @Entity
 @Table(name = "announcement", schema = "public")
@@ -35,7 +35,7 @@ public class Announcement {
     private LocalDateTime createdAt;
 
     public AnnouncementDto toDto() {
-        String createdAt = getFormattedDateTime(this.createdAt);
+        String createdAt = DateTimeUtil.getFormattedDateTime(this.createdAt);
         return new AnnouncementDto(id, title, content, createdAt);
     }
 
