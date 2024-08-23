@@ -493,11 +493,11 @@
 
                     // If the errorResponse object contains the "content" key, and "content" has a value,
                     // update the UI accordingly.
-                    const contentTitleExists = errorResponse?.content;
-                    if (contentTitleExists) showContentErrorMessage(errorResponse.content);
+                    const contentKeyExists = errorResponse?.content;
+                    if (contentKeyExists) showContentErrorMessage(errorResponse.content);
 
                     // If the error exists for the title or content, return.
-                    if (titleKeyExists || contentTitleExists) return;
+                    if (titleKeyExists || contentKeyExists) return;
 
                     // Otherwise, return the error message (if exists and has value) or the default message.
                     return {error: errorResponse?.message || defaultMessage};
@@ -561,9 +561,8 @@
             const title = articleTitle.value;
             const content = editors[1].innerHTML;
 
-            // Create an object with the article id, title, content, and tags.
+            // Create an object with the article title, content, and tags.
             const article = {
-                id: id,
                 title: title.trim(),
                 content: content.trim(),
                 tagIds: tags
@@ -614,11 +613,11 @@
 
                     // If the errorResponse object contains the "content" key, and "content" has a value,
                     // update the UI accordingly.
-                    const contentTitleExists = errorResponse?.content;
-                    if (contentTitleExists) showContentErrorMessage(errorResponse.content);
+                    const contentKeyExists = errorResponse?.content;
+                    if (contentKeyExists) showContentErrorMessage(errorResponse.content);
 
                     // If the error exists for the title or content, return.
-                    if (titleKeyExists || contentTitleExists) return;
+                    if (titleKeyExists || contentKeyExists) return;
 
                     // Otherwise, return the error message (if exists and has value) or the default message.
                     return {error: errorResponse?.message || defaultMessage};

@@ -525,11 +525,11 @@
 
                     // If the errorResponse object contains the "content" key, and "content" has a value,
                     // update the UI accordingly.
-                    const contentTitleExists = errorResponse?.content;
-                    if (contentTitleExists) showContentErrorMessage(errorResponse.content);
+                    const contentKeyExists = errorResponse?.content;
+                    if (contentKeyExists) showContentErrorMessage(errorResponse.content);
 
                     // If the error exists for the title or content, return.
-                    if (titleKeyExists || contentTitleExists) return;
+                    if (titleKeyExists || contentKeyExists) return;
 
                     // Otherwise, return the default message.
                     return {error: defaultMessage};
@@ -586,9 +586,8 @@
             const title = announcementTitle.value;
             const content = editors[1].innerHTML;
 
-            // Create an object with the announcement id, title, and content.
+            // Create an object with the announcement title, and content.
             const announcement = {
-                id: id,
                 title: title.trim(),
                 content: content.trim(),
             };
@@ -638,11 +637,11 @@
 
                     // If the errorResponse object contains the "content" key, and "content" has a value,
                     // update the UI accordingly.
-                    const contentTitleExists = errorResponse?.content;
-                    if (contentTitleExists) showContentErrorMessage(errorResponse.content);
+                    const contentKeyExists = errorResponse?.content;
+                    if (contentKeyExists) showContentErrorMessage(errorResponse.content);
 
                     // If the error exists for the title or content, return.
-                    if (titleKeyExists || contentTitleExists) return;
+                    if (titleKeyExists || contentKeyExists) return;
 
                     // Otherwise, return the error message (if exists and has value) or the default message.
                     return {error: errorResponse?.message || defaultMessage};
