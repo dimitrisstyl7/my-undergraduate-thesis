@@ -11,7 +11,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findByUsername(String username);
 
-    List<User> findAllByRoleAndEnabledIsTrue(UserRole role);
+    List<User> findAllByRoleAndEnabledIsTrueOrderByUserInfo_FirstName(UserRole role);
 
     boolean existsByUsername(String username);
 

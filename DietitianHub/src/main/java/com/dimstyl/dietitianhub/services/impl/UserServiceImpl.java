@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<ClientDto> getAllClients() {
-        List<User> clients = userRepository.findAllByRoleAndEnabledIsTrue(UserRole.CLIENT);
+        List<User> clients = userRepository.findAllByRoleAndEnabledIsTrueOrderByUserInfo_FirstName(UserRole.CLIENT);
         return clients.stream()
                 .map(User::toClientDto)
                 .toList();
