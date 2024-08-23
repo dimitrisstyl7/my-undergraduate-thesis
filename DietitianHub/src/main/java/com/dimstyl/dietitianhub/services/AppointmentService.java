@@ -9,4 +9,6 @@ public interface AppointmentService {
 
     List<AppointmentDto> getAppointmentsByStatus(AppointmentStatus status);
 
+    void updateAppointment(int id, AppointmentDto appointmentDto);
+
 }
