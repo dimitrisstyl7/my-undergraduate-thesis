@@ -2,7 +2,8 @@ package com.dimstyl.dietitianhub.dtos;
 
 import com.dimstyl.dietitianhub.entities.Article;
 import com.dimstyl.dietitianhub.entities.Tag;
-import com.dimstyl.dietitianhub.validators.articleTitle.UniqueTitle;
+import com.dimstyl.dietitianhub.validators.content.RichTextNotBlank;
+import com.dimstyl.dietitianhub.validators.title.UniqueTitle;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -13,7 +14,7 @@ public record ArticleDto(int id,
                          @NotBlank(message = "Title cannot be empty")
                          @Size(max = 100, message = "Title must be less than 100 characters")
                          String title,
-                         @NotBlank(message = "Content cannot be empty") String content,
+                         @RichTextNotBlank String content,
                          List<Integer> tagIds,
                          List<String> tagNames,
                          String createdAt) implements IdentifiableAndTitleable {
