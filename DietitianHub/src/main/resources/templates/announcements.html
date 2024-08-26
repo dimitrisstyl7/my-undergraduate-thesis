@@ -60,8 +60,9 @@
                                maxlength="100" class="ms-1">
                         <span id="title-error-message" class="reset-to-default validation-error ps-1" hidden></span>
                     </h4>
-                    <button type="button" class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"
-                            aria-hidden="true" onclick="clearAnnouncementContent()"><i class="mdi mdi-close"></i>
+                    <button id="close-modal-button" type="button" class="btn btn-danger waves-effect waves-light"
+                            data-bs-dismiss="modal" aria-hidden="true" onclick="clearAnnouncement()"><i
+                            class="mdi mdi-close"></i>
                     </button>
                 </div>
 
@@ -360,9 +361,6 @@
 
         // Function that configures the modal for viewing/updating an existing announcement.
         async function configureModalForViewing(announcementId) {
-            const previewEditor = document.getElementById("preview-announcement");
-            const previewEditorInnerHtml = previewEditor.innerHTML;
-
             editAnnouncementTab.setAttribute("aria-expanded", "false");
             editAnnouncementTab.classList.remove("active");
             editAnnouncement.classList.remove("show", "active");
@@ -372,10 +370,9 @@
             announcementTitle.setAttribute("disabled", "true");
 
             showUpdateButton();
-            addSpinner(previewEditor);  // Add spinner to the preview editor
 
             // Fetch the announcement by its ID.
-            await fetchAnnouncement(announcementId, previewEditor, previewEditorInnerHtml);
+            await fetchAnnouncement(announcementId);
 
             // Adjust the size of the input field for the announcement title.
             announcementTitle.size = announcementTitle.value.length;
@@ -416,20 +413,26 @@
             }
         }
 
-        // Function that clears the announcement content.
-        function clearAnnouncementContent() {
-            // Clear the announcement title and announcement error message.
-            announcementTitle.value = "";
-            announcementTitle.removeAttribute("size"); // Reset the size of the input.
+        // Function that clears the error messages.
+        function clearErrors() {
             announcementTitle.classList.remove("border-danger", "border-2");
             announcementTitleErrorMessage.textContent = "";
             announcementTitleErrorMessage.setAttribute("hidden", "true");
 
-            // Clear the announcement content and announcement error message.
             editorsErrorMessage.textContent = "";
             editorsErrorMessage.setAttribute("hidden", "true");
             previewAnnouncementCard.classList.remove("border-danger", "border-2");
             editAnnouncementCard.classList.remove("border-danger", "border-2");
+        }
+
+        // Function that clears the announcement title, content, and error messages.
+        function clearAnnouncement() {
+            // Clear the announcement title.
+            announcementTitle.value = "";
+            announcementTitle.removeAttribute("size"); // Reset the size of the input.
+
+            // Clear the error messages.
+            clearErrors();
 
             // Set the content of the editors to the default value.
             editors.forEach(function (item) {
@@ -439,6 +442,7 @@
 
         // Function that validates the announcement.
         function validateAnnouncement() {
+            clearErrors();
             const titleIsEmpty = announcementTitle.value.trim() === "";
             const contentIsEmpty = editors[1].textContent.trim() === "";
 
@@ -479,13 +483,13 @@
             if (!validateAnnouncement()) return;
 
             // Get the announcement title and content.
-            const title = announcementTitle.value;
-            const content = editors[1].innerHTML;
+            const title = announcementTitle.value.trim();
+            const content = editors[1].innerHTML.trim();
 
             // Create an object with the announcement title, and content.
             const announcement = {
-                title: title.trim(),
-                content: content.trim(),
+                title: title,
+                content: content,
             };
 
             const publishButton = document.getElementById("publish-button");
@@ -542,14 +546,14 @@
         }
 
         // Function that fetches an announcement by its ID.
-        async function fetchAnnouncement(id, previewEditor, previewEditorInnerHtml) {
+        async function fetchAnnouncement(id) {
             const response = await fetch(`/api/v1/announcements/${id}`);
-            const result = await handleFetchAnnouncementResponse(response, previewEditor, previewEditorInnerHtml);
+            const result = await handleFetchAnnouncementResponse(response);
             if (result?.error) alert(result.error);
         }
 
         // Function that handles the response from the fetch announcement request and updates the UI accordingly.
-        async function handleFetchAnnouncementResponse(response, previewEditor, previewEditorInnerHtml) {
+        async function handleFetchAnnouncementResponse(response) {
             if (!response.ok) {
                 const defaultMessage = "Something went wrong while fetching the announcement. " +
                     "Please try again. If the problem persists, please contact our Support.";
@@ -569,11 +573,13 @@
                 } catch (error) {
                     console.error("An error occurred while parsing the response: ", error);
                     alert(defaultMessage);
+                } finally {
+                    // Close the modal if an error occurred while fetching the article.
+                    document.getElementById("close-modal-button").click();
                 }
             } else {
                 const announcement = await response.json();
                 announcementTitle.value = announcement.title;  // Set the announcement title
-                removeSpinner(previewEditor, previewEditorInnerHtml);  // Remove the spinner from the preview editor
                 editors.forEach(editor => editor.innerHTML = announcement.content);  // Set the announcement content
             }
         }
@@ -584,13 +590,14 @@
             if (!validateAnnouncement()) return;
 
             // Get the announcement title and content.
-            const title = announcementTitle.value;
-            const content = editors[1].innerHTML;
+            const title = announcementTitle.value.trim();
+            const content = editors[1].innerHTML.trim();
 
-            // Create an object with the announcement title, and content.
+            // Create an object with the announcement id, title, and content.
             const announcement = {
-                title: title.trim(),
-                content: content.trim(),
+                id: id,
+                title: title,
+                content: content,
             };
 
             const updateButton = document.getElementById("update-button");
