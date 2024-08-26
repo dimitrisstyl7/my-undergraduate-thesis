@@ -58,7 +58,7 @@
                         <label for="announcement-title">Title:</label>
                         <input type="text" id="announcement-title" name="title" oninput="this.size = this.value.length"
                                maxlength="100" class="ms-1">
-                        <span id="title-error-message" class="validation-error ps-1" hidden></span>
+                        <span id="title-error-message" class="reset-to-default validation-error ps-1" hidden></span>
                     </h4>
                     <button type="button" class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"
                             aria-hidden="true" onclick="clearAnnouncementContent()"><i class="mdi mdi-close"></i>
@@ -87,7 +87,8 @@
                                 </ul>
 
                                 <div class="tab-content">
-                                    <h4 id="editors-error-message" class="validation-error" hidden></h4>
+                                    <span id="editors-error-message" class="reset-to-default validation-error"
+                                          hidden></span>
                                     <div class="tab-pane show active pb-0" id="preview-announcement">
                                         <div class="col-12">
                                             <div class="card pb-0" id="preview-announcement-card">

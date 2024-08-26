@@ -34,7 +34,7 @@
                                    th:field="*{firstName}" minlength="2" maxlength="50" pattern="^[a-zA-Z]{2,50}$"
                                    title="First name must be between 2 and 50 characters long."
                                    autocomplete="given-name" required>
-                            <span class="validation-error" th:if="${#fields.hasErrors('firstName')}"
+                            <span class="reset-to-default validation-error" th:if="${#fields.hasErrors('firstName')}"
                                   th:errors="*{firstName}"></span>
                         </div>
                         <div class="mb-3">
@@ -44,7 +44,7 @@
                                    th:field="*{lastName}" minlength="2" maxlength="50" pattern="^[a-zA-Z]{2,50}$"
                                    title="Last name must be between 2 and 50 characters long."
                                    autocomplete="family-name" required>
-                            <span class="validation-error" th:if="${#fields.hasErrors('lastName')}"
+                            <span class="reset-to-default validation-error" th:if="${#fields.hasErrors('lastName')}"
                                   th:errors="*{lastName}"></span>
                         </div>
                         <div class="mb-3">
@@ -52,7 +52,7 @@
                                 Date Of Birth <span class="text-danger">*</span></label>
                             <input type="date" class="form-control" id="date-of-birth" th:field="*{dateOfBirth}"
                                    th:max="${maxDateOfBirth}" autocomplete="bday" required>
-                            <span class="validation-error" th:if="${#fields.hasErrors('dateOfBirth')}"
+                            <span class="reset-to-default validation-error" th:if="${#fields.hasErrors('dateOfBirth')}"
                                   th:errors="*{dateOfBirth}"></span>
                         </div>
                         <div>
@@ -72,10 +72,10 @@
                             </div>
                             <div class="mb-3" th:switch="${#fields.hasErrors('gender')}">
                                 <!--suppress XmlDuplicatedId -->
-                                <span id="gender-error" class="validation-error" th:case="${true}"
+                                <span id="gender-error" class="reset-to-default validation-error" th:case="${true}"
                                       th:errors="*{gender}"></span>
                                 <!--suppress XmlDuplicatedId -->
-                                <span id="gender-error" class="validation-error" th:case="*"></span>
+                                <span id="gender-error" class="reset-to-default validation-error" th:case="*"></span>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -83,7 +83,7 @@
                                 Email Address <span class="text-danger">*</span></label>
                             <input type="email" class="form-control" id="email" placeholder="Enter email"
                                    autocomplete="email" th:field="*{email}" minlength="3" maxlength="50" required>
-                            <span class="validation-error" th:if="${#fields.hasErrors('email')}"
+                            <span class="reset-to-default validation-error" th:if="${#fields.hasErrors('email')}"
                                   th:errors="*{email}"></span>
                         </div>
                         <div class="mb-3">
@@ -93,7 +93,7 @@
                                    th:field="*{phone}" minlength="8" maxlength="20" pattern="^[0-9]{8,20}$"
                                    title="Phone number must be between 8 and 20 digits long."
                                    autocomplete="tel" required>
-                            <span class="validation-error" th:if="${#fields.hasErrors('phone')}"
+                            <span class="reset-to-default validation-error" th:if="${#fields.hasErrors('phone')}"
                                   th:errors="*{phone}"></span>
                         </div>
                     </div>
