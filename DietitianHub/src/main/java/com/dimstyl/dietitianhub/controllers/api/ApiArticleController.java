@@ -37,7 +37,7 @@ public class ApiArticleController {
 
         // Otherwise, return a bad request.
         Optional<String> titleError = ValidationErrorUtil.getTitleError(result);
-        Optional<String> contentError = ValidationErrorUtil.getContentError(result);
+        Optional<String> contentError = ValidationErrorUtil.getError("content", result);
         Map<String, String> errors = new HashMap<>() {
             {
                 titleError.ifPresent(s -> put("title", s));
@@ -62,7 +62,7 @@ public class ApiArticleController {
 
         // Otherwise, return a bad request.
         Optional<String> titleError = ValidationErrorUtil.getTitleError(result);
-        Optional<String> contentError = ValidationErrorUtil.getContentError(result);
+        Optional<String> contentError = ValidationErrorUtil.getError("content", result);
         Map<String, String> errors = new HashMap<>() {
             {
                 titleError.ifPresent(s -> put("title", s));
