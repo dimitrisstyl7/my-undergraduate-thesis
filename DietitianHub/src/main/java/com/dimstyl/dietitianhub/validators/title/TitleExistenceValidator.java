@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.validators.articleTitle;
+package com.dimstyl.dietitianhub.validators.title;
 
 import com.dimstyl.dietitianhub.dtos.ArticleDto;
 import com.dimstyl.dietitianhub.dtos.IdentifiableAndTitleable;
@@ -44,9 +44,9 @@ public class TitleExistenceValidator implements ConstraintValidator<UniqueTitle,
         return isArticle ? !articleService.existsByTitle(dto.title()) : !announcementService.existsByTitle(dto.title());
     }
 
-    private boolean oldTitleEqualsNewTitle(IdentifiableAndTitleable x, boolean isArticle) {
-        int id = x.id();
-        String newTitle = x.title();
+    private boolean oldTitleEqualsNewTitle(IdentifiableAndTitleable dto, boolean isArticle) {
+        int id = dto.id();
+        String newTitle = dto.title();
 
         // Compare the old title with the new title based on the type of the dto.
         return isArticle ?

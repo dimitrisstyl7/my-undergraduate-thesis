@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.validators.articleTitle;
+package com.dimstyl.dietitianhub.validators.title;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
