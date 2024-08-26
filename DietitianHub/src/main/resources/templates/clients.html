@@ -32,7 +32,7 @@
                                 First Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="first-name" placeholder="Enter first name"
                                    th:field="*{firstName}" minlength="2" maxlength="50" pattern="^[a-zA-Z]{2,50}$"
-                                   title="First name must be between 2 and 50 characters long."
+                                   title="First name must be between 2 and 50 characters long, and contain only letters."
                                    autocomplete="given-name" required>
                             <span class="reset-to-default validation-error" th:if="${#fields.hasErrors('firstName')}"
                                   th:errors="*{firstName}"></span>
@@ -42,7 +42,7 @@
                                 Last Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="last-name" placeholder="Enter last name"
                                    th:field="*{lastName}" minlength="2" maxlength="50" pattern="^[a-zA-Z]{2,50}$"
-                                   title="Last name must be between 2 and 50 characters long."
+                                   title="Last name must be between 2 and 50 characters long, and contain only letters."
                                    autocomplete="family-name" required>
                             <span class="reset-to-default validation-error" th:if="${#fields.hasErrors('lastName')}"
                                   th:errors="*{lastName}"></span>
@@ -213,7 +213,7 @@
                                   method="get">
                                 <a class="dropdown-item text-danger" data-bs-toggle="modal"
                                    data-bs-target="#client-delete-modal"
-                                   th:onclick="fillDeleteModal([[${c.getFullName()}]],[[${c.id}]])">
+                                   th:onclick="fillDeleteModal([[${c.fullName}]],[[${c.id}]])">
                                     Delete client</a>
                             </form>
                         </div>
