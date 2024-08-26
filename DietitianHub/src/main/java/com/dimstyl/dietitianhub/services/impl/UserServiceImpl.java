@@ -107,8 +107,6 @@ public class UserServiceImpl implements UserService {
         user.setUsername(newUsername);
         user.setPassword(passwordEncoder.encode(password));
         user.setEnabled(true);
-
-        userRepository.save(user);
     }
 
 }

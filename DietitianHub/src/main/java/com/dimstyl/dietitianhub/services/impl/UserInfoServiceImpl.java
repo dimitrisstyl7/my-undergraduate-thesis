@@ -36,15 +36,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Transactional
     public void updateUserInfo(ClientDto clientDto, int userId) {
         UserInfo existingUserInfo = getUserInfo(userId);
-
         existingUserInfo.setFirstName(clientDto.getFirstName());
         existingUserInfo.setLastName(clientDto.getLastName());
         existingUserInfo.setGender(clientDto.getGender());
         existingUserInfo.setDateOfBirth(clientDto.getDateOfBirth());
         existingUserInfo.setEmail(clientDto.getEmail());
         existingUserInfo.setPhone(clientDto.getPhone());
-
-        userInfoRepository.save(existingUserInfo);
     }
 
     @Override
@@ -61,7 +58,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo userInfo = getUserInfo(userId);
         List<Tag> tags = tagService.getTags(tagIds);
         userInfo.setTags(tags);
-        userInfoRepository.save(userInfo);
     }
 
     @Override

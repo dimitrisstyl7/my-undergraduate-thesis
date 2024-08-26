@@ -32,7 +32,6 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .orElseThrow(() -> new AppointmentNotFoundException("Appointment with id %d not found".formatted(id)));
         appointment.setTitle(appointmentDto.title());
         appointment.setDescription(appointmentDto.description());
-        appointmentRepository.save(appointment).toDto();
     }
 
 }

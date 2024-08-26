@@ -52,7 +52,6 @@ public class ArticleServiceImpl implements ArticleService {
         article.setTitle(articleDto.title());
         article.setContent(articleDto.content());
         article.setTags(tags);
-        articleRepository.save(article);
     }
 
     @Override

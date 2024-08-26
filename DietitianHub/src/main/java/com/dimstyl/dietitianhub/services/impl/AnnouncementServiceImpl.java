@@ -68,7 +68,6 @@ public class AnnouncementServiceImpl implements AnnouncementService {
                 .orElseThrow(() -> new AnnouncementNotFoundException("Announcement with id %d not found".formatted(id)));
         announcement.setTitle(announcementDto.title());
         announcement.setContent(announcementDto.content());
-        announcementRepository.save(announcement);
     }
 
     @Override
