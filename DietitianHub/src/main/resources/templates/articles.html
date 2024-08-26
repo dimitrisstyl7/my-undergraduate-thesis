@@ -43,8 +43,9 @@
                                maxlength="100" class="ms-1">
                         <span id="title-error-message" class="reset-to-default validation-error ps-1" hidden></span>
                     </h4>
-                    <button type="button" class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"
-                            aria-hidden="true" onclick="clearArticleContent()"><i class="mdi mdi-close"></i></button>
+                    <button id="close-modal-button" type="button" class="btn btn-danger waves-effect waves-light"
+                            data-bs-dismiss="modal" aria-hidden="true" onclick="clearArticle()"><i
+                            class="mdi mdi-close"></i></button>
                 </div>
 
                 <div class="modal-body px-0">
@@ -287,9 +288,6 @@
 
         // Function that configures the modal for viewing/updating an existing article.
         async function configureModalForViewing(articleId) {
-            const previewEditor = document.getElementById("preview-article");
-            const previewEditorInnerHtml = previewEditor.innerHTML;
-
             editArticleTab.setAttribute("aria-expanded", "false");
             editArticleTab.classList.remove("active");
             editArticle.classList.remove("show", "active");
@@ -300,10 +298,9 @@
 
             disableTagCheckboxes();
             showUpdateButton();
-            addSpinner(previewEditor);  // Add spinner to the preview editor
 
             // Fetch the article by its ID.
-            await fetchArticle(articleId, previewEditor, previewEditorInnerHtml);
+            await fetchArticle(articleId);
 
             // Adjust the size of the input field for the article title.
             articleTitle.size = articleTitle.value.length;
@@ -362,20 +359,26 @@
             });
         }
 
-        // Function that clears the article content.
-        function clearArticleContent() {
-            // Clear the article title and article error message.
-            articleTitle.value = "";
-            articleTitle.removeAttribute("size"); // Reset the size of the input.
+        // Function that clears the error messages.
+        function clearErrors() {
             articleTitle.classList.remove("border-danger", "border-2");
             articleTitleErrorMessage.textContent = "";
             articleTitleErrorMessage.setAttribute("hidden", "true");
 
-            // Clear the article content and article error message.
             editorsErrorMessage.textContent = "";
             editorsErrorMessage.setAttribute("hidden", "true");
             previewArticleCard.classList.remove("border-danger", "border-2");
             editArticleCard.classList.remove("border-danger", "border-2");
+        }
+
+        // Function that clears the article title, content, tags, and error messages.
+        function clearArticle() {
+            // Clear the article title.
+            articleTitle.value = "";
+            articleTitle.removeAttribute("size"); // Reset the size of the input.
+
+            // Clear the error messages.
+            clearErrors();
 
             // Set the content of the editors to the default value.
             editors.forEach(function (item) {
@@ -391,6 +394,7 @@
 
         // Function that validates the article.
         function validateArticle() {
+            clearErrors();
             const titleIsEmpty = articleTitle.value.trim() === "";
             const contentIsEmpty = editors[1].textContent.trim() === "";
 
@@ -439,13 +443,13 @@
                 .forEach(tag => tags.push(tag.value));
 
             // Get the article title and content.
-            const title = articleTitle.value;
-            const content = editors[1].innerHTML;
+            const title = articleTitle.value.trim();
+            const content = editors[1].innerHTML.trim();
 
             // Create an object with the article title, content, and tags.
             const article = {
-                title: title.trim(),
-                content: content.trim(),
+                title: title,
+                content: content,
                 tagIds: tags
             };
 
@@ -510,14 +514,14 @@
         }
 
         // Function that fetches an article by its ID.
-        async function fetchArticle(id, previewEditor, previewEditorInnerHtml) {
+        async function fetchArticle(id) {
             const response = await fetch(`/api/v1/articles/${id}`);
-            const result = await handleFetchArticleResponse(response, previewEditor, previewEditorInnerHtml);
+            const result = await handleFetchArticleResponse(response);
             if (result?.error) alert(result.error);
         }
 
         // Function that handles the response from the fetch article request and updates the UI accordingly.
-        async function handleFetchArticleResponse(response, previewEditor, previewEditorInnerHtml) {
+        async function handleFetchArticleResponse(response) {
             if (!response.ok) {
                 const defaultMessage = "Something went wrong while fetching the article. " +
                     "Please try again. If the problem persists, please contact our Support.";
@@ -537,12 +541,14 @@
                 } catch (error) {
                     console.error("An error occurred while parsing the response: ", error);
                     alert(defaultMessage);
+                } finally {
+                    // Close the modal if an error occurred while fetching the article.
+                    document.getElementById("close-modal-button").click();
                 }
             } else {
                 const article = await response.json();
                 articleTitle.value = article.title;  // Set the article title
                 article.tagIds.forEach(id => document.getElementById(`tag-${id}`).checked = true);  // Set the tags
-                removeSpinner(previewEditor, previewEditorInnerHtml);  // Remove the spinner from the preview editor
                 editors.forEach(editor => editor.innerHTML = article.content);  // Set the article content
             }
         }
@@ -559,13 +565,16 @@
                 .forEach(tag => tags.push(tag.value));
 
             // Get the article title and content.
-            const title = articleTitle.value;
-            const content = editors[1].innerHTML;
+            const title = articleTitle.value.trim();
+            const content = editors[1].innerHTML.trim();
 
-            // Create an object with the article title, content, and tags.
+            console.log(content)
+
+            // Create an object with the article id, title, content, and tags.
             const article = {
-                title: title.trim(),
-                content: content.trim(),
+                id: id,
+                title: title,
+                content: content,
                 tagIds: tags
             };
 
