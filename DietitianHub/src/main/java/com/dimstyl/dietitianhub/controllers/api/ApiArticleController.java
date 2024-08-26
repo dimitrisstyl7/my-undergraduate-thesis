@@ -41,7 +41,7 @@ public class ApiArticleController {
         Map<String, String> errors = new HashMap<>() {
             {
                 titleError.ifPresent(s -> put("title", s));
-                contentError.ifPresent(s -> put("title", s));
+                contentError.ifPresent(s -> put("content", s));
             }
         };
 
@@ -66,7 +66,7 @@ public class ApiArticleController {
         Map<String, String> errors = new HashMap<>() {
             {
                 titleError.ifPresent(s -> put("title", s));
-                contentError.ifPresent(s -> put("title", s));
+                contentError.ifPresent(s -> put("content", s));
             }
         };
 
