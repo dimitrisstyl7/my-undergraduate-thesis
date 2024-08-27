@@ -32,7 +32,7 @@ public class ApiAppointmentController {
                                                                  @Valid @RequestBody AppointmentDto appointmentDto,
                                                                  BindingResult result) {
         // If there is an error in title, return a bad request.
-        if (result.hasErrors()) {
+        if (result.hasFieldErrors("title")) {
             Optional<String> titleError = ValidationErrorUtil.getTitleError(result);
 
             // If default message is found, return a bad request with the title error in the body.
@@ -43,6 +43,7 @@ public class ApiAppointmentController {
         }
 
         // Otherwise, continue with the update of the appointment.
+        // Otherwise, continue with updating the appointment.
         appointmentService.updateAppointment(id, appointmentDto);
         return ResponseEntity.ok().build();
     }
