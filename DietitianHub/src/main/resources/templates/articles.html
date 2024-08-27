@@ -568,8 +568,6 @@
             const title = articleTitle.value.trim();
             const content = editors[1].innerHTML.trim();
 
-            console.log(content)
-
             // Create an object with the article id, title, content, and tags.
             const article = {
                 id: id,
@@ -640,14 +638,14 @@
 
         // Function that deletes an article.
         async function deleteArticle(id, confirmDeletionButton) {
+            addSpinner(confirmDeletionButton); // Add spinner to the confirm deletion button
+
             const response = await fetch(`/api/v1/articles/${id}`, {
                 method: 'DELETE',
                 headers: {
                     [[${_csrf.headerName}]]: [[${_csrf.token}]]
                 }
             });
-
-            addSpinner(confirmDeletionButton); // Add spinner to the publish button
 
             const result = await handleDeleteArticleResponse(response, confirmDeletionButton);
             if (result?.error) alert(result.error);

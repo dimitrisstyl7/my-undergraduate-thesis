@@ -662,14 +662,14 @@
 
         // Function that deletes an announcement.
         async function deleteAnnouncement(id, confirmDeletionButton) {
+            addSpinner(confirmDeletionButton); // Add spinner to the confirm deletion button
+
             const response = await fetch(`/api/v1/announcements/${id}`, {
                 method: 'DELETE',
                 headers: {
                     [[${_csrf.headerName}]]: [[${_csrf.token}]]
                 }
             });
-
-            addSpinner(confirmDeletionButton); // Add spinner to the publish button
 
             const result = await handleDeleteAnnouncementResponse(response, confirmDeletionButton);
             if (result?.error) alert(result.error);
