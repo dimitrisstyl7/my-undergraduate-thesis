@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -27,6 +28,36 @@ public class ApiAppointmentController {
         return ResponseEntity.ok(appointmentService.getAppointmentsByStatus(AppointmentStatus.SCHEDULED));
     }
 
+    @PostMapping
+    public ResponseEntity<Map<String, String>> createAppointment(@Valid @RequestBody AppointmentDto appointmentDto,
+                                                                 BindingResult result) {
+        // If there are no errors, proceed with creating the appointment.
+        if (!result.hasErrors()) {
+            AppointmentDto newAppointmentDto = appointmentService.createAppointment(appointmentDto);
+            return ResponseEntity.ok(Map.of(
+                    "id", String.valueOf(newAppointmentDto.id()),
+                    "formattedScheduledDateTime", newAppointmentDto.formattedScheduledDateTime(),
+                    "clientFullName", newAppointmentDto.clientFullName())
+            );
+        }
+
+        // Otherwise, return a bad request.
+        Optional<String> titleError = ValidationErrorUtil.getTitleError(result);
+        Optional<String> startError = ValidationErrorUtil.getError("start", result);
+        Optional<String> clientError = ValidationErrorUtil.getError("clientId", result);
+        Map<String, String> errors = new HashMap<>() {
+            {
+                titleError.ifPresent(s -> put("title", s));
+                startError.ifPresent(s -> put("start", s));
+                clientError.ifPresent(s -> put("client", s));
+            }
+        };
+
+        // If errors map is empty (no default message found), return a bad request without a body.
+        // Otherwise, return a bad request with the errors map in the body.
+        return errors.isEmpty() ? ResponseEntity.badRequest().build() : ResponseEntity.badRequest().body(errors);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, String>> updateAppointment(@PathVariable("id") int id,
                                                                  @Valid @RequestBody AppointmentDto appointmentDto,
@@ -42,7 +73,6 @@ public class ApiAppointmentController {
                     .orElseGet(() -> ResponseEntity.badRequest().build());
         }
 
-        // Otherwise, continue with the update of the appointment.
         // Otherwise, continue with updating the appointment.
         appointmentService.updateAppointment(id, appointmentDto);
         return ResponseEntity.ok().build();
