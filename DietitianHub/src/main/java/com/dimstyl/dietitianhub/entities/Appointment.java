@@ -50,7 +50,16 @@ public class Appointment {
     public AppointmentDto toDto() {
         String formattedScheduledDateTime = DateTimeUtil.getFormattedDateTime(scheduledDateTime);
         String clientFullName = clientUserInfo.getFullName();
-        return new AppointmentDto(id, title, description, scheduledDateTime, formattedScheduledDateTime, clientFullName);
+        int clientId = clientUserInfo.getUser().getId();
+        return AppointmentDto.builder()
+                .id(id)
+                .title(title)
+                .description(description)
+                .start(scheduledDateTime)
+                .formattedScheduledDateTime(formattedScheduledDateTime)
+                .clientId(clientId)
+                .clientFullName(clientFullName)
+                .build();
     }
 
 }

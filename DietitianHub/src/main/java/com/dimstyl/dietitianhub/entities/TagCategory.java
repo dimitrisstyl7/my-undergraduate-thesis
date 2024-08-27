@@ -1,6 +1,7 @@
 package com.dimstyl.dietitianhub.entities;
 
 import com.dimstyl.dietitianhub.dtos.TagCategoryDto;
+import com.dimstyl.dietitianhub.dtos.TagDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +26,11 @@ public class TagCategory {
     private List<Tag> tags;
 
     public TagCategoryDto toDto() {
-        return new TagCategoryDto(name, tags.stream().map(Tag::toDto).toList());
+        List<TagDto> tags = this.tags.stream().map(Tag::toDto).toList();
+        return TagCategoryDto.builder()
+                .name(name)
+                .tags(tags)
+                .build();
     }
 
 }

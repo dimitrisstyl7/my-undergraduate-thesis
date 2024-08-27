@@ -40,7 +40,12 @@ public class DietPlan {
     private LocalDate createdOn;
 
     public DietPlanDto toDto() {
-        return new DietPlanDto(id, name, DateTimeUtil.getFormattedDate(createdOn));
+        String createdOn = DateTimeUtil.getFormattedDate(this.createdOn);
+        return DietPlanDto.builder()
+                .id(id)
+                .name(name)
+                .createdOn(createdOn)
+                .build();
     }
 
 }

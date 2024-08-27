@@ -48,7 +48,14 @@ public class Article {
         List<String> tagNames = tags.stream().map(Tag::getName).toList();
         List<Integer> tagIds = tags.stream().map(Tag::getId).toList();
         String createdAt = DateTimeUtil.getFormattedDateTime(this.createdAt);
-        return new ArticleDto(id, title, content, tagIds, tagNames, createdAt);
+        return ArticleDto.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .tagIds(tagIds)
+                .tagNames(tagNames)
+                .createdAt(createdAt)
+                .build();
     }
 
 }

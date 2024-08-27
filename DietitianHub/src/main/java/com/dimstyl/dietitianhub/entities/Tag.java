@@ -26,7 +26,12 @@ public class Tag {
     private String name;
 
     public TagDto toDto() {
-        return new TagDto(id, category.getId(), name);
+        int categoryId = category.getId();
+        return TagDto.builder()
+                .id(id)
+                .categoryId(categoryId)
+                .name(name)
+                .build();
     }
 
 }

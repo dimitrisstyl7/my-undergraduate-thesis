@@ -6,9 +6,11 @@ import com.dimstyl.dietitianhub.validators.richText.RichTextNotBlank;
 import com.dimstyl.dietitianhub.validators.title.UniqueTitle;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 
 import java.util.List;
 
+@Builder
 @UniqueTitle
 public record ArticleDto(int id,
                          @NotBlank(message = "Title cannot be empty")

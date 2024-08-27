@@ -36,7 +36,12 @@ public class Announcement {
 
     public AnnouncementDto toDto() {
         String createdAt = DateTimeUtil.getFormattedDateTime(this.createdAt);
-        return new AnnouncementDto(id, title, content, createdAt);
+        return AnnouncementDto.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .createdAt(createdAt)
+                .build();
     }
 
 }
