@@ -65,7 +65,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         RequestType requestType = RequestType.byUri(request.getRequestURI());
 
         return userInfoRepository
-                .findByUserId(userId)
+                .findByUser_Id(userId)
                 .orElseThrow(() -> {
                     String message = "User info not found for user id: %s".formatted(userId);
                     if (requestType.equals(RequestType.API)) {
