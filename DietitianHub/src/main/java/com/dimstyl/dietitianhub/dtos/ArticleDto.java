@@ -2,7 +2,7 @@ package com.dimstyl.dietitianhub.dtos;
 
 import com.dimstyl.dietitianhub.entities.Article;
 import com.dimstyl.dietitianhub.entities.Tag;
-import com.dimstyl.dietitianhub.validators.content.RichTextNotBlank;
+import com.dimstyl.dietitianhub.validators.richText.RichTextNotBlank;
 import com.dimstyl.dietitianhub.validators.title.UniqueTitle;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

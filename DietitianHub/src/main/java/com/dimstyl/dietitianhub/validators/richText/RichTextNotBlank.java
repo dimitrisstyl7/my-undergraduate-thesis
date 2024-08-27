@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.validators.content;
+package com.dimstyl.dietitianhub.validators.richText;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
