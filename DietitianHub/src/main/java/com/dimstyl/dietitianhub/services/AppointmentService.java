@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface AppointmentService {
 
-    List<AppointmentDto> getAppointmentsByStatus(AppointmentStatus status);
+    List<AppointmentDto> getAppointmentsByStatusAndScheduledDateTimeAfter(AppointmentStatus status,
+                                                                          LocalDateTime scheduledDateTime);
 
     AppointmentDto createAppointment(AppointmentDto appointmentDto);
 

@@ -25,7 +25,12 @@ public class ApiAppointmentController {
 
     @GetMapping
     public ResponseEntity<List<AppointmentDto>> getAppointments() {
-        return ResponseEntity.ok(appointmentService.getAppointmentsByStatus(AppointmentStatus.SCHEDULED));
+        return ResponseEntity.ok(
+                appointmentService.getAppointmentsByStatusAndScheduledDateTimeAfter(
+                        AppointmentStatus.SCHEDULED,
+                        java.time.LocalDateTime.now()
+                )
+        );
     }
 
     @PostMapping
@@ -75,7 +80,7 @@ public class ApiAppointmentController {
 
         // Otherwise, continue with updating the appointment.
         appointmentService.updateAppointment(id, appointmentDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -23,8 +23,10 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final UserInfoService userInfoService;
 
     @Override
-    public List<AppointmentDto> getAppointmentsByStatus(AppointmentStatus status) {
-        return appointmentRepository.findAllByStatus(status).stream()
+    public List<AppointmentDto> getAppointmentsByStatusAndScheduledDateTimeAfter(AppointmentStatus status,
+                                                                                 LocalDateTime scheduledDateTime) {
+        return appointmentRepository
+                .findAllByStatusAndScheduledDateTimeIsAfter(status, scheduledDateTime).stream()
                 .map(Appointment::toDto)
                 .toList();
     }
