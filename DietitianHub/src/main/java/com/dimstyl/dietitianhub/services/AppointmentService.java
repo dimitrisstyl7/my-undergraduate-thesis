@@ -15,6 +15,8 @@ public interface AppointmentService {
 
     void updateAppointment(int id, AppointmentDto appointmentDto);
 
+    void deleteAnnouncement(int id);
+
     boolean existsByScheduledDateTime(LocalDateTime scheduledDateTime);
 
 }

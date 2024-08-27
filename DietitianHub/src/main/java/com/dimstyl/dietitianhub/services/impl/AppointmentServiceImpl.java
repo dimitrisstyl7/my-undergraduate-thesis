@@ -50,6 +50,14 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
+    @Transactional
+    public void deleteAnnouncement(int id) {
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new AppointmentNotFoundException("Appointment with id %d not found".formatted(id)));
+        appointmentRepository.delete(appointment);
+    }
+
+    @Override
     public boolean existsByScheduledDateTime(LocalDateTime scheduledDateTime) {
         return appointmentRepository.existsByScheduledDateTime(scheduledDateTime);
     }
