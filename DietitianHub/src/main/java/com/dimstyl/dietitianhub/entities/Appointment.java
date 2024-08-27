@@ -12,11 +12,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(
-        name = "appointment",
-        schema = "public",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"client_user_info_id", "scheduled_datetime"})
-)
+@Table(name = "appointment", schema = "public")
 @Getter
 @Setter
 @Builder
@@ -39,7 +35,7 @@ public class Appointment {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "scheduled_datetime", nullable = false)
+    @Column(name = "scheduled_datetime", unique = true, nullable = false)
     private LocalDateTime scheduledDateTime;
 
     @Enumerated(EnumType.STRING)
