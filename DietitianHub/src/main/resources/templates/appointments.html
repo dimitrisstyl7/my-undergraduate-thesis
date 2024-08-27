@@ -28,58 +28,132 @@
 
 <body>
 <div layout:fragment="main-content">
-    <!-- Modal for appointment edit -->
-    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Modal for appointment creation -->
+    <div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
-            <form>
+            <form id="create-form">
                 <div class="modal-content">
                     <div class="modal-header bg-light">
-                        <h4 class="modal-title" id="edit-modal-title">Edit Appointment</h4>
+                        <h4 class="modal-title" id="create-modal-title">Create Appointment</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label id="edit-title-label" for="edit-title" class="form-label custom-form-label">
+                            <label id="create-title-label" for="create-title" class="form-label custom-form-label">
                                 Title <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="edit-title" placeholder="Enter title"
-                                   maxlength="100" required>
-                            <span id="edit-title-error" class="validation-error"></span>
+                            <input type="text" class="form-control" id="create-title" placeholder="Enter title"
+                                   maxlength="100">
+                            <span id="create-title-error" class="reset-to-default validation-error"></span>
                         </div>
                         <div class="mb-3">
-                            <label id="edit-description-label" for="edit-description"
+                            <label id="create-description-label" for="create-description"
                                    class="form-label custom-form-label">
                                 Description</label>
-                            <textarea class="form-control" id="edit-description"
+                            <textarea class="form-control" id="create-description"
                                       placeholder="Enter description"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label id="edit-datetime-label" for="edit-datetime" class="form-label custom-form-label">
-                                Date and Time</label>
-                            <input id="edit-datetime" type="text" class="form-control" disabled>
+                            <label id="create-datetime-label" for="create-datetime"
+                                   class="form-label custom-form-label">
+                                Date and Time <span class="text-danger">*</span></label>
+                            <input id="create-datetime" type="datetime-local" th:min="${minDateTime}"
+                                   class="form-control">
+                            <span id="create-datetime-error" class="reset-to-default validation-error"></span>
                         </div>
-                        <div class="mb-3">
-                            <label id="edit-client-fullname-label" for="edit-client-fullname"
-                                   class="form-label custom-form-label">Client</label>
-                            <input id="edit-client-fullname" type="text" class="form-control" disabled>
+                        <div class="mb-2">
+                            <label id="create-client-fullname-label" for="create-client-select"
+                                   class="form-label custom-form-label">
+                                Client <span class="text-danger">*</span></label>
+                            <select class="form-select" id="create-client-select">
+                                <option value="-1" selected hidden>Select a client</option>
+                                <option th:each="client: ${clients}" th:id="${'client-'+client.id}"
+                                        th:text="${client.fullName}" th:value="${client.id}"></option>
+                            </select>
+                            <span id="create-client-select-error" class="reset-to-default validation-error"></span>
                         </div>
                     </div>
                     <div class="modal-footer bg-light d-flex">
-                        <button id="edit-save-button" type="button" class="btn btn-success">Save</button>
-                        <button id="edit-reset-button" type="button" class="btn btn-secondary mx-auto"
-                                onclick="resetEditModal()">
-                            Reset
-                        </button>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#delete-modal">Delete
-                        </button>
+                        <button id="create-submit-button" type="button" class="btn btn-success">Create</button>
+                        <button id="create-reset-button" type="reset" class="btn btn-secondary mx-auto">Reset</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div><!-- end modal-content -->
             </form>
         </div><!-- end modal-dialog -->
     </div><!-- end modal -->
 
+    <!-- Modal for appointment edit -->
+    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h4 class="modal-title" id="edit-modal-title">Edit Appointment</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label id="edit-title-label" for="edit-title" class="form-label custom-form-label">
+                            Title <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="edit-title" placeholder="Enter title"
+                               maxlength="100">
+                        <span id="edit-title-error" class="reset-to-default validation-error"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label id="edit-description-label" for="edit-description"
+                               class="form-label custom-form-label">
+                            Description</label>
+                        <textarea class="form-control" id="edit-description"
+                                  placeholder="Enter description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label id="edit-datetime-label" for="edit-datetime" class="form-label custom-form-label">
+                            Date and Time</label>
+                        <input id="edit-datetime" type="text" class="form-control" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label id="edit-client-fullname-label" for="edit-client-fullname"
+                               class="form-label custom-form-label">Client</label>
+                        <input id="edit-client-fullname" type="text" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light d-flex">
+                    <button id="edit-save-button" type="button" class="btn btn-success">Save</button>
+                    <button id="edit-reset-button" type="button" class="btn btn-secondary mx-auto">
+                        Reset
+                    </button>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                            data-bs-target="#delete-modal">Delete
+                    </button>
+                </div>
+            </div><!-- end modal-content -->
+
+        </div><!-- end modal-dialog -->
+    </div><!-- end modal -->
+
+    <!-- Modal for appointment deletion -->
+    <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="dripicons-warning h1 text-warning"></i>
+                        <h4 id="delete-modal-title" class="mt-2">Appointment title</h4>
+                        <p class="mt-3">You are about to delete the appointment. This action cannot be undone.</p>
+                        <button id="confirm-deletion-button" type="button" class="btn btn-warning my-2">
+                            Continue
+                        </button>
+                        <button type="button" class="btn btn-danger ms-1" data-bs-dismiss="modal">Cancel
+                        </button>
+                    </div>
+                </div>
+            </div><!-- end modal-content -->
+        </div><!-- end modal-dialog -->
+    </div><!-- end modal -->
+    <!-- end modal -->
+
     <!-- Button to create a new appointment -->
-    <button class="btn btn-lg font-16 btn-success mb-3" id="btn-new-event" data-bs-toggle="modal"
+    <button id="create-appointment-button" class="btn btn-lg font-16 btn-success mb-3" data-bs-toggle="modal"
             data-bs-target="#create-modal">
         <i class="fa fa-plus me-1"></i> Create new
     </button>
@@ -100,26 +174,63 @@
         pageTitle[0].textContent = "Appointments";
 
         // Common elements that will be used in multiple functions.
+        const createTitle = document.getElementById("create-title");
+        const createDescription = document.getElementById("create-description");
+        const createDatetime = document.getElementById("create-datetime");
+        const createClientSelect = document.getElementById("create-client-select");
+        const createTitleError = document.getElementById("create-title-error");
+        const createDatetimeError = document.getElementById("create-datetime-error");
+        const createClientSelectError = document.getElementById("create-client-select-error");
         const editTitle = document.getElementById("edit-title");
         const editDescription = document.getElementById("edit-description");
         const editTitleError = document.getElementById("edit-title-error");
 
         // Function that resets the edit modal.
         function resetEditModal() {
+            clearEditErrorMessages();
             editTitle.value = "";
             editDescription.value = "";
             editTitleError.textContent = "";
         }
 
-        // Function that shows an error message for the appointment title.
-        function showTitleErrorMessage(message) {
-            editTitleError.textContent = message;
+        // Function that shows an error message for a specific element.
+        function showErrorMessage(element, message) {
+            element.textContent = message;
+        }
+
+        // Function that clears the associated error messages for appointment creation.
+        function clearCreateErrorMessages() {
+            createTitleError.textContent = "";
+            createDatetimeError.textContent = "";
+            createClientSelectError.textContent = "";
+        }
+
+        // Function that clears the associated error messages for appointment edit.
+        function clearEditErrorMessages() {
+            editTitleError.textContent = "";
         }
 
         // Function that validates the appointment.
-        function validateAppointment(title) {
-            const titleIsEmpty = title.trim() === "";
-            if (titleIsEmpty) showTitleErrorMessage("Title cannot be empty");
+        function validateCreateAppointment() {
+            clearCreateErrorMessages();
+
+            const titleIsEmpty = createTitle.value.trim() === "";
+            const clientSelectIsEmpty = createClientSelect.value === "-1";
+            const datetimeIsEmpty = createDatetime.value === "";
+            const datetimeIsBeforeNow = new Date(createDatetime.value) < new Date();
+
+            if (titleIsEmpty) showErrorMessage(createTitleError, "Title cannot be empty");
+            if (clientSelectIsEmpty) showErrorMessage(createClientSelectError, "Please select a client");
+            if (datetimeIsBeforeNow) showErrorMessage(createDatetimeError, "Please select a future date and time");
+            else if (datetimeIsEmpty) showErrorMessage(createDatetimeError, "Please select a date and time");
+
+            return !titleIsEmpty && !clientSelectIsEmpty && !datetimeIsEmpty && !datetimeIsBeforeNow;
+        }
+
+        // Function that validates the appointment.
+        function validateEditAppointment() {
+            const titleIsEmpty = editTitle.value.trim() === "";
+            if (titleIsEmpty) showErrorMessage(editTitleError, "Title cannot be empty");
             return !titleIsEmpty;
         }
 
@@ -140,19 +251,125 @@
             } else return await response.json();
         }
 
+        // Function that creates an appointment.
+        async function createAppointment(calendar) {
+            // Validate the appointment.
+            if (!validateCreateAppointment()) return;
+
+            // Get the appointment title and description.
+            const title = createTitle.value.trim();
+            const description = createDescription.value.trim();
+            const datetime = createDatetime.value;
+            const clientId = createClientSelect.value;
+
+            // Create an object with the appointment title, description, datetime, and clientId.
+            const appointment = {
+                title: title,
+                description: description,
+                start: datetime,
+                clientId: clientId
+            };
+
+            const createButton = document.getElementById("create-submit-button");
+            addSpinner(createButton); // Add spinner to the create button
+
+            const response = await fetch('/api/v1/appointments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                },
+                body: JSON.stringify(appointment)
+            });
+
+            const result = await handleCreateAppointmentResponse(response, appointment, calendar, createButton);
+            if (result?.error) alert(result.error);
+        }
+
+        // Function that handles the response from the create appointment request and updates the UI accordingly.
+        async function handleCreateAppointmentResponse(response, appointment, calendar, createButton) {
+            // Remove the spinner and set the button text back to "Save".
+            removeSpinner(createButton, "Save");
+
+            if (!response.ok) {
+                const defaultMessage = "Something went wrong while creating the appointment. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+
+                try {
+                    const errorResponse = await response.json();
+
+                    // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                    // redirect to the specified URL.
+                    if (errorResponse?.redirectUrl) {
+                        window.location.href = errorResponse.redirectUrl;
+                        return; // Exit the function after redirect
+                    }
+
+                    // If the errorResponse object contains the "title" key, and "title" has a value,
+                    // update the UI accordingly.
+                    const titleKeyExists = errorResponse?.title;
+                    if (titleKeyExists) showErrorMessage(createTitleError, errorResponse.title);
+
+                    // If the errorResponse object contains the "start" key, and "start" has a value,
+                    // update the UI accordingly.
+                    const startKeyExists = errorResponse?.start;
+                    if (startKeyExists) showErrorMessage(createDatetimeError, errorResponse.start);
+
+                    // If the errorResponse object contains the "client" key, and "client" has a value,
+                    // update the UI accordingly.
+                    const clientKeyExists = errorResponse?.client;
+                    if (clientKeyExists) showErrorMessage(createClientSelectError, errorResponse.client);
+
+                    // If any error exists, return.
+                    if (titleKeyExists || startKeyExists || clientKeyExists) return;
+
+                    // Otherwise, return the error message (if exists and has value) or the default message.
+                    return {error: errorResponse?.message || defaultMessage};
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    alert(defaultMessage);
+                }
+            } else {
+                try {
+                    const successResponse = await response.json();
+
+                    // throw new Error("Checking the calendar update logic.");
+
+                    // Add the new event to the calendar.
+                    calendar.addEvent({
+                        id: successResponse.id,
+                        title: appointment.title,
+                        description: appointment.description,
+                        start: appointment.start,
+                        formattedScheduledDateTime: successResponse.formattedScheduledDateTime,
+                        clientId: appointment.clientId,
+                        clientFullName: successResponse.clientFullName
+                    });
+
+                    // Hide create modal.
+                    $("#create-modal").modal("hide");
+
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    alert(`The appointment was created successfully, but an error occurred while updating the calendar.\
+                    Please refresh the page to see the new appointment.`);
+                }
+            }
+        }
+
         // Function that updates an appointment.
         async function updateAppointment(event) {
             // Validate the appointment.
-            if (!validateAppointment(editTitle.value)) return;
+            if (!validateEditAppointment()) return;
 
             // Get the appointment title and description.
-            const title = editTitle.value;
-            const description = editDescription.value;
+            const title = editTitle.value.trim();
+            const description = editDescription.value.trim();
 
             // Create an object with the appointment title, and description.
             const appointment = {
-                title: title.trim(),
-                description: description.trim(),
+                title: title,
+                description: description,
             };
 
             const saveButton = document.getElementById("edit-save-button");
@@ -177,7 +394,7 @@
             removeSpinner(saveButton, "Save");
 
             if (!response.ok) {
-                const defaultMessage = "Something went wrong while updating the article. " +
+                const defaultMessage = "Something went wrong while updating the appointment. " +
                     "Please try again. If the problem persists, please contact our Support.";
 
                 try {
@@ -209,7 +426,7 @@
                 event.setProp('title', appointment.title);
                 event.setExtendedProp('description', appointment.description);
 
-                // Hide the edit modal.
+                // Hide edit modal.
                 $("#edit-modal").modal("hide");
             }
         }
