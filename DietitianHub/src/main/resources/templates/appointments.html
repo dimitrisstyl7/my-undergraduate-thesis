@@ -101,8 +101,7 @@
                     </div>
                     <div class="mb-3">
                         <label id="edit-description-label" for="edit-description"
-                               class="form-label custom-form-label">
-                            Description</label>
+                               class="form-label custom-form-label">Description</label>
                         <textarea class="form-control" id="edit-description"
                                   placeholder="Enter description"></textarea>
                     </div>
@@ -122,7 +121,7 @@
                     <button id="edit-reset-button" type="button" class="btn btn-secondary mx-auto">
                         Reset
                     </button>
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                    <button id="edit-delete-button" type="button" class="btn btn-danger" data-bs-toggle="modal"
                             data-bs-target="#delete-modal">Delete
                     </button>
                 </div>
@@ -138,7 +137,7 @@
                 <div class="modal-body">
                     <div class="text-center">
                         <i class="dripicons-warning h1 text-warning"></i>
-                        <h4 id="delete-modal-title" class="mt-2">Appointment title</h4>
+                        <h4 id="delete-modal-title" class="mt-2"></h4>
                         <p class="mt-3">You are about to delete the appointment. This action cannot be undone.</p>
                         <button id="confirm-deletion-button" type="button" class="btn btn-warning my-2">
                             Continue
@@ -184,6 +183,7 @@
         const editTitle = document.getElementById("edit-title");
         const editDescription = document.getElementById("edit-description");
         const editTitleError = document.getElementById("edit-title-error");
+        const confirmDeletionButton = document.getElementById("confirm-deletion-button");
 
         // Function that resets the edit modal.
         function resetEditModal() {
@@ -428,6 +428,58 @@
 
                 // Hide edit modal.
                 $("#edit-modal").modal("hide");
+            }
+        }
+
+        // Function that deletes an appointment.
+        async function deleteAppointment(event) {
+            addSpinner(confirmDeletionButton); // Add spinner to the confirm deletion button
+
+            const response = await fetch(`/api/v1/appointments/${event.id}`, {
+                method: 'DELETE',
+                headers: {
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                }
+            });
+
+            const result = await handleDeleteAppointmentResponse(response, event);
+            if (result?.error) alert(result.error);
+        }
+
+        // Function that handles the response from the delete appointment request and updates the UI accordingly.
+        async function handleDeleteAppointmentResponse(response, event) {
+            // Remove the spinner and set the button text back to "Continue".
+            removeSpinner(confirmDeletionButton, "Continue");
+
+            if (!response.ok) {
+                const defaultMessage = "Something went wrong while deleting the appointment. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+
+                try {
+                    const errorResponse = await response.json();
+
+                    // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                    // redirect to the specified URL.
+                    if (errorResponse?.redirectUrl) {
+                        window.location.href = errorResponse.redirectUrl;
+                        return; // Exit the function after redirect
+                    }
+
+                    // Otherwise, return the error message (if exists and has value) or the default message.
+                    return {error: errorResponse?.message || defaultMessage};
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    alert(defaultMessage);
+                } finally {
+                    // Hide delete modal.
+                    $("#delete-modal").modal("hide");
+                }
+            } else {
+                // Remove the event from the calendar.
+                event.remove();
+
+                // Hide delete modal.
+                $("#delete-modal").modal("hide");
             }
         }
     </script>

@@ -22,19 +22,28 @@ $(document).ready(function () {
         eventClassNames: "custom-event",
         events: () => fetchAppointments(),
         eventClick: function (info) {
-            const eventTitle = info.event.title;
-            const eventDescription = info.event.extendedProps.description;
+            const title = info.event.title;
+            const description = info.event.extendedProps.description;
+            const formattedScheduledDateTime = info.event.extendedProps.formattedScheduledDateTime;
+            const clientFullName = info.event.extendedProps.clientFullName;
 
             // Set form values.
-            $("#edit-title").val(eventTitle);
-            $("#edit-description").val(eventDescription);
-            $("#edit-datetime").val(info.event.extendedProps.formattedScheduledDateTime);
-            $("#edit-client-fullname").val(info.event.extendedProps.clientFullName);
+            $("#edit-title").val(title);
+            $("#edit-description").val(description);
+            $("#edit-datetime").val(formattedScheduledDateTime);
+            $("#edit-client-fullname").val(clientFullName);
 
             // Attach click event handler for the save button.
             $("#edit-save-button").off("click").on("click", () => updateAppointment(info.event));
 
             // Attach click event handler for the delete button.
+            $("#edit-delete-button").off("click").on("click", () => {
+                // Set delete modal title.
+                $("#delete-modal-title").text(`${title} (${formattedScheduledDateTime})`);
+            });
+
+            // Attach click event handler for the confirm deletion button.
+            $("#confirm-deletion-button").off("click").on("click", () => deleteAppointment(info.event));
 
             // Show edit modal.
             editModal.modal("toggle");
