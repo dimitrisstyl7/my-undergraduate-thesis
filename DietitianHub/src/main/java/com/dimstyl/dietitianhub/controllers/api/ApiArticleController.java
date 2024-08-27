@@ -29,7 +29,7 @@ public class ApiArticleController {
     @PostMapping
     public ResponseEntity<Map<String, String>> createArticle(@Valid @RequestBody ArticleDto articleDto,
                                                              BindingResult result) {
-        // If there are no errors, continue with the creation of the article.
+        // If there are no errors, proceed with creating the article.
         if (!result.hasErrors()) {
             articleService.createArticle(articleDto);
             return ResponseEntity.noContent().location(URI.create("/articles?publishSuccess")).build();
@@ -54,7 +54,7 @@ public class ApiArticleController {
     public ResponseEntity<Map<String, String>> updateArticle(@PathVariable("id") int id,
                                                              @Valid @RequestBody ArticleDto articleDto,
                                                              BindingResult result) {
-        // If there are no errors, continue with the update of the article.
+        // If there are no errors, proceed with updating the article.
         if (!result.hasErrors()) {
             articleService.updateArticle(id, articleDto);
             return ResponseEntity.noContent().location(URI.create("/articles?updateSuccess")).build();

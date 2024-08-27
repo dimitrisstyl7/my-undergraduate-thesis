@@ -29,7 +29,7 @@ public class ApiAnnouncementController {
     @PostMapping
     public ResponseEntity<Map<String, String>> createAnnouncement(@Valid @RequestBody AnnouncementDto announcementDto,
                                                                   BindingResult result) {
-        // If there are no errors, continue with the creation of the announcement.
+        // If there are no errors, proceed with creating the announcement.
         if (!result.hasErrors()) {
             announcementService.createAnnouncement(announcementDto);
             return ResponseEntity.noContent().location(URI.create("/announcements?publishSuccess")).build();
@@ -54,7 +54,7 @@ public class ApiAnnouncementController {
     public ResponseEntity<Map<String, String>> updateAnnouncement(@PathVariable("id") int id,
                                                                   @Valid @RequestBody AnnouncementDto announcementDto,
                                                                   BindingResult result) {
-        // If there are no errors, continue with the update of the announcement.
+        // If there are no errors, proceed with updating the announcement.
         if (!result.hasErrors()) {
             announcementService.updateAnnouncement(id, announcementDto);
             return ResponseEntity.noContent().location(URI.create("/announcements?updateSuccess")).build();
