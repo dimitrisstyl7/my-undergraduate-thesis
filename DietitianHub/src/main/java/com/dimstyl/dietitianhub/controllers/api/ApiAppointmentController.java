@@ -83,4 +83,10 @@ public class ApiAppointmentController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAppointment(@PathVariable("id") int id) {
+        appointmentService.deleteAnnouncement(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
