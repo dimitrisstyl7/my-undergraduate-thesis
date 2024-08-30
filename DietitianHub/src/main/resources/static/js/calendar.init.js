@@ -1,6 +1,11 @@
+"use strict";
+
 $(document).ready(function () {
     const editModal = $("#edit-modal");
     const createModal = $("#create-modal");
+    const confirmCancellationButton = $("#confirm-cancellation-button");
+    const cancelModalTitle = $("#cancel-modal-title");
+    const editCancelButton = $("#edit-cancel-button");
 
     // Create a new FullCalendar instance.
     const calendar = new FullCalendar.Calendar($('#calendar')[0], {
@@ -22,10 +27,11 @@ $(document).ready(function () {
         eventClassNames: "custom-event",
         events: () => fetchAppointments(),
         eventClick: function (info) {
-            const title = info.event.title;
-            const description = info.event.extendedProps.description;
-            const formattedScheduledDateTime = info.event.extendedProps.formattedScheduledDateTime;
-            const clientFullName = info.event.extendedProps.clientFullName;
+            const event = info.event;
+            const title = event.title;
+            const description = event.extendedProps.description;
+            const formattedScheduledDateTime = event.extendedProps.formattedScheduledDateTime;
+            const clientFullName = event.extendedProps.clientFullName;
 
             // Set form values.
             $("#edit-title").val(title);
@@ -34,16 +40,58 @@ $(document).ready(function () {
             $("#edit-client-fullname").val(clientFullName);
 
             // Attach click event handler for the save button.
-            $("#edit-save-button").off("click").on("click", () => updateAppointment(info.event));
+            $("#edit-save-button").off("click").on("click", () => updateAppointment(event));
 
-            // Attach click event handler for the delete button.
-            $("#edit-delete-button").off("click").on("click", () => {
-                // Set delete modal title.
-                $("#delete-modal-title").text(`${title} (${formattedScheduledDateTime})`);
-            });
+            if (event.start > new Date()) {
+                // If the appointment is in the future, allow the user to cancel it.
+                // Change the text of the cancel button to 'Cancel Appointment'.
+                editCancelButton.text("Cancel Appointment");
 
-            // Attach click event handler for the confirm deletion button.
-            $("#confirm-deletion-button").off("click").on("click", () => deleteAppointment(info.event));
+                // Change the cancel button color to red.
+                editCancelButton.removeClass("btn-success").addClass("btn-danger");
+
+                // Enable the cancel button.
+                editCancelButton.prop("disabled", false);
+
+                // Set the data-bs-toggle and data-bs-target attributes to show the cancel modal.
+                editCancelButton.attr("data-bs-toggle", "modal");
+                editCancelButton.attr("data-bs-target", "#cancel-modal");
+
+                // Attach click event handler for the cancel button.
+                editCancelButton.off("click").on("click", () => {
+                    // Set cancel modal title.
+                    cancelModalTitle.text(`${title} (${formattedScheduledDateTime})`);
+                });
+
+                // Attach click event handler for the confirm cancellation button.
+                confirmCancellationButton.off("click").on("click", () => cancelAppointment(event.id));
+            } else if (event.start < new Date() && event.extendedProps.status === "SCHEDULED") {
+                // If the appointment is in the past, and the status is 'SCHEDULED', allow the user to mark it as completed.
+                // Change the text of the cancel button to 'Mark as Completed'.
+                editCancelButton.text("Mark as Completed");
+
+                // Change the cancel button color to green.
+                editCancelButton.removeClass("btn-danger").addClass("btn-primary");
+
+                // Enable the cancel button.
+                editCancelButton.prop("disabled", false);
+
+                // Remove the data-bs-toggle and data-bs-target attributes.
+                editCancelButton.removeAttr("data-bs-toggle");
+                editCancelButton.removeAttr("data-bs-target");
+
+                // Attach click event handler for the cancel button (now used to mark the appointment as completed).
+                editCancelButton.off("click").on("click", () => completeAppointment(event.id));
+            } else {
+                // Change the text of the cancel button to 'Completed'.
+                editCancelButton.text("Completed");
+
+                // Change the cancel button color to green.
+                editCancelButton.removeClass("btn-danger").addClass("btn-success");
+
+                // Disable the cancel button.
+                editCancelButton.prop("disabled", true);
+            }
 
             // Show edit modal.
             editModal.modal("toggle");
@@ -54,6 +102,11 @@ $(document).ready(function () {
 
             // Show create modal.
             createModal.modal("toggle");
+        },
+        eventTimeFormat: {
+            hour: "2-digit",
+            minute: "2-digit",
+            meridiem: true
         }
     });
 
@@ -69,8 +122,51 @@ $(document).ready(function () {
         clearCreateErrorMessages();
     });
 
-    // Set on click event handler for the create submit button.
-    $("#create-submit-button").off("click").on("click", () => createAppointment(calendar));
+    // Set on click event handler for the creation submit button.
+    $("#create-submit-button").off("click").on("click", () => createAppointment());
+
+    // Select all elements with IDs that start with "todays-appointment-" .
+    // Iterate over each row and attach click event handlers for the complete and cancel buttons.
+    let rows = $("[id^='todays-appointment-']");
+    rows.each((index, row) => {
+        const appointmentId = $(row).find('input[type="hidden"]').val();
+        const completeButton = $(row).find(`#complete-appointment-${appointmentId}-button`);
+        const cancelButton = $(row).find(`#cancel-appointment-${appointmentId}-button`);
+
+        // Attach click event handler for the complete button.
+        completeButton.off("click").on("click", () => completeAppointment(appointmentId));
+
+        // Attach click event handler for the decline button.
+        cancelButton.off("click").on("click", () => {
+            // Set cancel modal title.
+            cancelModalTitle.text(`Cancel Appointment #${index + 1}`);
+
+            // Attach click event handler for the confirm cancellation button.
+            confirmCancellationButton.off("click").on("click", () => cancelAppointment(appointmentId));
+        });
+    });
+
+    // Select all elements with IDs that start with "pending-appointment-" .
+    // Iterate over each row and attach click event handlers for the approval and decline buttons.
+    rows = $("[id^='pending-appointment-']");
+    rows.each((index, row) => {
+        const appointmentId = $(row).find('input[type="hidden"]').val();
+        const approvalButton = $(row).find(`#approve-appointment-${appointmentId}-button`);
+        const declineButton = $(row).find(`#decline-appointment-${appointmentId}-button`);
+        const confirmDeclineButton = $(`#confirm-decline-button`);
+
+        // Attach click event handler for the approval button.
+        approvalButton.off("click").on("click", () => approveAppointment(appointmentId));
+
+        // Attach click event handler for the decline button.
+        declineButton.off("click").on("click", () => {
+            // Set decline modal title.
+            $("#decline-modal-title").text(`Decline Appointment #${index + 1}`);
+
+            // Attach click event handler for the confirm decline button.
+            confirmDeclineButton.off("click").on("click", () => declineAppointment(appointmentId));
+        });
+    });
 
     // Render the calendar.
     calendar.render();
