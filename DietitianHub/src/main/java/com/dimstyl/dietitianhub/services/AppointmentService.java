@@ -8,15 +8,35 @@ import java.util.List;
 
 public interface AppointmentService {
 
-    List<AppointmentDto> getAppointmentsByStatusAndScheduledDateTimeAfter(AppointmentStatus status,
-                                                                          LocalDateTime scheduledDateTime);
+    List<AppointmentDto> getAppointmentsByStatusAndScheduledDateTimeIsAfter(List<AppointmentStatus> statuses,
+                                                                            LocalDateTime dateTime);
 
-    AppointmentDto createAppointment(AppointmentDto appointmentDto);
+    List<AppointmentDto> getAppointmentsByStatusAndScheduledDateTimeIsAfterOrderByScheduledDateTime(AppointmentStatus status,
+                                                                                                    LocalDateTime dateTime);
+
+    List<AppointmentDto> getAppointmentsByStatusAndScheduledDateTimeIsBetween(List<AppointmentStatus> statuses,
+                                                                              LocalDateTime startDateTime,
+                                                                              LocalDateTime endDateTime);
+
+    List<AppointmentDto> getFirst5AppointmentsByStatusAndScheduledDateTimeIsAfter(AppointmentStatus status,
+                                                                                  LocalDateTime dateTime);
+
+    List<AppointmentDto> getFirst5AppointmentsByStatus(AppointmentStatus status);
+
+    void createAppointment(AppointmentDto appointmentDto);
 
     void updateAppointment(int id, AppointmentDto appointmentDto);
 
-    void deleteAnnouncement(int id);
+    void completeAppointment(int id);
 
-    boolean existsByScheduledDateTime(LocalDateTime scheduledDateTime);
+    void cancelAppointment(int id);
+
+    void approveAppointment(int id);
+
+    void declineAppointment(int id);
+
+    boolean existsByScheduledDateTimeAndStatus(LocalDateTime dateTime, AppointmentStatus status);
+
+    void markPastAppointmentsAsCompleted(AppointmentStatus status);
 
 }
