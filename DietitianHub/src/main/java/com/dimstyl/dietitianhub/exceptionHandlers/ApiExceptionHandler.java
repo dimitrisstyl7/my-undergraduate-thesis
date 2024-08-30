@@ -76,4 +76,42 @@ public class ApiExceptionHandler {
         );
     }
 
+    @ExceptionHandler(AppointmentAlreadyExistsException.class)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    protected ErrorResponse handleAppointmentAlreadyExistsException() {
+        return new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                """
+                        An appointment is already scheduled for this date and time. \
+                        Please decline this pending appointment or cancel the existing \
+                        one before approving this request.""",
+                null
+        );
+    }
+
+    @ExceptionHandler(AppointmentIsInThePastException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    protected ErrorResponse handleAppointmentIsInThePastException() {
+        return new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                """
+                        You cannot cancel an appointment that has already passed.""",
+                null
+        );
+    }
+
+    @ExceptionHandler(AppointmentIsInTheFutureException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    protected ErrorResponse handleAppointmentIsInTheFutureException() {
+        return new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                """
+                        You cannot mark as complete an appointment that is scheduled for the future.""",
+                null
+        );
+    }
+
 }
