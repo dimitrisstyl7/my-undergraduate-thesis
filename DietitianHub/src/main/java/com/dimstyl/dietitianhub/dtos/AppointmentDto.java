@@ -2,6 +2,7 @@ package com.dimstyl.dietitianhub.dtos;
 
 import com.dimstyl.dietitianhub.entities.Appointment;
 import com.dimstyl.dietitianhub.entities.UserInfo;
+import com.dimstyl.dietitianhub.enums.AppointmentStatus;
 import com.dimstyl.dietitianhub.validators.dateTime.Unique;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
@@ -22,6 +23,7 @@ public record AppointmentDto(int id,
                              @Future(message = "Date and Time must be in the future")
                              @Unique
                              LocalDateTime start,
+                             AppointmentStatus status,
                              String formattedScheduledDateTime,
                              @NotNull(message = "Please select a client")
                              @Range(min = 1, message = "Please select a client")

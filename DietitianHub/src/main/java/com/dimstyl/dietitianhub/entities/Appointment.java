@@ -52,6 +52,7 @@ public class Appointment {
                 .title(title)
                 .description(description)
                 .start(scheduledDateTime)
+                .status(status)
                 .formattedScheduledDateTime(formattedScheduledDateTime)
                 .clientId(clientId)
                 .clientFullName(clientFullName)
