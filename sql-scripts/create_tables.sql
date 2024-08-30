@@ -86,8 +86,8 @@ create table announcement
     content    text         not null,
     created_at timestamp    not null default now()
 );
--- scheduled: green, completed: blue, cancelled: red
-create type appointment_status_enum as enum ('PENDING', 'SCHEDULED', 'COMPLETED', 'CANCELLED');
+
+create type appointment_status_enum as enum ('PENDING', 'SCHEDULED', 'COMPLETED', 'CANCELLED', 'DECLINED');
 
 create table appointment
 (
@@ -95,6 +95,6 @@ create table appointment
     client_user_info_id int                     not null references user_info (id),
     title               varchar(100)            not null,
     description         text,
-    scheduled_datetime  timestamp               not null unique,
+    scheduled_datetime  timestamp               not null,
     status              appointment_status_enum not null
 );

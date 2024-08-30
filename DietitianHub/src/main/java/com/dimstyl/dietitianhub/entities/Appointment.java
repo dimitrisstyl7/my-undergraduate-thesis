@@ -35,7 +35,7 @@ public class Appointment {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "scheduled_datetime", unique = true, nullable = false)
+    @Column(name = "scheduled_datetime", nullable = false)
     private LocalDateTime scheduledDateTime;
 
     @Enumerated(EnumType.STRING)
