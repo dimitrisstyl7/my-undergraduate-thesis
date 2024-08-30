@@ -113,19 +113,18 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="text-center">
-                        <i class="dripicons-warning h1 text-warning"></i>
+                        <i class="dripicons-information h1 text-warning"></i>
                         <h4 id="client-fullname-delete-modal" class="mt-2"></h4>
                         <p class="mt-3">You are about to delete the client. Do you want to continue?</p>
                         <button id="confirm-client-deletion-button" type="button" class="btn btn-warning my-2">
-                            Continue
+                            Yes, Continue
                         </button>
-                        <button type="button" class="btn btn-danger ms-1" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger ms-1" data-bs-dismiss="modal">Go Back</button>
                     </div>
                 </div>
             </div><!-- end modal-content -->
         </div><!-- end modal-dialog -->
     </div><!-- end modal -->
-    <!-- end modal -->
 
     <!-- Modal for client tags -->
     <div id="client-tags-modal" class="modal fade" tabindex="-1" role="dialog"
@@ -338,10 +337,10 @@
             // Set the client's full name who is about to be deleted.
             document.getElementById("client-fullname-delete-modal").textContent = clientName;
 
-            // Set onclick event for the delete button.
+            // Set onclick event for the confirm delete button.
             const confirmClientDeletionButton = document.getElementById("confirm-client-deletion-button");
             confirmClientDeletionButton.onclick = () => {
-                // Add spinner to the delete button and submit the delete form.
+                // Add spinner to the confirm delete button and submit the delete form.
                 addSpinner(confirmClientDeletionButton);
                 document.getElementById(`delete-form-${id}`).submit();
             };

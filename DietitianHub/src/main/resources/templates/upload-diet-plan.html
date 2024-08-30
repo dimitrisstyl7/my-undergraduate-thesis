@@ -18,13 +18,13 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="text-center">
-                        <i class="dripicons-warning h1 text-warning"></i>
+                        <i class="dripicons-information h1 text-warning"></i>
                         <h4 id="title-delete-modal" class="mt-2"></h4>
-                        <p class="mt-3">You are about to delete the diet plan. This action cannot be undone.</p>
+                        <p class="mt-3">You are about to delete the diet plan. Do you want to continue?</p>
                         <button id="confirm-deletion-button" type="button" class="btn btn-warning my-2">
-                            Continue
+                            Yes, Continue
                         </button>
-                        <button type="button" class="btn btn-danger ms-1" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger ms-1" data-bs-dismiss="modal">Go Back</button>
                     </div>
                 </div>
             </div><!-- end modal-content -->
@@ -119,7 +119,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="dietPlan,iterStat: ${dietPlans}">
+                        <tr th:if="${dietPlans.isEmpty()}">
+                            <td colspan="4" class="text-center">No diet plans uploaded yet</td>
+                        </tr>
+                        <tr th:unless="${dietPlans.isEmpty()}" th:each="dietPlan,iterStat: ${dietPlans}">
                             <th scope="row" th:text="${iterStat.count}"></th>
                             <td th:text="${dietPlan.name()}"></td>
                             <td th:text="${dietPlan.createdOn()}"></td>
@@ -132,7 +135,7 @@
                                       th:id="${'delete-form-'+dietPlan.id()}" method="get" style="display: inline;">
                                     <a href="" class="text-danger" data-bs-toggle="modal"
                                        data-bs-target="#diet-plan-delete-modal"
-                                       th:onclick="fillDeleteModal([[${dietPlan.name()}]], [[${dietPlan.createdOn()}]],[[${dietPlan.id()}]])">
+                                       th:onclick="fillDeleteModal([[${dietPlan.name()}]],[[${dietPlan.createdOn()}]],[[${dietPlan.id()}]],[[${iterStat.count}]])">
                                         Delete</a>
                                 </form>
                             </td>
@@ -149,9 +152,9 @@
     <script th:inline="javascript">
         "use strict";
 
-        function fillDeleteModal(name, date, id) {
+        function fillDeleteModal(name, date, id, index) {
             // Set the title of the modal.
-            document.getElementById("title-delete-modal").textContent = `${name} (${date})`;
+            document.getElementById("title-delete-modal").textContent = `Delete Appointment #${index}`;
 
             // Set onclick event for the delete button.
             const confirmDeletionButton = document.getElementById("confirm-deletion-button");

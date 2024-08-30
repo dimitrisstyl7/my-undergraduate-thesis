@@ -160,8 +160,7 @@
                 </div> <!-- end modal-footer -->
             </div> <!-- end modal-content -->
         </div> <!-- end modal-dialog -->
-    </div>
-    <!-- end modal -->
+    </div><!-- end modal -->
 
     <!-- Modal for article deletion -->
     <div id="delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -169,19 +168,18 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="text-center">
-                        <i class="dripicons-warning h1 text-warning"></i>
+                        <i class="dripicons-information h1 text-warning"></i>
                         <h4 id="delete-modal-title" class="mt-2"></h4>
-                        <p class="mt-3">You are about to delete the article. This action cannot be undone.</p>
+                        <p class="mt-3">You are about to delete the article. Do you want to continue?</p>
                         <button id="confirm-deletion-button" type="button" class="btn btn-warning my-2">
-                            Continue
+                            Yes, Continue
                         </button>
-                        <button type="button" class="btn btn-danger ms-1" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger ms-1" data-bs-dismiss="modal">Go Back</button>
                     </div>
                 </div>
             </div><!-- end modal-content -->
         </div><!-- end modal-dialog -->
     </div><!-- end modal -->
-    <!-- end modal -->
 
     <div th:if="${param.publishSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
         <i class="mdi mdi-check-circle me-1"></i>
@@ -471,85 +469,89 @@
 
         // Function that handles the response from the publish article request and updates the UI accordingly.
         async function handlePublishArticleResponse(response, publishButton) {
-            if (!response.ok) {
-                // Remove the spinner and set the button text back to "Publish now".
-                removeSpinner(
-                    publishButton,
-                    "Publish now<span class='btn-label-right'><i class='mdi mdi-publish'></i></span>"
-                );
+            // Remove the spinner and set the button text back to "Publish now".
+            removeSpinner(
+                publishButton,
+                "Publish now<span class='btn-label-right'><i class='mdi mdi-publish'></i></span>"
+            );
 
+            if (response.ok) window.location.href = response.headers.get('Location');
+            else {
                 const defaultMessage = "Something went wrong while publishing the article. " +
                     "Please try again. If the problem persists, please contact our Support.";
+                let errorResponse;
 
                 try {
-                    const errorResponse = await response.json();
-
-                    // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
-                    // redirect to the specified URL.
-                    if (errorResponse?.redirectUrl) {
-                        window.location.href = errorResponse.redirectUrl;
-                        return; // Exit the function after redirect
-                    }
-
-                    // If the errorResponse object contains the "title" key, and "title" has a value,
-                    // update the UI accordingly.
-                    const titleKeyExists = errorResponse?.title;
-                    if (titleKeyExists) showTitleErrorMessage(errorResponse.title);
-
-                    // If the errorResponse object contains the "content" key, and "content" has a value,
-                    // update the UI accordingly.
-                    const contentKeyExists = errorResponse?.content;
-                    if (contentKeyExists) showContentErrorMessage(errorResponse.content);
-
-                    // If any error exists, return.
-                    if (titleKeyExists || contentKeyExists) return;
-
-                    // Otherwise, return the error message (if exists and has value) or the default message.
-                    return {error: errorResponse?.message || defaultMessage};
+                    errorResponse = await response.json();
                 } catch (error) {
                     console.error("An error occurred while parsing the response: ", error);
-                    alert(defaultMessage);
+                    return {error: defaultMessage};
                 }
-            } else window.location.href = response.headers.get('Location');
+
+                // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                // redirect to the specified URL.
+                if (errorResponse?.redirectUrl) {
+                    window.location.href = errorResponse.redirectUrl;
+                    return; // Exit the function after redirect
+                }
+
+                // If the errorResponse object contains the "title" key, and "title" has a value,
+                // update the UI accordingly.
+                const titleKeyExists = errorResponse?.title;
+                if (titleKeyExists) showTitleErrorMessage(errorResponse.title);
+
+                // If the errorResponse object contains the "content" key, and "content" has a value,
+                // update the UI accordingly.
+                const contentKeyExists = errorResponse?.content;
+                if (contentKeyExists) showContentErrorMessage(errorResponse.content);
+
+                // If any error exists, return.
+                if (titleKeyExists || contentKeyExists) return;
+
+                // Otherwise, return the error message (if exists and has value) or the default message.
+                return {error: errorResponse?.message || defaultMessage};
+            }
         }
 
         // Function that fetches an article by its ID.
         async function fetchArticle(id) {
             const response = await fetch(`/api/v1/articles/${id}`);
             const result = await handleFetchArticleResponse(response);
-            if (result?.error) alert(result.error);
+            if (result?.error) {
+                alert(result.error);
+
+                // Close the modal if an error occurred while fetching the article.
+                document.getElementById("close-modal-button").click();
+            }
         }
 
         // Function that handles the response from the fetch article request and updates the UI accordingly.
         async function handleFetchArticleResponse(response) {
-            if (!response.ok) {
-                const defaultMessage = "Something went wrong while fetching the article. " +
-                    "Please try again. If the problem persists, please contact our Support.";
+            const defaultMessage = "Something went wrong while fetching the article. " +
+                "Please try again. If the problem persists, please contact our Support.";
+            let result;
 
-                try {
-                    const errorResponse = await response.json();
+            try {
+                result = await response.json();
+            } catch (error) {
+                console.error("An error occurred while parsing the response: ", error);
+                return {error: defaultMessage};
+            }
 
-                    // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
-                    // redirect to the specified URL.
-                    if (errorResponse?.redirectUrl) {
-                        window.location.href = errorResponse.redirectUrl;
-                        return; // Exit the function after redirect
-                    }
-
-                    // Otherwise, return the error message (if exists and has value) or the default message.
-                    return {error: errorResponse?.message || defaultMessage};
-                } catch (error) {
-                    console.error("An error occurred while parsing the response: ", error);
-                    alert(defaultMessage);
-                } finally {
-                    // Close the modal if an error occurred while fetching the article.
-                    document.getElementById("close-modal-button").click();
-                }
+            if (response.ok) {
+                articleTitle.value = result.title;  // Set the article title
+                result.tagIds.forEach(id => document.getElementById(`tag-${id}`).checked = true);  // Set the tags
+                editors.forEach(editor => editor.innerHTML = result.content);  // Set the article content
             } else {
-                const article = await response.json();
-                articleTitle.value = article.title;  // Set the article title
-                article.tagIds.forEach(id => document.getElementById(`tag-${id}`).checked = true);  // Set the tags
-                editors.forEach(editor => editor.innerHTML = article.content);  // Set the article content
+                // If the result object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                // redirect to the specified URL.
+                if (result?.redirectUrl) {
+                    window.location.href = result.redirectUrl;
+                    return; // Exit the function after redirect
+                }
+
+                // Otherwise, return the error message (if exists and has value) or the default message.
+                return {error: result?.message || defaultMessage};
             }
         }
 
@@ -594,46 +596,48 @@
 
         // Function that handles the response from the update article request and updates the UI accordingly.
         async function handleUpdateArticleResponse(response, updateButton) {
-            if (!response.ok) {
-                // Remove the spinner and set the button text back to "Update".
-                removeSpinner(
-                    updateButton,
-                    "Update<span class='btn-label-right'><i class='mdi mdi-update'></i></span>"
-                );
+            // Remove the spinner and set the button text back to "Update".
+            removeSpinner(
+                updateButton,
+                "Update<span class='btn-label-right'><i class='mdi mdi-update'></i></span>"
+            );
 
+            if (response.ok) window.location.href = response.headers.get('Location');
+            else {
                 const defaultMessage = "Something went wrong while updating the article. " +
                     "Please try again. If the problem persists, please contact our Support.";
+                let errorResponse;
 
                 try {
-                    const errorResponse = await response.json();
-
-                    // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
-                    // redirect to the specified URL.
-                    if (errorResponse?.redirectUrl) {
-                        window.location.href = errorResponse.redirectUrl;
-                        return; // Exit the function after redirect
-                    }
-
-                    // If the errorResponse object contains the "title" key, and "title" has a value,
-                    // update the UI accordingly.
-                    const titleKeyExists = errorResponse?.title;
-                    if (titleKeyExists) showTitleErrorMessage(errorResponse.title);
-
-                    // If the errorResponse object contains the "content" key, and "content" has a value,
-                    // update the UI accordingly.
-                    const contentKeyExists = errorResponse?.content;
-                    if (contentKeyExists) showContentErrorMessage(errorResponse.content);
-
-                    // If any error exists, return.
-                    if (titleKeyExists || contentKeyExists) return;
-
-                    // Otherwise, return the error message (if exists and has value) or the default message.
-                    return {error: errorResponse?.message || defaultMessage};
+                    errorResponse = await response.json();
                 } catch (error) {
                     console.error("An error occurred while parsing the response: ", error);
-                    alert(defaultMessage);
+                    return {error: defaultMessage};
                 }
-            } else window.location.href = response.headers.get('Location');
+
+                // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                // redirect to the specified URL.
+                if (errorResponse?.redirectUrl) {
+                    window.location.href = errorResponse.redirectUrl;
+                    return; // Exit the function after redirect
+                }
+
+                // If the errorResponse object contains the "title" key, and "title" has a value,
+                // update the UI accordingly.
+                const titleKeyExists = errorResponse?.title;
+                if (titleKeyExists) showTitleErrorMessage(errorResponse.title);
+
+                // If the errorResponse object contains the "content" key, and "content" has a value,
+                // update the UI accordingly.
+                const contentKeyExists = errorResponse?.content;
+                if (contentKeyExists) showContentErrorMessage(errorResponse.content);
+
+                // If any error exists, return.
+                if (titleKeyExists || contentKeyExists) return;
+
+                // Otherwise, return the error message (if exists and has value) or the default message.
+                return {error: errorResponse?.message || defaultMessage};
+            }
         }
 
         // Function that deletes an article.
@@ -649,34 +653,39 @@
 
             const result = await handleDeleteArticleResponse(response, confirmDeletionButton);
             if (result?.error) alert(result.error);
+
+            // Hide delete modal.
+            $("#delete-modal").modal("hide");
         }
 
         // Function that handles the response from the delete article request and updates the UI accordingly.
         async function handleDeleteArticleResponse(response, confirmDeletionButton) {
-            if (!response.ok) {
-                // Remove the spinner and set the button text back to "Continue".
-                removeSpinner(confirmDeletionButton, "Continue");
+            // Remove the spinner and set the button text back to "Yes, Continue".
+            removeSpinner(confirmDeletionButton, "Yes, Continue");
 
+            if (response.ok) window.location.href = response.headers.get('Location');
+            else {
                 const defaultMessage = "Something went wrong while deleting the article. " +
                     "Please try again. If the problem persists, please contact our Support.";
+                let errorResponse;
 
                 try {
-                    const errorResponse = await response.json();
-
-                    // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
-                    // redirect to the specified URL.
-                    if (errorResponse?.redirectUrl) {
-                        window.location.href = errorResponse.redirectUrl;
-                        return; // Exit the function after redirect
-                    }
-
-                    // Otherwise, return the error message (if exists and has value) or the default message.
-                    return {error: errorResponse?.message || defaultMessage};
+                    errorResponse = await response.json();
                 } catch (error) {
                     console.error("An error occurred while parsing the response: ", error);
                     alert(defaultMessage);
                 }
-            } else window.location.href = response.headers.get('Location');
+
+                // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                // redirect to the specified URL.
+                if (errorResponse?.redirectUrl) {
+                    window.location.href = errorResponse.redirectUrl;
+                    return; // Exit the function after redirect
+                }
+
+                // Otherwise, return the error message (if exists and has value) or the default message.
+                return {error: errorResponse?.message || defaultMessage};
+            }
         }
     </script>
 
