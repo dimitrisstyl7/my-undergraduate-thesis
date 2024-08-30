@@ -3,7 +3,7 @@ package com.dimstyl.dietitianhub.services.impl;
 import com.dimstyl.dietitianhub.dtos.ArticleDto;
 import com.dimstyl.dietitianhub.entities.Article;
 import com.dimstyl.dietitianhub.entities.Tag;
-import com.dimstyl.dietitianhub.exceptions.ArticleNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.article.ArticleNotFoundException;
 import com.dimstyl.dietitianhub.repositories.ArticleRepository;
 import com.dimstyl.dietitianhub.services.ArticleService;
 import com.dimstyl.dietitianhub.services.TagService;

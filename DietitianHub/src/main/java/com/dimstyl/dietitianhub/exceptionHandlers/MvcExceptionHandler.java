@@ -1,6 +1,12 @@
 package com.dimstyl.dietitianhub.exceptionHandlers;
 
-import com.dimstyl.dietitianhub.exceptions.*;
+import com.dimstyl.dietitianhub.exceptions.dietPlan.DietPlanNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.storage.FileDeletionException;
+import com.dimstyl.dietitianhub.exceptions.storage.FileStorageException;
+import com.dimstyl.dietitianhub.exceptions.storage.StorageFileNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.user.MvcUserInfoNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.user.RegistrationFailedException;
+import com.dimstyl.dietitianhub.exceptions.user.UserNotFoundException;
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

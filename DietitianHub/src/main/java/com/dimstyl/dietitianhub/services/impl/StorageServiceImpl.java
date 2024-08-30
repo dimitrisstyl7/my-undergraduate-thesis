@@ -1,9 +1,9 @@
 package com.dimstyl.dietitianhub.services.impl;
 
-import com.dimstyl.dietitianhub.exceptions.DirectoryCreationException;
-import com.dimstyl.dietitianhub.exceptions.FileDeletionException;
-import com.dimstyl.dietitianhub.exceptions.FileStorageException;
-import com.dimstyl.dietitianhub.exceptions.StorageFileNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.storage.DirectoryCreationException;
+import com.dimstyl.dietitianhub.exceptions.storage.FileDeletionException;
+import com.dimstyl.dietitianhub.exceptions.storage.FileStorageException;
+import com.dimstyl.dietitianhub.exceptions.storage.StorageFileNotFoundException;
 import com.dimstyl.dietitianhub.services.StorageService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;

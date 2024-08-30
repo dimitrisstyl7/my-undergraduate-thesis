@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.exceptions;
+package com.dimstyl.dietitianhub.exceptions.dietPlan;
 
 public class DietPlanNotFoundException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.exceptions;
+package com.dimstyl.dietitianhub.exceptions.user;
 
 public class MvcUserInfoNotFoundException extends RuntimeException {
 

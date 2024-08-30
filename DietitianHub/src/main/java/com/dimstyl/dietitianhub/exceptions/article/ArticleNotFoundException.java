@@ -1,4 +1,4 @@
-package com.dimstyl.dietitianhub.exceptions;
+package com.dimstyl.dietitianhub.exceptions.article;
 
 public class ArticleNotFoundException extends RuntimeException {
 

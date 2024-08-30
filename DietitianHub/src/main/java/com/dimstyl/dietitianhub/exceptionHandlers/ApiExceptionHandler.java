@@ -1,6 +1,13 @@
 package com.dimstyl.dietitianhub.exceptionHandlers;
 
-import com.dimstyl.dietitianhub.exceptions.*;
+import com.dimstyl.dietitianhub.exceptions.announcement.AnnouncementNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.appointment.AppointmentAlreadyExistsException;
+import com.dimstyl.dietitianhub.exceptions.appointment.AppointmentIsInTheFutureException;
+import com.dimstyl.dietitianhub.exceptions.appointment.AppointmentIsInThePastException;
+import com.dimstyl.dietitianhub.exceptions.appointment.AppointmentNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.article.ArticleNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.tag.TagsMismatchException;
+import com.dimstyl.dietitianhub.exceptions.user.ApiUserInfoNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

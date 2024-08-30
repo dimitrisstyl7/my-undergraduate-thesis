@@ -2,7 +2,7 @@ package com.dimstyl.dietitianhub.services.impl;
 
 import com.dimstyl.dietitianhub.dtos.AnnouncementDto;
 import com.dimstyl.dietitianhub.entities.Announcement;
-import com.dimstyl.dietitianhub.exceptions.AnnouncementNotFoundException;
+import com.dimstyl.dietitianhub.exceptions.announcement.AnnouncementNotFoundException;
 import com.dimstyl.dietitianhub.repositories.AnnouncementRepository;
 import com.dimstyl.dietitianhub.services.AnnouncementService;
 import lombok.RequiredArgsConstructor;
