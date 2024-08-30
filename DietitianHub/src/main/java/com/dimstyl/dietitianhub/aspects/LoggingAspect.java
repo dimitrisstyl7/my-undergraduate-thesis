@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
@@ -28,8 +29,12 @@ public class LoggingAspect {
     public void serviceLayerMethods() {
     }
 
+    @Pointcut("execution(public * com.dimstyl.dietitianhub.scheduling.AppointmentStatusScheduler.updatePastAppointmentsStatus(..))")
+    public void updatePastAppointmentsStatusMethod() {
+    }
+
     @AfterThrowing(pointcut = "serviceLayerMethods()", throwing = "ex")
-    public void logException(JoinPoint joinPoint, Throwable ex) throws Throwable {
+    public void logServiceLayerException(JoinPoint joinPoint, Throwable ex) throws Throwable {
         String methodName = joinPoint.getSignature().toLongString();
 
         // Log the exception message
@@ -41,6 +46,12 @@ public class LoggingAspect {
 
         // Re-throw the exception to maintain the original behavior
         throw ex;
+    }
+
+    @Before("updatePastAppointmentsStatusMethod()")
+    public void logScheduledMethod(JoinPoint joinPoint) {
+        String methodName = joinPoint.getSignature().getName();
+        log.info("Scheduled task: Updating status of past appointments in method: {}", methodName);
     }
 
 }
