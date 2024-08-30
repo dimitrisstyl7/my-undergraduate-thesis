@@ -1,5 +1,6 @@
 package com.dimstyl.dietitianhub.validators.dateTime;
 
+import com.dimstyl.dietitianhub.enums.AppointmentStatus;
 import com.dimstyl.dietitianhub.services.AppointmentService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -19,7 +20,7 @@ public class DateTimeExistenceValidator implements ConstraintValidator<Unique, L
 
     @Override
     public boolean isValid(LocalDateTime localDateTime, ConstraintValidatorContext constraintValidatorContext) {
-        return !appointmentService.existsByScheduledDateTime(localDateTime);
+        return !appointmentService.existsByScheduledDateTimeAndStatus(localDateTime, AppointmentStatus.SCHEDULED);
     }
 
 }
