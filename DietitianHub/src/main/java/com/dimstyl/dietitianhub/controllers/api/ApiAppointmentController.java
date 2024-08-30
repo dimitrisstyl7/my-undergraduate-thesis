@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,9 +27,9 @@ public class ApiAppointmentController {
     @GetMapping
     public ResponseEntity<List<AppointmentDto>> getAppointments() {
         return ResponseEntity.ok(
-                appointmentService.getAppointmentsByStatusAndScheduledDateTimeAfter(
-                        AppointmentStatus.SCHEDULED,
-                        java.time.LocalDateTime.now()
+                appointmentService.getAppointmentsByStatusAndScheduledDateTimeIsAfter(
+                        List.of(AppointmentStatus.SCHEDULED, AppointmentStatus.COMPLETED),
+                        LocalDate.now().atStartOfDay()
                 )
         );
     }
@@ -38,12 +39,8 @@ public class ApiAppointmentController {
                                                                  BindingResult result) {
         // If there are no errors, proceed with creating the appointment.
         if (!result.hasErrors()) {
-            AppointmentDto newAppointmentDto = appointmentService.createAppointment(appointmentDto);
-            return ResponseEntity.ok(Map.of(
-                    "id", String.valueOf(newAppointmentDto.id()),
-                    "formattedScheduledDateTime", newAppointmentDto.formattedScheduledDateTime(),
-                    "clientFullName", newAppointmentDto.clientFullName())
-            );
+            appointmentService.createAppointment(appointmentDto);
+            return ResponseEntity.noContent().build();
         }
 
         // Otherwise, return a bad request.
@@ -71,7 +68,7 @@ public class ApiAppointmentController {
         if (result.hasFieldErrors("title")) {
             Optional<String> titleError = ValidationErrorUtil.getTitleError(result);
 
-            // If default message is found, return a bad request with the title error in the body.
+            // If a default message is found, return a bad request with the title error in the body.
             // Otherwise, return a bad request without a body.
             return titleError
                     .map(s -> ResponseEntity.badRequest().body(Map.of("title", s)))
@@ -83,9 +80,27 @@ public class ApiAppointmentController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAppointment(@PathVariable("id") int id) {
-        appointmentService.deleteAnnouncement(id);
+    @PatchMapping("/{id}/complete")
+    public ResponseEntity<Void> completeAppointment(@PathVariable("id") int id) {
+        appointmentService.completeAppointment(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity<Void> cancelAppointment(@PathVariable("id") int id) {
+        appointmentService.cancelAppointment(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/decline")
+    public ResponseEntity<Void> declineAppointment(@PathVariable("id") int id) {
+        appointmentService.declineAppointment(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/approve")
+    public ResponseEntity<Void> approveAppointment(@PathVariable("id") int id) {
+        appointmentService.approveAppointment(id);
         return ResponseEntity.noContent().build();
     }
 
