@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/_page-layout}">
+<head>
+    <title>Appointments</title>
+
+    <!-- Plugin css -->
+    <link th:href="@{/libs/fullcalendar/main.min.css}" rel="stylesheet" type="text/css"/>
+
+    <!-- Custom css -->
+    <style>
+        .fc-event {
+            cursor: pointer; /* Add pointer when hovering over events */
+        }
+
+        .custom-event {
+            background-color: #10c469; /* Custom background color */
+            color: #000000; /* Custom text color */
+        }
+
+        .custom-event:hover {
+            background-color: #13e77d; /* Custom background color */
+        }
+
+        a:hover {
+            cursor: pointer; /* Add pointer when hovering over links */
+        }
+    </style>
+</head>
+
+<body>
+<div layout:fragment="main-content">
+    <!-- Modal for appointment creation -->
+    <div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <form id="create-form">
+                <div class="modal-content">
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title" id="create-modal-title">Create Appointment</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label id="create-title-label" for="create-title" class="form-label custom-form-label">
+                                Title <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="create-title" placeholder="Enter title"
+                                   maxlength="100">
+                            <span id="create-title-error" class="reset-to-default validation-error"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label id="create-description-label" for="create-description"
+                                   class="form-label custom-form-label">
+                                Description</label>
+                            <textarea class="form-control" id="create-description"
+                                      placeholder="Enter description"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label id="create-datetime-label" for="create-datetime"
+                                   class="form-label custom-form-label">
+                                Date and Time <span class="text-danger">*</span></label>
+                            <input id="create-datetime" type="datetime-local" th:min="${minDateTime}"
+                                   class="form-control">
+                            <span id="create-datetime-error" class="reset-to-default validation-error"></span>
+                        </div>
+                        <div class="mb-2">
+                            <label id="create-client-fullname-label" for="create-client-select"
+                                   class="form-label custom-form-label">
+                                Client <span class="text-danger">*</span></label>
+                            <select class="form-select" id="create-client-select">
+                                <option value="-1" selected hidden>Select a client</option>
+                                <option th:each="client: ${clients}" th:id="${'client-'+client.id}"
+                                        th:text="${client.fullName}" th:value="${client.id}"></option>
+                            </select>
+                            <span id="create-client-select-error" class="reset-to-default validation-error"></span>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light d-flex">
+                        <button id="create-submit-button" type="button" class="btn btn-success">Create</button>
+                        <button id="create-reset-button" type="reset" class="btn btn-secondary mx-auto">Reset</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div><!-- end modal-content -->
+            </form>
+        </div><!-- end modal-dialog -->
+    </div><!-- end modal -->
+
+    <!-- Modal for appointment edit -->
+    <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h4 class="modal-title" id="edit-modal-title">Edit Appointment</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label id="edit-title-label" for="edit-title" class="form-label custom-form-label">
+                            Title <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="edit-title" placeholder="Enter title"
+                               maxlength="100">
+                        <span id="edit-title-error" class="reset-to-default validation-error"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label id="edit-description-label" for="edit-description"
+                               class="form-label custom-form-label">Description</label>
+                        <textarea class="form-control" id="edit-description"
+                                  placeholder="Enter description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label id="edit-datetime-label" for="edit-datetime" class="form-label custom-form-label">
+                            Date and Time</label>
+                        <input id="edit-datetime" type="text" class="form-control" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label id="edit-client-fullname-label" for="edit-client-fullname"
+                               class="form-label custom-form-label">Client</label>
+                        <input id="edit-client-fullname" type="text" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light d-flex">
+                    <button id="edit-save-button" type="button" class="btn btn-success">Save</button>
+                    <button id="edit-reset-button" type="button" class="btn btn-secondary mx-auto">
+                        Reset
+                    </button>
+                    <button id="edit-cancel-button" type="button" class="btn btn-danger">Cancel Appointment
+                    </button>
+                </div>
+            </div><!-- end modal-content -->
+
+        </div><!-- end modal-dialog -->
+    </div><!-- end modal -->
+
+    <!-- Modal for appointment cancellation -->
+    <div id="cancel-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="dripicons-information h1 text-warning"></i>
+                        <h4 id="cancel-modal-title" class="mt-2"></h4>
+                        <p class="mt-3">You are about to cancel the appointment. Do you want to continue?</p>
+                        <button id="confirm-cancellation-button" type="button" class="btn btn-warning my-2">
+                            Yes, Continue
+                        </button>
+                        <button type="button" class="btn btn-danger ms-1" data-bs-dismiss="modal">Go Back
+                        </button>
+                    </div>
+                </div>
+            </div><!-- end modal-content -->
+        </div><!-- end modal-dialog -->
+    </div><!-- end modal -->
+
+    <!-- Modal for appointment decline -->
+    <div id="decline-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="dripicons-information h1 text-warning"></i>
+                        <h4 id="decline-modal-title" class="mt-2"></h4>
+                        <p class="mt-3">You are about to decline the appointment. Do you want to continue?</p>
+                        <button id="confirm-decline-button" type="button" class="btn btn-warning my-2">
+                            Yes, Continue
+                        </button>
+                        <button type="button" class="btn btn-danger ms-1" data-bs-dismiss="modal">Go Back
+                        </button>
+                    </div>
+                </div>
+            </div><!-- end modal-content -->
+        </div><!-- end modal-dialog -->
+    </div><!-- end modal -->
+
+    <!-- Button to create a new appointment -->
+    <button id="create-appointment-button" class="btn btn-lg font-16 btn-success mb-3" data-bs-toggle="modal"
+            data-bs-target="#create-modal">
+        <i class="fa fa-plus me-1"></i> Create new
+    </button>
+
+    <!-- calendar -->
+    <div class="card">
+        <div class="card-body">
+            <div id="calendar"></div>
+        </div> <!-- end card body-->
+    </div> <!-- end card -->
+
+    <!-- Today's Appointments -->
+    <div class="row">
+        <div id="todays-appointments" class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="mt-0 header-title">Today's Appointments</h4>
+                    <div class="table-responsive-sm">
+                        <table class="table table-striped mb-0">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="col-1">#</th>
+                                <th scope="col" class="col-5">Client</th>
+                                <th scope="col" class="col-3">Date and Time</th>
+                                <th scope="col" class="col-3">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="todays-appointments-default-row" th:if="${todaysAppointments.isEmpty()}">
+                                <td colspan="4" class="text-center">No appointments scheduled for today</td>
+                            </tr>
+                            <tr th:unless="${todaysAppointments.isEmpty()}"
+                                th:each="appointment,iterStat: ${todaysAppointments}"
+                                th:id="${'todays-appointment-'+appointment.id()}">
+                                <input type="hidden" th:value="${appointment.id()}">
+                                <th scope="row" th:text="${iterStat.count}"></th>
+                                <td th:text="${appointment.clientFullName()}"></td>
+                                <td th:text="${appointment.formattedScheduledDateTime()}"></td>
+                                <td>
+                                    <th:block th:if="${appointment.start().isBefore(dateTimeNow)}">
+                                        <button th:if="${appointment.status().toString().equals('SCHEDULED')}"
+                                                th:id="${'complete-appointment-'+appointment.id()+'-button'}"
+                                                type="button" class="btn btn-xs btn-primary waves-effect waves-light">
+                                            <i class="mdi mdi-check me-1"></i>Complete
+                                        </button>
+                                        <button th:unless="${appointment.status().toString().equals('SCHEDULED')}"
+                                                type="button" class="btn btn-xs btn-primary waves-effect waves-light"
+                                                disabled>Completed
+                                        </button>
+                                    </th:block>
+                                    <button th:unless="${appointment.start().isBefore(dateTimeNow)}"
+                                            th:id="${'cancel-appointment-'+appointment.id()+'-button'}"
+                                            type="button" class="btn btn-xs btn-danger waves-effect waves-light"
+                                            data-bs-toggle="modal" data-bs-target="#cancel-modal">
+                                        <i class="mdi mdi-close me-1"></i>Cancel
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+
+    <!-- Pending Appointments -->
+    <div class="row">
+        <div id="pending-appointments" class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="mt-0 header-title">Pending Appointments</h4>
+                    <div class="table-responsive-sm">
+                        <table class="table table-striped mb-0">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="col-1">#</th>
+                                <th scope="col" class="col-5">Client</th>
+                                <th scope="col" class="col-3">Requested Date and Time</th>
+                                <th scope="col" class="col-3">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="pending-appointments-default-row" th:if="${pendingAppointments.isEmpty()}">
+                                <td colspan="4" class="text-center">No appointments pending approval</td>
+                            </tr>
+                            <tr th:unless="${pendingAppointments.isEmpty()}"
+                                th:each="appointment,iterStat: ${pendingAppointments}"
+                                th:id="${'pending-appointment-'+appointment.id()}">
+                                <input type="hidden" th:value="${appointment.id()}">
+                                <th scope="row" th:text="${iterStat.count}"></th>
+                                <td th:text="${appointment.clientFullName()}"></td>
+                                <td th:text="${appointment.formattedScheduledDateTime()}"></td>
+                                <td>
+                                    <button th:id="${'approve-appointment-'+appointment.id()+'-button'}"
+                                            type="button" class="btn btn-xs btn-primary waves-effect waves-light">
+                                        Approve
+                                    </button>
+                                    <button th:id="${'decline-appointment-'+appointment.id()+'-button'}"
+                                            type="button" class="btn btn-xs btn-danger waves-effect waves-light ms-1"
+                                            data-bs-toggle="modal" data-bs-target="#decline-modal">
+                                        Decline
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+
+    <!-- Custom script -->
+    <script th:inline="javascript">
+        "use strict";
+
+        // Change page title.
+        const pageTitle = document.getElementsByClassName("page-title-main");
+        pageTitle[0].textContent = "Appointments";
+
+        // Common elements that will be used in multiple functions.
+        const createTitle = document.getElementById("create-title");
+        const createDescription = document.getElementById("create-description");
+        const createDatetime = document.getElementById("create-datetime");
+        const createClientSelect = document.getElementById("create-client-select");
+        const createTitleError = document.getElementById("create-title-error");
+        const createDatetimeError = document.getElementById("create-datetime-error");
+        const createClientSelectError = document.getElementById("create-client-select-error");
+        const editTitle = document.getElementById("edit-title");
+        const editDescription = document.getElementById("edit-description");
+        const editTitleError = document.getElementById("edit-title-error");
+        const confirmCancellationButton = document.getElementById("confirm-cancellation-button");
+        const confirmDeclineButton = document.getElementById("confirm-decline-button");
+
+        // Function that resets the edit modal.
+        function resetEditModal() {
+            clearEditErrorMessages();
+            editTitle.value = "";
+            editDescription.value = "";
+            editTitleError.textContent = "";
+        }
+
+        // Function that shows an error message for a specific element.
+        function showErrorMessage(element, message) {
+            element.textContent = message;
+        }
+
+        // Function that clears the associated error messages for appointment creation.
+        function clearCreateErrorMessages() {
+            createTitleError.textContent = "";
+            createDatetimeError.textContent = "";
+            createClientSelectError.textContent = "";
+        }
+
+        // Function that clears the associated error messages for appointment edit.
+        function clearEditErrorMessages() {
+            editTitleError.textContent = "";
+        }
+
+        // Function that validates the appointment.
+        function validateCreateAppointment() {
+            clearCreateErrorMessages();
+
+            const titleIsEmpty = createTitle.value.trim() === "";
+            const clientSelectIsEmpty = createClientSelect.value === "-1";
+            const datetimeIsEmpty = createDatetime.value === "";
+            const datetimeIsBeforeNow = new Date(createDatetime.value) < new Date();
+
+            if (titleIsEmpty) showErrorMessage(createTitleError, "Title cannot be empty");
+            if (clientSelectIsEmpty) showErrorMessage(createClientSelectError, "Please select a client");
+            if (datetimeIsBeforeNow) showErrorMessage(createDatetimeError, "Please select a future date and time");
+            else if (datetimeIsEmpty) showErrorMessage(createDatetimeError, "Please select a date and time");
+
+            return !titleIsEmpty && !clientSelectIsEmpty && !datetimeIsEmpty && !datetimeIsBeforeNow;
+        }
+
+        // Function that validates the appointment.
+        function validateEditAppointment() {
+            const titleIsEmpty = editTitle.value.trim() === "";
+            if (titleIsEmpty) showErrorMessage(editTitleError, "Title cannot be empty");
+            return !titleIsEmpty;
+        }
+
+        // Function that fetches the appointments.
+        async function fetchAppointments() {
+            const response = await fetch('/api/v1/appointments');
+            const result = await handleFetchAppointmentsResponse(response);
+            if (result?.error) alert(result.error);
+            else return result;
+        }
+
+        // Function that handles the response from the fetch appointments request.
+        async function handleFetchAppointmentsResponse(response) {
+            if (response.ok) return await response.json();
+            else {
+                const message = "Something went wrong while fetching the appointments. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+                return {error: message};
+            }
+        }
+
+        // Function that creates an appointment.
+        async function createAppointment() {
+            // Validate the appointment.
+            if (!validateCreateAppointment()) return;
+
+            // Get the appointment title and description.
+            const title = createTitle.value.trim();
+            const description = createDescription.value.trim();
+            const datetime = createDatetime.value;
+            const clientId = createClientSelect.value;
+
+            // Create an object with the appointment title, description, datetime, and clientId.
+            const appointment = {
+                title: title,
+                description: description,
+                start: datetime,
+                clientId: clientId
+            };
+
+            const createButton = document.getElementById("create-submit-button");
+            addSpinner(createButton); // Add spinner to the create button
+
+            const response = await fetch('/api/v1/appointments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                },
+                body: JSON.stringify(appointment)
+            });
+
+            const result = await handleCreateAppointmentResponse(response, createButton);
+            if (result?.error) alert(result.error);
+        }
+
+        // Function that handles the response from the create appointment request and updates the UI accordingly.
+        async function handleCreateAppointmentResponse(response, createButton) {
+            // Remove the spinner and set the button text back to "Save".
+            removeSpinner(createButton, "Save");
+
+            if (response.ok) location.reload();
+            else {
+                const defaultMessage = "Something went wrong while creating the appointment. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+                let errorResponse;
+
+                try {
+                    errorResponse = await response.json();
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    return {error: defaultMessage};
+                }
+
+                // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                // redirect to the specified URL.
+                if (errorResponse?.redirectUrl) {
+                    window.location.href = errorResponse.redirectUrl;
+                    return; // Exit the function after redirect
+                }
+
+                // If the errorResponse object contains the "title" key, and "title" has a value,
+                // update the UI accordingly.
+                const titleKeyExists = errorResponse?.title;
+                if (titleKeyExists) showErrorMessage(createTitleError, errorResponse.title);
+
+                // If the errorResponse object contains the "start" key, and "start" has a value,
+                // update the UI accordingly.
+                const startKeyExists = errorResponse?.start;
+                if (startKeyExists) showErrorMessage(createDatetimeError, errorResponse.start);
+
+                // If the errorResponse object contains the "client" key, and "client" has a value,
+                // update the UI accordingly.
+                const clientKeyExists = errorResponse?.client;
+                if (clientKeyExists) showErrorMessage(createClientSelectError, errorResponse.client);
+
+                // If any error exists, return.
+                if (titleKeyExists || startKeyExists || clientKeyExists) return;
+
+                // Otherwise, return the error message (if exists and has value) or the default message.
+                return {error: errorResponse?.message || defaultMessage};
+            }
+        }
+
+        // Function that updates an appointment.
+        async function updateAppointment(event) {
+            // Validate the appointment.
+            if (!validateEditAppointment()) return;
+
+            // Get the appointment title and description.
+            const title = editTitle.value.trim();
+            const description = editDescription.value.trim();
+
+            // Create an object with the appointment title, and description.
+            const appointment = {
+                title: title,
+                description: description,
+            };
+
+            const saveButton = document.getElementById("edit-save-button");
+            addSpinner(saveButton); // Add spinner to the save button
+
+            const response = await fetch(`/api/v1/appointments/${event.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                },
+                body: JSON.stringify(appointment)
+            });
+
+            const result = await handleUpdateAppointmentResponse(response, event, appointment, saveButton);
+            if (result?.error) alert(result.error);
+        }
+
+        // Function that handles the response from the update appointment request and updates the UI accordingly.
+        async function handleUpdateAppointmentResponse(response, event, appointment, saveButton) {
+            // Remove the spinner and set the button text back to "Save".
+            removeSpinner(saveButton, "Save");
+
+            if (response.ok) {
+                // Update the event in the calendar.
+                event.setProp('title', appointment.title);
+                event.setExtendedProp('description', appointment.description);
+
+                // Hide edit modal.
+                $("#edit-modal").modal("hide");
+            } else {
+                const defaultMessage = "Something went wrong while updating the appointment. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+                let errorResponse;
+
+                try {
+                    errorResponse = await response.json();
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    return {error: defaultMessage};
+                }
+
+                // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                // redirect to the specified URL.
+                if (errorResponse?.redirectUrl) {
+                    window.location.href = errorResponse.redirectUrl;
+                    return; // Exit the function after redirect
+                }
+
+                // If the errorResponse object contains the "title" key, and "title" has a value,
+                // update the UI accordingly and return.
+                const titleKeyExists = errorResponse?.title;
+                if (titleKeyExists) {
+                    showTitleErrorMessage(errorResponse.title);
+                    return;
+                }
+
+                // Otherwise, return the error message (if exists and has value) or the default message.
+                return {error: errorResponse?.message || defaultMessage};
+            }
+        }
+
+        // Function that completes an appointment.
+        async function completeAppointment(id) {
+            const completeButton = document.getElementById(`complete-appointment-${id}-button`);
+            const completeButtonInnerHtml = completeButton.innerHTML;
+            addSpinner(completeButton); // Add spinner to the complete button
+
+            const response = await fetch(`/api/v1/appointments/${id}/complete`, {
+                method: 'PATCH',
+                headers: {
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                }
+            });
+
+            const result = await handleCompleteAppointmentResponse(response, completeButton, completeButtonInnerHtml);
+            if (result?.error) alert(result.error);
+        }
+
+        // Function that handles the response from the complete appointment request and updates the UI accordingly.
+        async function handleCompleteAppointmentResponse(response, completeButton, completeButtonInnerHtml) {
+            // Remove the spinner and set the button text back to the original text.
+            removeSpinner(completeButton, completeButtonInnerHtml);
+
+            if (response.ok) location.reload();
+            else {
+                const defaultMessage = "Something went wrong while marking as complete the appointment. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+                let errorResponse;
+
+                try {
+                    errorResponse = await response.json();
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    return {error: defaultMessage};
+                }
+
+                // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                // redirect to the specified URL.
+                if (errorResponse?.redirectUrl) {
+                    window.location.href = errorResponse.redirectUrl;
+                    return; // Exit the function after redirect
+                }
+
+                // Otherwise, return the error message (if exists and has value) or the default message.
+                return {error: errorResponse?.message || defaultMessage};
+            }
+        }
+
+        // Function that cancels an appointment.
+        async function cancelAppointment(id) {
+            addSpinner(confirmCancellationButton); // Add spinner to the confirm cancellation button
+
+            const response = await fetch(`/api/v1/appointments/${id}/cancel`, {
+                method: 'PATCH',
+                headers: {
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                }
+            });
+
+            const result = await handleCancellationAppointmentResponse(response);
+            if (result?.error) alert(result.error);
+
+            // Hide cancel modal.
+            $("#cancel-modal").modal("hide");
+        }
+
+        // Function that handles the response from the cancel appointment request and updates the UI accordingly.
+        async function handleCancellationAppointmentResponse(response) {
+            // Remove the spinner and set the button text back to "Yes, Continue".
+            removeSpinner(confirmCancellationButton, "Yes, Continue");
+
+            if (response.ok) location.reload();
+            else {
+                const defaultMessage = "Something went wrong while cancelling the appointment. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+                let errorResponse;
+
+                try {
+                    errorResponse = await response.json();
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    return {error: defaultMessage};
+                }
+
+                // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                // redirect to the specified URL.
+                if (errorResponse?.redirectUrl) {
+                    window.location.href = errorResponse.redirectUrl;
+                    return; // Exit the function after redirect
+                }
+
+                // Otherwise, return the error message (if exists and has value) or the default message.
+                return {error: errorResponse?.message || defaultMessage};
+            }
+        }
+
+        // Function that declines an appointment.
+        async function declineAppointment(id) {
+            addSpinner(confirmDeclineButton); // Add spinner to the confirm decline button
+
+            const response = await fetch(`/api/v1/appointments/${id}/decline`, {
+                method: 'PATCH',
+                headers: {
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                }
+            });
+
+            const result = await handleDeclineAppointmentResponse(response);
+            if (result?.error) alert(result.error);
+
+            // Hide decline modal.
+            $("#decline-modal").modal("hide");
+        }
+
+        // Function that handles the response from the approval appointment request and updates the UI accordingly.
+        async function handleDeclineAppointmentResponse(response) {
+            // Remove the spinner and set the button text back to "Yes, Continue".
+            removeSpinner(confirmDeclineButton, "Yes, Continue");
+
+            if (response.ok) location.reload();
+            else {
+                const defaultMessage = "Something went wrong while declining the appointment. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+                let errorResponse;
+
+                try {
+                    errorResponse = await response.json();
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    return {error: defaultMessage};
+                }
+
+                // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                // redirect to the specified URL.
+                if (errorResponse?.redirectUrl) {
+                    window.location.href = errorResponse.redirectUrl;
+                    return; // Exit the function after redirect
+                }
+
+                // Otherwise, return the error message (if exists and has value) or the default message.
+                return {error: errorResponse?.message || defaultMessage};
+            }
+        }
+
+        // Function that approves an appointment.
+        async function approveAppointment(id) {
+            const approveButton = document.getElementById(`approve-appointment-${id}-button`);
+            addSpinner(approveButton); // Add spinner to the approval button
+
+            const response = await fetch(`/api/v1/appointments/${id}/approve`, {
+                method: 'PATCH',
+                headers: {
+                    [[${_csrf.headerName}]]: [[${_csrf.token}]]
+                }
+            });
+
+            const result = await handleApproveAppointmentResponse(response, approveButton);
+            if (result?.error) alert(result.error);
+        }
+
+        // Function that handles the response from the approval appointment request and updates the UI accordingly.
+        async function handleApproveAppointmentResponse(response, approveButton) {
+            // Remove the spinner and set the button text back to "Approve".
+            removeSpinner(approveButton, "Approve");
+
+            if (response.ok) location.reload();
+            else {
+                const defaultMessage = "Something went wrong while approving the appointment. " +
+                    "Please try again. If the problem persists, please contact our Support.";
+                let errorResponse;
+
+                try {
+                    errorResponse = await response.json();
+                } catch (error) {
+                    console.error("An error occurred while parsing the response: ", error);
+                    return {error: defaultMessage};
+                }
+
+                // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
+                // redirect to the specified URL.
+                if (errorResponse?.redirectUrl) {
+                    window.location.href = errorResponse.redirectUrl;
+                    return; // Exit the function after redirect
+                }
+
+                // Otherwise, return the error message (if exists and has value) or the default message.
+                return {error: errorResponse?.message || defaultMessage};
+            }
+        }
+    </script>
+
+    <!-- plugin js -->
+    <script th:src="@{/libs/fullcalendar/main.min.js}"></script>
+
+    <!-- Calendar init -->
+    <script th:src="@{/js/calendar.init.js}" defer></script>
+</div>
+</body>
+</html>
