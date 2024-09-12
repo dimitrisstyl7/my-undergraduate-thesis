@@ -80,7 +80,7 @@
                         </div>
                         <div class="mb-3">
                             <label id="email-label" for="email" class="form-label custom-form-label">
-                                Email Address <span class="text-danger">*</span></label>
+                                Email <span class="text-danger">*</span></label>
                             <input type="email" class="form-control" id="email" placeholder="Enter email"
                                    autocomplete="email" th:field="*{email}" minlength="3" maxlength="50" required>
                             <span class="reset-to-default validation-error" th:if="${#fields.hasErrors('email')}"
