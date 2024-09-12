@@ -186,7 +186,7 @@
                     <div class="dropdown-divider"></div>
 
                     <!-- item-->
-                    <a th:href="@{/auth/logout}" class="dropdown-item notify-item">
+                    <a th:href="@{/auth/logout}" class="dropdown-item notify-item text-danger">
                         <i class="fe-log-out"></i>
                         <span>Logout</span>
                     </a>
@@ -246,7 +246,7 @@
                         </a>
 
                         <!-- item-->
-                        <a class="dropdown-item notify-item" th:href="@{/auth/logout}">
+                        <a class="dropdown-item notify-item text-danger" th:href="@{/auth/logout}">
                             <i class="fe-log-out me-1"></i>
                             <span>Logout</span>
                         </a>
@@ -271,7 +271,7 @@
 
                     <li>
                         <a th:href="@{/appointments}">
-                            <i class="mdi mdi-calendar-blank-outline"></i>
+                            <i class="mdi mdi-calendar-month-outline"></i>
                             <span> Appointments </span>
                         </a>
                     </li>
@@ -280,14 +280,6 @@
                         <a th:href="@{/clients}">
                             <i class="fe-users"></i>
                             <span> Clients </span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a th:href="@{/messages}">
-                            <i class="mdi mdi-forum-outline"></i>
-                            <span class="badge bg-primary rounded-pill float-end">9+</span>
-                            <span> Messages </span>
                         </a>
                     </li>
 
