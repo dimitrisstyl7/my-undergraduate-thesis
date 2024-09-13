@@ -42,8 +42,8 @@ public class ClientDto {
     private String email;
 
     @NotBlank(message = "Phone number cannot be empty")
-    @Size(min = 8, max = 20, message = "Phone number must be between 8 and 20 digits")
-    @Pattern(regexp = "^[0-9]{8,20}$", message = "Phone number must contain only digits")
+    @Size(min = 8, max = 20, message = "Phone number must be between 8 and 20 digits (including '+')")
+    @Pattern(regexp = "^[+]?[0-9]{8,19}$", message = "Phone number can start with '+' and be followed by 8-19 digits")
     private String phone;
 
     public String getFormattedDateOfBirth() {

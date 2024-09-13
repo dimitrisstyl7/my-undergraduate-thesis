@@ -90,8 +90,8 @@
                             <label id="phone-label" for="phone" class="form-label custom-form-label">
                                 Phone <span class="text-danger">*</span></label>
                             <input type="tel" class="form-control" id="phone" placeholder="Enter phone"
-                                   th:field="*{phone}" minlength="8" maxlength="20" pattern="^[0-9]{8,20}$"
-                                   title="Phone number must be between 8 and 20 digits long."
+                                   th:field="*{phone}" minlength="8" maxlength="20" pattern="^[+]?[0-9]{8,19}$"
+                                   title="Phone number can start with '+' and be followed by 8-19 digits."
                                    autocomplete="tel" required>
                             <span class="reset-to-default validation-error" th:if="${#fields.hasErrors('phone')}"
                                   th:errors="*{phone}"></span>
