@@ -39,7 +39,7 @@ fun MainScreen(navController: NavController = rememberNavController(), viewModel
                     navController.navigate(NavRoute.getRoute(route))
                     scope.launch { drawerState.close() }
                 },
-                onLogout = { viewModel.openLogoutDialog() }
+                onLogout = { viewModel.showLogoutDialog(true) }
             )
         }
     ) {
@@ -58,7 +58,7 @@ fun MainScreen(navController: NavController = rememberNavController(), viewModel
         ) { innerPadding ->
             AppNavHost(navController, innerPadding)
 
-            if (mainState.openLogoutDialog) {
+            if (mainState.showLogoutDialog) {
                 AlertDialog(
                     title = "Logout",
                     text = "Are you sure you want to logout?",
@@ -66,10 +66,10 @@ fun MainScreen(navController: NavController = rememberNavController(), viewModel
                     dismissButtonText = "No, Cancel",
                     icon = Icons.AutoMirrored.Default.ExitToApp,
                     iconContentColor = LogoutColor,
-                    onDismiss = { viewModel.closeLogoutDialog() },
+                    onDismiss = { viewModel.showLogoutDialog(false) },
                     onConfirm = {
                         // TODO: Implement logout logic
-                        viewModel.closeLogoutDialog()
+                        viewModel.showLogoutDialog(false)
                     },
                 )
             }

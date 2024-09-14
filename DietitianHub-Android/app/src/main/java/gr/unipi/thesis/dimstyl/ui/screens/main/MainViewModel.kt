@@ -10,12 +10,8 @@ class MainViewModel : ViewModel() {
     private val _state = MutableStateFlow(MainState())
     val state: StateFlow<MainState> = _state
 
-    fun openLogoutDialog() {
-        _state.value = _state.value.copy(openLogoutDialog = true)
-    }
-
-    fun closeLogoutDialog() {
-        _state.value = _state.value.copy(openLogoutDialog = false)
+    fun showLogoutDialog(show: Boolean) {
+        _state.value = _state.value.copy(showLogoutDialog = show)
     }
 
     fun setTopBarTitle(title: String) {
