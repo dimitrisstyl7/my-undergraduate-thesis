@@ -11,10 +11,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import gr.unipi.thesis.dimstyl.ui.screens.announcements.details.AnnouncementDetailScreen
 import gr.unipi.thesis.dimstyl.ui.screens.announcements.view.AnnouncementsScreen
-import gr.unipi.thesis.dimstyl.ui.screens.appointments.AppointmentsScreen
 import gr.unipi.thesis.dimstyl.ui.screens.appointments.new.NewAppointmentScreen
+import gr.unipi.thesis.dimstyl.ui.screens.appointments.view.AppointmentsScreen
 import gr.unipi.thesis.dimstyl.ui.screens.articles.details.ArticleDetailScreen
-import gr.unipi.thesis.dimstyl.ui.screens.articles.ArticlesScreen
+import gr.unipi.thesis.dimstyl.ui.screens.articles.view.ArticlesScreen
 import gr.unipi.thesis.dimstyl.ui.screens.dietPlans.DietPlansScreen
 import gr.unipi.thesis.dimstyl.ui.screens.home.HomeScreen
 import gr.unipi.thesis.dimstyl.ui.screens.profile.ProfileScreen

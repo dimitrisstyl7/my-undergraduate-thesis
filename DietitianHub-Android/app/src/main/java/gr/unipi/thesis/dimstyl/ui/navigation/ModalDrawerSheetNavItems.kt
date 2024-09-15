@@ -4,14 +4,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import gr.unipi.thesis.dimstyl.R
 
-val DietPlansNavItem = NavItem(
-    iconRes = R.drawable.rounded_menstrual_health_24,
-    topBarTitle = "Diet Plans",
-    navLabel = "Diet Plans",
-    iconDescription = "Diet Plans",
-    route = NavRoute.DIET_PLANS
-)
-
 val AppointmentsNavItem = NavItem(
     iconRes = R.drawable.rounded_calendar_month_24,
     topBarTitle = "Appointments",
