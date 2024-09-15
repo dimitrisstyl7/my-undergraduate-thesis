@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             DietitianHubTheme {
-                Surface(modifier = Modifier.fillMaxSize()) {
+                Surface(Modifier.fillMaxSize()) {
                     val mainViewModel: MainViewModel = viewModel()
                     MainScreen(viewModel = mainViewModel)
                 }
