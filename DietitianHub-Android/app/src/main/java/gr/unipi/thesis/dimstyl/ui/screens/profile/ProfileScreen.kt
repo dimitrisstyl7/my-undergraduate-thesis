@@ -1,6 +1,5 @@
 package gr.unipi.thesis.dimstyl.ui.screens.profile
 
-import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +15,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,6 +42,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import gr.unipi.thesis.dimstyl.R
+import gr.unipi.thesis.dimstyl.helpers.PastSelectableDates
+import gr.unipi.thesis.dimstyl.helpers.yearRange
 import gr.unipi.thesis.dimstyl.ui.components.ProfileOutlinedTextField
 import gr.unipi.thesis.dimstyl.ui.theme.BodyColor
 import gr.unipi.thesis.dimstyl.ui.theme.CancelButtonColor
@@ -51,24 +51,19 @@ import gr.unipi.thesis.dimstyl.ui.theme.EditButtonColor
 import gr.unipi.thesis.dimstyl.ui.theme.InputTextColor
 import gr.unipi.thesis.dimstyl.ui.theme.SaveButtonColor
 import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
-import java.time.Year
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
     val focusManager = LocalFocusManager.current
     val profileState by viewModel.state.collectAsState()
-    val datePickerState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        rememberDatePickerState(
-            initialSelectedDateMillis = profileState.dateOfBirthMillis,
-            yearRange = 1920..Year.now().value,
-            selectableDates = DatePickerDefaults.AllDates // TODO: permit only past dates
-        )
-    } else {
-        TODO("VERSION.SDK_INT < O")
-    }
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = profileState.dateOfBirthMillis,
+        yearRange = yearRange(inPast = true),
+        selectableDates = PastSelectableDates
+    )
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -157,12 +152,12 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                         onExpandedChange = { viewModel.setDropDownExpanded(it) }
                     ) {
                         ProfileOutlinedTextField(
-                            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable, true),
+                            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
                             label = "Gender",
                             value = profileState.gender.toString(),
                             trailingIcon = {
                                 ExposedDropdownMenuDefaults.TrailingIcon(
-                                    profileState.dropdownExpanded && profileState.inEditMode
+                                    expanded = profileState.dropdownExpanded && profileState.inEditMode
                                 )
                             }
                         )
@@ -172,7 +167,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                             expanded = profileState.dropdownExpanded && profileState.inEditMode,
                             onDismissRequest = { viewModel.setDropDownExpanded(false) }
                         ) {
-                            Gender.entries.toMutableList().forEach {
+                            Gender.entries.toList().forEach {
                                 DropdownMenuItem(
                                     text = {
                                         Text(
@@ -190,9 +185,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                         }
                     }
 
-                    Box(
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
+                    Box(Modifier.fillMaxWidth()) {
                         ProfileOutlinedTextField(
                             modifier = Modifier
                                 .fillMaxWidth()
