@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.helpers
+package gr.unipi.thesis.dimstyl.ui.helpers
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

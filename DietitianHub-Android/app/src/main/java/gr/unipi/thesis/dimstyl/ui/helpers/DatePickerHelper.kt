@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.helpers
+package gr.unipi.thesis.dimstyl.ui.helpers
 
 import android.os.Build
 import androidx.compose.material3.ExperimentalMaterial3Api
