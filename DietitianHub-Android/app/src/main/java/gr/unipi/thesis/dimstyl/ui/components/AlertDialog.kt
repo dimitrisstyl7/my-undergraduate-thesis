@@ -44,13 +44,13 @@ fun AlertDialog(
         onDismissRequest = { onDismiss() },
         confirmButton = {
             TextButton(
-                onClick = { onConfirm() },
+                onClick = onConfirm,
                 colors = ButtonDefaults.textButtonColors(contentColor = confirmButtonContentColor)
             ) { Text(confirmButtonText) }
         },
         dismissButton = {
             TextButton(
-                onClick = { onDismiss() },
+                onClick = onDismiss,
                 colors = ButtonDefaults.textButtonColors(contentColor = dismissButtonContentColor)
             ) { Text(dismissButtonText) }
         }

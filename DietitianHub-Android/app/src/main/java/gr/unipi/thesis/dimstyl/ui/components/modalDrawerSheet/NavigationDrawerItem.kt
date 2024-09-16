@@ -65,7 +65,7 @@ fun NavigationDrawerItem(
             )
         },
         selected = selected,
-        onClick = { onLogout() },
+        onClick = onLogout,
         colors = NavigationDrawerItemDefaults.colors(
             selectedContainerColor = Color.Transparent,
             unselectedIconColor = LogoutColor,

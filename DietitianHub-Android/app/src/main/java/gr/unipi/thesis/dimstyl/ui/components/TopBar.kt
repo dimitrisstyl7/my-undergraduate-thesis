@@ -19,7 +19,7 @@ fun TopBar(title: String, onExpandMenu: () -> Unit) {
     TopAppBar(
         title = { Text(title) },
         navigationIcon = {
-            IconButton(onClick = { onExpandMenu() }) {
+            IconButton(onClick = onExpandMenu) {
                 Icon(
                     imageVector = Icons.Default.Menu,
                     contentDescription = "Expand menu"
