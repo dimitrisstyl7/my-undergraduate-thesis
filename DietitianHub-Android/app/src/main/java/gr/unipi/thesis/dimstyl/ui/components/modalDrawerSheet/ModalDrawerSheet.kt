@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
 import gr.unipi.thesis.dimstyl.ui.navigation.NavRoute
 import gr.unipi.thesis.dimstyl.ui.navigation.modalDrawerSheetItems
 import gr.unipi.thesis.dimstyl.ui.theme.LeftBarColor
@@ -33,7 +34,7 @@ fun ModalDrawerSheet(
         modifier = Modifier.width(300.dp)
     ) {
         LazyColumn {
-            item {
+            item(contentType = ContentType.MODAL_DRAWER_SHEET_TITLE) {
                 Row(
                     Modifier
                         .height(63.dp)
@@ -54,7 +55,7 @@ fun ModalDrawerSheet(
                     )
                 }
             }
-            item {
+            item(contentType = ContentType.MODAL_DRAWER_SHEET_NAV_ITEMS) {
                 Column {
                     var item = modalDrawerSheetItems.first()
                     var selected = currentNavRoute == item.route

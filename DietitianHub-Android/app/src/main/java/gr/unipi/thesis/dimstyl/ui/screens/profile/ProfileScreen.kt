@@ -42,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import gr.unipi.thesis.dimstyl.R
+import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
 import gr.unipi.thesis.dimstyl.ui.helpers.PastSelectableDates
 import gr.unipi.thesis.dimstyl.ui.helpers.yearRange
 import gr.unipi.thesis.dimstyl.ui.screens.profile.components.ProfileOutlinedTextField
@@ -69,7 +70,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item {
+            item(contentType = ContentType.PROFILE_TEXT_INPUT_FIELD) {
                 ProfileOutlinedTextField(
                     paddingValues = PaddingValues(start = 16.dp, end = 16.dp, top = 24.dp),
                     label = "First Name",
@@ -84,7 +85,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                     keyboardActions = KeyboardActions { focusManager.moveFocus(FocusDirection.Next) }
                 )
             }
-            item {
+            item(contentType = ContentType.PROFILE_TEXT_INPUT_FIELD) {
                 ProfileOutlinedTextField(
                     paddingValues = PaddingValues(horizontal = 16.dp),
                     label = "Last Name",
@@ -99,7 +100,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                     keyboardActions = KeyboardActions { focusManager.moveFocus(FocusDirection.Next) }
                 )
             }
-            item {
+            item(contentType = ContentType.PROFILE_TEXT_INPUT_FIELD) {
                 ProfileOutlinedTextField(
                     paddingValues = PaddingValues(horizontal = 16.dp),
                     label = "Email",
@@ -119,7 +120,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                     keyboardActions = KeyboardActions { focusManager.moveFocus(FocusDirection.Next) }
                 )
             }
-            item {
+            item(contentType = ContentType.PROFILE_TEXT_INPUT_FIELD) {
                 ProfileOutlinedTextField(
                     paddingValues = PaddingValues(horizontal = 16.dp),
                     label = "Phone",
@@ -142,7 +143,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                     }
                 )
             }
-            item {
+            item(contentType = ContentType.PROFILE_GENDER_DOB_INPUT_FIELDS) {
                 Row(Modifier.width(480.dp)) {
                     ExposedDropdownMenuBox(
                         modifier = Modifier
@@ -230,7 +231,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                     }
                 }
             }
-            item {
+            item(contentType = ContentType.PROFILE_BUTTONS) {
                 Row(
                     modifier = Modifier
                         .width(480.dp)

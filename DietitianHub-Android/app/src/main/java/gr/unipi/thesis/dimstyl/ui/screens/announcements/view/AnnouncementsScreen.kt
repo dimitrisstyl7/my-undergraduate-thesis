@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gr.unipi.thesis.dimstyl.ui.components.Card
+import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementSectionTitleColor
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementsFirstSectionBackgroundColor
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementsSecondSectionBackgroundColor
@@ -36,7 +37,7 @@ fun AnnouncementsScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         sections.forEach { section ->
-            stickyHeader(contentType = section) {
+            stickyHeader(contentType = ContentType.ANNOUNCEMENTS_SECTION_TITLE) {
                 Row(Modifier.padding(top = 16.dp)) {
                     Box(
                         modifier = Modifier
@@ -57,7 +58,7 @@ fun AnnouncementsScreen() {
                 }
             }
 
-            item(contentType = section) {
+            item(contentType = ContentType.ANNOUNCEMENTS_SECTION_BODY) {
                 LazyRow(
                     contentPadding = PaddingValues(16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -65,7 +66,7 @@ fun AnnouncementsScreen() {
                     val announcements = section.announcements
 
                     if (announcements.isEmpty()) {
-                        item(contentType = "no_announcements") {
+                        item(contentType = ContentType.NO_ANNOUNCEMENTS) {
                             Text(
                                 modifier = Modifier.padding(16.dp),
                                 text = "No announcements",
@@ -74,7 +75,9 @@ fun AnnouncementsScreen() {
                             )
                         }
                     } else {
-                        items(items = announcements, contentType = { it }) { announcement ->
+                        items(
+                            items = announcements,
+                            contentType = { ContentType.ANNOUNCEMENTS_SECTION_CARD }) { announcement ->
                             Card(
                                 title = announcement.title,
                                 createdAt = announcement.createdAt,
