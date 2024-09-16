@@ -24,10 +24,10 @@ import androidx.compose.ui.unit.dp
 import gr.unipi.thesis.dimstyl.ui.components.Card
 import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementSectionTitleColor
+import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementTitleColor
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementsFirstSectionBackgroundColor
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementsSecondSectionBackgroundColor
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementsThirdSectionBackgroundColor
-import gr.unipi.thesis.dimstyl.ui.theme.CardTitleColor
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -71,7 +71,7 @@ fun AnnouncementsScreen() {
                                 modifier = Modifier.padding(16.dp),
                                 text = "No announcements",
                                 fontWeight = FontWeight.SemiBold,
-                                color = CardTitleColor
+                                color = AnnouncementTitleColor
                             )
                         }
                     } else {
@@ -81,6 +81,7 @@ fun AnnouncementsScreen() {
                             Card(
                                 title = announcement.title,
                                 createdAt = announcement.createdAt,
+                                titleColor = AnnouncementTitleColor,
                                 createdAtColor = section.backgroundColor
                             )
                         }

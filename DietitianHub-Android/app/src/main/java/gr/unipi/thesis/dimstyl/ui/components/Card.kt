@@ -14,10 +14,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import gr.unipi.thesis.dimstyl.ui.theme.CardContainerColor
-import gr.unipi.thesis.dimstyl.ui.theme.CardTitleColor
 
 @Composable
-fun Card(title: String, createdAt: String, createdAtColor: Color) {
+fun Card(
+    title: String,
+    createdAt: String,
+    titleColor: Color,
+    createdAtColor: Color,
+) {
     androidx.compose.material3.Card(
         modifier = Modifier.size(width = 300.dp, height = 150.dp),
         colors = CardDefaults.cardColors(containerColor = CardContainerColor),
@@ -32,7 +36,7 @@ fun Card(title: String, createdAt: String, createdAtColor: Color) {
                 modifier = Modifier.padding(8.dp),
                 text = title,
                 textAlign = TextAlign.Center,
-                color = CardTitleColor
+                color = titleColor
             )
             Text(text = createdAt, color = createdAtColor)
         }
