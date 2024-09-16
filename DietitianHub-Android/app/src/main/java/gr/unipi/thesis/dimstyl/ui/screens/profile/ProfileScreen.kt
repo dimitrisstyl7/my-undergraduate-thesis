@@ -42,9 +42,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import gr.unipi.thesis.dimstyl.R
-import gr.unipi.thesis.dimstyl.ui.components.ProfileOutlinedTextField
 import gr.unipi.thesis.dimstyl.ui.helpers.PastSelectableDates
 import gr.unipi.thesis.dimstyl.ui.helpers.yearRange
+import gr.unipi.thesis.dimstyl.ui.screens.profile.components.ProfileOutlinedTextField
 import gr.unipi.thesis.dimstyl.ui.theme.BodyColor
 import gr.unipi.thesis.dimstyl.ui.theme.CancelButtonColor
 import gr.unipi.thesis.dimstyl.ui.theme.EditButtonColor

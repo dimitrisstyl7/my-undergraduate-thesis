@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.ui.components
+package gr.unipi.thesis.dimstyl.ui.screens.profile.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
