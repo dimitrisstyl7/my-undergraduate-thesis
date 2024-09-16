@@ -32,7 +32,7 @@ fun MainScreen(navController: NavController = rememberNavController(), viewModel
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet(
-                state = mainState,
+                currentNavRoute = mainState.currentNavRoute,
                 onNavigate = { route, title ->
                     viewModel.setCurrentNavRoute(route)
                     viewModel.setTopBarTitle(title)

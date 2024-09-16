@@ -17,7 +17,7 @@ fun NavigationDrawerItem(
     modifier: Modifier = Modifier,
     item: NavItem,
     selected: Boolean,
-    onNavigate: (NavRoute) -> Unit
+    onNavigate: (NavRoute, String) -> Unit
 ) {
     androidx.compose.material3.NavigationDrawerItem(
         modifier = modifier,
@@ -34,7 +34,7 @@ fun NavigationDrawerItem(
             )
         },
         selected = selected,
-        onClick = { onNavigate(item.route) },
+        onClick = { onNavigate(item.route, item.topBarTitle) },
         colors = NavigationDrawerItemDefaults.colors(
             selectedIconColor = TopBarColor,
             selectedTextColor = TopBarColor,
