@@ -25,3 +25,5 @@ val AnnouncementSectionTitleColor = Color.White
 val AnnouncementsFirstSectionBackgroundColor = Color(0xFF5E68BA)
 val AnnouncementsSecondSectionBackgroundColor = Color(0xFFFB89C9)
 val AnnouncementsThirdSectionBackgroundColor = Color(0xFF76B5F6)
+val ArticleTitleColor = Color(0xFF333A45)
+val ArticleCreatedAtColor = Color(0xFF98A5AC)

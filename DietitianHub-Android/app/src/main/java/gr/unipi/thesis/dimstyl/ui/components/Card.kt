@@ -1,10 +1,12 @@
 package gr.unipi.thesis.dimstyl.ui.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,14 +23,20 @@ fun Card(
     createdAt: String,
     titleColor: Color,
     createdAtColor: Color,
+    border: BorderStroke? = null
 ) {
     androidx.compose.material3.Card(
-        modifier = Modifier.size(width = 300.dp, height = 150.dp),
+        modifier = Modifier
+            .width(300.dp)
+            .heightIn(min = 150.dp),
         colors = CardDefaults.cardColors(containerColor = CardContainerColor),
+        border = border,
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp)
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 150.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -38,7 +46,12 @@ fun Card(
                 textAlign = TextAlign.Center,
                 color = titleColor
             )
-            Text(text = createdAt, color = createdAtColor)
+            Text(
+                modifier = Modifier.padding(8.dp),
+                text = createdAt,
+                textAlign = TextAlign.Center,
+                color = createdAtColor
+            )
         }
     }
 }
