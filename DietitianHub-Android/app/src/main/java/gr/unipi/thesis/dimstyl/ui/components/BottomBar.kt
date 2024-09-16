@@ -10,12 +10,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import gr.unipi.thesis.dimstyl.ui.navigation.NavRoute
 import gr.unipi.thesis.dimstyl.ui.navigation.bottomNavBarItems
-import gr.unipi.thesis.dimstyl.ui.screens.main.MainState
 import gr.unipi.thesis.dimstyl.ui.theme.BottomBarColor
 import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
 
 @Composable
-fun BottomBar(state: MainState, navigate: (NavRoute, String) -> Unit) {
+fun BottomBar(currentNavRoute: NavRoute, navigate: (NavRoute, String) -> Unit) {
     NavigationBar(containerColor = BottomBarColor) {
         bottomNavBarItems.forEach {
             NavigationBarItem(
@@ -26,10 +25,8 @@ fun BottomBar(state: MainState, navigate: (NavRoute, String) -> Unit) {
                     )
                 },
                 label = { Text(it.navLabel) },
-                selected = state.currentNavRoute == it.route,
-                onClick = {
-                    navigate(it.route, it.topBarTitle)
-                },
+                selected = currentNavRoute == it.route,
+                onClick = { navigate(it.route, it.topBarTitle) },
                 colors = NavigationBarItemDefaults.colors(
                     unselectedIconColor = Color.White,
                     unselectedTextColor = Color.White,
@@ -45,5 +42,5 @@ fun BottomBar(state: MainState, navigate: (NavRoute, String) -> Unit) {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun BottomBarPreview() {
-    BottomBar(MainState()) { _, _ -> }
+    BottomBar(NavRoute.HOME) { _, _ -> }
 }

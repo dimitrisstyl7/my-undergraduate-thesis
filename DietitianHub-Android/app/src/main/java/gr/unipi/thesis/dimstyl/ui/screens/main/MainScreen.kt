@@ -48,7 +48,7 @@ fun MainScreen(navController: NavController = rememberNavController(), viewModel
                 TopBar(mainState.topBarTitle) { scope.launch { drawerState.open() } }
             },
             bottomBar = {
-                BottomBar(mainState) { route, title ->
+                BottomBar(mainState.currentNavRoute) { route, title ->
                     viewModel.setCurrentNavRoute(route)
                     viewModel.setTopBarTitle(title)
                     navController.navigate(NavRoute.getRoute(route))
