@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import gr.unipi.thesis.dimstyl.ui.components.Card
 import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
@@ -39,64 +40,81 @@ fun ArticlesScreen() {
     }
 }
 
-// Start of temporary data
-data class Article(val title: String, val content: String, val createdAt: String)
+// Start of temporary data TODO: Remove this and use real data when available
+data class Article(val id: Int, val title: String, val content: String, val createdAt: String)
 
 val articles = listOf(
     Article(
+        1,
         "New recipe for a delicious cake",
         "This is the content of the article",
         "16 Sep 2024\n07:54 PM"
     ),
     Article(
+        2,
         "How to make a perfect coffee",
         "This is the content of the article",
         "16 Sep 2024\n07:54 PM"
     ),
     Article(
+        3,
         "The best places to visit in Greece",
         "This is the content of the article",
         "16 Sep 2024\n07:54 PM"
     ),
     Article(
+        4,
         "The benefits of a healthy lifestyle",
         "This is the content of the article",
         "16 Sep 2024\n07:54 PM"
     ),
     Article(
+        5,
         "The importance of a good night's sleep",
         "This is the content of the article",
         "16 Sep 2024\n07:54 PM"
     ),
     Article(
+        6,
         "The best exercises for a healthy body",
         "This is the content of the article",
         "16 Sep 2024\n07:54 PM"
     ),
     Article(
+        7,
         "The benefits of a healthy diet",
         "This is the content of the article",
         "16 Sep 2024\n07:54 PM"
     ),
     Article(
+        8,
         "The importance of a good night's sleep",
         "This is the content of the article",
         "16 Sep 2024\n07:54 PM"
     ),
     Article(
+        9,
         "The best exercises for a healthy body",
         "This is the content of the article",
         "16 Sep 2024\n07:54 PM"
     ),
     Article(
+        10,
         "The benefits of a healthy diet",
         "This is the content of the article",
         "16 Sep 2024\n07:54 PM"
     ),
     Article(
+        11,
         "The importance of a good healthy diet and daily exercise with a good night's sleep",
         "This is the content of the article",
         "16 Sep 2024\n07:54 PM"
     ),
 )
 // End of temporary data
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun ArticlesScreenPreview() {
+    ArticlesScreen()
+}

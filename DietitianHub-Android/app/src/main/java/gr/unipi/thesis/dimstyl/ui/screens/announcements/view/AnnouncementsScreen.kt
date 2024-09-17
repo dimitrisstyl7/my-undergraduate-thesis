@@ -98,21 +98,25 @@ val sections = listOf(
         "Today",
         listOf(
             Announcement(
+                1,
                 "Announcement 1",
                 "This is the content of announcement 1",
                 "15 Sep 2024, 07:07 PM"
             ),
             Announcement(
+                2,
                 "New Holidays ahead! get ready! Can't wait to see you all there!",
                 "This is the content of announcement 2",
                 "15 Sep 2024, 07:07 PM"
             ),
             Announcement(
+                3,
                 "Announcement 3",
                 "This is the content of announcement 3",
                 "15 Sep 2024, 07:07 PM"
             ),
             Announcement(
+                4,
                 "Announcement 4",
                 "This is the content of announcement 4",
                 "15 Sep 2024, 07:07 PM"
@@ -124,21 +128,25 @@ val sections = listOf(
         "Yesterday",
         listOf(
             Announcement(
+                5,
                 "Announcement 5",
                 "This is the content of announcement 5",
                 "14 Sep 2024, 07:07 PM"
             ),
             Announcement(
+                6,
                 "Announcement 6",
                 "This is the content of announcement 6",
                 "14 Sep 2024, 07:07 PM"
             ),
             Announcement(
+                7,
                 "Announcement 7",
                 "This is the content of announcement 7",
                 "14 Sep 2024, 07:07 PM"
             ),
             Announcement(
+                8,
                 "Announcement 8",
                 "This is the content of announcement 8",
                 "14 Sep 2024, 07:07 PM"
@@ -150,21 +158,25 @@ val sections = listOf(
         "Earlier",
         listOf(
             Announcement(
+                9,
                 "Announcement 9",
                 "This is the content of announcement 9",
                 "10 Sep 2024, 07:07 PM"
             ),
             Announcement(
+                10,
                 "Announcement 10",
                 "This is the content of announcement 10",
                 "10 Sep 2024, 07:07 PM"
             ),
             Announcement(
+                11,
                 "Announcement 11",
                 "This is the content of announcement 11",
                 "10 Sep 2024, 07:07 PM"
             ),
             Announcement(
+                12,
                 "Announcement 12",
                 "This is the content of announcement 12",
                 "10 Sep 2024, 07:07 PM"
@@ -180,7 +192,7 @@ data class Section(
     val backgroundColor: Color
 )
 
-data class Announcement(val title: String, val content: String, val createdAt: String)
+data class Announcement(val id: Int, val title: String, val content: String, val createdAt: String)
 // End of temporary data
 
 @Preview(showSystemUi = true, showBackground = true)
