@@ -12,6 +12,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Email
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
@@ -80,6 +84,12 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                     supportingText = null, // TODO: field validation message
                     onValueChange = { viewModel.setFirstName(it) },
                     readOnly = !profileState.inEditMode,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Rounded.Person,
+                            contentDescription = null
+                        )
+                    },
                     trailingIconVisible = profileState.firstName.isNotEmpty() && profileState.inEditMode,
                     onTrailingIconClick = { viewModel.setFirstName("") },
                     keyboardActions = KeyboardActions { focusManager.moveFocus(FocusDirection.Next) }
@@ -110,6 +120,12 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                     supportingText = null, // TODO: field validation message
                     onValueChange = { viewModel.setEmail(it) },
                     readOnly = !profileState.inEditMode,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Rounded.Email,
+                            contentDescription = null
+                        )
+                    },
                     trailingIconVisible = profileState.email.isNotEmpty() && profileState.inEditMode,
                     onTrailingIconClick = { viewModel.setEmail("") },
                     keyboardOptions = KeyboardOptions(
@@ -130,6 +146,12 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                     supportingText = null, // TODO: field validation message
                     onValueChange = { viewModel.setPhone(it) },
                     readOnly = !profileState.inEditMode,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Rounded.Phone,
+                            contentDescription = null
+                        )
+                    },
                     trailingIconVisible = profileState.phone.isNotEmpty() && profileState.inEditMode,
                     onTrailingIconClick = { viewModel.setPhone("") },
                     keyboardOptions = KeyboardOptions(
@@ -148,7 +170,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                     ExposedDropdownMenuBox(
                         modifier = Modifier
                             .padding(start = 16.dp)
-                            .width(130.dp),
+                            .fillMaxWidth(0.45f),
                         expanded = profileState.dropdownExpanded && profileState.inEditMode,
                         onExpandedChange = { viewModel.setDropDownExpanded(it) }
                     ) {
@@ -156,6 +178,12 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                             modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
                             label = "Gender",
                             value = profileState.gender.toString(),
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.gender_svgrepo_com),
+                                    contentDescription = null
+                                )
+                            },
                             trailingIcon = {
                                 ExposedDropdownMenuDefaults.TrailingIcon(
                                     expanded = profileState.dropdownExpanded && profileState.inEditMode

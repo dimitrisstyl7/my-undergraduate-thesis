@@ -36,6 +36,7 @@ fun ProfileOutlinedTextField(
     supportingText: @Composable (() -> Unit)?, // TODO: Remove nullable when validation is implemented
     onValueChange: (String) -> Unit,
     readOnly: Boolean,
+    leadingIcon: @Composable (() -> Unit)? = {},
     trailingIconVisible: Boolean,
     onTrailingIconClick: () -> Unit,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
@@ -57,6 +58,7 @@ fun ProfileOutlinedTextField(
         onValueChange = onValueChange,
         singleLine = true,
         readOnly = readOnly,
+        leadingIcon = leadingIcon,
         trailingIcon = {
             AnimatedVisibility(
                 visible = trailingIconVisible,
@@ -76,6 +78,8 @@ fun ProfileOutlinedTextField(
             cursorColor = Color.Black,
             focusedBorderColor = TopBarColor,
             unfocusedBorderColor = LeftBarColor,
+            focusedLeadingIconColor = TopBarColor,
+            unfocusedLeadingIconColor = LeftBarColor,
             focusedTrailingIconColor = TopBarColor,
             unfocusedTrailingIconColor = LeftBarColor,
             focusedLabelColor = TopBarColor,
@@ -90,6 +94,7 @@ fun ProfileOutlinedTextField(
     label: String,
     placeholder: @Composable (() -> Unit)? = null,
     value: String,
+    leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)
 ) {
     OutlinedTextField(
@@ -100,6 +105,7 @@ fun ProfileOutlinedTextField(
         onValueChange = {},
         singleLine = true,
         readOnly = true,
+        leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         colors = OutlinedTextFieldDefaults.colors(
             focusedTextColor = InputTextColor,
@@ -107,6 +113,8 @@ fun ProfileOutlinedTextField(
             cursorColor = Color.Black,
             focusedBorderColor = TopBarColor,
             unfocusedBorderColor = LeftBarColor,
+            focusedLeadingIconColor = TopBarColor,
+            unfocusedLeadingIconColor = LeftBarColor,
             focusedTrailingIconColor = TopBarColor,
             unfocusedTrailingIconColor = LeftBarColor,
             focusedLabelColor = TopBarColor,
