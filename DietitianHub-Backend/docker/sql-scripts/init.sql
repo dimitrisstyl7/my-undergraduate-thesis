@@ -95,6 +95,6 @@ create table appointment
     client_user_info_id int                     not null references user_info (id),
     title               varchar(100)            not null,
     description         text,
-    scheduled_datetime  timestamp               not null,
+    scheduled_at        timestamp               not null,
     status              appointment_status_enum not null
 );

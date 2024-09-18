@@ -10,27 +10,24 @@ import java.util.Optional;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
 
-    List<Appointment> findAllByStatusInAndScheduledDateTimeIsAfter(List<AppointmentStatus> statuses,
-                                                                   LocalDateTime dateTime);
+    List<Appointment> findAllByStatusInAndScheduledAtIsAfter(List<AppointmentStatus> statuses, LocalDateTime dateTime);
 
-    List<Appointment> findAllByStatusAndScheduledDateTimeIsAfterOrderByScheduledDateTime(AppointmentStatus status,
-                                                                                         LocalDateTime dateTime);
+    List<Appointment> findAllByStatusAndScheduledAtIsAfterOrderByScheduledAt(AppointmentStatus status, LocalDateTime dateTime);
 
-    List<Appointment> findAllByStatusAndScheduledDateTimeIsBefore(AppointmentStatus status, LocalDateTime dateTime);
+    List<Appointment> findAllByStatusAndScheduledAtIsBefore(AppointmentStatus status, LocalDateTime dateTime);
 
-    List<Appointment> findAllByStatusInAndScheduledDateTimeIsBetweenOrderByScheduledDateTime(List<AppointmentStatus> statuses,
-                                                                                             LocalDateTime startDateTime,
-                                                                                             LocalDateTime endDateTime);
+    List<Appointment> findAllByStatusInAndScheduledAtIsBetweenOrderByScheduledAt(List<AppointmentStatus> statuses,
+                                                                                 LocalDateTime startDateTime,
+                                                                                 LocalDateTime endDateTime);
 
-    List<Appointment> findFirst5ByStatusAndScheduledDateTimeIsAfterOrderByScheduledDateTime(AppointmentStatus status,
-                                                                                            LocalDateTime dateTime);
+    List<Appointment> findFirst5ByStatusAndScheduledAtIsAfterOrderByScheduledAt(AppointmentStatus status, LocalDateTime dateTime);
 
-    List<Appointment> findFirst5ByStatusOrderByScheduledDateTimeDesc(AppointmentStatus status);
+    List<Appointment> findFirst5ByStatusOrderByScheduledAtDesc(AppointmentStatus status);
 
-    Optional<Appointment> findByScheduledDateTimeAndStatusAndClientUserInfoId(LocalDateTime dateTime,
-                                                                              AppointmentStatus status,
-                                                                              int clientUserInfoId);
+    Optional<Appointment> findByScheduledAtAndStatusAndClientUserInfoId(LocalDateTime dateTime,
+                                                                        AppointmentStatus status,
+                                                                        int clientUserInfoId);
 
-    boolean existsByScheduledDateTimeAndStatus(LocalDateTime dateTime, AppointmentStatus status);
+    boolean existsByScheduledAtAndStatus(LocalDateTime dateTime, AppointmentStatus status);
 
 }

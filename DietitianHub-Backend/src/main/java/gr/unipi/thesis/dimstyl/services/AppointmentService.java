@@ -8,18 +8,15 @@ import java.util.List;
 
 public interface AppointmentService {
 
-    List<AppointmentDto> getAppointmentsByStatusAndScheduledDateTimeIsAfter(List<AppointmentStatus> statuses,
-                                                                            LocalDateTime dateTime);
+    List<AppointmentDto> getAppointmentsByStatusAndScheduledAtIsAfter(List<AppointmentStatus> statuses, LocalDateTime dateTime);
 
-    List<AppointmentDto> getAppointmentsByStatusAndScheduledDateTimeIsAfterOrderByScheduledDateTime(AppointmentStatus status,
-                                                                                                    LocalDateTime dateTime);
+    List<AppointmentDto> getAppointmentsByStatusAndScheduledAtIsAfterOrderByScheduledAt(AppointmentStatus status, LocalDateTime dateTime);
 
-    List<AppointmentDto> getAppointmentsByStatusAndScheduledDateTimeIsBetween(List<AppointmentStatus> statuses,
-                                                                              LocalDateTime startDateTime,
-                                                                              LocalDateTime endDateTime);
+    List<AppointmentDto> getAppointmentsByStatusAndScheduledAtIsBetween(List<AppointmentStatus> statuses,
+                                                                        LocalDateTime startDateTime,
+                                                                        LocalDateTime endDateTime);
 
-    List<AppointmentDto> getFirst5AppointmentsByStatusAndScheduledDateTimeIsAfter(AppointmentStatus status,
-                                                                                  LocalDateTime dateTime);
+    List<AppointmentDto> getFirst5AppointmentsByStatusAndScheduledAtIsAfter(AppointmentStatus status, LocalDateTime dateTime);
 
     List<AppointmentDto> getFirst5AppointmentsByStatus(AppointmentStatus status);
 
@@ -35,7 +32,7 @@ public interface AppointmentService {
 
     void declineAppointment(int id);
 
-    boolean existsByScheduledDateTimeAndStatus(LocalDateTime dateTime, AppointmentStatus status);
+    boolean existsByScheduledAtAndStatus(LocalDateTime dateTime, AppointmentStatus status);
 
     void markPastAppointmentsAsCompleted(AppointmentStatus status);
 

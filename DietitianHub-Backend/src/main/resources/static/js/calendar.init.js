@@ -30,13 +30,13 @@ $(document).ready(function () {
             const event = info.event;
             const title = event.title;
             const description = event.extendedProps.description;
-            const formattedScheduledDateTime = event.extendedProps.formattedScheduledDateTime;
+            const formattedScheduledAt = event.extendedProps.formattedScheduledAt;
             const clientFullName = event.extendedProps.clientFullName;
 
             // Set form values.
             $("#edit-title").val(title);
             $("#edit-description").val(description);
-            $("#edit-datetime").val(formattedScheduledDateTime);
+            $("#edit-datetime").val(formattedScheduledAt);
             $("#edit-client-fullname").val(clientFullName);
 
             // Attach click event handler for the save button.
@@ -60,7 +60,7 @@ $(document).ready(function () {
                 // Attach click event handler for the cancel button.
                 editCancelButton.off("click").on("click", () => {
                     // Set cancel modal title.
-                    cancelModalTitle.text(`${title} (${formattedScheduledDateTime})`);
+                    cancelModalTitle.text(`${title} (${formattedScheduledAt})`);
                 });
 
                 // Attach click event handler for the confirm cancellation button.

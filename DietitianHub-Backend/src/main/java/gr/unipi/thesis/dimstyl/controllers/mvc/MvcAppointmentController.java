@@ -29,13 +29,13 @@ public class MvcAppointmentController {
         String minDateTime = dateTimeNow.toString().substring(0, 16);
         List<ClientDto> clients = userService.getAllClients();
         List<AppointmentDto> todaysAppointments =
-                appointmentService.getAppointmentsByStatusAndScheduledDateTimeIsBetween(
+                appointmentService.getAppointmentsByStatusAndScheduledAtIsBetween(
                         List.of(AppointmentStatus.SCHEDULED, AppointmentStatus.COMPLETED),
                         LocalDate.now().atStartOfDay(),
                         LocalDate.now().atStartOfDay().plusHours(23).plusMinutes(59)
                 );
         List<AppointmentDto> pendingAppointments =
-                appointmentService.getAppointmentsByStatusAndScheduledDateTimeIsAfterOrderByScheduledDateTime(
+                appointmentService.getAppointmentsByStatusAndScheduledAtIsAfterOrderByScheduledAt(
                         AppointmentStatus.PENDING,
                         dateTimeNow
                 );

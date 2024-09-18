@@ -21,12 +21,12 @@ public class MvcIndexController {
     public String indexPage(Model model) {
         LocalDateTime dateTimeNow = LocalDateTime.now();
         List<AppointmentDto> pendingAppointments =
-                appointmentService.getAppointmentsByStatusAndScheduledDateTimeIsAfterOrderByScheduledDateTime(
+                appointmentService.getAppointmentsByStatusAndScheduledAtIsAfterOrderByScheduledAt(
                         AppointmentStatus.PENDING,
                         dateTimeNow
                 );
         List<AppointmentDto> upcomingAppointments =
-                appointmentService.getFirst5AppointmentsByStatusAndScheduledDateTimeIsAfter(
+                appointmentService.getFirst5AppointmentsByStatusAndScheduledAtIsAfter(
                         AppointmentStatus.SCHEDULED,
                         dateTimeNow
                 );

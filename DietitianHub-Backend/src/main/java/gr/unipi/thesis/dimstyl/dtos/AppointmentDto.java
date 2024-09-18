@@ -24,7 +24,7 @@ public record AppointmentDto(int id,
                              @Unique
                              LocalDateTime start,
                              AppointmentStatus status,
-                             String formattedScheduledDateTime,
+                             String formattedScheduledAt,
                              @NotNull(message = "Please select a client")
                              @Range(min = 1, message = "Please select a client")
                              Integer clientId,
@@ -34,7 +34,7 @@ public record AppointmentDto(int id,
         return Appointment.builder()
                 .title(title)
                 .description(description)
-                .scheduledDateTime(start)
+                .scheduledAt(start)
                 .clientUserInfo(userInfo)
                 .build();
     }

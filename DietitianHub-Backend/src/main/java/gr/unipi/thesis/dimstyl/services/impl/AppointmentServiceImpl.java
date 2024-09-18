@@ -27,39 +27,39 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final UserInfoService userInfoService;
 
     @Override
-    public List<AppointmentDto> getAppointmentsByStatusAndScheduledDateTimeIsAfter(List<AppointmentStatus> statuses,
-                                                                                   LocalDateTime dateTime) {
+    public List<AppointmentDto> getAppointmentsByStatusAndScheduledAtIsAfter(List<AppointmentStatus> statuses,
+                                                                             LocalDateTime dateTime) {
         return appointmentRepository
-                .findAllByStatusInAndScheduledDateTimeIsAfter(statuses, dateTime).stream()
+                .findAllByStatusInAndScheduledAtIsAfter(statuses, dateTime).stream()
                 .map(Appointment::toDto)
                 .toList();
     }
 
     @Override
-    public List<AppointmentDto> getAppointmentsByStatusAndScheduledDateTimeIsAfterOrderByScheduledDateTime(AppointmentStatus status,
-                                                                                                           LocalDateTime dateTime) {
+    public List<AppointmentDto> getAppointmentsByStatusAndScheduledAtIsAfterOrderByScheduledAt(AppointmentStatus status,
+                                                                                               LocalDateTime dateTime) {
         return appointmentRepository
-                .findAllByStatusAndScheduledDateTimeIsAfterOrderByScheduledDateTime(status, dateTime).stream()
+                .findAllByStatusAndScheduledAtIsAfterOrderByScheduledAt(status, dateTime).stream()
                 .map(Appointment::toDto)
                 .toList();
     }
 
     @Override
-    public List<AppointmentDto> getAppointmentsByStatusAndScheduledDateTimeIsBetween(List<AppointmentStatus> statuses,
-                                                                                     LocalDateTime startDateTime,
-                                                                                     LocalDateTime endDateTime) {
+    public List<AppointmentDto> getAppointmentsByStatusAndScheduledAtIsBetween(List<AppointmentStatus> statuses,
+                                                                               LocalDateTime startDateTime,
+                                                                               LocalDateTime endDateTime) {
         return appointmentRepository
-                .findAllByStatusInAndScheduledDateTimeIsBetweenOrderByScheduledDateTime(statuses, startDateTime, endDateTime)
+                .findAllByStatusInAndScheduledAtIsBetweenOrderByScheduledAt(statuses, startDateTime, endDateTime)
                 .stream()
                 .map(Appointment::toDto)
                 .toList();
     }
 
     @Override
-    public List<AppointmentDto> getFirst5AppointmentsByStatusAndScheduledDateTimeIsAfter(AppointmentStatus status,
-                                                                                         LocalDateTime dateTime) {
+    public List<AppointmentDto> getFirst5AppointmentsByStatusAndScheduledAtIsAfter(AppointmentStatus status,
+                                                                                   LocalDateTime dateTime) {
         return appointmentRepository
-                .findFirst5ByStatusAndScheduledDateTimeIsAfterOrderByScheduledDateTime(status, dateTime).stream()
+                .findFirst5ByStatusAndScheduledAtIsAfterOrderByScheduledAt(status, dateTime).stream()
                 .map(Appointment::toDto)
                 .toList();
     }
@@ -67,7 +67,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<AppointmentDto> getFirst5AppointmentsByStatus(AppointmentStatus status) {
         return appointmentRepository
-                .findFirst5ByStatusOrderByScheduledDateTimeDesc(status).stream()
+                .findFirst5ByStatusOrderByScheduledAtDesc(status).stream()
                 .map(Appointment::toDto)
                 .toList();
     }
@@ -75,11 +75,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     @Transactional
     public void createAppointment(AppointmentDto appointmentDto) {
-        LocalDateTime scheduledDateTime = appointmentDto.start();
+        LocalDateTime scheduledAt = appointmentDto.start();
         UserInfo userInfo = userInfoService.getUserInfo(appointmentDto.clientId());
         Optional<Appointment> appointmentOptional =
-                appointmentRepository.findByScheduledDateTimeAndStatusAndClientUserInfoId(
-                        scheduledDateTime,
+                appointmentRepository.findByScheduledAtAndStatusAndClientUserInfoId(
+                        scheduledAt,
                         AppointmentStatus.PENDING,
                         userInfo.getId()
                 );
@@ -112,7 +112,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void completeAppointment(int id) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new AppointmentNotFoundException("Appointment with id %d not found".formatted(id)));
-        if (appointment.getScheduledDateTime().isAfter(LocalDateTime.now())) {
+        if (appointment.getScheduledAt().isAfter(LocalDateTime.now())) {
             throw new AppointmentIsInTheFutureException("Appointment with id %d is in the future".formatted(id));
         }
         appointment.setStatus(AppointmentStatus.COMPLETED);
@@ -123,7 +123,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void cancelAppointment(int id) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new AppointmentNotFoundException("Appointment with id %d not found".formatted(id)));
-        if (appointment.getScheduledDateTime().isBefore(LocalDateTime.now())) {
+        if (appointment.getScheduledAt().isBefore(LocalDateTime.now())) {
             throw new AppointmentIsInThePastException("Appointment with id %d is in the past".formatted(id));
         }
         appointment.setStatus(AppointmentStatus.CANCELLED);
@@ -135,12 +135,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new AppointmentNotFoundException("Appointment with id %d not found".formatted(id)));
 
-        if (existsByScheduledDateTimeAndStatus(appointment.getScheduledDateTime(), AppointmentStatus.SCHEDULED)) {
+        if (existsByScheduledAtAndStatus(appointment.getScheduledAt(), AppointmentStatus.SCHEDULED)) {
             throw new AppointmentAlreadyExistsException("""
                     Appointment with the same scheduled date time already exists.
                     Pending appointment id: %d
                     Requested date time: %s
-                    """.formatted(appointment.getId(), appointment.getScheduledDateTime())
+                    """.formatted(appointment.getId(), appointment.getScheduledAt())
             );
         }
 
@@ -158,15 +158,15 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public boolean existsByScheduledDateTimeAndStatus(LocalDateTime dateTime, AppointmentStatus status) {
-        return appointmentRepository.existsByScheduledDateTimeAndStatus(dateTime, status);
+    public boolean existsByScheduledAtAndStatus(LocalDateTime dateTime, AppointmentStatus status) {
+        return appointmentRepository.existsByScheduledAtAndStatus(dateTime, status);
     }
 
     @Override
     @Transactional
     public void markPastAppointmentsAsCompleted(AppointmentStatus status) {
         List<Appointment> appointments =
-                appointmentRepository.findAllByStatusAndScheduledDateTimeIsBefore(status, LocalDateTime.now());
+                appointmentRepository.findAllByStatusAndScheduledAtIsBefore(status, LocalDateTime.now());
         appointments.forEach(appointment -> appointment.setStatus(AppointmentStatus.COMPLETED));
     }
 

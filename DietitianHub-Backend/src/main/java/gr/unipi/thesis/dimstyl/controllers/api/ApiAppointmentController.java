@@ -27,7 +27,7 @@ public class ApiAppointmentController {
     @GetMapping
     public ResponseEntity<List<AppointmentDto>> getAppointments() {
         return ResponseEntity.ok(
-                appointmentService.getAppointmentsByStatusAndScheduledDateTimeIsAfter(
+                appointmentService.getAppointmentsByStatusAndScheduledAtIsAfter(
                         List.of(AppointmentStatus.SCHEDULED, AppointmentStatus.COMPLETED),
                         LocalDate.now().atStartOfDay()
                 )
