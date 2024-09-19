@@ -75,4 +75,12 @@ class ProfileViewModel : ViewModel() {
         _state.value = _state.value.copy(showDatePickerDialog = show)
     }
 
+    fun backupProfileData() {
+        _state.value = _state.value.copy(oldProfileData = _state.value.profileData)
+    }
+
+    fun restoreProfileData() {
+        _state.value = _state.value.copy(profileData = _state.value.oldProfileData)
+    }
+
 }

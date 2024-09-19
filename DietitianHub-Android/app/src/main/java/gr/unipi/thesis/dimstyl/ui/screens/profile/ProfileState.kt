@@ -7,6 +7,7 @@ import java.util.TimeZone
 
 data class ProfileState(
     val profileData: ProfileData? = null,
+    val oldProfileData: ProfileData? = null,
     val dropdownExpanded: Boolean = false,
     val showDatePickerDialog: Boolean = false,
     val inEditMode: Boolean = false,

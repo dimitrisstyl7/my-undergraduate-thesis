@@ -204,6 +204,8 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                                     unfocusedBorderColor = LeftBarColor,
                                     focusedLeadingIconColor = TopBarColor,
                                     unfocusedLeadingIconColor = LeftBarColor,
+                                    focusedTrailingIconColor = TopBarColor,
+                                    unfocusedTrailingIconColor = LeftBarColor,
                                     focusedLabelColor = TopBarColor,
                                     unfocusedLabelColor = LeftBarColor
                                 )
@@ -310,6 +312,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                             }
                             Button(
                                 onClick = {
+                                    viewModel.restoreProfileData()
                                     viewModel.setEditMode(false)
                                     focusManager.clearFocus(true)
                                 },
@@ -322,7 +325,10 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                             }
                         } else {
                             Button(
-                                onClick = { viewModel.setEditMode(true) },
+                                onClick = {
+                                    viewModel.backupProfileData()
+                                    viewModel.setEditMode(true)
+                                },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = PrimaryColor,
                                     contentColor = Color.White
