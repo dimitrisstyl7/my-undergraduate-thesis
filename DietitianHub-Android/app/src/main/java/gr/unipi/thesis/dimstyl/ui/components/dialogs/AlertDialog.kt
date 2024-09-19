@@ -15,12 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import gr.unipi.thesis.dimstyl.ui.theme.DangerColor
 import gr.unipi.thesis.dimstyl.ui.theme.LeftBarColor
+import gr.unipi.thesis.dimstyl.ui.theme.NeutralColor
 
 @Composable
 fun AlertDialog(
     title: String,
-    text: String,
+    text: @Composable (() -> Unit),
     confirmButtonText: String,
     dismissButtonText: String,
     icon: ImageVector,
@@ -28,15 +30,15 @@ fun AlertDialog(
     iconContentColor: Color = Color.Unspecified,
     titleContentColor: Color = Color.White,
     textContentColor: Color = Color.White,
-    dismissButtonContentColor: Color = Color.White,
-    confirmButtonContentColor: Color = Color.White,
+    dismissButtonContentColor: Color = NeutralColor,
+    confirmButtonContentColor: Color = DangerColor,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
     AlertDialog(
         icon = { Icon(imageVector = icon, contentDescription = null) },
         title = { Text(title) },
-        text = { Text(text) },
+        text = { text() },
         containerColor = containerColor,
         titleContentColor = titleContentColor,
         textContentColor = textContentColor,
@@ -69,7 +71,7 @@ fun AlertDialogPreview() {
         openAlertDialog.value -> {
             AlertDialog(
                 title = "Title",
-                text = "Alert Dialog Text",
+                text = { Text("Alert Dialog Text") },
                 confirmButtonText = "Confirm",
                 dismissButtonText = "Cancel",
                 icon = Icons.Rounded.Info,

@@ -13,16 +13,14 @@ val Pink40 = Color(0xFF7D5260)
 val LeftBarColor = Color(0xFF113537)
 val TopBarColor = Color(0xFFFFC40E)
 val BottomBarColor = Color(0xFF113537)
+
+val PrimaryColor = Color(0xFF76B5F6)
+val SuccessColor = Color(0xFF1EC26A)
+val DangerColor = Color(0xFFEC3624)
+val WarningColor = Color(0xFFF4C654)
+val NeutralColor = Color.LightGray
 val BodyColor = Color(0xFFEBEFF2)
-val LogoutColor = Color(0xFFEC3624)
-
-val EditButtonColor = Color(0xFF71B6F9)
-val SaveButtonColor = Color(0xFF10C469)
-val CancelButtonColor = Color(0xFFFF5B5B)
-val DownloadButtonColor = Color(0xFF71B6F9)
-
-val InputTextColor = Color(0xFF6C747C)
-
+val TextFieldInputColor = Color(0xFF6C747C)
 val CardContainerColor = Color.White
 
 val AnnouncementTitleColor = Color(0xFF343A40)
