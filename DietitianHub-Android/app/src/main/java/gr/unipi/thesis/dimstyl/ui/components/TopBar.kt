@@ -1,7 +1,7 @@
 package gr.unipi.thesis.dimstyl.ui.components
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -21,7 +21,7 @@ fun TopBar(title: String, onExpandMenu: () -> Unit) {
         navigationIcon = {
             IconButton(onClick = onExpandMenu) {
                 Icon(
-                    imageVector = Icons.Default.Menu,
+                    imageVector = Icons.Rounded.Menu,
                     contentDescription = "Expand menu"
                 )
             }
