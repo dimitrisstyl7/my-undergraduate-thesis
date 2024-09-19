@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.ui.screens.dietPlans.components
+package gr.unipi.thesis.dimstyl.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope

@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.ui.screens.articles.view
+package gr.unipi.thesis.dimstyl.ui.screens.articles
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement

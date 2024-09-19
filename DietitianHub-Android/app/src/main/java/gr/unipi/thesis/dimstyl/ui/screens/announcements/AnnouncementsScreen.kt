@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.ui.screens.announcements.view
+package gr.unipi.thesis.dimstyl.ui.screens.announcements
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background

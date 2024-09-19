@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.ui.screens.profile.components
+package gr.unipi.thesis.dimstyl.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -12,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,7 +26,7 @@ import gr.unipi.thesis.dimstyl.ui.theme.LeftBarColor
 import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
 
 @Composable
-fun ProfileOutlinedTextField(
+fun OutlinedTextField(
     paddingValues: PaddingValues,
     label: String,
     placeholder: String,
@@ -46,7 +45,7 @@ fun ProfileOutlinedTextField(
     ),
     keyboardActions: KeyboardActions
 ) {
-    OutlinedTextField(
+    androidx.compose.material3.OutlinedTextField(
         modifier = Modifier
             .width(480.dp)
             .padding(paddingValues),
@@ -89,7 +88,7 @@ fun ProfileOutlinedTextField(
 }
 
 @Composable
-fun ProfileOutlinedTextField(
+fun OutlinedTextField(
     modifier: Modifier,
     label: String,
     placeholder: @Composable (() -> Unit)? = null,
@@ -97,7 +96,7 @@ fun ProfileOutlinedTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)
 ) {
-    OutlinedTextField(
+    androidx.compose.material3.OutlinedTextField(
         modifier = modifier,
         label = { Text(label) },
         placeholder = placeholder,

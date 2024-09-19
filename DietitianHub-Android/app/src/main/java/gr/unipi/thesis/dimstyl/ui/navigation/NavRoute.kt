@@ -6,9 +6,9 @@ enum class NavRoute {
 
     HOME,
     PROFILE,
-    APPOINTMENTS, NEW_APPOINTMENT,
-    ARTICLES, ARTICLE_DETAILS,
-    ANNOUNCEMENTS, ANNOUNCEMENT_DETAILS,
+    APPOINTMENTS,
+    ARTICLES,
+    ANNOUNCEMENTS,
     DIET_PLANS,
     LOGOUT;
 
@@ -17,11 +17,10 @@ enum class NavRoute {
             return when (route) {
                 HOME -> Home
                 PROFILE -> Profile
-                APPOINTMENTS -> Appointments()
-                NEW_APPOINTMENT -> Appointments(true)
-                ARTICLES, ARTICLE_DETAILS -> Articles(id)
-                ANNOUNCEMENTS, ANNOUNCEMENT_DETAILS -> Announcements(id)
-                DIET_PLANS -> DietPlans(id)
+                APPOINTMENTS -> Appointments
+                ARTICLES -> Articles
+                ANNOUNCEMENTS -> Announcements
+                DIET_PLANS -> DietPlans
                 LOGOUT -> Unit /* TODO: Navigate to login screen */
             }
         }
@@ -34,15 +33,15 @@ enum class NavRoute {
     object Profile
 
     @Serializable
-    data class Appointments(val create: Boolean = false)
+    object Appointments
 
     @Serializable
-    data class Articles(val id: Int?)
+    object Articles
 
     @Serializable
-    data class Announcements(val id: Int?)
+    object Announcements
 
     @Serializable
-    data class DietPlans(val id: Int?)
+    object DietPlans
 
 }

@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.ui.components
+package gr.unipi.thesis.dimstyl.ui.components.dialogs
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
