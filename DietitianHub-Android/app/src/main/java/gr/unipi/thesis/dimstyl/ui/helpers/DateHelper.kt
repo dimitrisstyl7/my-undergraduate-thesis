@@ -17,6 +17,15 @@ object PastSelectableDates : SelectableDates {
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+object FutureSelectableDates : SelectableDates {
+
+    override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+        return utcTimeMillis >= System.currentTimeMillis()
+    }
+
+}
+
 fun yearRange(inPast: Boolean): IntRange {
     return if (inPast) 1930..getCurrentYear()
     else getCurrentYear()..getCurrentYear() + 1
