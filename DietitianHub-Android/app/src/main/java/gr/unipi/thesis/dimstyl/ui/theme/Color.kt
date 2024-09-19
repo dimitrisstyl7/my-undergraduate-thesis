@@ -21,6 +21,7 @@ val WarningColor = Color(0xFFF4C654)
 val NeutralColor = Color.LightGray
 val BodyColor = Color(0xFFEBEFF2)
 val TextFieldInputColor = Color(0xFF6C747C)
+val DialogTextFieldInputColor = Color.White
 val CardContainerColor = Color.White
 
 val AnnouncementTitleColor = Color(0xFF343A40)
