@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import gr.unipi.thesis.dimstyl.ui.navigation.NavItem
 import gr.unipi.thesis.dimstyl.ui.navigation.NavRoute
-import gr.unipi.thesis.dimstyl.ui.theme.LogoutColor
+import gr.unipi.thesis.dimstyl.ui.theme.DangerColor
 import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
 
 @Composable
@@ -68,8 +68,8 @@ fun NavigationDrawerItem(
         onClick = onLogout,
         colors = NavigationDrawerItemDefaults.colors(
             selectedContainerColor = Color.Transparent,
-            unselectedIconColor = LogoutColor,
-            unselectedTextColor = LogoutColor
+            unselectedIconColor = DangerColor,
+            unselectedTextColor = DangerColor
         )
     )
 }
