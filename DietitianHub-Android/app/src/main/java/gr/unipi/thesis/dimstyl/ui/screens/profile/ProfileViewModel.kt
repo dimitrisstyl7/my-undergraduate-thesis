@@ -1,11 +1,9 @@
 package gr.unipi.thesis.dimstyl.ui.screens.profile
 
 import androidx.lifecycle.ViewModel
+import gr.unipi.thesis.dimstyl.ui.helpers.convertMillisToDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class ProfileViewModel : ViewModel() {
 
@@ -46,11 +44,6 @@ class ProfileViewModel : ViewModel() {
 
     fun showDatePicker(show: Boolean) {
         _state.value = _state.value.copy(showDatePicker = show)
-    }
-
-    private fun convertMillisToDate(millis: Long): String {
-        val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-        return formatter.format(Date(millis))
     }
 
 }
