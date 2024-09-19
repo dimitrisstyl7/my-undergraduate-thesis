@@ -14,15 +14,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import gr.unipi.thesis.dimstyl.ui.theme.InputTextColor
 import gr.unipi.thesis.dimstyl.ui.theme.LeftBarColor
+import gr.unipi.thesis.dimstyl.ui.theme.PrimaryColor
+import gr.unipi.thesis.dimstyl.ui.theme.TextFieldInputColor
 import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
 
 @Composable
@@ -32,10 +33,10 @@ fun OutlinedTextField(
     placeholder: String,
     value: String,
     isError: Boolean,
-    supportingText: @Composable (() -> Unit)?, // TODO: Remove nullable when validation is implemented
+    supportingText: @Composable (() -> Unit)?,
     onValueChange: (String) -> Unit,
     readOnly: Boolean,
-    leadingIcon: @Composable (() -> Unit)? = {},
+    leadingIcon: @Composable (() -> Unit) = {},
     trailingIconVisible: Boolean,
     onTrailingIconClick: () -> Unit,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
@@ -53,11 +54,11 @@ fun OutlinedTextField(
         placeholder = { Text(placeholder) },
         value = value,
         isError = isError,
-        supportingText = supportingText,
+        supportingText = supportingText?.let { { it() } },
         onValueChange = onValueChange,
         singleLine = true,
         readOnly = readOnly,
-        leadingIcon = leadingIcon,
+        leadingIcon = { leadingIcon() },
         trailingIcon = {
             AnimatedVisibility(
                 visible = trailingIconVisible,
@@ -72,9 +73,9 @@ fun OutlinedTextField(
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         colors = OutlinedTextFieldDefaults.colors(
-            focusedTextColor = InputTextColor,
-            unfocusedTextColor = InputTextColor,
-            cursorColor = Color.Black,
+            focusedTextColor = TextFieldInputColor,
+            unfocusedTextColor = TextFieldInputColor,
+            cursorColor = PrimaryColor,
             focusedBorderColor = TopBarColor,
             unfocusedBorderColor = LeftBarColor,
             focusedLeadingIconColor = TopBarColor,
@@ -82,42 +83,32 @@ fun OutlinedTextField(
             focusedTrailingIconColor = TopBarColor,
             unfocusedTrailingIconColor = LeftBarColor,
             focusedLabelColor = TopBarColor,
-            unfocusedLabelColor = LeftBarColor
+            unfocusedLabelColor = LeftBarColor,
+            focusedPlaceholderColor = TopBarColor
         )
     )
 }
 
 @Composable
 fun OutlinedTextField(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     label: String,
     placeholder: @Composable (() -> Unit)? = null,
     value: String,
     leadingIcon: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)
+    trailingIcon: @Composable (() -> Unit),
+    colors: TextFieldColors
 ) {
     androidx.compose.material3.OutlinedTextField(
         modifier = modifier,
         label = { Text(label) },
-        placeholder = placeholder,
+        placeholder = placeholder?.let { { it() } },
         value = value,
         onValueChange = {},
         singleLine = true,
         readOnly = true,
-        leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon,
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedTextColor = InputTextColor,
-            unfocusedTextColor = InputTextColor,
-            cursorColor = Color.Black,
-            focusedBorderColor = TopBarColor,
-            unfocusedBorderColor = LeftBarColor,
-            focusedLeadingIconColor = TopBarColor,
-            unfocusedLeadingIconColor = LeftBarColor,
-            focusedTrailingIconColor = TopBarColor,
-            unfocusedTrailingIconColor = LeftBarColor,
-            focusedLabelColor = TopBarColor,
-            unfocusedLabelColor = LeftBarColor
-        )
+        leadingIcon = leadingIcon?.let { { it() } },
+        trailingIcon = { trailingIcon() },
+        colors = colors
     )
 }
