@@ -1,6 +1,8 @@
 package gr.unipi.thesis.dimstyl.ui.screens.profile
 
 import androidx.lifecycle.ViewModel
+import gr.unipi.thesis.dimstyl.data.model.Gender
+import gr.unipi.thesis.dimstyl.data.model.ProfileData
 import gr.unipi.thesis.dimstyl.ui.helpers.convertMillisToDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,28 +12,55 @@ class ProfileViewModel : ViewModel() {
     private val _state = MutableStateFlow(ProfileState())
     val state: StateFlow<ProfileState> = _state
 
+    init {
+        fetchProfileData()
+    }
+
+    private fun fetchProfileData() {
+        _state.value = ProfileState(isLoading = true)
+
+        // TODO: Fetch appointments from the server
+        val profileData = ProfileData(
+            firstName = "John",
+            lastName = "Doe",
+            email = "johDoe@email.com",
+            phone = "1234567890",
+            gender = Gender.MALE,
+            dateOfBirth = "28/01/1990"
+        )
+
+        _state.value = ProfileState(profileData = profileData, isLoading = false)
+    }
+
     fun setFirstName(firstName: String) {
-        _state.value = _state.value.copy(firstName = firstName)
+        val profileData = _state.value.profileData?.copy(firstName = firstName)
+        _state.value = _state.value.copy(profileData = profileData)
     }
 
     fun setLastName(lastName: String) {
-        _state.value = _state.value.copy(lastName = lastName)
+        val profileData = _state.value.profileData?.copy(lastName = lastName)
+        _state.value = _state.value.copy(profileData = profileData)
     }
 
     fun setEmail(email: String) {
-        _state.value = _state.value.copy(email = email)
+        val profileData = _state.value.profileData?.copy(email = email)
+        _state.value = _state.value.copy(profileData = profileData)
     }
 
     fun setPhone(phone: String) {
-        _state.value = _state.value.copy(phone = phone)
+        val profileData = _state.value.profileData?.copy(phone = phone)
+        _state.value = _state.value.copy(profileData = profileData)
     }
 
     fun setDateOfBirth(date: Long?) {
-        if (date != null) _state.value = _state.value.copy(dateOfBirth = convertMillisToDate(date))
+        if (date == null) return
+        val profileData = _state.value.profileData?.copy(dateOfBirth = convertMillisToDate(date))
+        _state.value = _state.value.copy(profileData = profileData)
     }
 
     fun setGender(gender: Gender) {
-        _state.value = _state.value.copy(gender = gender)
+        val profileData = _state.value.profileData?.copy(gender = gender)
+        _state.value = _state.value.copy(profileData = profileData)
     }
 
     fun setDropDownExpanded(expanded: Boolean) {
@@ -42,8 +71,8 @@ class ProfileViewModel : ViewModel() {
         _state.value = _state.value.copy(inEditMode = editMode)
     }
 
-    fun showDatePicker(show: Boolean) {
-        _state.value = _state.value.copy(showDatePicker = show)
+    fun showDatePickerDialog(show: Boolean) {
+        _state.value = _state.value.copy(showDatePickerDialog = show)
     }
 
 }
