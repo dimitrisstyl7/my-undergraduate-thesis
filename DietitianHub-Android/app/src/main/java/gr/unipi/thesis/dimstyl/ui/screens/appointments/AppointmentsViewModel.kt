@@ -5,12 +5,12 @@ import gr.unipi.thesis.dimstyl.data.model.Appointment
 import gr.unipi.thesis.dimstyl.ui.helpers.convertMillisToDate
 import gr.unipi.thesis.dimstyl.ui.helpers.getTimeIn12Hour
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class AppointmentsViewModel : ViewModel() {
 
     private val _state = MutableStateFlow(AppointmentsState())
-    val state: StateFlow<AppointmentsState> = _state
+    val state = _state.asStateFlow()
 
     init {
         fetchAppointments()

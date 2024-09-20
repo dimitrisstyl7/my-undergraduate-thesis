@@ -7,12 +7,12 @@ import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementsFirstSectionBackgroundColor
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementsSecondSectionBackgroundColor
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementsThirdSectionBackgroundColor
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class AnnouncementsViewModel : ViewModel() {
 
     private val _state = MutableStateFlow(AnnouncementsState())
-    val state: StateFlow<AnnouncementsState> = _state
+    val state = _state.asStateFlow()
 
     init {
         fetchAnnouncements()

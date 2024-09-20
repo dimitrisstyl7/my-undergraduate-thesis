@@ -5,12 +5,12 @@ import gr.unipi.thesis.dimstyl.data.model.Gender
 import gr.unipi.thesis.dimstyl.data.model.ProfileData
 import gr.unipi.thesis.dimstyl.ui.helpers.convertMillisToDate
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class ProfileViewModel : ViewModel() {
 
     private val _state = MutableStateFlow(ProfileState())
-    val state: StateFlow<ProfileState> = _state
+    val state = _state.asStateFlow()
 
     init {
         fetchProfileData()

@@ -3,12 +3,12 @@ package gr.unipi.thesis.dimstyl.ui.screens.articles
 import androidx.lifecycle.ViewModel
 import gr.unipi.thesis.dimstyl.data.model.Article
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class ArticlesViewModel : ViewModel() {
 
     private val _state = MutableStateFlow(ArticlesState())
-    val state: StateFlow<ArticlesState> = _state
+    val state = _state.asStateFlow()
 
     init {
         fetchArticles()

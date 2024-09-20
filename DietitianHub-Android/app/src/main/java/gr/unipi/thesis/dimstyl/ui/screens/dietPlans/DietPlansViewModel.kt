@@ -3,12 +3,12 @@ package gr.unipi.thesis.dimstyl.ui.screens.dietPlans
 import androidx.lifecycle.ViewModel
 import gr.unipi.thesis.dimstyl.data.model.DietPlan
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class DietPlansViewModel : ViewModel() {
 
     private val _state = MutableStateFlow(DietPlansState())
-    val state: StateFlow<DietPlansState> = _state
+    val state = _state.asStateFlow()
 
     init {
         fetchDietPlans()
