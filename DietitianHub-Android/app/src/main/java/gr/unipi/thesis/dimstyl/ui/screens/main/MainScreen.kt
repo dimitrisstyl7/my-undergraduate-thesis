@@ -8,10 +8,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import gr.unipi.thesis.dimstyl.ui.components.BottomBar
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreen(navController: NavController = rememberNavController(), viewModel: MainViewModel) {
     val scope = rememberCoroutineScope()
-    val mainState by viewModel.state.collectAsState()
+    val mainState by viewModel.state.collectAsStateWithLifecycle()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
     ModalNavigationDrawer(

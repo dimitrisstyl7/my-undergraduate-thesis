@@ -30,7 +30,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +43,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import gr.unipi.thesis.dimstyl.R
 import gr.unipi.thesis.dimstyl.data.model.Gender
@@ -66,7 +66,7 @@ import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
     val focusManager = LocalFocusManager.current
-    val profileState by viewModel.state.collectAsState()
+    val profileState by viewModel.state.collectAsStateWithLifecycle()
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = profileState.dateOfBirthMillis,
         yearRange = yearRange(inPast = true),

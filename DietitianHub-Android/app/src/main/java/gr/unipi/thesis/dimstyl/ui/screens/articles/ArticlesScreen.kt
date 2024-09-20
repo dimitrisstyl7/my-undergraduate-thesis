@@ -7,11 +7,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import gr.unipi.thesis.dimstyl.ui.components.Card
 import gr.unipi.thesis.dimstyl.ui.components.CircularProgressIndicator
@@ -23,7 +23,7 @@ import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
 
 @Composable
 fun ArticlesScreen(viewModel: ArticlesViewModel = viewModel()) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     if (state.isLoading) {
         CircularProgressIndicator()

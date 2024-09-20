@@ -23,7 +23,6 @@ import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import gr.unipi.thesis.dimstyl.R
 import gr.unipi.thesis.dimstyl.ui.components.CircularProgressIndicator
@@ -61,7 +61,7 @@ import gr.unipi.thesis.dimstyl.ui.theme.WarningColor
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AppointmentsScreen(viewModel: AppointmentsViewModel = viewModel()) {
-    val appointmentsState by viewModel.state.collectAsState()
+    val appointmentsState by viewModel.state.collectAsStateWithLifecycle()
     val timePickerState =
         rememberTimePickerState(initialHour = 12, initialMinute = 0, is24Hour = false)
     val datePickerState = rememberDatePickerState(
