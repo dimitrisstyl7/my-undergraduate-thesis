@@ -8,6 +8,7 @@ drop table if exists client_tag_association;
 drop table if exists tag;
 drop table if exists tag_category;
 drop table if exists user_info;
+drop type if exists gender_enum;
 drop table if exists "user";
 drop type if exists role_enum;
 
@@ -22,13 +23,15 @@ create table "user"
     role     role_enum    not null
 );
 
+create type gender_enum as enum ('MALE', 'FEMALE');
+
 create table user_info
 (
     id            serial      not null unique primary key,
     user_id       int         not null unique references "user" (id),
     first_name    varchar(50) not null,
     last_name     varchar(50) not null,
-    gender        char(1)     not null, -- M (Male), F (Female)
+    gender        gender_enum not null,
     date_of_birth date        not null,
     created_at    timestamp   not null default now(),
     email         varchar(50) not null,

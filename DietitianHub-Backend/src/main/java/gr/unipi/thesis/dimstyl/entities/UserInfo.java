@@ -1,9 +1,12 @@
 package gr.unipi.thesis.dimstyl.entities;
 
+import gr.unipi.thesis.dimstyl.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcType;
 import org.hibernate.annotations.SourceType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,8 +36,10 @@ public class UserInfo {
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
-    @Column(name = "gender", nullable = false)
-    private char gender;
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    @Column(name = "gender", nullable = false, columnDefinition = "gender_enum")
+    private Gender gender;
 
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;

@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = GenderValidator.class)
 public @interface GenderConstraint {
 
-    String message() default "Acceptable gender values are 'M' or 'F'";
+    String message() default "Acceptable gender values are 'MALE' or 'FEMALE'";
 
     Class<?>[] groups() default {};
 

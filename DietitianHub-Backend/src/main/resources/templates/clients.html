@@ -61,12 +61,12 @@
                             <div class="form-check mb-1">
                                 <label>Male
                                     <input type="radio" id="male-radio-button" name="gender"
-                                           class="form-check-input" value="M" th:field="*{gender}">
+                                           class="form-check-input" value="MALE" th:field="*{gender}">
                                 </label>
                             </div>
                             <div class="form-check form-check-pink">
                                 <label>Female
-                                    <input type="radio" id="female-radio-button" name="gender" value="F"
+                                    <input type="radio" id="female-radio-button" name="gender" value="FEMALE"
                                            th:field="*{gender}" class="form-check-input">
                                 </label><br>
                             </div>
@@ -218,7 +218,7 @@
                         </div>
                     </div>
                     <div>
-                        <img th:src="${c.gender.toString() == 'F'} ? ${femaleImg} : ${maleImg}"
+                        <img th:src="${c.gender.toString() == 'FEMALE'} ? ${femaleImg} : ${maleImg}"
                              class="rounded-circle avatar-xl img-thumbnail mb-2" alt="profile-image">
 
                         <div class="text-start">
@@ -272,8 +272,8 @@
             document.getElementById("date-of-birth").value = [[${editedClient.dateOfBirth}]];
             document.getElementById("email").value = [[${editedClient.email}]];
             document.getElementById("phone").value = [[${editedClient.phone}]];
-            document.getElementById("male-radio-button").checked = [[${editedClient.gender}]] === 'M';
-            document.getElementById("female-radio-button").checked = [[${editedClient.gender}]] === 'F';
+            document.getElementById("male-radio-button").checked = [[${editedClient.gender}]] === 'MALE';
+            document.getElementById("female-radio-button").checked = [[${editedClient.gender}]] === 'FEMALE';
         }
     </script>
 
@@ -328,8 +328,8 @@
             document.getElementById("date-of-birth").value = dateOfBirth;
             document.getElementById("email").value = email;
             document.getElementById("phone").value = phone;
-            document.getElementById("male-radio-button").checked = gender === 'M';
-            document.getElementById("female-radio-button").checked = gender === 'F';
+            document.getElementById("male-radio-button").checked = gender === 'MALE';
+            document.getElementById("female-radio-button").checked = gender === 'FEMALE';
         }
 
         // Function that fills the delete modal with the client's name and sets up the deletion confirmation.

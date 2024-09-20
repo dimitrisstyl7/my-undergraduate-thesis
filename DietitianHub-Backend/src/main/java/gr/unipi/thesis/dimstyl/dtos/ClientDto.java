@@ -2,6 +2,7 @@ package gr.unipi.thesis.dimstyl.dtos;
 
 import gr.unipi.thesis.dimstyl.entities.User;
 import gr.unipi.thesis.dimstyl.entities.UserInfo;
+import gr.unipi.thesis.dimstyl.enums.Gender;
 import gr.unipi.thesis.dimstyl.enums.UserRole;
 import gr.unipi.thesis.dimstyl.utilities.DateTimeUtil;
 import gr.unipi.thesis.dimstyl.utilities.RegistrationUtil;
@@ -31,7 +32,7 @@ public class ClientDto {
     private String lastName;
 
     @GenderConstraint(message = "Gender is required")
-    private char gender;
+    private Gender gender;
 
     @NotNull(message = "Date of birth is required")
     @Past(message = "Date of birth must be in the past")
