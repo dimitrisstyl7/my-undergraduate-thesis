@@ -13,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.rememberNavController
 import gr.unipi.thesis.dimstyl.ui.components.BottomBar
 import gr.unipi.thesis.dimstyl.ui.components.TopBar
@@ -29,6 +30,15 @@ fun MainScreen(navController: NavController = rememberNavController(), viewModel
     val scope = rememberCoroutineScope()
     val mainState by viewModel.state.collectAsStateWithLifecycle()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
+    navController.addOnDestinationChangedListener { _, destination, _ ->
+        navRoutes.forEach {
+            if (destination.hasRoute((it.getRoute()::class))) {
+                viewModel.setCurrentNavRoute(it)
+                viewModel.setTopBarTitle(it.toString())
+            }
+        }
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
