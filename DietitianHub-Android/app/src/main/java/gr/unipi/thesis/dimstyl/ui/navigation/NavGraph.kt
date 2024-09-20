@@ -19,19 +19,19 @@ import gr.unipi.thesis.dimstyl.ui.screens.profile.ProfileScreen
 fun AppNavHost(navController: NavController, innerPadding: PaddingValues) {
     NavHost(
         navController = navController as NavHostController,
-        startDestination = NavRoute.Home,
+        startDestination = Home,
         modifier = Modifier.padding(innerPadding)
     ) {
-        composable<NavRoute.Home> { HomeScreen() }
+        composable<Home> { HomeScreen() }
 
-        composable<NavRoute.Profile> { ProfileScreen() }
+        composable<Profile> { ProfileScreen() }
 
-        composable<NavRoute.Appointments> { AppointmentsScreen() }
+        composable<Appointments> { AppointmentsScreen() }
 
-        composable<NavRoute.Articles> { ArticlesScreen() }
+        composable<Articles> { ArticlesScreen() }
 
-        composable<NavRoute.Announcements> { AnnouncementsScreen() }
+        composable<Announcements> { AnnouncementsScreen() }
 
-        composable<NavRoute.DietPlans> { DietPlansScreen() }
+        composable<DietPlans> { DietPlansScreen() }
     }
 }

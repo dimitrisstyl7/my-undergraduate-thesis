@@ -19,7 +19,7 @@ import gr.unipi.thesis.dimstyl.ui.components.TopBar
 import gr.unipi.thesis.dimstyl.ui.components.dialogs.AlertDialog
 import gr.unipi.thesis.dimstyl.ui.components.modalDrawerSheet.ModalDrawerSheet
 import gr.unipi.thesis.dimstyl.ui.navigation.AppNavHost
-import gr.unipi.thesis.dimstyl.ui.navigation.NavRoute
+import gr.unipi.thesis.dimstyl.ui.navigation.navRoutes
 import gr.unipi.thesis.dimstyl.ui.theme.BodyColor
 import gr.unipi.thesis.dimstyl.ui.theme.DangerColor
 import kotlinx.coroutines.launch
@@ -38,7 +38,7 @@ fun MainScreen(navController: NavController = rememberNavController(), viewModel
                 onNavigate = { route, title ->
                     viewModel.setCurrentNavRoute(route)
                     viewModel.setTopBarTitle(title)
-                    navController.navigate(NavRoute.getRoute(route))
+                    navController.navigate(route.getRoute())
                     scope.launch { drawerState.close() }
                 },
                 onLogout = { viewModel.showLogoutDialog(true) }
@@ -53,7 +53,7 @@ fun MainScreen(navController: NavController = rememberNavController(), viewModel
                 BottomBar(mainState.currentNavRoute) { route, title ->
                     viewModel.setCurrentNavRoute(route)
                     viewModel.setTopBarTitle(title)
-                    navController.navigate(NavRoute.getRoute(route))
+                    navController.navigate(route.getRoute())
                 }
             },
             containerColor = BodyColor

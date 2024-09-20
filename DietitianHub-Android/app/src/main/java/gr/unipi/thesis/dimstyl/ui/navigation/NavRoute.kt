@@ -12,36 +12,44 @@ enum class NavRoute {
     DIET_PLANS,
     LOGOUT;
 
-    companion object {
-        fun getRoute(route: NavRoute, id: Int? = null): Any {
-            return when (route) {
-                HOME -> Home
-                PROFILE -> Profile
-                APPOINTMENTS -> Appointments
-                ARTICLES -> Articles
-                ANNOUNCEMENTS -> Announcements
-                DIET_PLANS -> DietPlans
-                LOGOUT -> Unit /* TODO: Navigate to login screen */
-            }
-        }
+    fun getRoute(): Any = when (this) {
+        HOME -> Home
+        PROFILE -> Profile
+        APPOINTMENTS -> Appointments
+        ARTICLES -> Articles
+        ANNOUNCEMENTS -> Announcements
+        DIET_PLANS -> DietPlans
+        LOGOUT -> Unit /* TODO: Navigate to login screen */
     }
 
-    @Serializable
-    object Home
-
-    @Serializable
-    object Profile
-
-    @Serializable
-    object Appointments
-
-    @Serializable
-    object Articles
-
-    @Serializable
-    object Announcements
-
-    @Serializable
-    object DietPlans
-
+    override fun toString(): String =
+        when (this) {
+            HOME -> "Home"
+            PROFILE -> "Profile"
+            APPOINTMENTS -> "Appointments"
+            ARTICLES -> "Articles"
+            ANNOUNCEMENTS -> "Announcements"
+            DIET_PLANS -> "Diet Plans"
+            LOGOUT -> "Logout"
+        }
 }
+
+@Serializable
+object Home
+
+@Serializable
+object Profile
+
+@Serializable
+object Appointments
+
+@Serializable
+object Articles
+
+@Serializable
+object Announcements
+
+@Serializable
+object DietPlans
+
+val navRoutes = NavRoute.entries.toList()

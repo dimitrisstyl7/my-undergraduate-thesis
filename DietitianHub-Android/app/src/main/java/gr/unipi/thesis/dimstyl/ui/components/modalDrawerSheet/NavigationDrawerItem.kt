@@ -30,11 +30,11 @@ fun NavigationDrawerItem(
         icon = {
             Icon(
                 imageVector = item.getIcon(),
-                contentDescription = item.iconDescription
+                contentDescription = item.navLabel
             )
         },
         selected = selected,
-        onClick = { onNavigate(item.route, item.topBarTitle) },
+        onClick = { onNavigate(item.route, item.navLabel) },
         colors = NavigationDrawerItemDefaults.colors(
             selectedIconColor = TopBarColor,
             selectedTextColor = TopBarColor,
@@ -61,7 +61,7 @@ fun NavigationDrawerItem(
         icon = {
             Icon(
                 imageVector = item.getIcon(),
-                contentDescription = item.iconDescription
+                contentDescription = item.navLabel
             )
         },
         selected = selected,

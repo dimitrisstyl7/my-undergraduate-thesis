@@ -21,12 +21,12 @@ fun BottomBar(currentNavRoute: NavRoute, navigate: (NavRoute, String) -> Unit) {
                 icon = {
                     Icon(
                         imageVector = it.getIcon(),
-                        contentDescription = it.iconDescription
+                        contentDescription = it.navLabel
                     )
                 },
                 label = { Text(it.navLabel) },
                 selected = currentNavRoute == it.route,
-                onClick = { navigate(it.route, it.topBarTitle) },
+                onClick = { navigate(it.route, it.navLabel) },
                 colors = NavigationBarItemDefaults.colors(
                     unselectedIconColor = Color.White,
                     unselectedTextColor = Color.White,

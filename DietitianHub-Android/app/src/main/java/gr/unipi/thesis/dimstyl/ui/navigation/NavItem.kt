@@ -8,10 +8,8 @@ import androidx.compose.ui.res.vectorResource
 class NavItem(
     private val icon: ImageVector? = null,
     @DrawableRes private val iconRes: Int? = null,
-    val topBarTitle: String = "",
-    val navLabel: String,
-    val iconDescription: String,
-    val route: NavRoute
+    val route: NavRoute,
+    val navLabel: String = route.toString()
 ) {
 
     @Composable
