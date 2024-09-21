@@ -31,8 +31,13 @@ import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementTitleColor
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun AnnouncementsScreen(viewModel: AnnouncementsViewModel = viewModel()) {
+fun AnnouncementsScreen(
+    viewModel: AnnouncementsViewModel = viewModel(),
+    backHandler: @Composable () -> Unit
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    backHandler()
 
     if (state.isLoading) {
         CircularProgressIndicator()
@@ -102,5 +107,5 @@ fun AnnouncementsScreen(viewModel: AnnouncementsViewModel = viewModel()) {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun AnnouncementsScreenPreview() {
-    AnnouncementsScreen()
+    AnnouncementsScreen {}
 }

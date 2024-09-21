@@ -60,7 +60,10 @@ import gr.unipi.thesis.dimstyl.ui.theme.WarningColor
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun AppointmentsScreen(viewModel: AppointmentsViewModel = viewModel()) {
+fun AppointmentsScreen(
+    viewModel: AppointmentsViewModel = viewModel(),
+    backHandler: @Composable () -> Unit
+) {
     val appointmentsState by viewModel.state.collectAsStateWithLifecycle()
     val timePickerState =
         rememberTimePickerState(initialHour = 12, initialMinute = 0, is24Hour = false)
@@ -69,6 +72,7 @@ fun AppointmentsScreen(viewModel: AppointmentsViewModel = viewModel()) {
         selectableDates = FutureSelectableDates
     )
 
+    backHandler()
 
     if (appointmentsState.isLoading) {
         CircularProgressIndicator()
@@ -268,5 +272,5 @@ fun AppointmentsScreen(viewModel: AppointmentsViewModel = viewModel()) {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun AppointmentsScreenPreview() {
-    AppointmentsScreen()
+    AppointmentsScreen {}
 }

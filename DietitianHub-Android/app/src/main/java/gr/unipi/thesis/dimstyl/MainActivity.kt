@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
             DietitianHubTheme {
                 Surface(Modifier.fillMaxSize()) {
                     val mainViewModel: MainViewModel = viewModel()
-                    MainScreen(viewModel = mainViewModel)
+                    MainScreen(viewModel = mainViewModel, finish = { finish() })
                 }
             }
         }

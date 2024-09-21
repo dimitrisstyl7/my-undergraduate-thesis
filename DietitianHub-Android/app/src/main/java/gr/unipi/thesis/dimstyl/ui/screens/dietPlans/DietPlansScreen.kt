@@ -28,8 +28,13 @@ import gr.unipi.thesis.dimstyl.ui.theme.TableHeaderColor
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DietPlansScreen(viewModel: DietPlansViewModel = viewModel()) {
+fun DietPlansScreen(
+    viewModel: DietPlansViewModel = viewModel(),
+    backHandler: @Composable () -> Unit
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    backHandler()
 
     if (state.isLoading) {
         CircularProgressIndicator()
@@ -98,5 +103,5 @@ fun DietPlansScreen(viewModel: DietPlansViewModel = viewModel()) {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun DietPlansScreenPreview() {
-    DietPlansScreen()
+    DietPlansScreen {}
 }

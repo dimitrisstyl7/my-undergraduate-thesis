@@ -1,5 +1,6 @@
 package gr.unipi.thesis.dimstyl.ui.screens.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ExitToApp
 import androidx.compose.material3.DrawerValue
@@ -14,6 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import gr.unipi.thesis.dimstyl.ui.components.BottomBar
 import gr.unipi.thesis.dimstyl.ui.components.TopBar
@@ -26,19 +28,36 @@ import gr.unipi.thesis.dimstyl.ui.theme.DangerColor
 import kotlinx.coroutines.launch
 
 @Composable
-fun MainScreen(navController: NavController = rememberNavController(), viewModel: MainViewModel) {
+fun MainScreen(
+    navController: NavController = rememberNavController(),
+    viewModel: MainViewModel,
+    finish: () -> Unit
+) {
     val scope = rememberCoroutineScope()
     val mainState by viewModel.state.collectAsStateWithLifecycle()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val entry by navController.currentBackStackEntryAsState()
 
-    navController.addOnDestinationChangedListener { _, destination, _ ->
-        navRoutes.forEach {
-            if (destination.hasRoute((it.getRoute()::class))) {
-                viewModel.setCurrentNavRoute(it)
-                viewModel.setTopBarTitle(it.toString())
+    val backHandler = @Composable {
+        BackHandler {
+            when {
+                drawerState.isOpen -> scope.launch { drawerState.close() }
+                navController.navigateUp() -> {
+                    scope.launch {
+                        navRoutes.forEach {
+                            if (entry?.destination?.hasRoute((it.getRoute()::class)) == true) {
+                                viewModel.setCurrentNavRoute(it)
+                                viewModel.setTopBarTitle(it.toString())
+                            }
+                        }
+                    }
+                }
+
+                else -> finish()
             }
         }
     }
+    backHandler()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -68,7 +87,7 @@ fun MainScreen(navController: NavController = rememberNavController(), viewModel
             },
             containerColor = BodyColor
         ) { innerPadding ->
-            AppNavHost(navController, innerPadding)
+            AppNavHost(navController, backHandler, innerPadding)
 
             if (mainState.showLogoutDialog) {
                 AlertDialog(

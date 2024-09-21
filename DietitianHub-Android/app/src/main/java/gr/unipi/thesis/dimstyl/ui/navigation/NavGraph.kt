@@ -16,22 +16,26 @@ import gr.unipi.thesis.dimstyl.ui.screens.home.HomeScreen
 import gr.unipi.thesis.dimstyl.ui.screens.profile.ProfileScreen
 
 @Composable
-fun AppNavHost(navController: NavController, innerPadding: PaddingValues) {
+fun AppNavHost(
+    navController: NavController,
+    backHandler: @Composable () -> Unit,
+    innerPadding: PaddingValues
+) {
     NavHost(
         navController = navController as NavHostController,
         startDestination = Home,
         modifier = Modifier.padding(innerPadding)
     ) {
-        composable<Home> { HomeScreen() }
+        composable<Home> { HomeScreen(backHandler = backHandler) }
 
-        composable<Profile> { ProfileScreen() }
+        composable<Profile> { ProfileScreen(backHandler = backHandler) }
 
-        composable<Appointments> { AppointmentsScreen() }
+        composable<Appointments> { AppointmentsScreen(backHandler = backHandler) }
 
-        composable<Articles> { ArticlesScreen() }
+        composable<Articles> { ArticlesScreen(backHandler = backHandler) }
 
-        composable<Announcements> { AnnouncementsScreen() }
+        composable<Announcements> { AnnouncementsScreen(backHandler = backHandler) }
 
-        composable<DietPlans> { DietPlansScreen() }
+        composable<DietPlans> { DietPlansScreen(backHandler = backHandler) }
     }
 }

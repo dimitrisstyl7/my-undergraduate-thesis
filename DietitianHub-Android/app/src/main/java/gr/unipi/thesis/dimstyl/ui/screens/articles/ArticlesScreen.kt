@@ -22,8 +22,13 @@ import gr.unipi.thesis.dimstyl.ui.theme.LeftBarColor
 import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
 
 @Composable
-fun ArticlesScreen(viewModel: ArticlesViewModel = viewModel()) {
+fun ArticlesScreen(
+    viewModel: ArticlesViewModel = viewModel(),
+    backHandler: @Composable () -> Unit
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    backHandler()
 
     if (state.isLoading) {
         CircularProgressIndicator()
@@ -53,5 +58,5 @@ fun ArticlesScreen(viewModel: ArticlesViewModel = viewModel()) {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun ArticlesScreenPreview() {
-    ArticlesScreen()
+    ArticlesScreen {}
 }
