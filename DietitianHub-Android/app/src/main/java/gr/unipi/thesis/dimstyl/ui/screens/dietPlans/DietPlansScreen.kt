@@ -1,12 +1,7 @@
 package gr.unipi.thesis.dimstyl.ui.screens.dietPlans
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,15 +13,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import gr.unipi.thesis.dimstyl.R
 import gr.unipi.thesis.dimstyl.ui.components.CircularProgressIndicator
-import gr.unipi.thesis.dimstyl.ui.components.IconTableCell
-import gr.unipi.thesis.dimstyl.ui.components.TableCell
-import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
+import gr.unipi.thesis.dimstyl.ui.components.table.CellData
+import gr.unipi.thesis.dimstyl.ui.components.table.IconCellData
+import gr.unipi.thesis.dimstyl.ui.components.table.Table
+import gr.unipi.thesis.dimstyl.ui.components.table.TextCellData
 import gr.unipi.thesis.dimstyl.ui.theme.BodyColor
 import gr.unipi.thesis.dimstyl.ui.theme.LeftBarColor
 import gr.unipi.thesis.dimstyl.ui.theme.PrimaryColor
 import gr.unipi.thesis.dimstyl.ui.theme.TableHeaderColor
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DietPlansScreen(
     viewModel: DietPlansViewModel = viewModel(),
@@ -39,64 +34,58 @@ fun DietPlansScreen(
     if (state.isLoading) {
         CircularProgressIndicator()
     } else {
-        LazyColumn(
-            Modifier
-                .fillMaxSize()
-                .background(BodyColor)
-        ) {
-            stickyHeader(contentType = ContentType.DIET_PLANS_TABLE_HEADER) {
-                Row {
-                    TableCell(
-                        weight = 0.2f,
-                        text = "#",
-                        fontWeight = FontWeight.Bold,
-                        textColor = TableHeaderColor,
-                        cellColor = LeftBarColor
-                    )
-
-                    TableCell(
-                        weight = 0.5f,
-                        text = "Created On",
-                        fontWeight = FontWeight.Bold,
-                        textColor = TableHeaderColor,
-                        cellColor = LeftBarColor
-                    )
-
-                    TableCell(
-                        weight = 0.3f,
-                        text = "Actions",
-                        fontWeight = FontWeight.Bold,
-                        textColor = TableHeaderColor,
-                        cellColor = LeftBarColor
-                    )
-                }
-            }
-
-            itemsIndexed(
-                items = state.dietPlans,
-                contentType = { _, _ -> ContentType.DIET_PLANS_TABLE_BODY }) { index, dietPlan ->
-                Row {
-                    TableCell(
-                        weight = 0.2f,
-                        text = (index + 1).toString(),
-                        fontWeight = FontWeight.Bold
-                    )
-                    TableCell(weight = 0.5f, text = dietPlan.createdOn)
-                    IconTableCell(
-                        weight = 0.3f,
-                        buttonColor = PrimaryColor,
-                        icon = {
-                            Icon(
-                                painter = painterResource(R.drawable.baseline_download_24),
-                                contentDescription = "Download the diet plan created on ${dietPlan.createdOn}"
-                            )
-                        },
-                        onClick = { /* TODO: Download the diet plan */ }
-                    )
-                }
-                HorizontalDivider()
-            }
+        val headerCells = listOf(
+            TextCellData(
+                weight = 0.2f,
+                text = "#",
+                fontWeight = FontWeight.Bold,
+                textColor = TableHeaderColor,
+                cellColor = LeftBarColor
+            ),
+            TextCellData(
+                weight = 0.5f,
+                text = "Created On",
+                fontWeight = FontWeight.Bold,
+                textColor = TableHeaderColor,
+                cellColor = LeftBarColor
+            ),
+            TextCellData(
+                weight = 0.3f,
+                text = "Actions",
+                fontWeight = FontWeight.Bold,
+                textColor = TableHeaderColor,
+                cellColor = LeftBarColor
+            )
+        )
+        val tableRows: List<List<CellData>> = state.dietPlans.mapIndexed { index, dietPlan ->
+            listOf(
+                TextCellData(
+                    weight = 0.2f,
+                    text = (index + 1).toString(),
+                    fontWeight = FontWeight.Bold
+                ),
+                TextCellData(weight = 0.5f, text = dietPlan.createdOn),
+                IconCellData(
+                    weight = 0.3f,
+                    icon = {
+                        Icon(
+                            painter = painterResource(R.drawable.baseline_download_24),
+                            contentDescription = "Download the diet plan created on ${dietPlan.createdOn}"
+                        )
+                    },
+                    buttonColor = PrimaryColor,
+                    onClick = { /* TODO: Download the diet plan */ }
+                )
+            )
         }
+
+        Table(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(BodyColor),
+            headerCells = headerCells,
+            tableRows = tableRows
+        )
     }
 }
 

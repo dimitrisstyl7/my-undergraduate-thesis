@@ -1,20 +1,15 @@
 package gr.unipi.thesis.dimstyl.ui.screens.appointments
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -38,13 +33,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import gr.unipi.thesis.dimstyl.R
 import gr.unipi.thesis.dimstyl.ui.components.CircularProgressIndicator
-import gr.unipi.thesis.dimstyl.ui.components.IconTableCell
 import gr.unipi.thesis.dimstyl.ui.components.OutlinedTextField
-import gr.unipi.thesis.dimstyl.ui.components.TableCell
 import gr.unipi.thesis.dimstyl.ui.components.dialogs.AlertDialog
 import gr.unipi.thesis.dimstyl.ui.components.dialogs.DatePickerDialog
 import gr.unipi.thesis.dimstyl.ui.components.dialogs.TimePickerDialog
-import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
+import gr.unipi.thesis.dimstyl.ui.components.table.CellData
+import gr.unipi.thesis.dimstyl.ui.components.table.IconCellData
+import gr.unipi.thesis.dimstyl.ui.components.table.Table
+import gr.unipi.thesis.dimstyl.ui.components.table.TextCellData
 import gr.unipi.thesis.dimstyl.ui.helpers.FutureSelectableDates
 import gr.unipi.thesis.dimstyl.ui.helpers.yearRange
 import gr.unipi.thesis.dimstyl.ui.screens.appointments.components.FloatingActionButton
@@ -58,7 +54,7 @@ import gr.unipi.thesis.dimstyl.ui.theme.TableHeaderColor
 import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
 import gr.unipi.thesis.dimstyl.ui.theme.WarningColor
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppointmentsScreen(
     viewModel: AppointmentsViewModel = viewModel(),
@@ -82,60 +78,57 @@ fun AppointmentsScreen(
                 .fillMaxSize()
                 .background(BodyColor)
         ) {
-            LazyColumn(Modifier.fillMaxSize()) {
-                stickyHeader(contentType = ContentType.APPOINTMENTS_TABLE_HEADER) {
-                    Row {
-                        TableCell(
-                            weight = 0.2f,
-                            text = "#",
-                            fontWeight = FontWeight.Bold,
-                            textColor = TableHeaderColor,
-                            cellColor = LeftBarColor
-                        )
-
-                        TableCell(
-                            weight = 0.5f,
-                            text = "Scheduled At",
-                            fontWeight = FontWeight.Bold,
-                            textColor = TableHeaderColor,
-                            cellColor = LeftBarColor
-                        )
-
-                        TableCell(
-                            weight = 0.3f,
-                            text = "Actions",
-                            fontWeight = FontWeight.Bold,
-                            textColor = TableHeaderColor,
-                            cellColor = LeftBarColor
-                        )
-                    }
-                }
-
-                itemsIndexed(
-                    items = appointmentsState.appointments,
-                    contentType = { _, _ -> ContentType.APPOINTMENTS_TABLE_BODY }) { index, appointment ->
-                    Row {
-                        TableCell(
+            val headerCells = listOf(
+                TextCellData(
+                    weight = 0.2f,
+                    text = "#",
+                    fontWeight = FontWeight.Bold,
+                    textColor = TableHeaderColor,
+                    cellColor = LeftBarColor
+                ),
+                TextCellData(
+                    weight = 0.5f,
+                    text = "Scheduled At",
+                    fontWeight = FontWeight.Bold,
+                    textColor = TableHeaderColor,
+                    cellColor = LeftBarColor
+                ),
+                TextCellData(
+                    weight = 0.3f,
+                    text = "Actions",
+                    fontWeight = FontWeight.Bold,
+                    textColor = TableHeaderColor,
+                    cellColor = LeftBarColor
+                )
+            )
+            val tableRows: List<List<CellData>> =
+                appointmentsState.appointments.mapIndexed { index, appointment ->
+                    listOf(
+                        TextCellData(
                             weight = 0.2f,
                             text = (index + 1).toString(),
                             fontWeight = FontWeight.Bold
-                        )
-                        TableCell(weight = 0.5f, text = appointment.createdAt)
-                        IconTableCell(
+                        ),
+                        TextCellData(weight = 0.5f, text = appointment.scheduledAt),
+                        IconCellData(
                             weight = 0.3f,
-                            buttonColor = DangerColor,
                             icon = {
                                 Icon(
                                     imageVector = Icons.Rounded.Clear,
-                                    contentDescription = "Cancel the appointment scheduled for ${appointment.createdAt}"
+                                    contentDescription = "Cancel the appointment scheduled for ${appointment.scheduledAt}"
                                 )
                             },
+                            buttonColor = DangerColor,
                             onClick = { viewModel.showCancelAppointmentDialog(true) }
                         )
-                    }
-                    HorizontalDivider()
+                    )
                 }
-            }
+
+            Table(
+                modifier = Modifier.fillMaxSize(),
+                headerCells = headerCells,
+                tableRows = tableRows
+            )
 
             FloatingActionButton(
                 modifier = Modifier
