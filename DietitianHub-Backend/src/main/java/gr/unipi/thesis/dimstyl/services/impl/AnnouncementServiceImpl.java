@@ -39,7 +39,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     }
 
     @Override
-    public List<AnnouncementDto> getFirst10EarlierAnnouncements() {
+    public List<AnnouncementDto> getLatest10AnnouncementsBeforeYesterday() {
         LocalDateTime dateTime = LocalDate.now().minusDays(1).atStartOfDay().minusSeconds(1);
         return announcementRepository
                 .findFirst10ByCreatedAtBeforeOrderByCreatedAtDesc(dateTime).stream()

@@ -10,7 +10,7 @@ public interface AnnouncementService {
 
     List<AnnouncementDto> getAnnouncementsForYesterday();
 
-    List<AnnouncementDto> getFirst10EarlierAnnouncements();
+    List<AnnouncementDto> getLatest10AnnouncementsBeforeYesterday();
 
     AnnouncementDto getAnnouncement(int id);
 

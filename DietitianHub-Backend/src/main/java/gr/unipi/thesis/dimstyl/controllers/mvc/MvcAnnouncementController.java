@@ -21,7 +21,7 @@ public class MvcAnnouncementController {
     public String announcementsPage(Model model) {
         List<AnnouncementDto> announcementsForToday = announcementService.getAnnouncementsForToday();
         List<AnnouncementDto> announcementsForYesterday = announcementService.getAnnouncementsForYesterday();
-        List<AnnouncementDto> earlierAnnouncements = announcementService.getFirst10EarlierAnnouncements();
+        List<AnnouncementDto> earlierAnnouncements = announcementService.getLatest10AnnouncementsBeforeYesterday();
         boolean noAnnouncements = announcementsForToday.isEmpty() &&
                                   announcementsForYesterday.isEmpty() &&
                                   earlierAnnouncements.isEmpty();
