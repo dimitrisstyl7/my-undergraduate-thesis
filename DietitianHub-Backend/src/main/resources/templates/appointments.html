@@ -212,7 +212,7 @@
                                 <input type="hidden" th:value="${appointment.id()}">
                                 <th scope="row" th:text="${iterStat.count}"></th>
                                 <td th:text="${appointment.clientFullName()}"></td>
-                                <td th:text="${appointment.formattedScheduledAt()}"></td>
+                                <td th:text="${appointment.formattedAppointmentDateTime()}"></td>
                                 <td>
                                     <th:block th:if="${appointment.start().isBefore(dateTimeNow)}">
                                         <button th:if="${appointment.status().toString().equals('SCHEDULED')}"
@@ -268,7 +268,7 @@
                                 <input type="hidden" th:value="${appointment.id()}">
                                 <th scope="row" th:text="${iterStat.count}"></th>
                                 <td th:text="${appointment.clientFullName()}"></td>
-                                <td th:text="${appointment.formattedScheduledAt()}"></td>
+                                <td th:text="${appointment.formattedAppointmentDateTime()}"></td>
                                 <td>
                                     <button th:id="${'approve-appointment-'+appointment.id()+'-button'}"
                                             type="button" class="btn btn-xs btn-primary waves-effect waves-light">

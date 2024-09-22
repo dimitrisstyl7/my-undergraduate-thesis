@@ -13,8 +13,8 @@ public class AppointmentStatusScheduler {
     private final AppointmentService appointmentService;
 
     @Scheduled(cron = "@midnight")
-    public void updatePastAppointmentsStatus() {
-        appointmentService.markPastAppointmentsAsCompleted(AppointmentStatus.SCHEDULED);
+    public void markScheduledAppointmentsBeforeNowAsCompleted() {
+        appointmentService.markAppointmentsWithStatusBeforeNowAsCompleted(AppointmentStatus.SCHEDULED);
     }
 
 }

@@ -20,7 +20,7 @@ public class DateTimeExistenceValidator implements ConstraintValidator<Unique, L
 
     @Override
     public boolean isValid(LocalDateTime localDateTime, ConstraintValidatorContext constraintValidatorContext) {
-        return !appointmentService.existsByScheduledAtAndStatus(localDateTime, AppointmentStatus.SCHEDULED);
+        return !appointmentService.existsByAppointmentDateTimeAndStatus(localDateTime, AppointmentStatus.SCHEDULED);
     }
 
 }

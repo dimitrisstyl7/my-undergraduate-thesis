@@ -94,10 +94,10 @@ create type appointment_status_enum as enum ('PENDING', 'SCHEDULED', 'COMPLETED'
 
 create table appointment
 (
-    id                  serial                  not null unique primary key,
-    client_user_info_id int                     not null references user_info (id),
-    title               varchar(100)            not null,
-    description         text,
-    scheduled_at        timestamp               not null,
-    status              appointment_status_enum not null
+    id                    serial                  not null unique primary key,
+    client_user_info_id   int                     not null references user_info (id),
+    title                 varchar(100)            not null,
+    description           text,
+    appointment_date_time timestamp               not null,
+    status                appointment_status_enum not null
 );

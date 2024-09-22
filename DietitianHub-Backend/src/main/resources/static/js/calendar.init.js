@@ -30,13 +30,13 @@ $(document).ready(function () {
             const event = info.event;
             const title = event.title;
             const description = event.extendedProps.description;
-            const formattedScheduledAt = event.extendedProps.formattedScheduledAt;
+            const formattedAppointmentDateTime = event.extendedProps.formattedAppointmentDateTime;
             const clientFullName = event.extendedProps.clientFullName;
 
             // Set form values.
             $("#edit-title").val(title);
             $("#edit-description").val(description);
-            $("#edit-datetime").val(formattedScheduledAt);
+            $("#edit-datetime").val(formattedAppointmentDateTime);
             $("#edit-client-fullname").val(clientFullName);
 
             // Attach click event handler for the save button.
@@ -44,7 +44,7 @@ $(document).ready(function () {
 
             if (event.start > new Date()) {
                 // If the appointment is in the future, allow the user to cancel it.
-                // Change the text of the cancel button to 'Cancel Appointment'.
+                // Set the text of the cancel button to 'Cancel Appointment'.
                 editCancelButton.text("Cancel Appointment");
 
                 // Change the cancel button color to danger.
@@ -60,14 +60,14 @@ $(document).ready(function () {
                 // Attach click event handler for the cancel button.
                 editCancelButton.off("click").on("click", () => {
                     // Set cancel modal title.
-                    cancelModalTitle.text(`${title} (${formattedScheduledAt})`);
+                    cancelModalTitle.text(`${title} (${formattedAppointmentDateTime})`);
                 });
 
                 // Attach click event handler for the confirm cancellation button.
                 confirmCancellationButton.off("click").on("click", () => cancelAppointment(event.id));
             } else if (event.start < new Date() && event.extendedProps.status === "SCHEDULED") {
                 // If the appointment is in the past, and the status is 'SCHEDULED', allow the user to mark it as completed.
-                // Change the text of the cancel button to 'Mark as Completed'.
+                // Set the text of the cancel button to 'Mark as Completed'.
                 editCancelButton.text("Mark as Completed");
 
                 // Change the cancel button color to green.
@@ -83,7 +83,7 @@ $(document).ready(function () {
                 // Attach click event handler for the cancel button (now used to mark the appointment as completed).
                 editCancelButton.off("click").on("click", () => completeAppointment(event.id));
             } else {
-                // Change the text of the cancel button to 'Completed'.
+                // Set the text of the cancel button to 'Completed'.
                 editCancelButton.text("Completed");
 
                 // Change the cancel button color to primary.

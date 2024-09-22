@@ -35,8 +35,8 @@ public class Appointment {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "scheduled_at", nullable = false)
-    private LocalDateTime scheduledAt;
+    @Column(name = "appointment_date_time", nullable = false)
+    private LocalDateTime appointmentDateTime;
 
     @Enumerated(EnumType.STRING)
     @JdbcType(PostgreSQLEnumJdbcType.class)
@@ -44,16 +44,16 @@ public class Appointment {
     private AppointmentStatus status;
 
     public AppointmentDto toDto() {
-        String formattedScheduledAt = DateTimeUtil.getFormattedDateTime(scheduledAt);
+        String formattedAppointmentDateTime = DateTimeUtil.getFormattedDateTime(appointmentDateTime);
         String clientFullName = clientUserInfo.getFullName();
         int clientId = clientUserInfo.getUser().getId();
         return AppointmentDto.builder()
                 .id(id)
                 .title(title)
                 .description(description)
-                .start(scheduledAt)
+                .start(appointmentDateTime)
                 .status(status)
-                .formattedScheduledAt(formattedScheduledAt)
+                .formattedAppointmentDateTime(formattedAppointmentDateTime)
                 .clientId(clientId)
                 .clientFullName(clientFullName)
                 .build();

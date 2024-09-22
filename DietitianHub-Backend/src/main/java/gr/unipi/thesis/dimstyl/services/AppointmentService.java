@@ -8,17 +8,17 @@ import java.util.List;
 
 public interface AppointmentService {
 
-    List<AppointmentDto> getAppointmentsByStatusAndScheduledAtIsAfter(List<AppointmentStatus> statuses, LocalDateTime dateTime);
+    List<AppointmentDto> getAppointmentsByStatusesAfterGivenAppointmentDateTime(List<AppointmentStatus> statuses, LocalDateTime dateTime);
 
-    List<AppointmentDto> getAppointmentsByStatusAndScheduledAtIsAfterOrderByScheduledAt(AppointmentStatus status, LocalDateTime dateTime);
+    List<AppointmentDto> getAppointmentsByStatusAfterGivenAppointmentDateTimeOrdered(AppointmentStatus status, LocalDateTime dateTime);
 
-    List<AppointmentDto> getAppointmentsByStatusAndScheduledAtIsBetween(List<AppointmentStatus> statuses,
-                                                                        LocalDateTime startDateTime,
-                                                                        LocalDateTime endDateTime);
+    List<AppointmentDto> getAppointmentsByStatusesWithinAppointmentDateTimeRange(List<AppointmentStatus> statuses,
+                                                                                 LocalDateTime startDateTime,
+                                                                                 LocalDateTime endDateTime);
 
-    List<AppointmentDto> getFirst5AppointmentsByStatusAndScheduledAtIsAfter(AppointmentStatus status, LocalDateTime dateTime);
+    List<AppointmentDto> getLatest5AppointmentsByStatusAfterGivenAppointmentDateTime(AppointmentStatus status, LocalDateTime dateTime);
 
-    List<AppointmentDto> getFirst5AppointmentsByStatus(AppointmentStatus status);
+    List<AppointmentDto> getLatest5AppointmentsByStatus(AppointmentStatus status);
 
     void createAppointment(AppointmentDto appointmentDto);
 
@@ -32,8 +32,8 @@ public interface AppointmentService {
 
     void declineAppointment(int id);
 
-    boolean existsByScheduledAtAndStatus(LocalDateTime dateTime, AppointmentStatus status);
+    boolean existsByAppointmentDateTimeAndStatus(LocalDateTime dateTime, AppointmentStatus status);
 
-    void markPastAppointmentsAsCompleted(AppointmentStatus status);
+    void markAppointmentsWithStatusBeforeNowAsCompleted(AppointmentStatus status);
 
 }

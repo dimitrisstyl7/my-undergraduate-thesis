@@ -23,8 +23,10 @@ public record AppointmentDto(int id,
                              @Future(message = "Date and Time must be in the future")
                              @Unique
                              LocalDateTime start,
+                             /* Using `start` instead of `appointmentDateTime` as name
+                             / to match the name in the `FullCalendar` library. */
                              AppointmentStatus status,
-                             String formattedScheduledAt,
+                             String formattedAppointmentDateTime,
                              @NotNull(message = "Please select a client")
                              @Range(min = 1, message = "Please select a client")
                              Integer clientId,
@@ -34,7 +36,7 @@ public record AppointmentDto(int id,
         return Appointment.builder()
                 .title(title)
                 .description(description)
-                .scheduledAt(start)
+                .appointmentDateTime(start)
                 .clientUserInfo(userInfo)
                 .build();
     }

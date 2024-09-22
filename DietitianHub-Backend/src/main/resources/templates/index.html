@@ -41,7 +41,7 @@
                                 th:id="${'row-'+appointment.id()}">
                                 <th scope="row" th:text="${iterStat.count}"></th>
                                 <td th:text="${appointment.clientFullName()}"></td>
-                                <td th:text="${appointment.formattedScheduledAt()}"></td>
+                                <td th:text="${appointment.formattedAppointmentDateTime()}"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -72,7 +72,7 @@
                                 th:each="appointment,iterStat: ${declinedAppointments}">
                                 <th scope="row" th:text="${iterStat.count}"></th>
                                 <td th:text="${appointment.clientFullName()}"></td>
-                                <td th:text="${appointment.formattedScheduledAt()}"></td>
+                                <td th:text="${appointment.formattedAppointmentDateTime()}"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -107,7 +107,7 @@
                                 th:each="appointment,iterStat: ${completedAppointments}">
                                 <th scope="row" th:text="${iterStat.count}"></th>
                                 <td th:text="${appointment.clientFullName()}"></td>
-                                <td th:text="${appointment.formattedScheduledAt()}"></td>
+                                <td th:text="${appointment.formattedAppointmentDateTime()}"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -138,7 +138,7 @@
                                 th:each="appointment,iterStat: ${cancelledAppointments}">
                                 <th scope="row" th:text="${iterStat.count}"></th>
                                 <td th:text="${appointment.clientFullName()}"></td>
-                                <td th:text="${appointment.formattedScheduledAt()}"></td>
+                                <td th:text="${appointment.formattedAppointmentDateTime()}"></td>
                             </tr>
                             </tbody>
                         </table>
