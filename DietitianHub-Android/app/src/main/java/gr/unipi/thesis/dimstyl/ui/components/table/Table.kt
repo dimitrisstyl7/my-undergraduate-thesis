@@ -11,7 +11,7 @@ import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
 @Composable
 fun Table(
     modifier: Modifier,
-    headerCells: List<TextCellData>,
+    headerCells: List<HeaderCellData>,
     tableRows: List<List<CellData>>
 ) {
     LazyColumn(modifier) {
@@ -30,7 +30,7 @@ fun Table(
         }
 
         tableRows.forEach { row ->
-            item {
+            item(contentType = ContentType.TABLE_BODY_ROW) {
                 Row {
                     row.forEach { cell ->
                         when (cell) {
