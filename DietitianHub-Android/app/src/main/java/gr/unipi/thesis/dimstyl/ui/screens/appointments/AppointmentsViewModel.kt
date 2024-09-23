@@ -17,7 +17,7 @@ class AppointmentsViewModel : ViewModel() {
     }
 
     private fun fetchAppointments() {
-        _state.value = AppointmentsState(isLoading = true)
+        _state.value = _state.value.copy(isLoading = true)
 
         // TODO: Fetch appointments from the server
         val appointments = listOf(
@@ -34,7 +34,7 @@ class AppointmentsViewModel : ViewModel() {
             Appointment(34, "3 Nov 2023, 01.00 PM")
         )
 
-        _state.value = AppointmentsState(appointments = appointments, isLoading = false)
+        _state.value = _state.value.copy(appointments = appointments, isLoading = false)
     }
 
     fun showNewAppointmentDialog(show: Boolean) {

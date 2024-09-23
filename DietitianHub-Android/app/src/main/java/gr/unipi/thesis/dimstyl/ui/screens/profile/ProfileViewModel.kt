@@ -17,7 +17,7 @@ class ProfileViewModel : ViewModel() {
     }
 
     private fun fetchProfileData() {
-        _state.value = ProfileState(isLoading = true)
+        _state.value = _state.value.copy(isLoading = true)
 
         // TODO: Fetch appointments from the server
         val profileData = ProfileData(
@@ -29,7 +29,7 @@ class ProfileViewModel : ViewModel() {
             dateOfBirth = "28/01/1990"
         )
 
-        _state.value = ProfileState(profileData = profileData, isLoading = false)
+        _state.value = _state.value.copy(profileData = profileData, isLoading = false)
     }
 
     fun setFirstName(firstName: String) {

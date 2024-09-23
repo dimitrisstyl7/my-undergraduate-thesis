@@ -15,7 +15,7 @@ class DietPlansViewModel : ViewModel() {
     }
 
     private fun fetchDietPlans() {
-        _state.value = DietPlansState(isLoading = true)
+        _state.value = _state.value.copy(isLoading = true)
 
         // TODO: Fetch diet plans from the server
         val dietPlans = listOf(
@@ -39,7 +39,7 @@ class DietPlansViewModel : ViewModel() {
             DietPlan(41, "3 Jun 2024")
         )
 
-        _state.value = DietPlansState(dietPlans = dietPlans, isLoading = false)
+        _state.value = _state.value.copy(dietPlans = dietPlans, isLoading = false)
     }
 
 }

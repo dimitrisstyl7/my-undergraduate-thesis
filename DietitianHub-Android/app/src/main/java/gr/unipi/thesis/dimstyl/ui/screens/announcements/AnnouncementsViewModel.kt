@@ -19,7 +19,7 @@ class AnnouncementsViewModel : ViewModel() {
     }
 
     private fun fetchAnnouncements() {
-        _state.value = AnnouncementsState(isLoading = true)
+        _state.value = _state.value.copy(isLoading = true)
 
         // TODO: Fetch appointments from the server
         val sections = listOf(
@@ -103,7 +103,7 @@ class AnnouncementsViewModel : ViewModel() {
             ),
         )
 
-        _state.value = AnnouncementsState(sections = sections, isLoading = false)
+        _state.value = _state.value.copy(sections = sections, isLoading = false)
 
     }
 

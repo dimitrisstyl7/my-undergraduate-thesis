@@ -15,7 +15,7 @@ class ArticlesViewModel : ViewModel() {
     }
 
     private fun fetchArticles() {
-        _state.value = ArticlesState(isLoading = true)
+        _state.value = _state.value.copy(isLoading = true)
 
         // TODO: Fetch articles from the server
         val articles = listOf(
@@ -76,7 +76,7 @@ class ArticlesViewModel : ViewModel() {
             ),
         )
 
-        _state.value = ArticlesState(articles = articles, isLoading = false)
+        _state.value = _state.value.copy(articles = articles, isLoading = false)
     }
 
 }
