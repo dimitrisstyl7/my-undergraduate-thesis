@@ -1,9 +1,13 @@
 package gr.unipi.thesis.dimstyl.ui.screens.appointments
 
-import gr.unipi.thesis.dimstyl.data.model.Appointment
+import gr.unipi.thesis.dimstyl.ui.components.table.CellData
 
 data class AppointmentsState(
-    val appointments: List<Appointment> = emptyList(),
+    val scheduledTableRowsData: List<List<CellData>> = emptyList(),
+    val pendingTableRowsData: List<List<CellData>> = emptyList(),
+    val completedTableRowsData: List<List<CellData>> = emptyList(),
+    val declinedTableRowsData: List<List<CellData>> = emptyList(),
+    val cancelledTableRowsData: List<List<CellData>> = emptyList(),
     val requestedDate: String = "",
     val requestedTime: String = "",
     val showNewAppointmentDialog: Boolean = false,

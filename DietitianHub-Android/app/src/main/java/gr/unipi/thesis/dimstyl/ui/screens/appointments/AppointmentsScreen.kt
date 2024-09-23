@@ -1,12 +1,17 @@
 package gr.unipi.thesis.dimstyl.ui.screens.appointments
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,24 +42,19 @@ import gr.unipi.thesis.dimstyl.ui.components.OutlinedTextField
 import gr.unipi.thesis.dimstyl.ui.components.dialogs.AlertDialog
 import gr.unipi.thesis.dimstyl.ui.components.dialogs.DatePickerDialog
 import gr.unipi.thesis.dimstyl.ui.components.dialogs.TimePickerDialog
-import gr.unipi.thesis.dimstyl.ui.components.table.CellData
-import gr.unipi.thesis.dimstyl.ui.components.table.IconCellData
 import gr.unipi.thesis.dimstyl.ui.components.table.Table
-import gr.unipi.thesis.dimstyl.ui.components.table.TextCellData
+import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
 import gr.unipi.thesis.dimstyl.ui.helpers.FutureSelectableDates
 import gr.unipi.thesis.dimstyl.ui.helpers.yearRange
 import gr.unipi.thesis.dimstyl.ui.screens.appointments.components.FloatingActionButton
-import gr.unipi.thesis.dimstyl.ui.theme.BodyColor
-import gr.unipi.thesis.dimstyl.ui.theme.DangerColor
 import gr.unipi.thesis.dimstyl.ui.theme.DialogTextFieldInputColor
 import gr.unipi.thesis.dimstyl.ui.theme.LeftBarColor
 import gr.unipi.thesis.dimstyl.ui.theme.NeutralColor
 import gr.unipi.thesis.dimstyl.ui.theme.PrimaryColor
-import gr.unipi.thesis.dimstyl.ui.theme.TableHeaderColor
 import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
 import gr.unipi.thesis.dimstyl.ui.theme.WarningColor
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun AppointmentsScreen(
     viewModel: AppointmentsViewModel = viewModel(),
@@ -73,62 +73,123 @@ fun AppointmentsScreen(
     if (appointmentsState.isLoading) {
         CircularProgressIndicator()
     } else {
-        Box(
-            Modifier
-                .fillMaxSize()
-                .background(BodyColor)
-        ) {
-            val headerCells = listOf(
-                TextCellData(
-                    weight = 0.2f,
-                    text = "#",
-                    fontWeight = FontWeight.Bold,
-                    textColor = TableHeaderColor,
-                    cellColor = LeftBarColor
-                ),
-                TextCellData(
-                    weight = 0.5f,
-                    text = "Scheduled At",
-                    fontWeight = FontWeight.Bold,
-                    textColor = TableHeaderColor,
-                    cellColor = LeftBarColor
-                ),
-                TextCellData(
-                    weight = 0.3f,
-                    text = "Actions",
-                    fontWeight = FontWeight.Bold,
-                    textColor = TableHeaderColor,
-                    cellColor = LeftBarColor
-                )
-            )
-            val tableRows: List<List<CellData>> =
-                appointmentsState.appointments.mapIndexed { index, appointment ->
-                    listOf(
-                        TextCellData(
-                            weight = 0.2f,
-                            text = (index + 1).toString(),
-                            fontWeight = FontWeight.Bold
-                        ),
-                        TextCellData(weight = 0.5f, text = appointment.scheduledAt),
-                        IconCellData(
-                            weight = 0.3f,
-                            icon = {
-                                Icon(
-                                    imageVector = Icons.Rounded.Clear,
-                                    contentDescription = "Cancel the appointment scheduled for ${appointment.scheduledAt}"
-                                )
-                            },
-                            buttonColor = DangerColor,
-                            onClick = { viewModel.showCancelAppointmentDialog(true) }
-                        )
+        Box(Modifier.fillMaxSize().background(TopBarColor)) {
+            LazyColumn(Modifier.fillMaxSize()) {
+                stickyHeader {
+                    Text(
+                        text = "Scheduled Appointments",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(LeftBarColor)
+                            .padding(vertical = 4.dp),
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(Modifier.height(4.dp))
+                }
+                item(contentType = ContentType.SCHEDULED_APPOINTMENTS_TABLE) {
+                    Table(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = 300.dp),
+                        headerCells = viewModel.scheduledTableHeaderCellsData,
+                        tableRows = appointmentsState.scheduledTableRowsData
                     )
                 }
 
-            Table(
-                modifier = Modifier.fillMaxSize(),
-                headerCells = headerCells,
-                tableRows = tableRows
-            )
+                stickyHeader {
+                    Text(
+                        text = "Pending Appointments",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(LeftBarColor)
+                            .padding(vertical = 4.dp),
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(Modifier.height(4.dp).background(TopBarColor))
+                }
+                item(contentType = ContentType.PENDING_APPOINTMENTS_TABLE) {
+                    Table(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = 300.dp),
+                        headerCells = viewModel.pendingTableHeaderCellsData,
+                        tableRows = appointmentsState.pendingTableRowsData
+                    )
+                }
+
+                stickyHeader {
+                    Text(
+                        text = "Completed Appointments",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(LeftBarColor)
+                            .padding(vertical = 4.dp),
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(Modifier.height(4.dp).background(TopBarColor))
+                }
+                item(contentType = ContentType.COMPLETED_APPOINTMENTS_TABLE) {
+                    Table(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = 300.dp),
+                        headerCells = viewModel.completedTableHeaderCellsData,
+                        tableRows = appointmentsState.completedTableRowsData
+                    )
+                }
+
+                stickyHeader {
+                    Text(
+                        text = "Declined Appointments",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(LeftBarColor)
+                            .padding(vertical = 4.dp),
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(Modifier.height(4.dp).background(TopBarColor))
+                }
+                item(contentType = ContentType.DECLINED_APPOINTMENTS_TABLE) {
+                    Table(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = 300.dp),
+                        headerCells = viewModel.declinedTableHeaderCellsData,
+                        tableRows = appointmentsState.declinedTableRowsData
+                    )
+                }
+
+                stickyHeader {
+                    Text(
+                        text = "Cancelled Appointments",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(LeftBarColor)
+                            .padding(vertical = 4.dp),
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(Modifier.height(4.dp).background(TopBarColor))
+                }
+                item(contentType = ContentType.CANCELLED_APPOINTMENTS_TABLE) {
+                    Table(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = 300.dp),
+                        headerCells = viewModel.cancelledTableHeaderCellsData,
+                        tableRows = appointmentsState.cancelledTableRowsData
+                    )
+                }
+            }
 
             FloatingActionButton(
                 modifier = Modifier
