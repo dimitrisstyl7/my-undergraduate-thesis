@@ -105,6 +105,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), backHandler: @Compo
                         keyboardActions = KeyboardActions { focusManager.moveFocus(FocusDirection.Next) }
                     )
                 }
+
                 item(contentType = ContentType.PROFILE_TEXT_INPUT_FIELD) {
                     OutlinedTextField(
                         paddingValues = PaddingValues(horizontal = 16.dp),
@@ -120,6 +121,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), backHandler: @Compo
                         keyboardActions = KeyboardActions { focusManager.moveFocus(FocusDirection.Next) }
                     )
                 }
+
                 item(contentType = ContentType.PROFILE_TEXT_INPUT_FIELD) {
                     OutlinedTextField(
                         paddingValues = PaddingValues(horizontal = 16.dp),
@@ -146,6 +148,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), backHandler: @Compo
                         keyboardActions = KeyboardActions { focusManager.moveFocus(FocusDirection.Next) }
                     )
                 }
+
                 item(contentType = ContentType.PROFILE_TEXT_INPUT_FIELD) {
                     OutlinedTextField(
                         paddingValues = PaddingValues(horizontal = 16.dp),
@@ -175,6 +178,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), backHandler: @Compo
                         }
                     )
                 }
+
                 item(contentType = ContentType.PROFILE_GENDER_DOB_INPUT_FIELDS) {
                     Row(Modifier.width(480.dp)) {
                         ExposedDropdownMenuBox(
@@ -291,6 +295,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), backHandler: @Compo
                         }
                     }
                 }
+
                 item(contentType = ContentType.PROFILE_BUTTONS) {
                     Row(
                         modifier = Modifier
