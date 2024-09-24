@@ -2,7 +2,7 @@ package gr.unipi.thesis.dimstyl.ui.screens.announcements
 
 import androidx.lifecycle.ViewModel
 import gr.unipi.thesis.dimstyl.data.model.Announcement
-import gr.unipi.thesis.dimstyl.data.model.Section
+import gr.unipi.thesis.dimstyl.data.model.AnnouncementSection
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementsFirstSectionBackgroundColor
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementsSecondSectionBackgroundColor
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementsThirdSectionBackgroundColor
@@ -22,8 +22,8 @@ class AnnouncementsViewModel : ViewModel() {
         _state.value = _state.value.copy(isLoading = true)
 
         // TODO: Fetch appointments from the server
-        val sections = listOf(
-            Section(
+        val announcementSections = listOf(
+            AnnouncementSection(
                 "Today",
                 listOf(
                     Announcement(
@@ -49,7 +49,7 @@ class AnnouncementsViewModel : ViewModel() {
                 ),
                 AnnouncementsFirstSectionBackgroundColor
             ),
-            Section(
+            AnnouncementSection(
                 "Yesterday",
                 listOf(
                     Announcement(
@@ -75,7 +75,7 @@ class AnnouncementsViewModel : ViewModel() {
                 ),
                 AnnouncementsSecondSectionBackgroundColor
             ),
-            Section(
+            AnnouncementSection(
                 "Earlier",
                 listOf(
                     Announcement(
@@ -103,7 +103,7 @@ class AnnouncementsViewModel : ViewModel() {
             ),
         )
 
-        _state.value = _state.value.copy(sections = sections, isLoading = false)
+        _state.value = _state.value.copy(announcementSections = announcementSections, isLoading = false)
 
     }
 

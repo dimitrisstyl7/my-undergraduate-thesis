@@ -46,7 +46,7 @@ fun AnnouncementsScreen(
             contentPadding = PaddingValues(top = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            state.sections.forEach { section ->
+            state.announcementSections.forEach { section ->
                 stickyHeader(contentType = ContentType.ANNOUNCEMENTS_SECTION_TITLE) {
                     Row(Modifier.padding(top = 16.dp)) {
                         Box(

@@ -1,5 +1,8 @@
 package gr.unipi.thesis.dimstyl.ui.screens.announcements
 
-import gr.unipi.thesis.dimstyl.data.model.Section
+import gr.unipi.thesis.dimstyl.data.model.AnnouncementSection
 
-data class AnnouncementsState(val sections: List<Section> = emptyList(), val isLoading: Boolean = false)
+data class AnnouncementsState(
+    val announcementSections: List<AnnouncementSection> = emptyList(),
+    val isLoading: Boolean = false
+)
