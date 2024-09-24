@@ -10,6 +10,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
 
@@ -17,7 +18,7 @@ import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
 @Composable
 fun TopBar(title: String, onExpandMenu: () -> Unit) {
     TopAppBar(
-        title = { Text(title) },
+        title = { Text(text = title, fontWeight = FontWeight.SemiBold) },
         navigationIcon = {
             IconButton(onClick = onExpandMenu) {
                 Icon(
