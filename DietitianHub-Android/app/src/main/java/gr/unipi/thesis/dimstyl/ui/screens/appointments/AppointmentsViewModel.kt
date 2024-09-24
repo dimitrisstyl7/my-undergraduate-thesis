@@ -8,8 +8,8 @@ import gr.unipi.thesis.dimstyl.data.model.Appointment
 import gr.unipi.thesis.dimstyl.data.model.AppointmentStatus
 import gr.unipi.thesis.dimstyl.ui.components.table.CellData
 import gr.unipi.thesis.dimstyl.ui.components.table.HeaderCellData
-import gr.unipi.thesis.dimstyl.ui.components.table.createActionableTableRowsData
-import gr.unipi.thesis.dimstyl.ui.components.table.createSimpleTableRowsData
+import gr.unipi.thesis.dimstyl.ui.components.table.createEmptyTableRowsData
+import gr.unipi.thesis.dimstyl.ui.components.table.createTableRowsData
 import gr.unipi.thesis.dimstyl.ui.helpers.convertMillisToDate
 import gr.unipi.thesis.dimstyl.ui.helpers.getTimeIn12Hour
 import gr.unipi.thesis.dimstyl.ui.theme.DangerColor
@@ -21,6 +21,7 @@ class AppointmentsViewModel : ViewModel() {
     private val _state = MutableStateFlow(AppointmentsState())
     val state = _state.asStateFlow()
 
+    private val cellsWeight = listOf(0.2f, 0.6f, 0.2f)
     lateinit var scheduledTableHeaderCellsData: List<HeaderCellData>
     lateinit var pendingTableHeaderCellsData: List<HeaderCellData>
     lateinit var completedTableHeaderCellsData: List<HeaderCellData>
@@ -35,29 +36,29 @@ class AppointmentsViewModel : ViewModel() {
 
     private fun initializeTableHeaderCellsData() {
         scheduledTableHeaderCellsData = listOf(
-            HeaderCellData(weight = 0.2f, text = "#"),
-            HeaderCellData(weight = 0.5f, text = "Scheduled At"),
-            HeaderCellData(weight = 0.3f, text = "Actions")
+            HeaderCellData(weight = cellsWeight[0], text = "#"),
+            HeaderCellData(weight = cellsWeight[1], text = "Scheduled At"),
+            HeaderCellData(weight = cellsWeight[2], text = "Actions")
         )
         pendingTableHeaderCellsData = listOf(
-            HeaderCellData(weight = 0.2f, text = "#"),
-            HeaderCellData(weight = 0.5f, text = "Requested At"),
-            HeaderCellData(weight = 0.3f, text = "Actions")
+            HeaderCellData(weight = cellsWeight[0], text = "#"),
+            HeaderCellData(weight = cellsWeight[1], text = "Requested At"),
+            HeaderCellData(weight = cellsWeight[2], text = "Actions")
         )
         completedTableHeaderCellsData = listOf(
-            HeaderCellData(weight = 0.2f, text = "#"),
-            HeaderCellData(weight = 0.5f, text = "Scheduled At"),
-            HeaderCellData(weight = 0.3f, text = "Actions")
+            HeaderCellData(weight = cellsWeight[0], text = "#"),
+            HeaderCellData(weight = cellsWeight[1], text = "Scheduled At"),
+            HeaderCellData(weight = cellsWeight[2], text = "Actions")
         )
         declinedTableHeaderCellsData = listOf(
-            HeaderCellData(weight = 0.2f, text = "#"),
-            HeaderCellData(weight = 0.5f, text = "Requested At"),
-            HeaderCellData(weight = 0.3f, text = "Actions")
+            HeaderCellData(weight = cellsWeight[0], text = "#"),
+            HeaderCellData(weight = cellsWeight[1], text = "Requested At"),
+            HeaderCellData(weight = cellsWeight[2], text = "Actions")
         )
         cancelledTableHeaderCellsData = listOf(
-            HeaderCellData(weight = 0.2f, text = "#"),
-            HeaderCellData(weight = 0.5f, text = "Requested At"),
-            HeaderCellData(weight = 0.3f, text = "Actions")
+            HeaderCellData(weight = cellsWeight[0], text = "#"),
+            HeaderCellData(weight = cellsWeight[1], text = "Requested At"),
+            HeaderCellData(weight = cellsWeight[2], text = "Actions")
         )
     }
 
@@ -101,18 +102,53 @@ class AppointmentsViewModel : ViewModel() {
             Appointment(72, "13 Jan 2027, 01.00 PM", AppointmentStatus.CANCELLED)
         )
 
+        val scheduledTableRowsData =
+            if (scheduledAppointments.isEmpty()) createEmptyTableRowsData("No scheduled appointments found")
+            else createAppointmentTableRowsData(
+                appointments = scheduledAppointments,
+                isActionable = true
+            )
+        val pendingTableRowsData =
+            if (pendingAppointments.isEmpty()) createEmptyTableRowsData("No pending appointments found")
+            else createAppointmentTableRowsData(
+                appointments = pendingAppointments,
+                isActionable = true
+            )
+        val completedTableRowsData =
+            if (completedAppointments.isEmpty()) createEmptyTableRowsData("No completed appointments found")
+            else createAppointmentTableRowsData(
+                appointments = completedAppointments,
+                isActionable = false
+            )
+        val declinedTableRowsData =
+            if (declinedAppointments.isEmpty()) createEmptyTableRowsData("No declined appointments found")
+            else createAppointmentTableRowsData(
+                appointments = declinedAppointments,
+                isActionable = false
+            )
+        val cancelledTableRowsData =
+            if (cancelledAppointments.isEmpty()) createEmptyTableRowsData("No cancelled appointments found")
+            else createAppointmentTableRowsData(
+                appointments = cancelledAppointments,
+                isActionable = false
+            )
+
         _state.value = _state.value.copy(
-            scheduledTableRowsData = createActionableAppointmentTableRowsData(scheduledAppointments),
-            pendingTableRowsData = createActionableAppointmentTableRowsData(pendingAppointments),
-            completedTableRowsData = createSimpleAppointmentTableRowsData(completedAppointments),
-            declinedTableRowsData = createSimpleAppointmentTableRowsData(declinedAppointments),
-            cancelledTableRowsData = createSimpleAppointmentTableRowsData(cancelledAppointments),
+            scheduledTableRowsData = scheduledTableRowsData,
+            pendingTableRowsData = pendingTableRowsData,
+            completedTableRowsData = completedTableRowsData,
+            declinedTableRowsData = declinedTableRowsData,
+            cancelledTableRowsData = cancelledTableRowsData,
             isLoading = false
         )
     }
 
-    private fun createActionableAppointmentTableRowsData(appointments: List<Appointment>): List<List<CellData>> {
-        return createActionableTableRowsData(
+    private fun createAppointmentTableRowsData(
+        appointments: List<Appointment>,
+        isActionable: Boolean
+    ): List<List<CellData>> {
+        return createTableRowsData(
+            cellsWeight = cellsWeight,
             items = appointments,
             getText = { appointment -> appointment.start },
             icon = { appointment ->
@@ -124,14 +160,8 @@ class AppointmentsViewModel : ViewModel() {
                 }
             },
             buttonColor = DangerColor,
-            onClick = { showCancelAppointmentDialog(true) }
-        )
-    }
-
-    private fun createSimpleAppointmentTableRowsData(appointments: List<Appointment>): List<List<CellData>> {
-        return createSimpleTableRowsData(
-            items = appointments,
-            getText = { appointment -> appointment.start }
+            onClick = { showCancelAppointmentDialog(true) },
+            isActionable = isActionable
         )
     }
 

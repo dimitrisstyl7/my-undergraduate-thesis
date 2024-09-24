@@ -6,7 +6,8 @@ import androidx.lifecycle.ViewModel
 import gr.unipi.thesis.dimstyl.R
 import gr.unipi.thesis.dimstyl.data.model.DietPlan
 import gr.unipi.thesis.dimstyl.ui.components.table.HeaderCellData
-import gr.unipi.thesis.dimstyl.ui.components.table.createActionableTableRowsData
+import gr.unipi.thesis.dimstyl.ui.components.table.createEmptyTableRowsData
+import gr.unipi.thesis.dimstyl.ui.components.table.createTableRowsData
 import gr.unipi.thesis.dimstyl.ui.theme.PrimaryColor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,6 +17,7 @@ class DietPlansViewModel : ViewModel() {
     private val _state = MutableStateFlow(DietPlansState())
     val state = _state.asStateFlow()
 
+    private val cellsWeight = listOf(0.2f, 0.6f, 0.2f)
     lateinit var tableHeaderCellsData: List<HeaderCellData>
 
     init {
@@ -25,9 +27,9 @@ class DietPlansViewModel : ViewModel() {
 
     private fun initializeTableHeaderCellsData() {
         tableHeaderCellsData = listOf(
-            HeaderCellData(weight = 0.2f, text = "#"),
-            HeaderCellData(weight = 0.5f, text = "Created On"),
-            HeaderCellData(weight = 0.3f, text = "Actions")
+            HeaderCellData(weight = cellsWeight[0], text = "#"),
+            HeaderCellData(weight = cellsWeight[1], text = "Created On"),
+            HeaderCellData(weight = cellsWeight[2], text = "Actions")
         )
     }
 
@@ -56,20 +58,23 @@ class DietPlansViewModel : ViewModel() {
             DietPlan(41, "3 Jun 2024")
         )
 
-        val tableRowsData = createActionableTableRowsData(
-            items = dietPlans,
-            getText = { dietPlan -> dietPlan.createdOn },
-            icon = { dietPlan ->
-                {
-                    Icon(
-                        painter = painterResource(R.drawable.baseline_download_24),
-                        contentDescription = "Download the diet plan created on ${dietPlan.createdOn}"
-                    )
-                }
-            },
-            buttonColor = PrimaryColor,
-            onClick = { /* TODO: Download the diet plan */ }
-        )
+        val tableRowsData =
+            if (dietPlans.isEmpty()) createEmptyTableRowsData("No diet plans found")
+            else createTableRowsData(
+                cellsWeight = cellsWeight,
+                items = dietPlans,
+                getText = { dietPlan -> dietPlan.createdOn },
+                icon = { dietPlan ->
+                    {
+                        Icon(
+                            painter = painterResource(R.drawable.baseline_download_24),
+                            contentDescription = "Download the diet plan created on ${dietPlan.createdOn}"
+                        )
+                    }
+                },
+                buttonColor = PrimaryColor,
+                onClick = { /* TODO: Download the diet plan */ }
+            )
 
         _state.value = _state.value.copy(tableRowsData = tableRowsData, isLoading = false)
     }
