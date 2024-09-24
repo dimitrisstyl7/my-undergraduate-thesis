@@ -1,25 +1,29 @@
 package gr.unipi.thesis.dimstyl.ui.screens.articles
 
-import androidx.compose.foundation.BorderStroke
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import gr.unipi.thesis.dimstyl.ui.components.Card
 import gr.unipi.thesis.dimstyl.ui.components.CircularProgressIndicator
+import gr.unipi.thesis.dimstyl.ui.components.cards.ArticleCard
 import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
-import gr.unipi.thesis.dimstyl.ui.theme.ArticleCreatedAtColor
-import gr.unipi.thesis.dimstyl.ui.theme.ArticleTitleColor
-import gr.unipi.thesis.dimstyl.ui.theme.LeftBarColor
-import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
+import gr.unipi.thesis.dimstyl.ui.theme.DataNotFoundColor
 
 @Composable
 fun ArticlesScreen(
@@ -27,11 +31,25 @@ fun ArticlesScreen(
     backHandler: @Composable () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     backHandler()
 
     if (state.isLoading) {
         CircularProgressIndicator()
+    } else if (state.articles.isEmpty()) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                modifier = Modifier.padding(16.dp),
+                text = "No articles found",
+                fontWeight = FontWeight.SemiBold,
+                color = DataNotFoundColor
+            )
+        }
     } else {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(150.dp),
@@ -40,16 +58,14 @@ fun ArticlesScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(items = state.articles, contentType = { ContentType.ARTICLES }) { article ->
-                Card(
-                    title = article.title,
-                    createdAt = article.createdAt,
-                    titleColor = ArticleTitleColor,
-                    createdAtColor = ArticleCreatedAtColor,
-                    border = BorderStroke(
-                        width = 1.5.dp,
-                        brush = Brush.linearGradient(listOf(TopBarColor, LeftBarColor))
-                    )
-                )
+                ArticleCard(article) {
+                    // TODO: Handle article click
+                    Toast.makeText(
+                        context,
+                        "Article clicked: ${article.title}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
