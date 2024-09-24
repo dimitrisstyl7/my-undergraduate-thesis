@@ -22,7 +22,10 @@ val NeutralColor = Color.LightGray
 val BodyColor = Color(0xFFEBEFF2)
 val TextFieldInputColor = Color(0xFF6C747C)
 val DialogTextFieldInputColor = Color.White
+val DataNotFoundColor = Color(0xFF6C747C)
+
 val CardContainerColor = Color.White
+val CardClickToSeeMoreColor = Color(0xFF98A5AC)
 
 val AnnouncementTitleColor = Color(0xFF343A40)
 val AnnouncementSectionTitleColor = Color.White
@@ -33,6 +36,9 @@ val AnnouncementsThirdSectionBackgroundColor = Color(0xFF76B5F6)
 val ArticleTitleColor = Color(0xFF333A45)
 val ArticleCreatedAtColor = Color(0xFF98A5AC)
 
+val TableBorderColor = Color(0xFF113537)
 var TableHeaderColor = Color.White
+val TableHeaderCellColor = Color(0xFF113537)
+var TableHeaderBackgroundColor = Color(0xFF113537)
 val TableCellColor = Color(0xFFF3F4F5)
 val TableTextColor = Color(0xFF6C747C)
