@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,7 +23,7 @@ fun RowScope.TextCell(
 ) {
     Text(
         modifier = Modifier
-            .background(cellColor)
+            .background(color = cellColor, shape = RoundedCornerShape(6.dp))
             .height(45.dp)
             .weight(weight)
             .padding(8.dp),
