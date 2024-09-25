@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import gr.unipi.thesis.dimstyl.ui.navigation.NavItem
 import gr.unipi.thesis.dimstyl.ui.navigation.NavRoute
 import gr.unipi.thesis.dimstyl.ui.theme.DangerColor
@@ -29,7 +30,7 @@ fun NavigationDrawerItem(
         },
         icon = {
             Icon(
-                imageVector = item.getIcon(),
+                painter = painterResource(item.iconRes),
                 contentDescription = item.navLabel
             )
         },
@@ -60,7 +61,7 @@ fun NavigationDrawerItem(
         },
         icon = {
             Icon(
-                imageVector = item.getIcon(),
+                painter = painterResource(item.iconRes),
                 contentDescription = item.navLabel
             )
         },

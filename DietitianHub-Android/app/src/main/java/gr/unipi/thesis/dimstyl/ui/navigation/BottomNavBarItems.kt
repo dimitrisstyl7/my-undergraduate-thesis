@@ -1,8 +1,7 @@
 package gr.unipi.thesis.dimstyl.ui.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Home
+import gr.unipi.thesis.dimstyl.R
 
-val HomeNavItem = NavItem(icon = Icons.Rounded.Home, route = NavRoute.HOME)
+val HomeNavItem = NavItem(iconRes = R.drawable.round_home_24, route = NavRoute.HOME)
 
 val bottomNavBarItems = listOf(HomeNavItem, DietPlansNavItem, ProfileNavItem)

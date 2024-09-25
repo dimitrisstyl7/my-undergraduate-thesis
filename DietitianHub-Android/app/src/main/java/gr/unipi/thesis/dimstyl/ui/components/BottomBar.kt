@@ -7,6 +7,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import gr.unipi.thesis.dimstyl.ui.navigation.NavRoute
 import gr.unipi.thesis.dimstyl.ui.navigation.bottomNavBarItems
@@ -20,7 +21,7 @@ fun BottomBar(currentNavRoute: NavRoute, navigate: (NavRoute, String) -> Unit) {
             NavigationBarItem(
                 icon = {
                     Icon(
-                        imageVector = it.getIcon(),
+                        painter = painterResource(it.iconRes),
                         contentDescription = it.navLabel
                     )
                 },

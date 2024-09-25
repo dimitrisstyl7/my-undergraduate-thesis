@@ -1,7 +1,5 @@
 package gr.unipi.thesis.dimstyl.ui.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import gr.unipi.thesis.dimstyl.R
 
 val AppointmentsNavItem =
@@ -12,7 +10,7 @@ val AnnouncementsNavItem =
 
 val ArticlesNavItem = NavItem(iconRes = R.drawable.rounded_article_24, route = NavRoute.ARTICLES)
 
-val LogoutNavItem = NavItem(icon = Icons.AutoMirrored.Default.ExitToApp, route = NavRoute.LOGOUT)
+val LogoutNavItem = NavItem(iconRes = R.drawable.round_exit_to_app_24, route = NavRoute.LOGOUT)
 
 val modalDrawerSheetItems = listOf(
     ProfileNavItem,
