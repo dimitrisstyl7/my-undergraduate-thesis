@@ -57,7 +57,6 @@ fun MainScreen(
             }
         }
     }
-    backHandler()
 
     ModalNavigationDrawer(
         drawerState = drawerState,

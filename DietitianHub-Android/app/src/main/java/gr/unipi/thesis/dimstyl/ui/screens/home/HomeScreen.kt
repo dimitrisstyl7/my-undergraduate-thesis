@@ -35,11 +35,9 @@ import gr.unipi.thesis.dimstyl.ui.theme.DataNotFoundColor
 import gr.unipi.thesis.dimstyl.ui.theme.LeftBarColor
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = viewModel(), backHandler: @Composable () -> Unit) {
+fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-
-    backHandler()
 
     if (state.isLoading) {
         CircularProgressIndicator()
@@ -150,5 +148,5 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel(), backHandler: @Composable 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen {}
+    HomeScreen()
 }

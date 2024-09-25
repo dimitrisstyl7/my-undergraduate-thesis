@@ -64,7 +64,7 @@ import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), backHandler: @Composable () -> Unit) {
+fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
     val focusManager = LocalFocusManager.current
     val profileState by viewModel.state.collectAsStateWithLifecycle()
     val datePickerState = rememberDatePickerState(
@@ -72,8 +72,6 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), backHandler: @Compo
         yearRange = yearRange(inPast = true),
         selectableDates = PastSelectableDates
     )
-
-    backHandler()
 
     if (profileState.isLoading) {
         CircularProgressIndicator()
@@ -354,5 +352,5 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel(), backHandler: @Compo
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
-    ProfileScreen {}
+    ProfileScreen()
 }

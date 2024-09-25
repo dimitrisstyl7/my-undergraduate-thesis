@@ -14,13 +14,8 @@ import gr.unipi.thesis.dimstyl.ui.components.table.Table
 import gr.unipi.thesis.dimstyl.ui.theme.BodyColor
 
 @Composable
-fun DietPlansScreen(
-    viewModel: DietPlansViewModel = viewModel(),
-    backHandler: @Composable () -> Unit
-) {
+fun DietPlansScreen(viewModel: DietPlansViewModel = viewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-
-    backHandler()
 
     if (state.isLoading) {
         CircularProgressIndicator()
@@ -38,5 +33,5 @@ fun DietPlansScreen(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun DietPlansScreenPreview() {
-    DietPlansScreen {}
+    DietPlansScreen()
 }

@@ -26,14 +26,9 @@ import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
 import gr.unipi.thesis.dimstyl.ui.theme.DataNotFoundColor
 
 @Composable
-fun ArticlesScreen(
-    viewModel: ArticlesViewModel = viewModel(),
-    backHandler: @Composable () -> Unit
-) {
+fun ArticlesScreen(viewModel: ArticlesViewModel = viewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-
-    backHandler()
 
     if (state.isLoading) {
         CircularProgressIndicator()
@@ -74,5 +69,5 @@ fun ArticlesScreen(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun ArticlesScreenPreview() {
-    ArticlesScreen {}
+    ArticlesScreen()
 }

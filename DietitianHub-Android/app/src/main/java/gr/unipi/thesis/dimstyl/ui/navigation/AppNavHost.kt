@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import gr.unipi.thesis.dimstyl.ui.screens.announcements.AnnouncementsScreen
 import gr.unipi.thesis.dimstyl.ui.screens.appointments.AppointmentsScreen
 import gr.unipi.thesis.dimstyl.ui.screens.articles.ArticlesScreen
+import gr.unipi.thesis.dimstyl.ui.screens.auth.LoginScreen
 import gr.unipi.thesis.dimstyl.ui.screens.dietPlans.DietPlansScreen
 import gr.unipi.thesis.dimstyl.ui.screens.home.HomeScreen
 import gr.unipi.thesis.dimstyl.ui.screens.profile.ProfileScreen
@@ -26,16 +27,18 @@ fun AppNavHost(
         startDestination = Home,
         modifier = Modifier.padding(innerPadding)
     ) {
-        composable<Home> { HomeScreen(backHandler = backHandler) }
+        composable<Home> { HomeScreen() }
 
-        composable<Profile> { ProfileScreen(backHandler = backHandler) }
+        composable<Profile> { ProfileScreen() }
 
-        composable<Appointments> { AppointmentsScreen(backHandler = backHandler) }
+        composable<Appointments> { AppointmentsScreen() }
 
-        composable<Articles> { ArticlesScreen(backHandler = backHandler) }
+        composable<Articles> { ArticlesScreen() }
 
-        composable<Announcements> { AnnouncementsScreen(backHandler = backHandler) }
+        composable<Announcements> { AnnouncementsScreen() }
 
-        composable<DietPlans> { DietPlansScreen(backHandler = backHandler) }
+        composable<DietPlans> { DietPlansScreen() }
     }
+
+    backHandler()
 }
