@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import gr.unipi.thesis.dimstyl.ui.theme.LeftBarColor
 import gr.unipi.thesis.dimstyl.ui.theme.PrimaryColor
@@ -36,9 +37,16 @@ fun OutlinedTextField(
     supportingText: @Composable (() -> Unit)?,
     onValueChange: (String) -> Unit,
     readOnly: Boolean,
-    leadingIcon: @Composable (() -> Unit) = {},
+    leadingIcon: @Composable () -> Unit = {},
+    trailingIcon: @Composable () -> Unit = {
+        Icon(
+            imageVector = Icons.Outlined.Clear,
+            contentDescription = "Clear $label field"
+        )
+    },
     trailingIconVisible: Boolean,
     onTrailingIconClick: () -> Unit,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
         keyboardType = KeyboardType.Text,
         imeAction = ImeAction.Next,
@@ -65,11 +73,10 @@ fun OutlinedTextField(
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
-                IconButton(onClick = onTrailingIconClick) {
-                    Icon(Icons.Outlined.Clear, "Clear $label field")
-                }
+                IconButton(onClick = onTrailingIconClick) { trailingIcon() }
             }
         },
+        visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         colors = OutlinedTextFieldDefaults.colors(
