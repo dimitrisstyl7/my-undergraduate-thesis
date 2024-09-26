@@ -93,10 +93,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                         onValueChange = { viewModel.setFirstName(it) },
                         readOnly = !profileState.inEditMode,
                         leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Rounded.Person,
-                                contentDescription = null
-                            )
+                            Icon(imageVector = Icons.Rounded.Person, contentDescription = null)
                         },
                         trailingIconVisible = profileState.profileData!!.firstName.isNotEmpty() && profileState.inEditMode,
                         onTrailingIconClick = { viewModel.setFirstName("") },
