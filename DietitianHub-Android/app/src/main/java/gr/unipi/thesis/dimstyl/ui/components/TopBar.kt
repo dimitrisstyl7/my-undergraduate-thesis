@@ -12,13 +12,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import gr.unipi.thesis.dimstyl.ui.helpers.LoginStatus
+import gr.unipi.thesis.dimstyl.ui.navigation.NavRoute
+import gr.unipi.thesis.dimstyl.ui.screens.main.MainState
 import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(title: String, onExpandMenu: () -> Unit) {
+fun TopBar(mainState: MainState, onExpandMenu: () -> Unit) {
+    if (mainState.loginStatus != LoginStatus.LOGGED_IN || mainState.currentNavRoute == NavRoute.LANDING) return
+
     TopAppBar(
-        title = { Text(text = title, fontWeight = FontWeight.SemiBold) },
+        title = { Text(text = mainState.topBarTitle, fontWeight = FontWeight.SemiBold) },
         navigationIcon = {
             IconButton(onClick = onExpandMenu) {
                 Icon(
@@ -39,5 +44,5 @@ fun TopBar(title: String, onExpandMenu: () -> Unit) {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun TopBarPreview() {
-    TopBar("TopBar") {}
+    TopBar(MainState(loginStatus = LoginStatus.LOGGED_IN)) {}
 }
