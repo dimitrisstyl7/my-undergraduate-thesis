@@ -1,5 +1,6 @@
 package gr.unipi.thesis.dimstyl.ui.theme
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 val Purple80 = Color(0xFFD0BCFF)
@@ -42,3 +43,6 @@ val TableHeaderCellColor = Color(0xFF113537)
 var TableHeaderBackgroundColor = Color(0xFF113537)
 val TableCellColor = Color(0xFFF3F4F5)
 val TableTextColor = Color(0xFF6C747C)
+
+val BackgroundGradient =
+    Brush.linearGradient(listOf(Color.White, Color.LightGray.copy(alpha = 0.5f)))
