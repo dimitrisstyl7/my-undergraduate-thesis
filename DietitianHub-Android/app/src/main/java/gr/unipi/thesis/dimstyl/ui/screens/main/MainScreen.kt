@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 fun MainScreen(
     navController: NavController = rememberNavController(),
     viewModel: MainViewModel,
-    finish: () -> Unit
+    exitApp: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val mainState by viewModel.state.collectAsStateWithLifecycle()
@@ -53,7 +53,7 @@ fun MainScreen(
                     }
                 }
 
-                else -> finish()
+                else -> exitApp()
             }
         }
     }
