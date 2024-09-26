@@ -29,17 +29,24 @@ import gr.unipi.thesis.dimstyl.ui.components.cards.AnnouncementsCardsRow
 import gr.unipi.thesis.dimstyl.ui.components.cards.ArticleCard
 import gr.unipi.thesis.dimstyl.ui.components.table.Table
 import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
+import gr.unipi.thesis.dimstyl.ui.helpers.LoginStatus
 import gr.unipi.thesis.dimstyl.ui.screens.home.components.HorizontalDivider
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementsFirstSectionBackgroundColor
 import gr.unipi.thesis.dimstyl.ui.theme.DataNotFoundColor
 import gr.unipi.thesis.dimstyl.ui.theme.LeftBarColor
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
+fun HomeScreen(
+    viewModel: HomeViewModel = viewModel(),
+    loginStatus: LoginStatus,
+    onNavigateToLoginScreen: () -> Unit
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
-    if (state.isLoading) {
+    if (loginStatus == LoginStatus.LOGGED_OUT) {
+        onNavigateToLoginScreen()
+    } else if (state.isLoading) {
         CircularProgressIndicator()
     } else {
         LazyColumn(
@@ -148,5 +155,5 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(loginStatus = LoginStatus.LOGGED_IN) {}
 }
