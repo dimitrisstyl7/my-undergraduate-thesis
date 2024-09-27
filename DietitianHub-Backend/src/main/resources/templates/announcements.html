@@ -312,11 +312,11 @@
     <script th:inline="javascript">
         "use strict";
 
-        // Change page title.
+        // Change page title
         const pageTitle = document.getElementsByClassName("page-title-main");
         pageTitle[0].textContent = "Announcements";
 
-        // Common elements that will be used in multiple functions.
+        // Common elements that will be used in multiple functions
         const editors = document.getElementsByClassName("ql-editor");  // editors[0] -> preview, editors[1] -> edit
         const editorsErrorMessage = document.getElementById("editors-error-message");
 
@@ -333,19 +333,19 @@
         const publishButtonDiv = document.getElementById("publish-button-div");
         const updateButtonDiv = document.getElementById("update-button-div");
 
-        // Function that shows the buttons-div.
+        // Function that shows the buttons-div
         function showButtonsDiv(id) {
             const buttonsDiv = document.getElementById(id);
             buttonsDiv.classList.remove("hidden");
         }
 
-        // Function that hides the buttons-div.
+        // Function that hides the buttons-div
         function hideButtonsDiv(id) {
             const buttonsDiv = document.getElementById(id);
             buttonsDiv.classList.add("hidden");
         }
 
-        // Function that configures the modal for creating a new announcement.
+        // Function that configures the modal for creating a new announcement
         function configureModalForCreation() {
             editAnnouncementTab.setAttribute("aria-expanded", "true");
             editAnnouncementTab.classList.add("active");
@@ -357,7 +357,7 @@
             showPublishButton();
         }
 
-        // Function that configures the modal for viewing/updating an existing announcement.
+        // Function that configures the modal for viewing/updating an existing announcement
         async function configureModalForViewing(announcementId) {
             editAnnouncementTab.setAttribute("aria-expanded", "false");
             editAnnouncementTab.classList.remove("active");
@@ -369,49 +369,49 @@
 
             showUpdateButton();
 
-            // Fetch the announcement by its ID.
+            // Fetch the announcement by its ID
             await fetchAnnouncement(announcementId);
 
-            // Adjust the size of the input field for the announcement title.
+            // Adjust the size of the input field for the announcement title
             announcementTitle.size = announcementTitle.value.length;
 
-            // Set onclick event for the update button.
+            // Set onclick event for the update button
             document.getElementById("update-button").onclick = () => updateAnnouncement(announcementId);
 
-            // Disable the contenteditable attribute of the edit announcement editor.
+            // Disable the contenteditable attribute of the edit announcement editor
             editors[0].setAttribute("contenteditable", "false");
         }
 
-        // Function that shows publish button.
+        // Function that shows publish button
         function showPublishButton() {
             publishButtonDiv.style.display = "block";
             updateButtonDiv.style.display = "none";
         }
 
-        // Function that shows update button.
+        // Function that shows update button
         function showUpdateButton() {
             publishButtonDiv.style.display = "none";
             updateButtonDiv.style.display = "block";
         }
 
-        // Function that enables or disables editing of the announcement title.
+        // Function that enables or disables editing of the announcement title
         function toggleTitleEditing(editing) {
             if (editing) {
-                // Enable the input field for the announcement title.
+                // Enable the input field for the announcement title
                 announcementTitle.removeAttribute("disabled");
             } else {
-                // Disable the input field for the announcement title.
+                // Disable the input field for the announcement title
                 announcementTitle.setAttribute("disabled", "true");
 
-                // Disable the contenteditable attribute of the edit announcement editor.
+                // Disable the contenteditable attribute of the edit announcement editor
                 editors[0].setAttribute("contenteditable", "false");
 
-                // Copy the content of the edit announcement editor to the view announcement editor.
+                // Copy the content of the edit announcement editor to the view announcement editor
                 editors[0].innerHTML = editors[1].innerHTML;
             }
         }
 
-        // Function that clears the error messages.
+        // Function that clears the error messages
         function clearErrors() {
             announcementTitle.classList.remove("border-danger", "border-2");
             announcementTitleErrorMessage.textContent = "";
@@ -423,22 +423,22 @@
             editAnnouncementCard.classList.remove("border-danger", "border-2");
         }
 
-        // Function that clears the announcement title, content, and error messages.
+        // Function that clears the announcement title, content, and error messages
         function clearAnnouncement() {
             // Clear the announcement title.
             announcementTitle.value = "";
-            announcementTitle.removeAttribute("size"); // Reset the size of the input.
+            announcementTitle.removeAttribute("size"); // Reset the size of the input
 
-            // Clear the error messages.
+            // Clear the error messages
             clearErrors();
 
-            // Set the content of the editors to the default value.
+            // Set the content of the editors to the default value
             editors.forEach(function (item) {
                 item.innerHTML = "<p>Your announcement content goes here...</p>";
             });
         }
 
-        // Function that validates the announcement.
+        // Function that validates the announcement
         function validateAnnouncement() {
             clearErrors();
             const titleIsEmpty = announcementTitle.value.trim() === "";
@@ -450,14 +450,14 @@
             return !(titleIsEmpty || contentIsEmpty);
         }
 
-        // Function that shows an error message for the announcement title.
+        // Function that shows an error message for the announcement title
         function showTitleErrorMessage(message) {
             announcementTitle.classList.add("border-danger", "border-2");
             announcementTitleErrorMessage.textContent = message;
             announcementTitleErrorMessage.removeAttribute("hidden");
         }
 
-        // Function that shows an error message for the announcement content.
+        // Function that shows an error message for the announcement content
         function showContentErrorMessage(message) {
             previewAnnouncementCard.classList.add("border-danger", "border-2");
             editAnnouncementCard.classList.add("border-danger", "border-2");
@@ -465,26 +465,26 @@
             editorsErrorMessage.removeAttribute("hidden");
         }
 
-        // Function that fills the delete modal with the announcement title and sets the onclick event for the delete button.
+        // Function that fills the delete modal with the announcement title and sets the onclick event for the delete button
         function fillDeleteModal(title, id) {
-            // Set the title of the article to be deleted.
+            // Set the title of the article to be deleted
             document.getElementById("delete-modal-title").textContent = `${title}`;
 
-            // Set the onclick event for the confirm deletion button.
+            // Set the onclick event for the confirm deletion button
             const confirmDeletionButton = document.getElementById("confirm-deletion-button");
             confirmDeletionButton.onclick = () => deleteAnnouncement(id, confirmDeletionButton);
         }
 
-        // Function that publishes an announcement.
+        // Function that publishes an announcement
         async function publishAnnouncement() {
-            // Validate the announcement.
+            // Validate the announcement
             if (!validateAnnouncement()) return;
 
-            // Get the announcement title and content.
+            // Get the announcement title and content
             const title = announcementTitle.value.trim();
             const content = editors[1].innerHTML.trim();
 
-            // Create an object with the announcement title, and content.
+            // Create an object with the announcement title, and content
             const announcement = {
                 title: title,
                 content: content,
@@ -506,9 +506,9 @@
             if (result?.error) alert(result.error);
         }
 
-        // Function that handles the response from the publish announcement request and updates the UI accordingly.
+        // Function that handles the response from the publish announcement request and updates the UI accordingly
         async function handlePublishAnnouncementResponse(response, publishButton) {
-            // Remove the spinner and set the button text back to "Publish now".
+            // Remove the spinner and set the button text back to "Publish now"
             removeSpinner(
                 publishButton,
                 "Publish now<span class='btn-label-right'><i class='mdi mdi-publish'></i></span>"
@@ -528,36 +528,36 @@
                 }
 
                 // If the errorResponse object contains the "title" key, and "title" has a value,
-                // update the UI accordingly.
+                // update the UI accordingly
                 const titleKeyExists = errorResponse?.title;
                 if (titleKeyExists) showTitleErrorMessage(errorResponse.title);
 
                 // If the errorResponse object contains the "content" key, and "content" has a value,
-                // update the UI accordingly.
+                // update the UI accordingly
                 const contentKeyExists = errorResponse?.content;
                 if (contentKeyExists) showContentErrorMessage(errorResponse.content);
 
-                // If any error exists, return.
+                // If any error exists, return
                 if (titleKeyExists || contentKeyExists) return;
 
-                // Otherwise, return the default message.
+                // Otherwise, return the default message
                 return {error: defaultMessage};
             }
         }
 
-        // Function that fetches an announcement by its ID.
+        // Function that fetches an announcement by its ID
         async function fetchAnnouncement(id) {
             const response = await fetch(`/api/v1/announcements/${id}`);
             const result = await handleFetchAnnouncementResponse(response);
             if (result?.error) {
                 alert(result.error);
 
-                // Close the modal if an error occurred while fetching the article.
+                // Close the modal if an error occurred while fetching the article
                 document.getElementById("close-modal-button").click();
             }
         }
 
-        // Function that handles the response from the fetch announcement request and updates the UI accordingly.
+        // Function that handles the response from the fetch announcement request and updates the UI accordingly
         async function handleFetchAnnouncementResponse(response) {
             const defaultMessage = "Something went wrong while fetching the announcement. " +
                 "Please try again. If the problem persists, please contact our Support.";

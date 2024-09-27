@@ -7,7 +7,7 @@ $(document).ready(function () {
     const cancelModalTitle = $("#cancel-modal-title");
     const editCancelButton = $("#edit-cancel-button");
 
-    // Create a new FullCalendar instance.
+    // Create a new FullCalendar instance
     const calendar = new FullCalendar.Calendar($('#calendar')[0], {
         themeSystem: "bootstrap",
         headerToolbar: {
@@ -33,71 +33,71 @@ $(document).ready(function () {
             const formattedAppointmentDateTime = event.extendedProps.formattedAppointmentDateTime;
             const clientFullName = event.extendedProps.clientFullName;
 
-            // Set form values.
+            // Set form values
             $("#edit-title").val(title);
             $("#edit-description").val(description);
             $("#edit-datetime").val(formattedAppointmentDateTime);
             $("#edit-client-fullname").val(clientFullName);
 
-            // Attach click event handler for the save button.
+            // Attach click event handler for the save button
             $("#edit-save-button").off("click").on("click", () => updateAppointment(event));
 
             if (event.start > new Date()) {
-                // If the appointment is in the future, allow the user to cancel it.
-                // Set the text of the cancel button to 'Cancel Appointment'.
+                // If the appointment is in the future, allow the user to cancel it
+                // Set the text of the cancel button to 'Cancel Appointment'
                 editCancelButton.text("Cancel Appointment");
 
-                // Change the cancel button color to danger.
+                // Change the cancel button color to danger
                 editCancelButton.removeClass("btn-primary").addClass("btn-danger");
 
-                // Enable the cancel button.
+                // Enable the cancel button
                 editCancelButton.prop("disabled", false);
 
-                // Set the data-bs-toggle and data-bs-target attributes to show the cancel modal.
+                // Set the data-bs-toggle and data-bs-target attributes to show the cancel modal
                 editCancelButton.attr("data-bs-toggle", "modal");
                 editCancelButton.attr("data-bs-target", "#cancel-modal");
 
-                // Attach click event handler for the cancel button.
+                // Attach click event handler for the cancel button
                 editCancelButton.off("click").on("click", () => {
-                    // Set cancel modal title.
+                    // Set cancel modal title
                     cancelModalTitle.text(`${title} (${formattedAppointmentDateTime})`);
                 });
 
-                // Attach click event handler for the confirm cancellation button.
+                // Attach click event handler for the confirm cancellation button
                 confirmCancellationButton.off("click").on("click", () => cancelAppointment(event.id));
             } else if (event.start < new Date() && event.extendedProps.status === "SCHEDULED") {
-                // If the appointment is in the past, and the status is 'SCHEDULED', allow the user to mark it as completed.
-                // Set the text of the cancel button to 'Mark as Completed'.
+                // If the appointment is in the past, and the status is 'SCHEDULED', allow the user to mark it as completed
+                // Set the text of the cancel button to 'Mark as Completed'
                 editCancelButton.text("Mark as Completed");
 
-                // Change the cancel button color to green.
+                // Change the cancel button color to green
                 editCancelButton.removeClass("btn-danger").addClass("btn-primary");
 
-                // Enable the cancel button.
+                // Enable the cancel button
                 editCancelButton.prop("disabled", false);
 
-                // Remove the data-bs-toggle and data-bs-target attributes.
+                // Remove the data-bs-toggle and data-bs-target attributes
                 editCancelButton.removeAttr("data-bs-toggle");
                 editCancelButton.removeAttr("data-bs-target");
 
-                // Attach click event handler for the cancel button (now used to mark the appointment as completed).
+                // Attach click event handler for the cancel button (now used to mark the appointment as completed)
                 editCancelButton.off("click").on("click", () => completeAppointment(event.id));
             } else {
-                // Set the text of the cancel button to 'Completed'.
+                // Set the text of the cancel button to 'Completed'
                 editCancelButton.text("Completed");
 
                 // Change the cancel button color to primary.
                 editCancelButton.removeClass("btn-danger").addClass("btn-primary");
 
-                // Disable the cancel button.
+                // Disable the cancel button
                 editCancelButton.prop("disabled", true);
             }
 
-            // Show edit modal.
+            // Show edit modal
             editModal.modal("toggle");
         },
         dateClick: function (info) {
-            // Set the date to the selected date, and an arbitrary time.
+            // Set the date to the selected date, and an arbitrary time
             $("#create-datetime").val(`${info.dateStr}T12:00`);
 
             // Show create modal.

@@ -154,10 +154,10 @@
         "use strict";
 
         function fillDeleteModal(name, date, id, index) {
-            // Set the title of the modal.
+            // Set the title of the modal
             document.getElementById("title-delete-modal").textContent = `Delete Appointment #${index}`;
 
-            // Set onclick event for the delete button.
+            // Set onclick event for the delete button
             const confirmDeletionButton = document.getElementById("confirm-deletion-button");
             confirmDeletionButton.onclick = () => {
                 addSpinner(confirmDeletionButton);

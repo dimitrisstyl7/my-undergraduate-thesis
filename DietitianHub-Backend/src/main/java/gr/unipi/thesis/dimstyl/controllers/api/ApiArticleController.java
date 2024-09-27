@@ -29,13 +29,13 @@ public class ApiArticleController {
     @PostMapping
     public ResponseEntity<Map<String, String>> createArticle(@Valid @RequestBody ArticleDto articleDto,
                                                              BindingResult result) {
-        // If there are no errors, proceed with creating the article.
+        // If there are no errors, proceed with creating the article
         if (!result.hasErrors()) {
             articleService.createArticle(articleDto);
             return ResponseEntity.noContent().location(URI.create("/articles?publishSuccess")).build();
         }
 
-        // Otherwise, return a bad request.
+        // Otherwise, return a bad request
         Optional<String> titleError = ValidationErrorUtil.getTitleError(result);
         Optional<String> contentError = ValidationErrorUtil.getError("content", result);
         Map<String, String> errors = new HashMap<>() {
@@ -54,13 +54,13 @@ public class ApiArticleController {
     public ResponseEntity<Map<String, String>> updateArticle(@PathVariable("id") int id,
                                                              @Valid @RequestBody ArticleDto articleDto,
                                                              BindingResult result) {
-        // If there are no errors, proceed with updating the article.
+        // If there are no errors, proceed with updating the article
         if (!result.hasErrors()) {
             articleService.updateArticle(id, articleDto);
             return ResponseEntity.noContent().location(URI.create("/articles?updateSuccess")).build();
         }
 
-        // Otherwise, return a bad request.
+        // Otherwise, return a bad request
         Optional<String> titleError = ValidationErrorUtil.getTitleError(result);
         Optional<String> contentError = ValidationErrorUtil.getError("content", result);
         Map<String, String> errors = new HashMap<>() {

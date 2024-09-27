@@ -255,7 +255,7 @@
 
     <!-- Custom scripts -->
     <script th:inline="javascript" th:if="${registerValidationsFailed}">
-        // Server-side register client validations returned errors. Open the main modal.
+        // Server-side register client validations returned errors, open the main modal
         window.onload = () => {
             document.getElementById("registration-button").click();
             document.getElementById("date-of-birth").value = [[${dateOfBirth}]];
@@ -263,8 +263,8 @@
     </script>
 
     <script th:inline="javascript" th:if="${updateValidationsFailed}">
-        // Server-side update client validations returned errors.
-        // Open the main modal and fill it with the edited client's data.
+        // Server-side update client validations returned errors,
+        // open the main modal and fill it with the edited client's data
         window.onload = () => {
             document.getElementById('update-anchor-button-' + [[${editedClient.id}]]).click();
             document.getElementById("first-name").value = [[${editedClient.firstName}]];
@@ -278,11 +278,11 @@
     </script>
 
     <script th:inline="javascript">
-        // Change page title.
+        // Change page title
         const pageTitle = document.getElementsByClassName("page-title-main");
         pageTitle[0].textContent = "Clients";
 
-        // Reset main form and validation errors on main modal close.
+        // Reset main form and validation errors on main modal close
         document.getElementById("main-modal").onhidden = () => {
             document.getElementById("main-form").reset();
             document.getElementsByClassName("validation-error").forEach(element => {
@@ -290,12 +290,12 @@
             });
         }
 
-        // Reset client tags form on client tags modal close.
+        // Reset client tags form on client tags modal close
         document.getElementById("client-tags-modal").onhidden = () => document.getElementById("client-tags-form").reset();
 
-        // Function that validates the gender selection in the form and displays an error if none is selected.
+        // Function that validates the gender selection in the form and displays an error if none is selected
         function validateGender() {
-            // Validate gender radio buttons; if none are selected, display an error message and prevent form submission.
+            // Validate gender radio buttons; if none are selected, display an error message and prevent form submission
             const maleRadioButton = document.getElementById("male-radio-button");
             const femaleRadioButton = document.getElementById("female-radio-button");
             if (maleRadioButton.checked || femaleRadioButton.checked) {
@@ -307,22 +307,22 @@
             return false;
         }
 
-        // Function that fills the main modal with the provided data for creating or editing a client.
+        // Function that fills the main modal with the provided data for creating or editing a client
         function fillMainModal(
             action, title, actionButtonText,
             firstName = '', lastName = '', dateOfBirth = '',
             gender = '', email = '', phone = '',
             edit = false
         ) {
-            // Fill the main modal with the provided form action, title, and action button text.
+            // Fill the main modal with the provided form action, title, and action button text
             document.getElementById("main-form").setAttribute("action", action);
             document.querySelector("#main-modal-title").textContent = title;
             document.querySelector("#main-modal .btn-success").textContent = actionButtonText;
 
-            // If the modal is for registering a new client, return.
+            // If the modal is for registering a new client, return
             if (!edit) return;
 
-            // If the modal is for editing a client, fill the form fields with the client's data.
+            // If the modal is for editing a client, fill the form fields with the client's data
             document.getElementById("first-name").value = firstName;
             document.getElementById("last-name").value = lastName;
             document.getElementById("date-of-birth").value = dateOfBirth;
@@ -332,33 +332,33 @@
             document.getElementById("female-radio-button").checked = gender === 'FEMALE';
         }
 
-        // Function that fills the delete modal with the client's name and sets up the deletion confirmation.
+        // Function that fills the delete modal with the client's name and sets up the deletion confirmation
         function fillDeleteModal(clientName, id) {
-            // Set the client's full name who is about to be deleted.
+            // Set the client's full name who is about to be deleted
             document.getElementById("client-fullname-delete-modal").textContent = clientName;
 
-            // Set onclick event for the confirm delete button.
+            // Set onclick event for the confirm delete button
             const confirmClientDeletionButton = document.getElementById("confirm-client-deletion-button");
             confirmClientDeletionButton.onclick = () => {
-                // Add spinner to the confirm delete button and submit the delete form.
+                // Add spinner to the confirm delete button and submit the delete form
                 addSpinner(confirmClientDeletionButton);
                 document.getElementById(`delete-form-${id}`).submit();
             };
         }
 
-        // Function that redirects the user to the diet plan upload page for the selected client.
+        // Function that redirects the user to the diet plan upload page for the selected client
         function redirectToDietPage(id) {
             window.location.href = `/clients/${id}/dietPlans/upload`;
         }
 
-        // Function that fetches and fills the client tags modal with the client's existing tags.
+        // Function that fetches and fills the client tags modal with the client's existing tags
         async function fillClientTagsModal(id) {
             const response = await fetch(`/api/v1/clients/${id}/tags`);
             const result = await handleFillClientTagsResponse(response, id);
             if (result?.error) alert(result.error);
         }
 
-        // Function that handles the response from the client tags fetch and updates the modal accordingly.
+        // Function that handles the response from the client tags fetch and updates the modal accordingly
         async function handleFillClientTagsResponse(response, id) {
             if (!response.ok) {
                 const defaultMessage = "Something went wrong while fetching client tags. " +
@@ -368,13 +368,13 @@
                     const errorResponse = await response.json();
 
                     // If the errorResponse object contains the "redirectUrl" key, and "redirectUrl" has a value,
-                    // redirect to the specified URL.
+                    // redirect to the specified URL
                     if (errorResponse?.redirectUrl) {
                         window.location.href = errorResponse.redirectUrl;
                         return; // Exit the function after redirect
                     }
 
-                    // Otherwise, return the error message (if exists and has value) or the default message.
+                    // Otherwise, return the error message (if exists and has value) or the default message
                     return {error: errorResponse?.message || defaultMessage};
                 } catch (error) {
                     console.error("An error occurred while parsing the response: ", error);
@@ -384,12 +384,12 @@
                 const tags = await response.json();
                 tags.forEach(tag => document.getElementById(`tag-${tag.id}`).checked = true);
 
-                // Set onclick event for the save tags button.
+                // Set onclick event for the save tags button
                 document.getElementById("save-tags-button").onclick = () => saveTags(id);
             }
         }
 
-        // Function that saves the selected tags for the client via an API request.
+        // Function that saves the selected tags for the client via an API request
         async function saveTags(id) {
             const tags = [];
             document
@@ -412,10 +412,10 @@
             if (result?.error) alert(result.error);
         }
 
-        // Function that handles the response from the save tags request and updates the UI accordingly.
+        // Function that handles the response from the save tags request and updates the UI accordingly
         async function handleSaveTagsResponse(response, saveTagsButton) {
             if (!response.ok) {
-                // Remove the spinner and set the button text back to "Save".
+                // Remove the spinner and set the button text back to "Save"
                 removeSpinner(saveTagsButton, "Save");
 
                 const defaultMessage = "Something went wrong while saving the tags. " +

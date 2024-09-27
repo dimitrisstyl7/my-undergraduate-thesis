@@ -294,11 +294,11 @@
     <script th:inline="javascript">
         "use strict";
 
-        // Change page title.
+        // Change page title
         const pageTitle = document.getElementsByClassName("page-title-main");
         pageTitle[0].textContent = "Appointments";
 
-        // Common elements that will be used in multiple functions.
+        // Common elements that will be used in multiple functions
         const createTitle = document.getElementById("create-title");
         const createDescription = document.getElementById("create-description");
         const createDatetime = document.getElementById("create-datetime");
@@ -312,7 +312,7 @@
         const confirmCancellationButton = document.getElementById("confirm-cancellation-button");
         const confirmDeclineButton = document.getElementById("confirm-decline-button");
 
-        // Function that resets the edit modal.
+        // Function that resets the edit modal
         function resetEditModal() {
             clearEditErrorMessages();
             editTitle.value = "";
@@ -320,24 +320,24 @@
             editTitleError.textContent = "";
         }
 
-        // Function that shows an error message for a specific element.
+        // Function that shows an error message for a specific element
         function showErrorMessage(element, message) {
             element.textContent = message;
         }
 
-        // Function that clears the associated error messages for appointment creation.
+        // Function that clears the associated error messages for appointment creation
         function clearCreateErrorMessages() {
             createTitleError.textContent = "";
             createDatetimeError.textContent = "";
             createClientSelectError.textContent = "";
         }
 
-        // Function that clears the associated error messages for appointment edit.
+        // Function that clears the associated error messages for appointment edit
         function clearEditErrorMessages() {
             editTitleError.textContent = "";
         }
 
-        // Function that validates the appointment.
+        // Function that validates the appointment
         function validateCreateAppointment() {
             clearCreateErrorMessages();
 
@@ -354,14 +354,14 @@
             return !titleIsEmpty && !clientSelectIsEmpty && !datetimeIsEmpty && !datetimeIsBeforeNow;
         }
 
-        // Function that validates the appointment.
+        // Function that validates the appointment
         function validateEditAppointment() {
             const titleIsEmpty = editTitle.value.trim() === "";
             if (titleIsEmpty) showErrorMessage(editTitleError, "Title cannot be empty");
             return !titleIsEmpty;
         }
 
-        // Function that fetches the appointments.
+        // Function that fetches the appointments
         async function fetchAppointments() {
             const response = await fetch('/api/v1/appointments');
             const result = await handleFetchAppointmentsResponse(response);
@@ -369,7 +369,7 @@
             else return result;
         }
 
-        // Function that handles the response from the fetch appointments request.
+        // Function that handles the response from the fetch appointments request
         async function handleFetchAppointmentsResponse(response) {
             if (response.ok) return await response.json();
             else {
@@ -379,18 +379,18 @@
             }
         }
 
-        // Function that creates an appointment.
+        // Function that creates an appointment
         async function createAppointment() {
-            // Validate the appointment.
+            // Validate the appointment
             if (!validateCreateAppointment()) return;
 
-            // Get the appointment title and description.
+            // Get the appointment title and description
             const title = createTitle.value.trim();
             const description = createDescription.value.trim();
             const datetime = createDatetime.value;
             const clientId = createClientSelect.value;
 
-            // Create an object with the appointment title, description, datetime, and clientId.
+            // Create an object with the appointment title, description, datetime, and clientId
             const appointment = {
                 title: title,
                 description: description,
@@ -414,9 +414,9 @@
             if (result?.error) alert(result.error);
         }
 
-        // Function that handles the response from the create appointment request and updates the UI accordingly.
+        // Function that handles the response from the create appointment request and updates the UI accordingly
         async function handleCreateAppointmentResponse(response, createButton) {
-            // Remove the spinner and set the button text back to "Save".
+            // Remove the spinner and set the button text back to "Save"
             removeSpinner(createButton, "Save");
 
             if (response.ok) location.reload();

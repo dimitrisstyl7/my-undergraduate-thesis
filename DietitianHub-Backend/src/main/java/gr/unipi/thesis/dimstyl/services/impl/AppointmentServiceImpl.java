@@ -84,13 +84,13 @@ public class AppointmentServiceImpl implements AppointmentService {
                         userInfo.getId()
                 );
 
-        // If there is no appointment with the same scheduled date time and status PENDING, create a new appointment.
+        // If there is no appointment with the same scheduled date time and status PENDING, create a new appointment
         if (appointmentOptional.isEmpty()) {
             Appointment appointment = appointmentDto.toAppointment(userInfo);
             appointment.setStatus(AppointmentStatus.SCHEDULED);
             appointmentRepository.save(appointment);
         } else {
-            // If there is an appointment with the same scheduled date time and status PENDING, update the appointment.
+            // If there is an appointment with the same scheduled date time and status PENDING, update the appointment
             Appointment appointment = appointmentOptional.get();
             appointment.setTitle(appointmentDto.title());
             appointment.setDescription(appointmentDto.description());

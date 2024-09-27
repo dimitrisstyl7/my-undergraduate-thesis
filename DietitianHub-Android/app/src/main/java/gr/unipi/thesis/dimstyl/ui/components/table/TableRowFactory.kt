@@ -21,7 +21,7 @@ fun <T> createTableRowsData(
 
         cellsWeight.forEachIndexed { weightIndex, weight ->
             when (weightIndex) {
-                // First cell contains the current row number (#).
+                // First cell contains the current row number (#)
                 0 -> cells.add(
                     TextCellData(
                         weight = weight,
@@ -45,7 +45,7 @@ fun <T> createTableRowsData(
                     }
                 )
 
-                // All other cells contains the row data.
+                // All other cells contains the row data
                 else -> cells.add(TextCellData(weight = weight, text = getText(item)))
             }
         }

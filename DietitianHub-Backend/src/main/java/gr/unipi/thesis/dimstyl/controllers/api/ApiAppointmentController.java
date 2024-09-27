@@ -37,13 +37,13 @@ public class ApiAppointmentController {
     @PostMapping
     public ResponseEntity<Map<String, String>> createAppointment(@Valid @RequestBody AppointmentDto appointmentDto,
                                                                  BindingResult result) {
-        // If there are no errors, proceed with creating the appointment.
+        // If there are no errors, proceed with creating the appointment
         if (!result.hasErrors()) {
             appointmentService.createAppointment(appointmentDto);
             return ResponseEntity.noContent().build();
         }
 
-        // Otherwise, return a bad request.
+        // Otherwise, return a bad request
         Optional<String> titleError = ValidationErrorUtil.getTitleError(result);
         Optional<String> startError = ValidationErrorUtil.getError("start", result);
         Optional<String> clientError = ValidationErrorUtil.getError("clientId", result);
@@ -64,7 +64,7 @@ public class ApiAppointmentController {
     public ResponseEntity<Map<String, String>> updateAppointment(@PathVariable("id") int id,
                                                                  @Valid @RequestBody AppointmentDto appointmentDto,
                                                                  BindingResult result) {
-        // If there is an error in title, return a bad request.
+        // If there is an error in title, return a bad request
         if (result.hasFieldErrors("title")) {
             Optional<String> titleError = ValidationErrorUtil.getTitleError(result);
 
@@ -75,7 +75,7 @@ public class ApiAppointmentController {
                     .orElseGet(() -> ResponseEntity.badRequest().build());
         }
 
-        // Otherwise, continue with updating the appointment.
+        // Otherwise, continue with updating the appointment
         appointmentService.updateAppointment(id, appointmentDto);
         return ResponseEntity.noContent().build();
     }

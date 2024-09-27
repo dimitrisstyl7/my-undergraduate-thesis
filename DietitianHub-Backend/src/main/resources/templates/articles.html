@@ -249,11 +249,11 @@
     <script th:inline="javascript">
         "use strict";
 
-        // Change page title.
+        // Change page title
         const pageTitle = document.getElementsByClassName("page-title-main");
         pageTitle[0].textContent = "Articles";
 
-        // Common elements that will be used in multiple functions.
+        // Common elements that will be used in multiple functions
         const editors = document.getElementsByClassName("ql-editor");  // editors[0] -> preview, editors[1] -> edit
         const editorsErrorMessage = document.getElementById("editors-error-message");
 
@@ -270,7 +270,7 @@
         const publishButtonDiv = document.getElementById("publish-button-div");
         const updateButtonDiv = document.getElementById("update-button-div");
 
-        // Function that configures the modal for creating a new article.
+        // Function that configures the modal for creating a new article
         function configureModalForCreation() {
             editArticleTab.setAttribute("aria-expanded", "true");
             editArticleTab.classList.add("active");
@@ -284,7 +284,7 @@
             showPublishButton();
         }
 
-        // Function that configures the modal for viewing/updating an existing article.
+        // Function that configures the modal for viewing/updating an existing article
         async function configureModalForViewing(articleId) {
             editArticleTab.setAttribute("aria-expanded", "false");
             editArticleTab.classList.remove("active");
@@ -297,67 +297,67 @@
             disableTagCheckboxes();
             showUpdateButton();
 
-            // Fetch the article by its ID.
+            // Fetch the article by its ID
             await fetchArticle(articleId);
 
-            // Adjust the size of the input field for the article title.
+            // Adjust the size of the input field for the article title
             articleTitle.size = articleTitle.value.length;
 
-            // Set onclick event for the update button.
+            // Set onclick event for the update button
             document.getElementById("update-button").onclick = () => updateArticle(articleId);
 
-            // Disable the contenteditable attribute of the edit article editor.
+            // Disable the contenteditable attribute of the edit article editor
             editors[0].setAttribute("contenteditable", "false");
         }
 
-        // Function that shows publish button.
+        // Function that shows publish button
         function showPublishButton() {
             publishButtonDiv.style.display = "block";
             updateButtonDiv.style.display = "none";
         }
 
-        // Function that shows update button.
+        // Function that shows update button
         function showUpdateButton() {
             publishButtonDiv.style.display = "none";
             updateButtonDiv.style.display = "block";
         }
 
-        // Function that enables or disables editing of the article title.
+        // Function that enables or disables editing of the article title
         function toggleTitleEditing(editing) {
             if (editing) {
-                // Enable the input field for the article title.
+                // Enable the input field for the article title
                 articleTitle.removeAttribute("disabled");
 
                 enableTagCheckboxes();
             } else {
-                // Disable the input field for the article title.
+                // Disable the input field for the article title
                 articleTitle.setAttribute("disabled", "true");
 
-                // Disable the contenteditable attribute of the edit article editor.
+                // Disable the contenteditable attribute of the edit article editor
                 editors[0].setAttribute("contenteditable", "false");
 
-                // Copy the content of the edit article editor to the view article editor.
+                // Copy the content of the edit article editor to the view article editor
                 editors[0].innerHTML = editors[1].innerHTML;
 
                 disableTagCheckboxes();
             }
         }
 
-        // Function that enables all tag checkboxes.
+        // Function that enables all tag checkboxes
         function enableTagCheckboxes() {
             document.querySelectorAll("input[type='checkbox']").forEach(function (item) {
                 item.removeAttribute("disabled");
             });
         }
 
-        // Function that disables all tag checkboxes.
+        // Function that disables all tag checkboxes
         function disableTagCheckboxes() {
             document.querySelectorAll("input[type='checkbox']").forEach(function (item) {
                 item.setAttribute("disabled", "true");
             });
         }
 
-        // Function that clears the error messages.
+        // Function that clears the error messages
         function clearErrors() {
             articleTitle.classList.remove("border-danger", "border-2");
             articleTitleErrorMessage.textContent = "";
@@ -369,7 +369,7 @@
             editArticleCard.classList.remove("border-danger", "border-2");
         }
 
-        // Function that clears the article title, content, tags, and error messages.
+        // Function that clears the article title, content, tags, and error messages
         function clearArticle() {
             // Clear the article title.
             articleTitle.value = "";

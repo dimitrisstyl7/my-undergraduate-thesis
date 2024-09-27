@@ -10,8 +10,8 @@ import java.util.Optional;
 public final class ValidationErrorUtil {
 
     public static Optional<String> getTitleError(BindingResult result) {
-        ObjectError fieldError = result.getFieldError("title"); // @NotBlank and @Size constraints.
-        ObjectError globalError = result.getGlobalError(); // @UniqueTitle constraint.
+        ObjectError fieldError = result.getFieldError("title"); // @NotBlank and @Size constraints
+        ObjectError globalError = result.getGlobalError(); // @UniqueTitle constraint
 
         if (fieldError != null) return Optional.ofNullable(fieldError.getDefaultMessage());
         else if (globalError != null) return Optional.ofNullable(globalError.getDefaultMessage());

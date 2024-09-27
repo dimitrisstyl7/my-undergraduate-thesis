@@ -24,23 +24,23 @@ public class TitleExistenceValidator implements ConstraintValidator<UniqueTitle,
 
     @Override
     public boolean isValid(IdentifiableAndTitleable dto, ConstraintValidatorContext constraintValidatorContext) {
-        // Determine if the dto is an ArticleDto.
+        // Determine if the dto is an ArticleDto
         boolean isArticle = dto instanceof ArticleDto;
 
-        // If the request method is POST (creating a new article/announcement), check if the title already exists.
+        // If the request method is POST (creating a new article/announcement), check if the title already exists
         String httpMethod = request.getMethod();
         if (HttpMethod.valueOf(httpMethod) == HttpMethod.POST) {
             return doesNotExistByTitle(dto, isArticle);
         }
 
-        // Otherwise, the request method is PUT (updating an existing article/announcement).
-        // Allow the old title to be the same as the new title.
-        // If old title != new title, check if the new title already exists.
+        // Otherwise, the request method is PUT (updating an existing article/announcement)
+        // Allow the old title to be the same as the new title
+        // If old title != new title, check if the new title already exists
         return oldTitleEqualsNewTitle(dto, isArticle) || doesNotExistByTitle(dto, isArticle);
     }
 
     private boolean doesNotExistByTitle(IdentifiableAndTitleable dto, boolean isArticle) {
-        // Check if the title exists for the appropriate type of dto.
+        // Check if the title exists for the appropriate type of dto
         return isArticle ? !articleService.existsByTitle(dto.title()) : !announcementService.existsByTitle(dto.title());
     }
 
@@ -48,7 +48,7 @@ public class TitleExistenceValidator implements ConstraintValidator<UniqueTitle,
         int id = dto.id();
         String newTitle = dto.title();
 
-        // Compare the old title with the new title based on the type of the dto.
+        // Compare the old title with the new title based on the type of the dto
         return isArticle ?
                 articleService.getArticle(id).title().equals(newTitle) :
                 announcementService.getAnnouncement(id).title().equals(newTitle);

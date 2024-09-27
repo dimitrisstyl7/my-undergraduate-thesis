@@ -33,15 +33,15 @@ fun LandingScreen(
     val currentOnLoginStatusResolved by rememberUpdatedState(onLoginStatusResolved)
 
     LaunchedEffect(loginStatus) {
-        // Minimum delay of 2.5 seconds.
+        // Minimum delay of 2.5 seconds
         delay(2500)
 
-        // Wait for loginStatus to be resolved.
+        // Wait for loginStatus to be resolved
         while (loginStatus == LoginStatus.UNKNOWN) {
             delay(100)
         }
 
-        // Once loginStatus is resolved, call the callback function.
+        // Once loginStatus is resolved, call the callback function
         currentOnLoginStatusResolved()
     }
 

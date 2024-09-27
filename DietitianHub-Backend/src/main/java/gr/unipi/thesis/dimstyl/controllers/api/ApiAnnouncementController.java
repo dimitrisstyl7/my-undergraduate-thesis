@@ -29,13 +29,13 @@ public class ApiAnnouncementController {
     @PostMapping
     public ResponseEntity<Map<String, String>> createAnnouncement(@Valid @RequestBody AnnouncementDto announcementDto,
                                                                   BindingResult result) {
-        // If there are no errors, proceed with creating the announcement.
+        // If there are no errors, proceed with creating the announcement
         if (!result.hasErrors()) {
             announcementService.createAnnouncement(announcementDto);
             return ResponseEntity.noContent().location(URI.create("/announcements?publishSuccess")).build();
         }
 
-        // Otherwise, return a bad request.
+        // Otherwise, return a bad request
         Optional<String> titleError = ValidationErrorUtil.getTitleError(result);
         Optional<String> contentError = ValidationErrorUtil.getError("content", result);
         Map<String, String> errors = new HashMap<>() {
@@ -54,13 +54,13 @@ public class ApiAnnouncementController {
     public ResponseEntity<Map<String, String>> updateAnnouncement(@PathVariable("id") int id,
                                                                   @Valid @RequestBody AnnouncementDto announcementDto,
                                                                   BindingResult result) {
-        // If there are no errors, proceed with updating the announcement.
+        // If there are no errors, proceed with updating the announcement
         if (!result.hasErrors()) {
             announcementService.updateAnnouncement(id, announcementDto);
             return ResponseEntity.noContent().location(URI.create("/announcements?updateSuccess")).build();
         }
 
-        // Otherwise, return a bad request.
+        // Otherwise, return a bad request
         Optional<String> titleError = ValidationErrorUtil.getTitleError(result);
         Optional<String> contentError = ValidationErrorUtil.getError("content", result);
         Map<String, String> errors = new HashMap<>() {
