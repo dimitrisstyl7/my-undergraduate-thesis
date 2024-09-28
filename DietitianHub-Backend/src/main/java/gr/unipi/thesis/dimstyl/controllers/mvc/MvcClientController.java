@@ -2,6 +2,7 @@ package gr.unipi.thesis.dimstyl.controllers.mvc;
 
 import gr.unipi.thesis.dimstyl.dtos.ClientDto;
 import gr.unipi.thesis.dimstyl.dtos.DietPlanDto;
+import gr.unipi.thesis.dimstyl.dtos.TagDto;
 import gr.unipi.thesis.dimstyl.entities.User;
 import gr.unipi.thesis.dimstyl.enums.RequestType;
 import gr.unipi.thesis.dimstyl.services.DietPlanService;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -163,6 +165,17 @@ public class MvcClientController {
         User user = userService.getUser(clientId);
         dietPlanService.deleteDietPlan(dietPlanId, user.getUserInfo());
         return "redirect:/clients/%d/dietPlans/upload?deleteSuccess".formatted(clientId);
+    }
+
+    @GetMapping("/{id}/tags")
+    public ResponseEntity<List<TagDto>> getClientTags(@PathVariable("id") int id) {
+        return ResponseEntity.ok(userInfoService.getClientTags(id, RequestType.WEB_API));
+    }
+
+    @PutMapping("/{id}/tags")
+    public ResponseEntity<Void> updateClientTags(@PathVariable("id") int id, @RequestBody List<Integer> tagIds) {
+        userInfoService.updateClientTags(id, tagIds, RequestType.WEB_API);
+        return ResponseEntity.noContent().location(URI.create("/clients?tagsUpdateSuccess")).build();
     }
 
 }

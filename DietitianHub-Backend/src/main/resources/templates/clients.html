@@ -242,10 +242,6 @@
                                     class="ms-1" th:text="${c.email}"></span>
                             </p>
                         </div>
-
-                        <button type="button" class="btn btn-primary rounded-pill waves-effect waves-light">Send
-                            Message
-                        </button>
                     </div>
                 </div>
             </div>
@@ -353,7 +349,7 @@
 
         // Function that fetches and fills the client tags modal with the client's existing tags
         async function fillClientTagsModal(id) {
-            const response = await fetch(`/api/v1/clients/${id}/tags`);
+            const response = await fetch(`/clients/${id}/tags`);
             const result = await handleFillClientTagsResponse(response, id);
             if (result?.error) alert(result.error);
         }
@@ -399,7 +395,7 @@
             const saveTagsButton = document.getElementById("save-tags-button");
             addSpinner(saveTagsButton); // Add spinner to the save button
 
-            const response = await fetch(`/api/v1/clients/${id}/tags`, {
+            const response = await fetch(`/clients/${id}/tags`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

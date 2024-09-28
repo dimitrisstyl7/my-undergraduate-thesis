@@ -42,12 +42,12 @@ public class SecurityConfig {
                                 "/images/**", "/js/**", "/libs/**",
                                 "error/**", "/auth/updateCredentials/confirmation"
                         ).permitAll()
-                        .requestMatchers("auth/updateCredentials").hasAuthority(UserRole.CLIENT.toString())
+                        .requestMatchers("/auth/updateCredentials").hasAuthority(UserRole.CLIENT.toString())
                         .anyRequest().hasAuthority(UserRole.DIETITIAN.toString())
                 )
                 .formLogin(form -> form
                         .loginPage("/auth/login")
-                        .loginProcessingUrl("/auth/authenticateUser")
+                        .loginProcessingUrl("/auth/authenticate")
                         .failureUrl("/auth/login?error")
                         .permitAll()
                 )

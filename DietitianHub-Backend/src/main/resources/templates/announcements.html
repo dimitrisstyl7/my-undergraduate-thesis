@@ -493,7 +493,7 @@
             const publishButton = document.getElementById("publish-button");
             addSpinner(publishButton); // Add spinner to the publish button
 
-            const response = await fetch('/api/v1/announcements', {
+            const response = await fetch('/announcements', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -547,7 +547,7 @@
 
         // Function that fetches an announcement by its ID
         async function fetchAnnouncement(id) {
-            const response = await fetch(`/api/v1/announcements/${id}`);
+            const response = await fetch(`/announcements/${id}`);
             const result = await handleFetchAnnouncementResponse(response);
             if (result?.error) {
                 alert(result.error);
@@ -605,7 +605,7 @@
             const updateButton = document.getElementById("update-button");
             addSpinner(updateButton); // Add spinner to the update button
 
-            const response = await fetch(`/api/v1/announcements/${id}`, {
+            const response = await fetch(`/announcements/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -668,7 +668,7 @@
         async function deleteAnnouncement(id, confirmDeletionButton) {
             addSpinner(confirmDeletionButton); // Add spinner to the confirm deletion button
 
-            const response = await fetch(`/api/v1/announcements/${id}`, {
+            const response = await fetch(`/announcements/${id}`, {
                 method: 'DELETE',
                 headers: {
                     [[${_csrf.headerName}]]: [[${_csrf.token}]]

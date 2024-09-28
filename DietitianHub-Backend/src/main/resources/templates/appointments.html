@@ -363,7 +363,7 @@
 
         // Function that fetches the appointments
         async function fetchAppointments() {
-            const response = await fetch('/api/v1/appointments');
+            const response = await fetch('/appointments');
             const result = await handleFetchAppointmentsResponse(response);
             if (result?.error) alert(result.error);
             else return result;
@@ -401,7 +401,7 @@
             const createButton = document.getElementById("create-submit-button");
             addSpinner(createButton); // Add spinner to the create button
 
-            const response = await fetch('/api/v1/appointments', {
+            const response = await fetch('/appointments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -480,7 +480,7 @@
             const saveButton = document.getElementById("edit-save-button");
             addSpinner(saveButton); // Add spinner to the save button
 
-            const response = await fetch(`/api/v1/appointments/${event.id}`, {
+            const response = await fetch(`/appointments/${event.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -543,7 +543,7 @@
             const completeButtonInnerHtml = completeButton.innerHTML;
             addSpinner(completeButton); // Add spinner to the complete button
 
-            const response = await fetch(`/api/v1/appointments/${id}/complete`, {
+            const response = await fetch(`/appointments/${id}/complete`, {
                 method: 'PATCH',
                 headers: {
                     [[${_csrf.headerName}]]: [[${_csrf.token}]]
@@ -588,7 +588,7 @@
         async function cancelAppointment(id) {
             addSpinner(confirmCancellationButton); // Add spinner to the confirm cancellation button
 
-            const response = await fetch(`/api/v1/appointments/${id}/cancel`, {
+            const response = await fetch(`/appointments/${id}/cancel`, {
                 method: 'PATCH',
                 headers: {
                     [[${_csrf.headerName}]]: [[${_csrf.token}]]
@@ -636,7 +636,7 @@
         async function declineAppointment(id) {
             addSpinner(confirmDeclineButton); // Add spinner to the confirm decline button
 
-            const response = await fetch(`/api/v1/appointments/${id}/decline`, {
+            const response = await fetch(`/appointments/${id}/decline`, {
                 method: 'PATCH',
                 headers: {
                     [[${_csrf.headerName}]]: [[${_csrf.token}]]
@@ -685,7 +685,7 @@
             const approveButton = document.getElementById(`approve-appointment-${id}-button`);
             addSpinner(approveButton); // Add spinner to the approval button
 
-            const response = await fetch(`/api/v1/appointments/${id}/approve`, {
+            const response = await fetch(`/appointments/${id}/approve`, {
                 method: 'PATCH',
                 headers: {
                     [[${_csrf.headerName}]]: [[${_csrf.token}]]
