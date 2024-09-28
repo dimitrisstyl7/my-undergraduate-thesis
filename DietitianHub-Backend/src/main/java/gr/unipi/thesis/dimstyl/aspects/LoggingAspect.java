@@ -13,24 +13,24 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LoggingAspect {
 
-    @Pointcut("execution(public * com.dimstyl.dietitianhub.services.impl.*.*(..))")
+    @Pointcut("execution(public * gr.unipi.thesis.dimstyl.services.impl.*.*(..))")
     public void servicePackageMethods() {
     }
 
-    @Pointcut("execution(public * gr.unipi.thesis.dimstyl.security.CustomUserDetailsService.*(..))")
-    public void customUserDetailsServiceMethods() {
+    @Pointcut("execution(public * gr.unipi.thesis.dimstyl.security.*Service.*(..))")
+    public void securityPackageServicesMethods() {
     }
 
     @Pointcut("execution(public * gr.unipi.thesis.dimstyl.email.EmailServiceImpl.*(..))")
     public void emailServiceImplMethods() {
     }
 
-    @Pointcut("servicePackageMethods() || customUserDetailsServiceMethods() || emailServiceImplMethods()")
+    @Pointcut("servicePackageMethods() || securityPackageServicesMethods() || emailServiceImplMethods()")
     public void serviceLayerMethods() {
     }
 
-    @Pointcut("execution(public * gr.unipi.thesis.dimstyl.scheduling.AppointmentStatusScheduler.updatePastAppointmentsStatus(..))")
-    public void updatePastAppointmentsStatusMethod() {
+    @Pointcut("execution(public * gr.unipi.thesis.dimstyl.scheduling.AppointmentStatusScheduler.markScheduledAppointmentsBeforeNowAsCompleted(..))")
+    public void markScheduledAppointmentsBeforeNowAsCompletedMethod() {
     }
 
     @AfterThrowing(pointcut = "serviceLayerMethods()", throwing = "ex")
@@ -48,7 +48,7 @@ public class LoggingAspect {
         throw ex;
     }
 
-    @Before("updatePastAppointmentsStatusMethod()")
+    @Before("markScheduledAppointmentsBeforeNowAsCompletedMethod()")
     public void logScheduledMethod(JoinPoint joinPoint) {
         String methodName = joinPoint.getSignature().getName();
         log.info("Scheduled task: Updating status of past appointments in method: {}", methodName);
