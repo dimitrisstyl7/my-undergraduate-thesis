@@ -1,0 +1,40 @@
+spring:
+  # Data source configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/clientDietitian_db
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+  # JPA configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Mail server configuration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: thesis.unipi.p20004@gmail.com
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  # Turn off the Spring Boot banner
+  main:
+    banner-mode: off
+
+# JWT configuration
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET}
+      expiration: 2629800000 # 1 month in milliseconds
