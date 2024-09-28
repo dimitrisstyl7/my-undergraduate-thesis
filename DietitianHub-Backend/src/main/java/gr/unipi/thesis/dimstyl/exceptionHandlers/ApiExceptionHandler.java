@@ -9,6 +9,8 @@ import gr.unipi.thesis.dimstyl.exceptions.article.ArticleNotFoundException;
 import gr.unipi.thesis.dimstyl.exceptions.tag.TagsMismatchException;
 import gr.unipi.thesis.dimstyl.exceptions.user.ApiUserInfoNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -117,6 +119,32 @@ public class ApiExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 """
                         You cannot mark as complete an appointment that is scheduled for the future.""",
+                null
+        );
+    }
+
+    @ExceptionHandler(DisabledException.class)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    protected ErrorResponse handleDisabledException() {
+        return new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.FORBIDDEN.value(),
+                """
+                        Your account has been disabled. \
+                        If you are a new user, please check your inbox for an activation email. \
+                        For existing users, please contact our Support team for assistance.""",
+                null
+        );
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    protected ErrorResponse handleBadCredentialsException() {
+        return new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.FORBIDDEN.value(),
+                """
+                        The username or password you entered is incorrect. Please try again.""",
                 null
         );
     }
