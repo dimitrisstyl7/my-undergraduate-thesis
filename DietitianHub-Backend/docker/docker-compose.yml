@@ -2,16 +2,23 @@ services:
   postgres:
     container_name: postgres-dietitianHub
     image: postgres:16.4
-    restart: always
     environment:
       POSTGRES_PASSWORD: 1234
       POSTGRES_DB: clientDietitian_db
-    ports:
-      - "5432:5432"
+      PGDATA: /var/lib/postgresql/data
     volumes:
       - postgres_data:/var/lib/postgresql/data
       # Initialize the database with the scripts in the sql-scripts directory
       - ./sql-scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - dietitianHub-network
+    restart: unless-stopped
+
+networks:
+  dietitianHub-network:
+    driver: bridge
 
 volumes:
   postgres_data:
