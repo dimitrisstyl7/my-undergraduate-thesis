@@ -11,7 +11,6 @@ import gr.unipi.thesis.dimstyl.exceptions.user.MvcUserInfoNotFoundException;
 import gr.unipi.thesis.dimstyl.repositories.UserInfoRepository;
 import gr.unipi.thesis.dimstyl.services.TagService;
 import gr.unipi.thesis.dimstyl.services.UserInfoService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +23,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     private final UserInfoRepository userInfoRepository;
     private final TagService tagService;
-    private final HttpServletRequest request;
 
     @Override
     public void saveUserInfo(ClientDto clientDto, User user) {
@@ -34,8 +32,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     @Transactional
-    public void updateUserInfo(ClientDto clientDto, int userId) {
-        UserInfo existingUserInfo = getUserInfo(userId);
+    public void updateUserInfo(ClientDto clientDto, int userId, RequestType requestType) {
+        UserInfo existingUserInfo = getUserInfo(userId, requestType);
         existingUserInfo.setFirstName(clientDto.getFirstName());
         existingUserInfo.setLastName(clientDto.getLastName());
         existingUserInfo.setGender(clientDto.getGender());
@@ -45,8 +43,8 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public List<TagDto> getClientTags(int userId) {
-        UserInfo userInfo = getUserInfo(userId);
+    public List<TagDto> getClientTags(int userId, RequestType requestType) {
+        UserInfo userInfo = getUserInfo(userId, requestType);
         return userInfo.getTags().stream()
                 .map(Tag::toDto)
                 .toList();
@@ -54,21 +52,19 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     @Transactional
-    public void updateClientTags(int userId, List<Integer> tagIds) {
-        UserInfo userInfo = getUserInfo(userId);
+    public void updateClientTags(int userId, List<Integer> tagIds, RequestType requestType) {
+        UserInfo userInfo = getUserInfo(userId, requestType);
         List<Tag> tags = tagService.getTags(tagIds);
         userInfo.setTags(tags);
     }
 
     @Override
-    public UserInfo getUserInfo(int userId) {
-        RequestType requestType = RequestType.byUri(request.getRequestURI());
-
+    public UserInfo getUserInfo(int userId, RequestType requestType) {
         return userInfoRepository
                 .findByUser_Id(userId)
                 .orElseThrow(() -> {
                     String message = "User info not found for user id: %s".formatted(userId);
-                    if (requestType.equals(RequestType.API)) {
+                    if (requestType.equals(RequestType.WEB_API)) {
                         return new ApiUserInfoNotFoundException(message);
                     } else {
                         return new MvcUserInfoNotFoundException(message);

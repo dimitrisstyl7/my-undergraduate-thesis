@@ -3,6 +3,7 @@ package gr.unipi.thesis.dimstyl.controllers.mvc;
 import gr.unipi.thesis.dimstyl.dtos.ClientDto;
 import gr.unipi.thesis.dimstyl.dtos.DietPlanDto;
 import gr.unipi.thesis.dimstyl.entities.User;
+import gr.unipi.thesis.dimstyl.enums.RequestType;
 import gr.unipi.thesis.dimstyl.services.DietPlanService;
 import gr.unipi.thesis.dimstyl.services.TagCategoryService;
 import gr.unipi.thesis.dimstyl.services.UserInfoService;
@@ -89,7 +90,7 @@ public class MvcClientController {
         }
 
         int userId = userService.getUser(id).getId();
-        userInfoService.updateUserInfo(clientDto, userId);
+        userInfoService.updateUserInfo(clientDto, userId, RequestType.WEB);
         redirectAttributes.addFlashAttribute("flashAttribute", "Client updated successfully.");
 
         return "redirect:/clients?success";

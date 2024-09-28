@@ -2,6 +2,7 @@ package gr.unipi.thesis.dimstyl.services;
 
 import gr.unipi.thesis.dimstyl.dtos.AppointmentDto;
 import gr.unipi.thesis.dimstyl.enums.AppointmentStatus;
+import gr.unipi.thesis.dimstyl.enums.RequestType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,7 +21,7 @@ public interface AppointmentService {
 
     List<AppointmentDto> getLatest5AppointmentsByStatus(AppointmentStatus status);
 
-    void createAppointment(AppointmentDto appointmentDto);
+    void createAppointment(AppointmentDto appointmentDto, RequestType requestType);
 
     void updateAppointment(int id, AppointmentDto appointmentDto);
 

@@ -4,6 +4,7 @@ import gr.unipi.thesis.dimstyl.dtos.AppointmentDto;
 import gr.unipi.thesis.dimstyl.entities.Appointment;
 import gr.unipi.thesis.dimstyl.entities.UserInfo;
 import gr.unipi.thesis.dimstyl.enums.AppointmentStatus;
+import gr.unipi.thesis.dimstyl.enums.RequestType;
 import gr.unipi.thesis.dimstyl.exceptions.appointment.AppointmentAlreadyExistsException;
 import gr.unipi.thesis.dimstyl.exceptions.appointment.AppointmentIsInTheFutureException;
 import gr.unipi.thesis.dimstyl.exceptions.appointment.AppointmentIsInThePastException;
@@ -74,9 +75,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     @Transactional
-    public void createAppointment(AppointmentDto appointmentDto) {
+    public void createAppointment(AppointmentDto appointmentDto, RequestType requestType) {
         LocalDateTime AppointmentDateTime = appointmentDto.start();
-        UserInfo userInfo = userInfoService.getUserInfo(appointmentDto.clientId());
+        UserInfo userInfo = userInfoService.getUserInfo(appointmentDto.clientId(), requestType);
         Optional<Appointment> appointmentOptional =
                 appointmentRepository.findByAppointmentDateTimeAndStatusAndClientUserInfoId(
                         AppointmentDateTime,

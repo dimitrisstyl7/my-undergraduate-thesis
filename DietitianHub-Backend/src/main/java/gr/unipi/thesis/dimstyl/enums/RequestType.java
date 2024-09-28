@@ -2,7 +2,7 @@ package gr.unipi.thesis.dimstyl.enums;
 
 public enum RequestType {
 
-    WEB, API;
+    WEB, WEB_API, API;
 
     public static RequestType byUri(String uri) {
         return uri.startsWith("/api/") ? API : WEB;
