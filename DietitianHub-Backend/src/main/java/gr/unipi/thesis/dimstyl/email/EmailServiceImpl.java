@@ -1,5 +1,6 @@
 package gr.unipi.thesis.dimstyl.email;
 
+import gr.unipi.thesis.dimstyl.security.CustomUserDetailsService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-import static gr.unipi.thesis.dimstyl.security.CustomUserDetailsService.getUserDetails;
-
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
@@ -21,11 +20,12 @@ public class EmailServiceImpl implements EmailService {
     private String from;
     private final JavaMailSender emailSender;
     private final String htmlTemplate;
+    private final CustomUserDetailsService userDetailsService;
 
     public void sendEmail(String to, Map<String, String> args) throws MessagingException {
         String text = htmlTemplate.formatted(
                 args.get("clientFullName"),
-                getUserDetails().getFullName(),
+                userDetailsService.getUserDetails().getFullName(),
                 args.get("username"),
                 args.get("password")
         );

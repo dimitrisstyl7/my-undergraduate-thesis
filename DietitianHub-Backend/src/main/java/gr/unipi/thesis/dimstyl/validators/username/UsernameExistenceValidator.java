@@ -1,16 +1,16 @@
 package gr.unipi.thesis.dimstyl.validators.username;
 
+import gr.unipi.thesis.dimstyl.security.CustomUserDetailsService;
 import gr.unipi.thesis.dimstyl.services.UserService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 
-import static gr.unipi.thesis.dimstyl.security.CustomUserDetailsService.getUserDetails;
-
 @RequiredArgsConstructor
 public class UsernameExistenceValidator implements ConstraintValidator<Unique, String> {
 
     private final UserService userService;
+    private final CustomUserDetailsService userDetailsService;
 
     @Override
     public void initialize(Unique constraintAnnotation) {
@@ -19,7 +19,7 @@ public class UsernameExistenceValidator implements ConstraintValidator<Unique, S
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        String currentUsername = getUserDetails().getUsername();
+        String currentUsername = userDetailsService.getUserDetails().getUsername();
         return currentUsername.equals(s) || !userService.usernameExists(s);
     }
 

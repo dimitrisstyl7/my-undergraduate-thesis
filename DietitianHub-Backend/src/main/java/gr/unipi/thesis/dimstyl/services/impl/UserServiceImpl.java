@@ -9,6 +9,7 @@ import gr.unipi.thesis.dimstyl.enums.UserRole;
 import gr.unipi.thesis.dimstyl.exceptions.user.RegistrationFailedException;
 import gr.unipi.thesis.dimstyl.exceptions.user.UserNotFoundException;
 import gr.unipi.thesis.dimstyl.repositories.UserRepository;
+import gr.unipi.thesis.dimstyl.security.CustomUserDetailsService;
 import gr.unipi.thesis.dimstyl.services.StorageService;
 import gr.unipi.thesis.dimstyl.services.UserInfoService;
 import gr.unipi.thesis.dimstyl.services.UserService;
@@ -21,14 +22,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 
-import static gr.unipi.thesis.dimstyl.security.CustomUserDetailsService.getUserDetails;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserInfoService userInfoService;
+    private final CustomUserDetailsService userDetailsService;
     private final EmailService emailService;
     private final StorageService storageService;
     private final PasswordEncoder passwordEncoder;
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateClientCredentials(ClientCredentialChangeDto credentialChangeDto) {
-        String oldUsername = getUserDetails().getUsername();
+        String oldUsername = userDetailsService.getUserDetails().getUsername();
         String newUsername = credentialChangeDto.getUsername();
         String password = credentialChangeDto.getPassword();
 

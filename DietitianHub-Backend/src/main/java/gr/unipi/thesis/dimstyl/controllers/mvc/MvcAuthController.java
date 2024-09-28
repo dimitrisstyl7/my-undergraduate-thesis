@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MvcAuthController {
 
     private final UserService userService;
+    private final CustomUserDetailsService userDetailsService;
 
     @GetMapping("/login")
     public String loginPage() {
@@ -44,7 +45,7 @@ public class MvcAuthController {
         }
 
         userService.updateClientCredentials(credentialChangeDto);
-        CustomUserDetailsService.logout(request);
+        userDetailsService.logout(request);
 
         return "redirect:/auth/updateCredentials/confirmation";
     }
