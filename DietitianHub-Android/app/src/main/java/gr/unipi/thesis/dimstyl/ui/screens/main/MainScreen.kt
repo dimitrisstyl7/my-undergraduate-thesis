@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -44,7 +45,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreen(
     navController: NavController = rememberNavController(),
-    viewModel: MainViewModel,
+    viewModel: MainViewModel = viewModel(),
     exitApp: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
