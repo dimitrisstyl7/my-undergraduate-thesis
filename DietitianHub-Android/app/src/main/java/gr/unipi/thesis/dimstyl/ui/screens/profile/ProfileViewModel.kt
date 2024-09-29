@@ -1,8 +1,8 @@
 package gr.unipi.thesis.dimstyl.ui.screens.profile
 
 import androidx.lifecycle.ViewModel
-import gr.unipi.thesis.dimstyl.data.model.Gender
 import gr.unipi.thesis.dimstyl.data.model.ProfileData
+import gr.unipi.thesis.dimstyl.domain.model.Gender
 import gr.unipi.thesis.dimstyl.ui.helpers.convertMillisToDate
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

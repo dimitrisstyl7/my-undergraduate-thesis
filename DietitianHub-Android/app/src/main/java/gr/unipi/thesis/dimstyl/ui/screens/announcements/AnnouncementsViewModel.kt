@@ -2,7 +2,7 @@ package gr.unipi.thesis.dimstyl.ui.screens.announcements
 
 import androidx.lifecycle.ViewModel
 import gr.unipi.thesis.dimstyl.data.model.Announcement
-import gr.unipi.thesis.dimstyl.data.model.AnnouncementSection
+import gr.unipi.thesis.dimstyl.domain.model.AnnouncementSection
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementsFirstSectionBackgroundColor
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementsSecondSectionBackgroundColor
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementsThirdSectionBackgroundColor

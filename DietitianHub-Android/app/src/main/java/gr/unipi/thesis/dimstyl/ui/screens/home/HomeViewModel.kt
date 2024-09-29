@@ -6,8 +6,8 @@ import androidx.compose.material3.Icon
 import androidx.lifecycle.ViewModel
 import gr.unipi.thesis.dimstyl.data.model.Announcement
 import gr.unipi.thesis.dimstyl.data.model.Appointment
-import gr.unipi.thesis.dimstyl.data.model.AppointmentStatus
 import gr.unipi.thesis.dimstyl.data.model.Article
+import gr.unipi.thesis.dimstyl.domain.model.AppointmentStatus
 import gr.unipi.thesis.dimstyl.ui.components.table.HeaderCellData
 import gr.unipi.thesis.dimstyl.ui.components.table.createEmptyTableRowsData
 import gr.unipi.thesis.dimstyl.ui.components.table.createTableRowsData

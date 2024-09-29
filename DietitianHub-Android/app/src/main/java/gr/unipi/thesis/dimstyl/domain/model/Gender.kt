@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.data.model
+package gr.unipi.thesis.dimstyl.domain.model
 
 enum class Gender {
 
