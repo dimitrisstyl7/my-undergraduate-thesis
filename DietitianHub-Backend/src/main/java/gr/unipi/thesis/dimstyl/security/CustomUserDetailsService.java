@@ -35,9 +35,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         // If user is a client and is enabled, then he is not authorized to access the web platform
         boolean isWebRequest = RequestType.byUri(request.getServletPath()).equals(RequestType.WEB);
-        boolean isClient = user.getRole().equals(UserRole.CLIENT);
-        if (isWebRequest && isClient && user.isEnabled()) {
+        boolean hasRoleClient = user.getRole().equals(UserRole.CLIENT);
+        if (isWebRequest && hasRoleClient && user.isEnabled()) {
             throw new AccessDeniedException("User with username %s is not authorized to access the web platform.".formatted(username));
+        }
+
+        // If user is a dietitian and request type is API, then he is not authorized to access the API
+        boolean isApiRequest = RequestType.byUri(request.getServletPath()).equals(RequestType.API);
+        boolean hasRoleDietitian = user.getRole().equals(UserRole.DIETITIAN);
+        if (isApiRequest && hasRoleDietitian) {
+            throw new AccessDeniedException("User with username %s is not authorized to access the API.".formatted(username));
         }
 
         return new CustomUserDetails(user);

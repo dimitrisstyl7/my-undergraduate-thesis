@@ -154,4 +154,16 @@ public class ApiExceptionHandler {
         );
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    protected ErrorResponse handleAccessDeniedException() {
+        return new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.FORBIDDEN.value(),
+                """
+                        Unauthorized access. Please contact our Support team for assistance.""",
+                null
+        );
+    }
+
 }
