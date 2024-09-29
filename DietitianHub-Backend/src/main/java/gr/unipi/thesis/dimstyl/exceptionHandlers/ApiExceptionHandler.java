@@ -9,6 +9,7 @@ import gr.unipi.thesis.dimstyl.exceptions.article.ArticleNotFoundException;
 import gr.unipi.thesis.dimstyl.exceptions.tag.TagsMismatchException;
 import gr.unipi.thesis.dimstyl.exceptions.user.ApiUserInfoNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,7 +29,8 @@ public class ApiExceptionHandler {
                 HttpStatus.NOT_FOUND.value(),
                 """
                         The operation could not be completed because the user was not found. \
-                        Please try again. If the problem persists, please contact our Support.""",
+                        Please try again. If the problem persists, please contact our Support \
+                        team for assistance.""",
                 "/error/userNotFound"
         );
     }
@@ -41,7 +43,7 @@ public class ApiExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 """
                         Something went wrong while processing the tags. Please try again. \
-                        If the problem persists, please contact our Support.""",
+                        If the problem persists, please contact our Support team for assistance.""",
                 "/error/tagsMismatch"
         );
     }
@@ -54,7 +56,8 @@ public class ApiExceptionHandler {
                 HttpStatus.NOT_FOUND.value(),
                 """
                         The operation could not be completed because the article was not found. \
-                        Please try again. If the problem persists, please contact our Support.""",
+                        Please try again. If the problem persists, please contact our Support \
+                        team for assistance.""",
                 "/error/articleNotFound"
         );
     }
@@ -67,7 +70,8 @@ public class ApiExceptionHandler {
                 HttpStatus.NOT_FOUND.value(),
                 """
                         The operation could not be completed because the announcement was not found. \
-                        Please try again. If the problem persists, please contact our Support.""",
+                        Please try again. If the problem persists, please contact our Support team \
+                        for assistance.""",
                 "/error/announcementNotFound"
         );
     }
@@ -80,7 +84,8 @@ public class ApiExceptionHandler {
                 HttpStatus.NOT_FOUND.value(),
                 """
                         The operation could not be completed because the appointment was not found. \
-                        Please try again. If the problem persists, please contact our Support.""",
+                        Please try again. If the problem persists, please contact our Support \
+                        team for assistance.""",
                 "/error/appointmentNotFound"
         );
     }

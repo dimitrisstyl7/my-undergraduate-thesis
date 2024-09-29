@@ -374,7 +374,7 @@
             if (response.ok) return await response.json();
             else {
                 const message = "Something went wrong while fetching the appointments. " +
-                    "Please try again. If the problem persists, please contact our Support.";
+                    "Please try again. If the problem persists, please contact our Support team for assistance.";
                 return {error: message};
             }
         }
@@ -422,7 +422,7 @@
             if (response.ok) location.reload();
             else {
                 const defaultMessage = "Something went wrong while creating the appointment. " +
-                    "Please try again. If the problem persists, please contact our Support.";
+                    "Please try again. If the problem persists, please contact our Support team for assistance.";
                 let errorResponse;
 
                 try {
@@ -507,7 +507,7 @@
                 $("#edit-modal").modal("hide");
             } else {
                 const defaultMessage = "Something went wrong while updating the appointment. " +
-                    "Please try again. If the problem persists, please contact our Support.";
+                    "Please try again. If the problem persists, please contact our Support team for assistance.";
                 let errorResponse;
 
                 try {
@@ -562,7 +562,7 @@
             if (response.ok) location.reload();
             else {
                 const defaultMessage = "Something went wrong while marking as complete the appointment. " +
-                    "Please try again. If the problem persists, please contact our Support.";
+                    "Please try again. If the problem persists, please contact our Support team for assistance.";
                 let errorResponse;
 
                 try {
@@ -610,7 +610,7 @@
             if (response.ok) location.reload();
             else {
                 const defaultMessage = "Something went wrong while cancelling the appointment. " +
-                    "Please try again. If the problem persists, please contact our Support.";
+                    "Please try again. If the problem persists, please contact our Support team for assistance.";
                 let errorResponse;
 
                 try {
@@ -658,7 +658,7 @@
             if (response.ok) location.reload();
             else {
                 const defaultMessage = "Something went wrong while declining the appointment. " +
-                    "Please try again. If the problem persists, please contact our Support.";
+                    "Please try again. If the problem persists, please contact our Support team for assistance.";
                 let errorResponse;
 
                 try {
@@ -704,7 +704,7 @@
             if (response.ok) location.reload();
             else {
                 const defaultMessage = "Something went wrong while approving the appointment. " +
-                    "Please try again. If the problem persists, please contact our Support.";
+                    "Please try again. If the problem persists, please contact our Support team for assistance.";
                 let errorResponse;
 
                 try {

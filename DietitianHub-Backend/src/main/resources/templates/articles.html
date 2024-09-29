@@ -478,7 +478,7 @@
             if (response.ok) window.location.href = response.headers.get('Location');
             else {
                 const defaultMessage = "Something went wrong while publishing the article. " +
-                    "Please try again. If the problem persists, please contact our Support.";
+                    "Please try again. If the problem persists, please contact our Support team for assistance.";
                 let errorResponse;
 
                 try {
@@ -528,7 +528,7 @@
         // Function that handles the response from the fetch article request and updates the UI accordingly.
         async function handleFetchArticleResponse(response) {
             const defaultMessage = "Something went wrong while fetching the article. " +
-                "Please try again. If the problem persists, please contact our Support.";
+                "Please try again. If the problem persists, please contact our Support team for assistance.";
             let result;
 
             try {
@@ -605,7 +605,7 @@
             if (response.ok) window.location.href = response.headers.get('Location');
             else {
                 const defaultMessage = "Something went wrong while updating the article. " +
-                    "Please try again. If the problem persists, please contact our Support.";
+                    "Please try again. If the problem persists, please contact our Support team for assistance.";
                 let errorResponse;
 
                 try {
@@ -666,7 +666,7 @@
             if (response.ok) window.location.href = response.headers.get('Location');
             else {
                 const defaultMessage = "Something went wrong while deleting the article. " +
-                    "Please try again. If the problem persists, please contact our Support.";
+                    "Please try again. If the problem persists, please contact our Support team for assistance.";
                 let errorResponse;
 
                 try {
