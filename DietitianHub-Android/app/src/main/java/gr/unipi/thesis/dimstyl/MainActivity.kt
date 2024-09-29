@@ -6,8 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import gr.unipi.thesis.dimstyl.ui.screens.main.MainScreen
-import gr.unipi.thesis.dimstyl.ui.theme.DietitianHubTheme
+import gr.unipi.thesis.dimstyl.presentation.screens.main.MainScreen
+import gr.unipi.thesis.dimstyl.presentation.theme.DietitianHubTheme
 
 class MainActivity : ComponentActivity() {
 

@@ -4,15 +4,15 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import gr.unipi.thesis.dimstyl.data.repository.AuthRepositoryImpl
-import gr.unipi.thesis.dimstyl.data.source.local.JwtTokenDataStore
-import gr.unipi.thesis.dimstyl.data.source.local.JwtTokenManager
-import gr.unipi.thesis.dimstyl.data.source.remote.AuthApiService
-import gr.unipi.thesis.dimstyl.data.source.remote.OkHttpClientBuilder
-import gr.unipi.thesis.dimstyl.data.source.remote.RetrofitBuilder
-import gr.unipi.thesis.dimstyl.data.source.remote.interceptor.LoggingInterceptor
-import gr.unipi.thesis.dimstyl.domain.repository.AuthRepository
-import gr.unipi.thesis.dimstyl.domain.usecase.LoginUseCase
+import gr.unipi.thesis.dimstyl.data.repositories.AuthRepositoryImpl
+import gr.unipi.thesis.dimstyl.data.sources.local.JwtTokenDataStore
+import gr.unipi.thesis.dimstyl.data.sources.local.JwtTokenManager
+import gr.unipi.thesis.dimstyl.data.sources.remote.AuthApiService
+import gr.unipi.thesis.dimstyl.data.sources.remote.OkHttpClientBuilder
+import gr.unipi.thesis.dimstyl.data.sources.remote.RetrofitBuilder
+import gr.unipi.thesis.dimstyl.data.sources.remote.interceptors.LoggingInterceptor
+import gr.unipi.thesis.dimstyl.domain.repositories.AuthRepository
+import gr.unipi.thesis.dimstyl.domain.usecases.LoginUseCase
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "jwt_tokens")
 
