@@ -65,11 +65,11 @@ fun AppNavHost(
         composable<DietPlans> { DietPlansScreen() }
 
         composable<Login> {
-            LoginScreen {
+            LoginScreen(onSuccessfulLogin = { token ->
                 viewModel.setLoginStatus(LoginStatus.LOGGED_IN)
                 viewModel.setCurrentNavRoute(NavRoute.HOME)
                 navController.navigate(Home) { popUpTo(Login) { inclusive = true } }
-            }
+            })
         }
     }
 

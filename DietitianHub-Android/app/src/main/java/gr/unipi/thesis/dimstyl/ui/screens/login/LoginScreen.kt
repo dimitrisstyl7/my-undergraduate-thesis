@@ -11,8 +11,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -33,15 +30,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import gr.unipi.thesis.dimstyl.App
 import gr.unipi.thesis.dimstyl.R
 import gr.unipi.thesis.dimstyl.ui.components.OutlinedTextField
+import gr.unipi.thesis.dimstyl.ui.components.circularProgressIndicators.ButtonCircularProgressIndicator
+import gr.unipi.thesis.dimstyl.ui.helpers.viewModelFactory
+import gr.unipi.thesis.dimstyl.ui.screens.login.components.LoginButton
 import gr.unipi.thesis.dimstyl.ui.theme.BackgroundGradient
 import gr.unipi.thesis.dimstyl.ui.theme.LeftBarColor
-import gr.unipi.thesis.dimstyl.ui.theme.PrimaryColor
 import gr.unipi.thesis.dimstyl.ui.theme.TopBarColor
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel = viewModel(), onSuccessfulLogin: () -> Unit) {
+fun LoginScreen(
+    viewModel: LoginViewModel = viewModel<LoginViewModel>(
+        factory = viewModelFactory { LoginViewModel(App.appModule.loginUseCase) }
+    ),
+    onSuccessfulLogin: (String) -> Unit
+) {
     val focusManager = LocalFocusManager.current
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -69,8 +74,8 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onSuccessfulLogin: () -
             label = "Username",
             placeholder = "Enter your username",
             value = state.username,
-            isError = false, // TODO: Implement error handling
-            supportingText = null, // TODO: Field validation message
+            isError = state.loginHasError,
+            supportingText = null,
             onValueChange = { viewModel.setUsername(it) },
             readOnly = false,
             leadingIcon = {
@@ -90,8 +95,10 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onSuccessfulLogin: () -
             label = "Password",
             placeholder = "Enter your password",
             value = state.password,
-            isError = false, // TODO: Implement error handling
-            supportingText = null, // TODO: Field validation message
+            isError = state.loginHasError,
+            supportingText = if (state.loginHasError) {
+                { Text(state.errorMessage) }
+            } else null,
             onValueChange = { viewModel.setPassword(it) },
             readOnly = false,
             leadingIcon = {
@@ -116,16 +123,11 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onSuccessfulLogin: () -
             ),
             keyboardActions = KeyboardActions { focusManager.clearFocus() }
         )
-        Button(
-            onClick = onSuccessfulLogin,
-            enabled = state.isLoginButtonEnabled,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = PrimaryColor.copy(alpha = 0.8f),
-                contentColor = Color.White,
-                disabledContainerColor = PrimaryColor.copy(alpha = 0.4f),
-                disabledContentColor = Color.White
-            )
-        ) { Text("Log In") }
+        if (state.processingLoginRequest) ButtonCircularProgressIndicator()
+        else LoginButton(isLoginButtonEnabled = state.isLoginButtonEnabled) {
+            viewModel.setProcessingLoginRequest(true)
+            viewModel.login(onSuccessfulLogin = ({ token -> onSuccessfulLogin(token) }))
+        }
     }
 }
 
