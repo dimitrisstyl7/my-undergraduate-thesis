@@ -35,9 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import gr.unipi.thesis.dimstyl.R
-import gr.unipi.thesis.dimstyl.ui.components.CircularProgressIndicator
 import gr.unipi.thesis.dimstyl.ui.components.OutlinedTextField
 import gr.unipi.thesis.dimstyl.ui.components.SectionTitle
+import gr.unipi.thesis.dimstyl.ui.components.circularProgressIndicators.ScreenCircularProgressIndicator
 import gr.unipi.thesis.dimstyl.ui.components.dialogs.AlertDialog
 import gr.unipi.thesis.dimstyl.ui.components.dialogs.DatePickerDialog
 import gr.unipi.thesis.dimstyl.ui.components.dialogs.TimePickerDialog
@@ -64,7 +64,7 @@ fun AppointmentsScreen(viewModel: AppointmentsViewModel = viewModel()) {
     )
 
     if (appointmentsState.isLoading) {
-        CircularProgressIndicator()
+        ScreenCircularProgressIndicator()
     } else {
         Box(Modifier.fillMaxSize()) {
             LazyColumn(

@@ -23,10 +23,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import gr.unipi.thesis.dimstyl.ui.components.CircularProgressIndicator
 import gr.unipi.thesis.dimstyl.ui.components.SectionTitle
 import gr.unipi.thesis.dimstyl.ui.components.cards.AnnouncementsCardsRow
 import gr.unipi.thesis.dimstyl.ui.components.cards.ArticleCard
+import gr.unipi.thesis.dimstyl.ui.components.circularProgressIndicators.ScreenCircularProgressIndicator
 import gr.unipi.thesis.dimstyl.ui.components.table.Table
 import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
 import gr.unipi.thesis.dimstyl.ui.helpers.LoginStatus
@@ -47,7 +47,7 @@ fun HomeScreen(
     if (loginStatus == LoginStatus.LOGGED_OUT) {
         onNavigateToLoginScreen()
     } else if (state.isLoading) {
-        CircularProgressIndicator()
+        ScreenCircularProgressIndicator()
     } else {
         LazyColumn(
             contentPadding = PaddingValues(vertical = 16.dp),

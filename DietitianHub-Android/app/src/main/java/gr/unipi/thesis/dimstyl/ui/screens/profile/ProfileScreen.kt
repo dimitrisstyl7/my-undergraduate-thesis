@@ -46,9 +46,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import gr.unipi.thesis.dimstyl.R
-import gr.unipi.thesis.dimstyl.data.model.Gender
-import gr.unipi.thesis.dimstyl.ui.components.CircularProgressIndicator
+import gr.unipi.thesis.dimstyl.domain.model.Gender
 import gr.unipi.thesis.dimstyl.ui.components.OutlinedTextField
+import gr.unipi.thesis.dimstyl.ui.components.circularProgressIndicators.ScreenCircularProgressIndicator
 import gr.unipi.thesis.dimstyl.ui.components.dialogs.DatePickerDialog
 import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
 import gr.unipi.thesis.dimstyl.ui.helpers.PastSelectableDates
@@ -74,7 +74,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
     )
 
     if (profileState.isLoading) {
-        CircularProgressIndicator()
+        ScreenCircularProgressIndicator()
     } else {
         Column(Modifier.fillMaxSize()) {
             LazyColumn(

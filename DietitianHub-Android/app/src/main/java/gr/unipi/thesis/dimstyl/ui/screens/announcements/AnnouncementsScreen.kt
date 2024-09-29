@@ -21,8 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import gr.unipi.thesis.dimstyl.ui.components.CircularProgressIndicator
 import gr.unipi.thesis.dimstyl.ui.components.cards.AnnouncementsCardsRow
+import gr.unipi.thesis.dimstyl.ui.components.circularProgressIndicators.ScreenCircularProgressIndicator
 import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
 import gr.unipi.thesis.dimstyl.ui.theme.AnnouncementSectionTitleColor
 
@@ -33,7 +33,7 @@ fun AnnouncementsScreen(viewModel: AnnouncementsViewModel = viewModel()) {
     val context = LocalContext.current
 
     if (state.isLoading) {
-        CircularProgressIndicator()
+        ScreenCircularProgressIndicator()
     } else {
         LazyColumn(
             contentPadding = PaddingValues(top = 16.dp),

@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.ui.components
+package gr.unipi.thesis.dimstyl.ui.components.circularProgressIndicators
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import gr.unipi.thesis.dimstyl.ui.theme.PrimaryColor
 
 @Composable
-fun CircularProgressIndicator() {
+fun ScreenCircularProgressIndicator() {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,

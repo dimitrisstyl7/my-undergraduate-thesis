@@ -20,8 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import gr.unipi.thesis.dimstyl.ui.components.CircularProgressIndicator
 import gr.unipi.thesis.dimstyl.ui.components.cards.ArticleCard
+import gr.unipi.thesis.dimstyl.ui.components.circularProgressIndicators.ScreenCircularProgressIndicator
 import gr.unipi.thesis.dimstyl.ui.helpers.ContentType
 import gr.unipi.thesis.dimstyl.ui.theme.DataNotFoundColor
 
@@ -31,7 +31,7 @@ fun ArticlesScreen(viewModel: ArticlesViewModel = viewModel()) {
     val context = LocalContext.current
 
     if (state.isLoading) {
-        CircularProgressIndicator()
+        ScreenCircularProgressIndicator()
     } else if (state.articles.isEmpty()) {
         Column(
             modifier = Modifier.fillMaxSize(),

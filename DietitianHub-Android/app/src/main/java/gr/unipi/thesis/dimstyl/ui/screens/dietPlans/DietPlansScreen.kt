@@ -9,7 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import gr.unipi.thesis.dimstyl.ui.components.CircularProgressIndicator
+import gr.unipi.thesis.dimstyl.ui.components.circularProgressIndicators.ScreenCircularProgressIndicator
 import gr.unipi.thesis.dimstyl.ui.components.table.Table
 import gr.unipi.thesis.dimstyl.ui.theme.BodyColor
 
@@ -18,7 +18,7 @@ fun DietPlansScreen(viewModel: DietPlansViewModel = viewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     if (state.isLoading) {
-        CircularProgressIndicator()
+        ScreenCircularProgressIndicator()
     } else {
         Table(
             modifier = Modifier
