@@ -517,7 +517,7 @@
             if (response.ok) window.location.href = response.headers.get('Location');
             else {
                 const defaultMessage = "Something went wrong while publishing the announcement. " +
-                    "Please try again. If the problem persists, please contact our Support team for assistance.";
+                    "Please try again. If the problem persists, contact our support team for assistance.";
                 let errorResponse;
 
                 try {
@@ -560,7 +560,7 @@
         // Function that handles the response from the fetch announcement request and updates the UI accordingly
         async function handleFetchAnnouncementResponse(response) {
             const defaultMessage = "Something went wrong while fetching the announcement. " +
-                "Please try again. If the problem persists, please contact our Support team for assistance.";
+                "Please try again. If the problem persists, contact our support team for assistance.";
             let result;
 
             try {
@@ -629,7 +629,7 @@
             if (response.ok) window.location.href = response.headers.get('Location');
             else {
                 const defaultMessage = "Something went wrong while updating the announcement. " +
-                    "Please try again. If the problem persists, please contact our Support team for assistance.";
+                    "Please try again. If the problem persists, contact our support team for assistance.";
                 let errorResponse;
 
                 try {
@@ -690,7 +690,7 @@
             if (response.ok) window.location.href = response.headers.get('Location');
             else {
                 const defaultMessage = "Something went wrong while deleting the announcement. " +
-                    "Please try again. If the problem persists, please contact our Support team for assistance.";
+                    "Please try again. If the problem persists, contact our support team for assistance.";
                 let errorResponse;
 
                 try {

@@ -29,7 +29,7 @@ public class ApiExceptionHandler {
                 HttpStatus.NOT_FOUND.value(),
                 """
                         The operation could not be completed because the user was not found. \
-                        Please try again. If the problem persists, please contact our Support \
+                        Please try again. If the problem persists, contact our support \
                         team for assistance.""",
                 "/error/userNotFound"
         );
@@ -43,7 +43,7 @@ public class ApiExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 """
                         Something went wrong while processing the tags. Please try again. \
-                        If the problem persists, please contact our Support team for assistance.""",
+                        If the problem persists, contact our support team for assistance.""",
                 "/error/tagsMismatch"
         );
     }
@@ -56,7 +56,7 @@ public class ApiExceptionHandler {
                 HttpStatus.NOT_FOUND.value(),
                 """
                         The operation could not be completed because the article was not found. \
-                        Please try again. If the problem persists, please contact our Support \
+                        Please try again. If the problem persists, contact our support \
                         team for assistance.""",
                 "/error/articleNotFound"
         );
@@ -70,7 +70,7 @@ public class ApiExceptionHandler {
                 HttpStatus.NOT_FOUND.value(),
                 """
                         The operation could not be completed because the announcement was not found. \
-                        Please try again. If the problem persists, please contact our Support team \
+                        Please try again. If the problem persists, contact our support team \
                         for assistance.""",
                 "/error/announcementNotFound"
         );
@@ -84,7 +84,7 @@ public class ApiExceptionHandler {
                 HttpStatus.NOT_FOUND.value(),
                 """
                         The operation could not be completed because the appointment was not found. \
-                        Please try again. If the problem persists, please contact our Support \
+                        Please try again. If the problem persists, contact our support \
                         team for assistance.""",
                 "/error/appointmentNotFound"
         );
@@ -137,7 +137,7 @@ public class ApiExceptionHandler {
                 """
                         Your account has been disabled. \
                         If you are a new user, please check your inbox for an activation email. \
-                        For existing users, please contact our Support team for assistance.""",
+                        For existing users, contact our support team for assistance.""",
                 null
         );
     }

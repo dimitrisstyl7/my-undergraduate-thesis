@@ -358,7 +358,7 @@
         async function handleFillClientTagsResponse(response, id) {
             if (!response.ok) {
                 const defaultMessage = "Something went wrong while fetching client tags. " +
-                    "Please try again. If the problem persists, please contact our Support team for assistance.";
+                    "Please try again. If the problem persists, contact our support team for assistance.";
 
                 try {
                     const errorResponse = await response.json();
@@ -415,7 +415,7 @@
                 removeSpinner(saveTagsButton, "Save");
 
                 const defaultMessage = "Something went wrong while saving the tags. " +
-                    "Please try again. If the problem persists, please contact our Support team for assistance.";
+                    "Please try again. If the problem persists, contact our support team for assistance.";
 
                 try {
                     const errorResponse = await response.json();
