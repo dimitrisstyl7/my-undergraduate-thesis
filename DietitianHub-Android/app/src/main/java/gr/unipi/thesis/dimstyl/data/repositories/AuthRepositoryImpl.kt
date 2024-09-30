@@ -7,6 +7,8 @@ import gr.unipi.thesis.dimstyl.data.sources.local.JwtTokenManager
 import gr.unipi.thesis.dimstyl.data.sources.remote.AuthApiService
 import gr.unipi.thesis.dimstyl.data.utils.ErrorParser
 import gr.unipi.thesis.dimstyl.domain.repositories.AuthRepository
+import gr.unipi.thesis.dimstyl.exceptions.JwtAccessTokenDoesNotExist
+import gr.unipi.thesis.dimstyl.exceptions.JwtAccessTokenRetrievalFailed
 import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.DEFAULT_LOGIN_ERROR_MESSAGE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -47,6 +49,22 @@ class AuthRepositoryImpl(
                 val errorMessage = handleErrorResponse(response.errorBody()?.string())
                 Log.e(TAG, "Failed to login: $errorMessage")
                 return@withContext Result.failure(Exception(errorMessage))
+            }
+        }
+    }
+
+    override suspend fun retrieveAccessToken(): Result<String> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val token = jwtTokenManager.getAccessToken()
+                if (token == null) {
+                    Log.d(TAG, "Token does not exist")
+                    return@withContext Result.failure(JwtAccessTokenDoesNotExist())
+                }
+                return@withContext Result.success(token)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to retrieve token: ${e.message}")
+                return@withContext Result.failure(JwtAccessTokenRetrievalFailed())
             }
         }
     }

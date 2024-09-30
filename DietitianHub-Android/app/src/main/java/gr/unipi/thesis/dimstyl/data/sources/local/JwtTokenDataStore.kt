@@ -4,7 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
 class JwtTokenDataStore(private val dataStore: DataStore<Preferences>) : JwtTokenManager {
@@ -22,7 +22,7 @@ class JwtTokenDataStore(private val dataStore: DataStore<Preferences>) : JwtToke
     override suspend fun getAccessToken(): String? {
         return dataStore.data.map { preferences ->
             preferences[ACCESS_JWT_KEY]
-        }.first()
+        }.firstOrNull()
     }
 
     override suspend fun clearAccessToken() {
