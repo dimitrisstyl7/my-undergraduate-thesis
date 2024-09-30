@@ -5,9 +5,9 @@ import gr.unipi.thesis.dimstyl.data.models.LoginRequest
 import gr.unipi.thesis.dimstyl.data.models.LoginResponse
 import gr.unipi.thesis.dimstyl.data.sources.local.JwtTokenManager
 import gr.unipi.thesis.dimstyl.data.sources.remote.AuthApiService
-import gr.unipi.thesis.dimstyl.data.utils.ErrorMessages
 import gr.unipi.thesis.dimstyl.data.utils.ErrorParser
 import gr.unipi.thesis.dimstyl.domain.repositories.AuthRepository
+import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.DEFAULT_LOGIN_ERROR_MESSAGE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -19,7 +19,6 @@ class AuthRepositoryImpl(
 
     companion object {
         private const val TAG = "AuthRepositoryImpl"
-        private const val DEFAULT_ERROR_MESSAGE = ErrorMessages.DEFAULT_LOGIN_ERROR_MESSAGE
     }
 
     override suspend fun login(loginRequest: LoginRequest): Result<String> {
@@ -30,7 +29,7 @@ class AuthRepositoryImpl(
                 response = authApiService.login(loginRequest)
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to login: ${e.message}")
-                return@withContext Result.failure(Exception(DEFAULT_ERROR_MESSAGE))
+                return@withContext Result.failure(Exception(DEFAULT_LOGIN_ERROR_MESSAGE))
             }
 
             if (response.isSuccessful) {
@@ -39,15 +38,15 @@ class AuthRepositoryImpl(
                 when {
                     body == null || body.token.isBlank() -> {
                         Log.e(TAG, "Failed to login: Response body is null or token is empty")
-                        Result.failure(Exception(DEFAULT_ERROR_MESSAGE))
+                        return@withContext Result.failure(Exception(DEFAULT_LOGIN_ERROR_MESSAGE))
                     }
 
-                    else -> saveAccessToken(body.token)
+                    else -> return@withContext saveAccessToken(body.token)
                 }
             } else {
                 val errorMessage = handleErrorResponse(response.errorBody()?.string())
                 Log.e(TAG, "Failed to login: $errorMessage")
-                Result.failure(Exception(errorMessage))
+                return@withContext Result.failure(Exception(errorMessage))
             }
         }
     }
@@ -58,14 +57,14 @@ class AuthRepositoryImpl(
             Result.success(accessToken)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to save token: ${e.message}")
-            Result.failure(Exception(DEFAULT_ERROR_MESSAGE))
+            Result.failure(Exception(DEFAULT_LOGIN_ERROR_MESSAGE))
         }
     }
 
     private fun handleErrorResponse(errorBody: String?): String {
         return errorBody?.let {
-            ErrorParser.parseResponseErrorBody(it, DEFAULT_ERROR_MESSAGE)
-        } ?: DEFAULT_ERROR_MESSAGE
+            ErrorParser.parseResponseErrorBody(it, DEFAULT_LOGIN_ERROR_MESSAGE)
+        } ?: DEFAULT_LOGIN_ERROR_MESSAGE
     }
 
 }
