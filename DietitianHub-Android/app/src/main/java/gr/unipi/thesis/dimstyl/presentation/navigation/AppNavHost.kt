@@ -25,6 +25,7 @@ fun AppNavHost(
     navController: NavController,
     viewModel: MainViewModel,
     mainState: MainState,
+    onSnackbarShow: (String) -> Unit,
     backHandler: @Composable () -> Unit,
     innerPadding: PaddingValues
 ) {
@@ -65,9 +66,11 @@ fun AppNavHost(
         composable<DietPlans> { DietPlansScreen() }
 
         composable<Login> {
-            LoginScreen(onSuccessfulLogin = { token ->
+            LoginScreen(onSuccessfulLogin = { snackbarMessage, token ->
                 viewModel.setLoginStatus(LoginStatus.LOGGED_IN)
                 viewModel.setCurrentNavRoute(NavRoute.HOME)
+                viewModel.setJwtAccessToken(token)
+                onSnackbarShow(snackbarMessage)
                 navController.navigate(Home) { popUpTo(Login) { inclusive = true } }
             })
         }

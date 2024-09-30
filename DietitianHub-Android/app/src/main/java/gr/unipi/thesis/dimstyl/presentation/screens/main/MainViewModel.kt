@@ -36,4 +36,8 @@ class MainViewModel : ViewModel() {
         _state.value = _state.value.copy(loginStatus = status)
     }
 
+    fun setJwtAccessToken(token: String) {
+        _state.value = _state.value.copy(jwtAccessToken = token)
+    }
+
 }

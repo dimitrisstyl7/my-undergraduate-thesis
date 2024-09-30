@@ -7,10 +7,13 @@ import androidx.compose.material.icons.automirrored.rounded.ExitToApp
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -51,6 +54,7 @@ fun MainScreen(
     val scope = rememberCoroutineScope()
     val mainState by viewModel.state.collectAsStateWithLifecycle()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val snackbarHostState = remember { SnackbarHostState() }
     val entry by navController.currentBackStackEntryAsState()
 
     val backHandler = @Composable {
@@ -125,12 +129,14 @@ fun MainScreen(
                     }
                 )
             },
+            snackbarHost = { SnackbarHost(snackbarHostState) },
             containerColor = BodyColor
         ) { innerPadding ->
             AppNavHost(
                 navController = navController,
                 viewModel = viewModel,
                 mainState = mainState,
+                onSnackbarShow = { message -> scope.launch { snackbarHostState.showSnackbar(message) } },
                 backHandler = backHandler,
                 innerPadding = innerPadding
             )
