@@ -19,16 +19,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import gr.unipi.thesis.dimstyl.App
 import gr.unipi.thesis.dimstyl.presentation.theme.BackgroundGradient
 import gr.unipi.thesis.dimstyl.presentation.theme.LeftBarColor
 import gr.unipi.thesis.dimstyl.presentation.theme.TopBarColor
 import gr.unipi.thesis.dimstyl.presentation.utils.LoginStatus
+import gr.unipi.thesis.dimstyl.presentation.utils.viewModelFactory
 import kotlinx.coroutines.delay
 
 @Composable
 fun LandingScreen(
+    viewModel: LandingViewModel = viewModel<LandingViewModel>(
+        factory = viewModelFactory { LandingViewModel(App.appModule.checkTokenValidityUseCase) }
+    ),
     loginStatus: LoginStatus,
-    onLoginStatusResolved: () -> Unit
+    onLoginStatusResolved: (LoginStatus, String, Boolean, String) -> Unit
 ) {
     val currentOnLoginStatusResolved by rememberUpdatedState(onLoginStatusResolved)
 
@@ -36,13 +42,19 @@ fun LandingScreen(
         // Minimum delay of 2.5 seconds
         delay(2500)
 
+        viewModel.resolveLoginStatus { status, token, showSnackbarMessage, snackbarMessage ->
+            currentOnLoginStatusResolved(
+                status,
+                token,
+                showSnackbarMessage,
+                snackbarMessage
+            )
+        }
+
         // Wait for loginStatus to be resolved
         while (loginStatus == LoginStatus.UNKNOWN) {
             delay(100)
         }
-
-        // Once loginStatus is resolved, call the callback function
-        currentOnLoginStatusResolved()
     }
 
     Column(
@@ -75,5 +87,5 @@ fun LandingScreen(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun LandingScreenPreview() {
-    LandingScreen(LoginStatus.UNKNOWN) {}
+    LandingScreen(loginStatus = LoginStatus.UNKNOWN) { _, _, _, _ -> }
 }

@@ -47,6 +47,7 @@ fun AppNavHost(
         composable<Home> {
             HomeScreen(
                 loginStatus = mainState.loginStatus,
+                jwtAccessToken = mainState.jwtAccessToken,
                 onNavigateToLoginScreen = {
                     viewModel.setLoginStatus(LoginStatus.LOGGED_OUT)
                     viewModel.setCurrentNavRoute(NavRoute.LOGIN)
