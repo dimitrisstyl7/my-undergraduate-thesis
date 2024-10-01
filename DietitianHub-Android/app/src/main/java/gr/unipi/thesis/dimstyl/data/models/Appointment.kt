@@ -1,5 +1,7 @@
 package gr.unipi.thesis.dimstyl.data.models
 
-import gr.unipi.thesis.dimstyl.domain.models.AppointmentStatus
-
-data class Appointment(val id: Int, val start: String, val status: AppointmentStatus)
+data class Appointment(
+    val id: Int = -1,
+    val appointmentDateTime: String,
+    val formattedAppointmentDateTime: String = ""
+)
