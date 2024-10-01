@@ -161,7 +161,7 @@ public class ApiExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.FORBIDDEN.value(),
                 """
-                        Unauthorized access. Please contact our Support team for assistance.""",
+                        Unauthorized access. Please contact our support team for assistance.""",
                 null
         );
     }
