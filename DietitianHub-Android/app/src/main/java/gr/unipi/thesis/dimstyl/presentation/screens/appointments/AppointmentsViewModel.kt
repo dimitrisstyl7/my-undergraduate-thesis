@@ -4,19 +4,33 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material3.Icon
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import gr.unipi.thesis.dimstyl.data.models.Appointment
-import gr.unipi.thesis.dimstyl.domain.models.AppointmentStatus
+import gr.unipi.thesis.dimstyl.domain.usecases.CancelAppointmentUseCase
+import gr.unipi.thesis.dimstyl.domain.usecases.CreateAppointmentUseCase
+import gr.unipi.thesis.dimstyl.domain.usecases.FetchAppointmentsUseCase
 import gr.unipi.thesis.dimstyl.presentation.components.table.CellData
 import gr.unipi.thesis.dimstyl.presentation.components.table.HeaderCellData
 import gr.unipi.thesis.dimstyl.presentation.components.table.createEmptyTableRowsData
 import gr.unipi.thesis.dimstyl.presentation.components.table.createTableRowsData
 import gr.unipi.thesis.dimstyl.presentation.theme.DangerColor
-import gr.unipi.thesis.dimstyl.presentation.utils.convertMillisToDate
-import gr.unipi.thesis.dimstyl.presentation.utils.getTimeIn12Hour
+import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.CREATE_APPOINTMENT_ERROR_MESSAGE
+import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.FETCH_APPOINTMENTS_ERROR_MESSAGE
+import gr.unipi.thesis.dimstyl.utils.Constants.SuccessMessages.APPOINTMENT_CANCELLED_SUCCESS_MESSAGE
+import gr.unipi.thesis.dimstyl.utils.Constants.SuccessMessages.APPOINTMENT_CREATED_SUCCESS_MESSAGE
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneId
 
-class AppointmentsViewModel : ViewModel() {
+class AppointmentsViewModel(
+    private val fetchAppointmentsUseCase: FetchAppointmentsUseCase,
+    private val createAppointmentUseCase: CreateAppointmentUseCase,
+    private val cancelAppointmentUseCase: CancelAppointmentUseCase
+) : ViewModel() {
 
     private val _state = MutableStateFlow(AppointmentsState())
     val state = _state.asStateFlow()
@@ -28,10 +42,12 @@ class AppointmentsViewModel : ViewModel() {
     lateinit var declinedTableHeaderCellsData: List<HeaderCellData>
     lateinit var cancelledTableHeaderCellsData: List<HeaderCellData>
 
+    private val scheduledAppointments: MutableList<Appointment> = mutableListOf()
+    private val pendingAppointments: MutableList<Appointment> = mutableListOf()
+    private val cancelledAppointments: MutableList<Appointment> = mutableListOf()
 
     init {
         initializeTableHeaderCellsData()
-        fetchAppointments()
     }
 
     private fun initializeTableHeaderCellsData() {
@@ -62,106 +78,153 @@ class AppointmentsViewModel : ViewModel() {
         )
     }
 
-    private fun fetchAppointments() {
-        _state.value = _state.value.copy(isLoading = true)
+    fun fetchAppointments(onFetchAppointmentsResult: (String, Boolean) -> Unit) {
+        viewModelScope.launch {
+            _state.value = _state.value.copy(isLoading = true)
 
-        // TODO: Fetch appointments from the server
-        val scheduledAppointments = listOf(
-            Appointment(24, "3 Jan 2023, 01.00 PM", AppointmentStatus.SCHEDULED),
-            Appointment(25, "3 Feb 2023, 02.00 PM", AppointmentStatus.SCHEDULED),
-            Appointment(26, "13 Mar 2023, 10.00 AM", AppointmentStatus.SCHEDULED),
-            Appointment(27, "3 Apr 2023, 05.00 PM", AppointmentStatus.SCHEDULED),
-            Appointment(28, "13 May 2023, 01.00 PM", AppointmentStatus.SCHEDULED)
-        )
-        val pendingAppointments = listOf(
-            Appointment(35, "3 Dec 2023, 01.00 PM", AppointmentStatus.PENDING),
-            Appointment(36, "13 Jan 2024, 02.00 PM", AppointmentStatus.PENDING),
-            Appointment(37, "3 Feb 2024, 10.00 AM", AppointmentStatus.PENDING),
-            Appointment(38, "3 Mar 2024, 05.00 PM", AppointmentStatus.PENDING),
-            Appointment(39, "13 Apr 2024, 01.00 PM", AppointmentStatus.PENDING)
-        )
-        val completedAppointments = listOf(
-            Appointment(46, "3 Nov 2024, 01.00 PM", AppointmentStatus.COMPLETED),
-            Appointment(47, "3 Dec 2024, 02.00 PM", AppointmentStatus.COMPLETED),
-            Appointment(48, "13 Jan 2025, 10.00 AM", AppointmentStatus.COMPLETED),
-            Appointment(49, "3 Feb 2025, 05.00 PM", AppointmentStatus.COMPLETED),
-            Appointment(50, "3 Mar 2025, 01.00 PM", AppointmentStatus.COMPLETED)
-        )
-        val declinedAppointments = listOf(
-            Appointment(57, "23 Oct 2025, 01.00 PM", AppointmentStatus.DECLINED),
-            Appointment(58, "3 Nov 2025, 02.00 PM", AppointmentStatus.DECLINED),
-            Appointment(59, "3 Dec 2025, 10.00 AM", AppointmentStatus.DECLINED),
-            Appointment(60, "23 Jan 2026, 05.00 PM", AppointmentStatus.DECLINED),
-            Appointment(61, "3 Feb 2026, 01.00 PM", AppointmentStatus.DECLINED)
-        )
-        val cancelledAppointments = listOf(
-            Appointment(68, "3 Sep 2026, 01.00 PM", AppointmentStatus.CANCELLED),
-            Appointment(69, "13 Oct 2026, 02.00 PM", AppointmentStatus.CANCELLED),
-            Appointment(70, "3 Nov 2026, 10.00 AM", AppointmentStatus.CANCELLED),
-            Appointment(71, "3 Dec 2026, 05.00 PM", AppointmentStatus.CANCELLED),
-            Appointment(72, "13 Jan 2027, 01.00 PM", AppointmentStatus.CANCELLED)
-        )
+            val result = fetchAppointmentsUseCase.execute()
+            val appointments = result.getOrNull()
+            var isLoading = _state.value.isLoading
+            var scheduledTableRowsData = _state.value.scheduledTableRowsData
+            var pendingTableRowsData = _state.value.pendingTableRowsData
+            var completedTableRowsData = _state.value.completedTableRowsData
+            var declinedTableRowsData = _state.value.declinedTableRowsData
+            var cancelledTableRowsData = _state.value.cancelledTableRowsData
 
-        val scheduledTableRowsData =
-            if (scheduledAppointments.isEmpty()) createEmptyTableRowsData("No scheduled appointments found")
-            else createAppointmentTableRowsData(
-                appointments = scheduledAppointments,
-                isActionable = true
-            )
-        val pendingTableRowsData =
-            if (pendingAppointments.isEmpty()) createEmptyTableRowsData("No pending appointments found")
-            else createAppointmentTableRowsData(
-                appointments = pendingAppointments,
-                isActionable = true
-            )
-        val completedTableRowsData =
-            if (completedAppointments.isEmpty()) createEmptyTableRowsData("No completed appointments found")
-            else createAppointmentTableRowsData(
-                appointments = completedAppointments,
-                isActionable = false
-            )
-        val declinedTableRowsData =
-            if (declinedAppointments.isEmpty()) createEmptyTableRowsData("No declined appointments found")
-            else createAppointmentTableRowsData(
-                appointments = declinedAppointments,
-                isActionable = false
-            )
-        val cancelledTableRowsData =
-            if (cancelledAppointments.isEmpty()) createEmptyTableRowsData("No cancelled appointments found")
-            else createAppointmentTableRowsData(
-                appointments = cancelledAppointments,
-                isActionable = false
-            )
+            if (result.isSuccess && appointments != null) {
+                isLoading = false
+                scheduledAppointments.clear()
+                pendingAppointments.clear()
+                cancelledAppointments.clear()
+                scheduledAppointments.addAll(appointments.scheduledAppointments)
+                pendingAppointments.addAll(appointments.pendingAppointments)
+                cancelledAppointments.addAll(appointments.cancelledAppointments)
+                val completedAppointments = appointments.completedAppointments
+                val declinedAppointments = appointments.declinedAppointments
 
-        _state.value = _state.value.copy(
-            scheduledTableRowsData = scheduledTableRowsData,
-            pendingTableRowsData = pendingTableRowsData,
-            completedTableRowsData = completedTableRowsData,
-            declinedTableRowsData = declinedTableRowsData,
-            cancelledTableRowsData = cancelledTableRowsData,
-            isLoading = false
-        )
+                scheduledTableRowsData =
+                    if (scheduledAppointments.isEmpty()) createEmptyTableRowsData("No scheduled appointments found")
+                    else createTableRowsData(scheduledAppointments, isActionable = true)
+
+                pendingTableRowsData =
+                    if (pendingAppointments.isEmpty()) createEmptyTableRowsData("No pending appointments found")
+                    else createTableRowsData(pendingAppointments, isActionable = true)
+
+                completedTableRowsData =
+                    if (completedAppointments.isEmpty()) createEmptyTableRowsData("No completed appointments found")
+                    else createTableRowsData(completedAppointments, isActionable = false)
+
+                declinedTableRowsData =
+                    if (declinedAppointments.isEmpty()) createEmptyTableRowsData("No declined appointments found")
+                    else createTableRowsData(declinedAppointments, isActionable = false)
+
+                cancelledTableRowsData =
+                    if (cancelledAppointments.isEmpty()) createEmptyTableRowsData("No cancelled appointments found")
+                    else createTableRowsData(cancelledAppointments, isActionable = false)
+            } else {
+                val errorMessage =
+                    result.exceptionOrNull()?.message ?: FETCH_APPOINTMENTS_ERROR_MESSAGE
+                onFetchAppointmentsResult(errorMessage, false)
+            }
+
+            _state.value = _state.value.copy(
+                scheduledTableRowsData = scheduledTableRowsData,
+                pendingTableRowsData = pendingTableRowsData,
+                completedTableRowsData = completedTableRowsData,
+                declinedTableRowsData = declinedTableRowsData,
+                cancelledTableRowsData = cancelledTableRowsData,
+                isLoading = isLoading
+            )
+        }
     }
 
-    private fun createAppointmentTableRowsData(
+    fun createAppointment(onCreateAppointmentResult: (String, Boolean) -> Unit) {
+        viewModelScope.launch {
+            val requestedDatetime = _state.value.requestedDatetime
+            val result = createAppointmentUseCase.execute(requestedDatetime)
+            val appointment = result.getOrNull()
+
+            if (result.isSuccess && appointment != null) {
+                pendingAppointments.addIndexed(appointment)
+                val appointmentsTableRowsData =
+                    createTableRowsData(pendingAppointments, isActionable = true)
+                _state.value = _state.value.copy(pendingTableRowsData = appointmentsTableRowsData)
+                onCreateAppointmentResult(APPOINTMENT_CREATED_SUCCESS_MESSAGE, true)
+            } else {
+                val errorMessage =
+                    result.exceptionOrNull()?.message ?: CREATE_APPOINTMENT_ERROR_MESSAGE
+                onCreateAppointmentResult(errorMessage, false)
+            }
+
+            clearDateTime()
+            showNewAppointmentDialog(false)
+        }
+    }
+
+    fun cancelAppointment(onCancelAppointmentResult: (String, Boolean) -> Unit) {
+        viewModelScope.launch {
+            val id = _state.value.appointmentToBeCancelledId
+            val result = cancelAppointmentUseCase.execute(id)
+
+            if (result.isSuccess) {
+                // Find the cancelled appointment and move it to the cancelled list
+                var index = scheduledAppointments.indexOfFirst { it.id == id }
+                val fromScheduled = index != -1
+                index =
+                    if (fromScheduled) index else pendingAppointments.indexOfFirst { it.id == id }
+
+                val appointments = if (fromScheduled) scheduledAppointments else pendingAppointments
+                val appointment = appointments.removeAt(index)
+                cancelledAppointments.addIndexed(appointment, ascending = false)
+
+                val appointmentsTableRowsData =
+                    createTableRowsData(appointments, isActionable = true)
+                val cancelledTableRowsData =
+                    createTableRowsData(cancelledAppointments, isActionable = false)
+
+                _state.value =
+                    if (fromScheduled) _state.value.copy(
+                        scheduledTableRowsData = appointmentsTableRowsData,
+                        cancelledTableRowsData = cancelledTableRowsData
+                    )
+                    else _state.value.copy(
+                        pendingTableRowsData = appointmentsTableRowsData,
+                        cancelledTableRowsData = cancelledTableRowsData
+                    )
+
+                onCancelAppointmentResult(APPOINTMENT_CANCELLED_SUCCESS_MESSAGE, true)
+            } else {
+                val errorMessage =
+                    result.exceptionOrNull()?.message ?: APPOINTMENT_CANCELLED_SUCCESS_MESSAGE
+                onCancelAppointmentResult(errorMessage, false)
+            }
+
+            showCancelAppointmentDialog(false)
+        }
+    }
+
+    private fun createTableRowsData(
         appointments: List<Appointment>,
         isActionable: Boolean
     ): List<List<CellData>> {
         return createTableRowsData(
             cellsWeight = cellsWeight,
             items = appointments,
-            getText = { appointment -> appointment.start },
+            getText = { appointment -> appointment.formattedAppointmentDateTime },
             icon = { appointment ->
                 {
                     Icon(
                         imageVector = Icons.Rounded.Clear,
-                        contentDescription = "Cancel the appointment requested at ${appointment.start}"
+                        contentDescription = "Cancel the appointment requested at ${appointment.formattedAppointmentDateTime}"
                     )
                 }
             },
             buttonColor = DangerColor,
-            onClick = { showCancelAppointmentDialog(true) },
-            isActionable = isActionable
+            isActionable = isActionable,
+            onClick = { id ->
+                setAppointmentToBeCancelledId(id)
+                showCancelAppointmentDialog(true)
+            }
         )
     }
 
@@ -181,17 +244,55 @@ class AppointmentsViewModel : ViewModel() {
         _state.value = _state.value.copy(showTimePickerDialog = show)
     }
 
-    fun setRequestedDate(date: Long?) {
-        if (date == null) return
-        _state.value = _state.value.copy(requestedDate = convertMillisToDate(date))
+    fun setRequestedDate(selectedDateMillis: Long) {
+        val selectedDate =
+            Instant.ofEpochMilli(selectedDateMillis).atZone(ZoneId.systemDefault()).toLocalDate()
+        _state.value = _state.value.copy(requestedDate = selectedDate.toString())
     }
 
-    fun setRequestedTime(hour: Int, minute: Int) {
-        _state.value = _state.value.copy(requestedTime = getTimeIn12Hour(hour, minute))
+    fun setRequestedTime(time: LocalTime) {
+        _state.value = _state.value.copy(requestedTime = time.toString())
     }
 
     fun clearDateTime() {
         _state.value = _state.value.copy(requestedDate = "", requestedTime = "")
+    }
+
+    private fun setAppointmentToBeCancelledId(id: Int) {
+        _state.value = _state.value.copy(appointmentToBeCancelledId = id)
+    }
+
+    private fun MutableList<Appointment>.addIndexed(
+        newAppointment: Appointment,
+        ascending: Boolean = true
+    ) {
+        if (isEmpty()) {
+            add(newAppointment)
+            return
+        }
+
+        for (index in this.indices) {
+            val appointment = this[index]
+            val newAppointmentDateTime = LocalDateTime.parse(newAppointment.appointmentDateTime)
+            val appointmentDateTime = LocalDateTime.parse(appointment.appointmentDateTime)
+
+            if (ascending) {
+                if (newAppointmentDateTime.isBefore(appointmentDateTime)) {
+                    add(index, newAppointment)
+                    return
+                }
+            } else {
+                if (newAppointmentDateTime.isAfter(appointmentDateTime)) {
+                    add(index, newAppointment)
+                    return
+                }
+            }
+
+            if (index == size - 1) {
+                add(newAppointment)
+                return
+            }
+        }
     }
 
 }
