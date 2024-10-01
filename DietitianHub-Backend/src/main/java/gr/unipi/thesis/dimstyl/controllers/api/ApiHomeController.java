@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -32,13 +33,18 @@ public class ApiHomeController {
 
     @GetMapping
     public ResponseEntity<HomeResponse> home() {
+        LocalDateTime now = LocalDateTime.now();
         String username = userDetailsService.getUserDetails().getUsername();
         String fullName = userDetailsService.getUserDetails().getFullName();
         List<Tag> tags = userInfoService.getClientTags(username);
         List<ApiArticleDto> articles = articleService.getLatest10ArticlesByTags(tags);
         List<ApiAnnouncementDto> announcements = announcementService.getLatest10Announcements();
         List<ApiAppointmentDto> appointments =
-                appointmentService.getLatest5AppointmentsByClientUsernameAndStatus(username, AppointmentStatus.SCHEDULED);
+                appointmentService.getLatest5AppointmentsByUsernameAndStatusAfterGivenAppointmentDateTime(
+                        username,
+                        AppointmentStatus.SCHEDULED,
+                        now
+                );
 
         HomeResponse homeResponse = HomeResponse.builder()
                 .fullName(fullName)
