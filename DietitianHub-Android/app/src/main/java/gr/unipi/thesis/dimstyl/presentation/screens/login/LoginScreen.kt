@@ -45,7 +45,7 @@ fun LoginScreen(
     viewModel: LoginViewModel = viewModel<LoginViewModel>(
         factory = viewModelFactory { LoginViewModel(App.appModule.loginUseCase) }
     ),
-    onSuccessfulLogin: (String, String) -> Unit
+    onSuccessfulLogin: (String, Boolean) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -126,9 +126,7 @@ fun LoginScreen(
         if (state.processingLoginRequest) ButtonCircularProgressIndicator()
         else LoginButton(isLoginButtonEnabled = state.isLoginButtonEnabled) {
             viewModel.setProcessingLoginRequest(true)
-            viewModel.login(onSuccessfulLogin = { snackbarMessage, token ->
-                onSuccessfulLogin(snackbarMessage, token)
-            })
+            viewModel.login { snackbarMessage, shortDuration -> onSuccessfulLogin(snackbarMessage, shortDuration) }
         }
     }
 }
