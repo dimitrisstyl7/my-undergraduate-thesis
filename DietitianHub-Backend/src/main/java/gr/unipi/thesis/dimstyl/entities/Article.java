@@ -1,5 +1,6 @@
 package gr.unipi.thesis.dimstyl.entities;
 
+import gr.unipi.thesis.dimstyl.dtos.api.ApiArticleDto;
 import gr.unipi.thesis.dimstyl.dtos.web.WebArticleDto;
 import gr.unipi.thesis.dimstyl.utilities.DateTimeUtil;
 import jakarta.persistence.*;
@@ -54,6 +55,15 @@ public class Article {
                 .content(content)
                 .tagIds(tagIds)
                 .tagNames(tagNames)
+                .createdAt(createdAt)
+                .build();
+    }
+
+    public ApiArticleDto toApiDto() {
+        String createdAt = DateTimeUtil.getFormattedDateTime(this.createdAt);
+        return ApiArticleDto.builder()
+                .id(id)
+                .title(title)
                 .createdAt(createdAt)
                 .build();
     }

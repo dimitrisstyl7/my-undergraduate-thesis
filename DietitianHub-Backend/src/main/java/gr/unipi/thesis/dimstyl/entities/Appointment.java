@@ -1,5 +1,6 @@
 package gr.unipi.thesis.dimstyl.entities;
 
+import gr.unipi.thesis.dimstyl.dtos.api.ApiAppointmentDto;
 import gr.unipi.thesis.dimstyl.dtos.web.WebAppointmentDto;
 import gr.unipi.thesis.dimstyl.enums.AppointmentStatus;
 import gr.unipi.thesis.dimstyl.utilities.DateTimeUtil;
@@ -56,6 +57,15 @@ public class Appointment {
                 .formattedAppointmentDateTime(formattedAppointmentDateTime)
                 .clientId(clientId)
                 .clientFullName(clientFullName)
+                .build();
+    }
+
+    public ApiAppointmentDto toApiDto() {
+        String formattedAppointmentDateTime = DateTimeUtil.getFormattedDateTime(appointmentDateTime);
+        return ApiAppointmentDto.builder()
+                .id(id)
+                .start(formattedAppointmentDateTime)
+                .status(status)
                 .build();
     }
 

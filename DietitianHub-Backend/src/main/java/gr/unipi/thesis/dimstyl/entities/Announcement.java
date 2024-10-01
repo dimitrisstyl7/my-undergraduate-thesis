@@ -1,5 +1,6 @@
 package gr.unipi.thesis.dimstyl.entities;
 
+import gr.unipi.thesis.dimstyl.dtos.api.ApiAnnouncementDto;
 import gr.unipi.thesis.dimstyl.dtos.web.WebAnnouncementDto;
 import gr.unipi.thesis.dimstyl.utilities.DateTimeUtil;
 import jakarta.persistence.*;
@@ -40,6 +41,15 @@ public class Announcement {
                 .id(id)
                 .title(title)
                 .content(content)
+                .createdAt(createdAt)
+                .build();
+    }
+
+    public ApiAnnouncementDto toApiDto() {
+        String createdAt = DateTimeUtil.getFormattedDateTime(this.createdAt);
+        return ApiAnnouncementDto.builder()
+                .id(id)
+                .title(title)
                 .createdAt(createdAt)
                 .build();
     }
