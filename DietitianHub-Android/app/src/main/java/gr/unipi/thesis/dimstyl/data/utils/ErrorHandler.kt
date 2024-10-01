@@ -8,17 +8,21 @@ private const val TAG = "ErrorHandler"
 
 object ErrorParser {
 
-    fun handleErrorResponse(errorBody: String?, defaultErrorMessage: String): String {
-        return errorBody?.let { parseResponseErrorBody(it, defaultErrorMessage) }
+    fun extractErrorMessage(errorBody: String?, defaultErrorMessage: String): String {
+        return errorBody?.let { parseErrorBody(it)?.message ?: defaultErrorMessage }
             ?: defaultErrorMessage
     }
 
-    private fun parseResponseErrorBody(errorBody: String, defaultErrorMessage: String): String {
+    fun extractErrorCode(errorBody: String?): Int? {
+        return errorBody?.let { parseErrorBody(it)?.statusCode }
+    }
+
+    private fun parseErrorBody(errorBody: String): ErrorResponse? {
         return try {
-            Gson().fromJson(errorBody, ErrorResponse::class.java)?.message ?: defaultErrorMessage
+            Gson().fromJson(errorBody, ErrorResponse::class.java)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to parse error response", e)
-            defaultErrorMessage
+            null
         }
     }
 
