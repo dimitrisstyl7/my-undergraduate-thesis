@@ -1,6 +1,7 @@
 package gr.unipi.thesis.dimstyl.repositories;
 
 import gr.unipi.thesis.dimstyl.entities.Appointment;
+import gr.unipi.thesis.dimstyl.entities.UserInfo;
 import gr.unipi.thesis.dimstyl.enums.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -25,6 +26,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
                                                                                                 LocalDateTime dateTime);
 
     List<Appointment> findFirst5ByStatusOrderByAppointmentDateTimeDesc(AppointmentStatus status);
+
+    List<Appointment> findFirst5ByClientUserInfoAndStatusOrderByAppointmentDateTimeAsc(UserInfo userInfo, AppointmentStatus status);
 
     Optional<Appointment> findByAppointmentDateTimeAndStatusAndClientUserInfoId(LocalDateTime dateTime,
                                                                                 AppointmentStatus status,
