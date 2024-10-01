@@ -13,8 +13,8 @@ fun <T> createTableRowsData(
     getText: (T) -> String,
     icon: (T) -> (@Composable RowScope.() -> Unit),
     buttonColor: Color,
-    onClick: (Int) -> Unit,
-    isActionable: Boolean = true
+    isActionable: Boolean = true,
+    onClick: (Int) -> Unit
 ): List<List<CellData>> {
     val rows = mutableListOf<List<CellData>>()
 
