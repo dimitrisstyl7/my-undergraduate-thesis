@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import gr.unipi.thesis.dimstyl.data.repositories.AppointmentRepositoryImpl
 import gr.unipi.thesis.dimstyl.data.repositories.AuthRepositoryImpl
 import gr.unipi.thesis.dimstyl.data.repositories.HomeRepositoryImpl
 import gr.unipi.thesis.dimstyl.data.sources.local.JwtTokenDataStore
@@ -12,10 +13,13 @@ import gr.unipi.thesis.dimstyl.data.sources.remote.builders.OkHttpClientBuilder
 import gr.unipi.thesis.dimstyl.data.sources.remote.builders.RetrofitBuilder
 import gr.unipi.thesis.dimstyl.data.sources.remote.interceptors.AccessTokenInterceptor
 import gr.unipi.thesis.dimstyl.data.sources.remote.interceptors.LoggingInterceptor
+import gr.unipi.thesis.dimstyl.data.sources.remote.services.AppointmentApiService
 import gr.unipi.thesis.dimstyl.data.sources.remote.services.AuthApiService
 import gr.unipi.thesis.dimstyl.data.sources.remote.services.HomeApiService
+import gr.unipi.thesis.dimstyl.domain.repositories.AppointmentRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.AuthRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.HomeRepository
+import gr.unipi.thesis.dimstyl.domain.usecases.CancelAppointmentUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.CheckTokenValidityUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchHomeDataUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.LoginUseCase
@@ -59,12 +63,22 @@ class AppModuleImpl(private val appContext: Context) : AppModule {
             )
         ).create(HomeApiService::class.java)
     }
+    override val appointmentApiService: AppointmentApiService by lazy {
+        retrofitBuilder.build(
+            okHttpClientBuilder.build(
+                listOf(loggingInterceptor, accessTokenInterceptor)
+            )
+        ).create(AppointmentApiService::class.java)
+    }
 
     override val authRepository: AuthRepository by lazy {
         AuthRepositoryImpl(authApiService, jwtTokenManager)
     }
     override val homeRepository: HomeRepository by lazy {
         HomeRepositoryImpl(homeApiService)
+    }
+    override val appointmentRepository: AppointmentRepository by lazy {
+        AppointmentRepositoryImpl(appointmentApiService)
     }
 
     override val loginUseCase: LoginUseCase by lazy {
@@ -75,6 +89,9 @@ class AppModuleImpl(private val appContext: Context) : AppModule {
     }
     override val fetchHomeDataUseCase: FetchHomeDataUseCase by lazy {
         FetchHomeDataUseCase(homeRepository)
+    }
+    override val cancelAppointmentUseCase: CancelAppointmentUseCase by lazy {
+        CancelAppointmentUseCase(appointmentRepository)
     }
 
 }
