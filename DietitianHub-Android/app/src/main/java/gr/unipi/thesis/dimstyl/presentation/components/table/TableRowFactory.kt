@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import gr.unipi.thesis.dimstyl.data.models.Appointment
+import gr.unipi.thesis.dimstyl.data.models.DietPlan
 
 fun <T> createTableRowsData(
     cellsWeight: List<Float>,
@@ -11,7 +13,7 @@ fun <T> createTableRowsData(
     getText: (T) -> String,
     icon: (T) -> (@Composable RowScope.() -> Unit),
     buttonColor: Color,
-    onClick: () -> Unit,
+    onClick: (Int) -> Unit,
     isActionable: Boolean = true
 ): List<List<CellData>> {
     val rows = mutableListOf<List<CellData>>()
@@ -34,12 +36,20 @@ fun <T> createTableRowsData(
                 // else it contains a dash ('-'), indicating no action is available.
                 cellsWeight.size - 1 -> cells.add(
                     when {
-                        isActionable -> IconCellData(
-                            weight = weight,
-                            icon = icon(item),
-                            buttonColor = buttonColor,
-                            onClick = onClick
-                        )
+                        isActionable -> {
+                            val id = when (item) {
+                                is Appointment -> item.id
+                                is DietPlan -> item.id
+                                else -> -1
+                            }
+
+                            IconCellData(
+                                weight = weight,
+                                icon = icon(item),
+                                buttonColor = buttonColor,
+                                onClick = { onClick(id) }
+                            )
+                        }
 
                         else -> TextCellData(weight = weight, text = "-")
                     }
