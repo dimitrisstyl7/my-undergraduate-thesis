@@ -4,8 +4,8 @@ import android.util.Log
 import gr.unipi.thesis.dimstyl.data.models.LoginRequest
 import gr.unipi.thesis.dimstyl.data.models.LoginResponse
 import gr.unipi.thesis.dimstyl.data.sources.local.JwtTokenManager
-import gr.unipi.thesis.dimstyl.data.sources.remote.AuthApiService
-import gr.unipi.thesis.dimstyl.data.utils.ErrorParser
+import gr.unipi.thesis.dimstyl.data.sources.remote.services.AuthApiService
+import gr.unipi.thesis.dimstyl.data.utils.ErrorParser.handleErrorResponse
 import gr.unipi.thesis.dimstyl.domain.repositories.AuthRepository
 import gr.unipi.thesis.dimstyl.exceptions.JwtAccessTokenDoesNotExist
 import gr.unipi.thesis.dimstyl.exceptions.JwtAccessTokenRetrievalFailed
@@ -30,7 +30,7 @@ class AuthRepositoryImpl(
             try {
                 response = authApiService.login(loginRequest)
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to login: ${e.message}")
+                Log.e(TAG, "Login failed", e)
                 return@withContext Result.failure(Exception(DEFAULT_LOGIN_ERROR_MESSAGE))
             }
 
@@ -39,15 +39,16 @@ class AuthRepositoryImpl(
 
                 when {
                     body == null || body.token.isBlank() -> {
-                        Log.e(TAG, "Failed to login: Response body is null or token is empty")
+                        Log.e(TAG, "Login failed: Response body is null or token is empty")
                         return@withContext Result.failure(Exception(DEFAULT_LOGIN_ERROR_MESSAGE))
                     }
 
                     else -> return@withContext saveAccessToken(body.token)
                 }
             } else {
-                val errorMessage = handleErrorResponse(response.errorBody()?.string())
-                Log.e(TAG, "Failed to login: $errorMessage")
+                val errorBody = response.errorBody()?.string()
+                val errorMessage = handleErrorResponse(errorBody, DEFAULT_LOGIN_ERROR_MESSAGE)
+                Log.e(TAG, "Login failed: $errorMessage")
                 return@withContext Result.failure(Exception(errorMessage))
             }
         }
@@ -63,7 +64,7 @@ class AuthRepositoryImpl(
                 }
                 return@withContext Result.success(token)
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to retrieve token: ${e.message}")
+                Log.e(TAG, "Failed to retrieve token", e)
                 return@withContext Result.failure(JwtAccessTokenRetrievalFailed())
             }
         }
@@ -74,15 +75,9 @@ class AuthRepositoryImpl(
             jwtTokenManager.saveAccessToken(accessToken)
             Result.success(Unit)
         } catch (e: Exception) {
-            Log.e(TAG, "Failed to save token: ${e.message}")
+            Log.e(TAG, "Failed to save token", e)
             Result.failure(Exception(DEFAULT_LOGIN_ERROR_MESSAGE))
         }
-    }
-
-    private fun handleErrorResponse(errorBody: String?): String {
-        return errorBody?.let {
-            ErrorParser.parseResponseErrorBody(it, DEFAULT_LOGIN_ERROR_MESSAGE)
-        } ?: DEFAULT_LOGIN_ERROR_MESSAGE
     }
 
 }
