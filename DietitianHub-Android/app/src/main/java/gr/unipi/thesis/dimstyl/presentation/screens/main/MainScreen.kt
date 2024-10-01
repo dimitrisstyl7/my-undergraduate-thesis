@@ -7,6 +7,7 @@ import androidx.compose.material.icons.automirrored.rounded.ExitToApp
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -136,7 +137,13 @@ fun MainScreen(
                 navController = navController,
                 viewModel = viewModel,
                 mainState = mainState,
-                onSnackbarShow = { message -> scope.launch { snackbarHostState.showSnackbar(message) } },
+                onSnackbarShow = { message, shortDuration ->
+                    scope.launch {
+                        val duration =
+                            if (shortDuration) SnackbarDuration.Short else SnackbarDuration.Long
+                        snackbarHostState.showSnackbar(message = message, duration = duration)
+                    }
+                },
                 backHandler = backHandler,
                 innerPadding = innerPadding
             )
