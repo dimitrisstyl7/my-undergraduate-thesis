@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,10 +24,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import gr.unipi.thesis.dimstyl.App
 import gr.unipi.thesis.dimstyl.presentation.components.SectionTitle
 import gr.unipi.thesis.dimstyl.presentation.components.cards.AnnouncementsCardsRow
 import gr.unipi.thesis.dimstyl.presentation.components.cards.ArticleCard
 import gr.unipi.thesis.dimstyl.presentation.components.circularProgressIndicators.ScreenCircularProgressIndicator
+import gr.unipi.thesis.dimstyl.presentation.components.dialogs.CancelAppointmentAlertDialog
 import gr.unipi.thesis.dimstyl.presentation.components.table.Table
 import gr.unipi.thesis.dimstyl.presentation.screens.home.components.HorizontalDivider
 import gr.unipi.thesis.dimstyl.presentation.theme.AnnouncementsFirstSectionBackgroundColor
@@ -34,20 +37,37 @@ import gr.unipi.thesis.dimstyl.presentation.theme.DataNotFoundColor
 import gr.unipi.thesis.dimstyl.presentation.theme.LeftBarColor
 import gr.unipi.thesis.dimstyl.presentation.utils.ContentType
 import gr.unipi.thesis.dimstyl.presentation.utils.LoginStatus
+import gr.unipi.thesis.dimstyl.presentation.utils.viewModelFactory
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = viewModel(),
+    viewModel: HomeViewModel = viewModel<HomeViewModel>(
+        factory = viewModelFactory {
+            HomeViewModel(
+                App.appModule.fetchHomeDataUseCase,
+                App.appModule.cancelAppointmentUseCase
+            )
+        }
+    ),
     loginStatus: LoginStatus,
-    onNavigateToLoginScreen: () -> Unit
+    onNavigateToLoginScreen: () -> Unit,
+    onSnackbarShow: (String, Boolean) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val context = LocalContext.current
+
+    val context = LocalContext.current // TODO: Remove
 
     if (loginStatus == LoginStatus.LOGGED_OUT) {
         onNavigateToLoginScreen()
     } else if (state.isLoading) {
         ScreenCircularProgressIndicator()
+        LaunchedEffect(Unit) {
+            viewModel.fetchHomeData(
+                onSnackbarShow = { message, shortDuration ->
+                    onSnackbarShow(message, shortDuration)
+                }
+            )
+        }
     } else {
         LazyColumn(
             contentPadding = PaddingValues(vertical = 16.dp),
@@ -61,7 +81,7 @@ fun HomeScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "Welcome, ${state.fullName!!} !",
+                        text = "Welcome, ${state.fullName} !",
                         color = LeftBarColor,
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold
@@ -150,10 +170,26 @@ fun HomeScreen(
             }
         }
     }
+
+    if (state.showCancelAppointmentDialog) {
+        CancelAppointmentAlertDialog(
+            onConfirm = {
+                viewModel.cancelAppointment(
+                    onCancelAppointmentResult = { message, shortDuration ->
+                        onSnackbarShow(message, shortDuration)
+                    })
+            },
+            onDismiss = { viewModel.showCancelAppointmentDialog(false) }
+        )
+    }
 }
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(loginStatus = LoginStatus.LOGGED_IN) {}
+    HomeScreen(
+        loginStatus = LoginStatus.LOGGED_IN,
+        onNavigateToLoginScreen = {},
+        onSnackbarShow = { _, _ -> }
+    )
 }

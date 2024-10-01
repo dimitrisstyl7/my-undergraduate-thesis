@@ -9,5 +9,7 @@ data class HomeState(
     val articles: List<Article> = emptyList(),
     val announcements: List<Announcement> = emptyList(),
     val appointmentsTableRowsData: List<List<CellData>> = emptyList(),
-    val isLoading: Boolean = false
+    val showCancelAppointmentDialog: Boolean = false,
+    val appointmentToBeCanceledId: Int = -1,
+    val isLoading: Boolean = true
 )

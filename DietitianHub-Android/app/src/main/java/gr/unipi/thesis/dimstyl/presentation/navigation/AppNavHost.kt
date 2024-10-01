@@ -49,12 +49,12 @@ fun AppNavHost(
         composable<Home> {
             HomeScreen(
                 loginStatus = mainState.loginStatus,
-                jwtAccessToken = mainState.jwtAccessToken,
                 onNavigateToLoginScreen = {
                     viewModel.setLoginStatus(LoginStatus.LOGGED_OUT)
                     viewModel.setCurrentNavRoute(NavRoute.LOGIN)
                     navController.navigate(Login) { popUpTo(Home) { inclusive = true } }
-                }
+                },
+                onSnackbarShow = onSnackbarShow
             )
         }
 
