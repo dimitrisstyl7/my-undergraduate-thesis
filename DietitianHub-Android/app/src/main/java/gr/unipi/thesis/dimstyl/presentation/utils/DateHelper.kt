@@ -1,6 +1,5 @@
 package gr.unipi.thesis.dimstyl.presentation.utils
 
-import android.os.Build
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SelectableDates
 import java.text.SimpleDateFormat
@@ -36,13 +35,4 @@ fun convertMillisToDate(millis: Long): String {
     return formatter.format(Date(millis))
 }
 
-private fun getCurrentYear(): Int {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        Year.now().value
-    } else {
-        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            .format(System.currentTimeMillis())
-            .substring(0, 4)
-            .toInt()
-    }
-}
+private fun getCurrentYear(): Int = Year.now().value
