@@ -1,13 +1,13 @@
 package gr.unipi.thesis.dimstyl.services.impl;
 
-import gr.unipi.thesis.dimstyl.dtos.ClientDto;
-import gr.unipi.thesis.dimstyl.dtos.TagDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebClientDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebTagDto;
 import gr.unipi.thesis.dimstyl.entities.Tag;
 import gr.unipi.thesis.dimstyl.entities.User;
 import gr.unipi.thesis.dimstyl.entities.UserInfo;
 import gr.unipi.thesis.dimstyl.enums.RequestType;
 import gr.unipi.thesis.dimstyl.exceptions.user.ApiUserInfoNotFoundException;
-import gr.unipi.thesis.dimstyl.exceptions.user.MvcUserInfoNotFoundException;
+import gr.unipi.thesis.dimstyl.exceptions.user.WebUserInfoNotFoundException;
 import gr.unipi.thesis.dimstyl.repositories.UserInfoRepository;
 import gr.unipi.thesis.dimstyl.services.TagService;
 import gr.unipi.thesis.dimstyl.services.UserInfoService;
@@ -25,28 +25,28 @@ public class UserInfoServiceImpl implements UserInfoService {
     private final TagService tagService;
 
     @Override
-    public void saveUserInfo(ClientDto clientDto, User user) {
-        UserInfo userInfo = clientDto.toUserInfo(user);
+    public void saveUserInfo(WebClientDto webClientDto, User user) {
+        UserInfo userInfo = webClientDto.toUserInfo(user);
         userInfoRepository.save(userInfo);
     }
 
     @Override
     @Transactional
-    public void updateUserInfo(ClientDto clientDto, int userId, RequestType requestType) {
+    public void updateUserInfo(WebClientDto webClientDto, int userId, RequestType requestType) {
         UserInfo existingUserInfo = getUserInfo(userId, requestType);
-        existingUserInfo.setFirstName(clientDto.getFirstName());
-        existingUserInfo.setLastName(clientDto.getLastName());
-        existingUserInfo.setGender(clientDto.getGender());
-        existingUserInfo.setDateOfBirth(clientDto.getDateOfBirth());
-        existingUserInfo.setEmail(clientDto.getEmail());
-        existingUserInfo.setPhone(clientDto.getPhone());
+        existingUserInfo.setFirstName(webClientDto.getFirstName());
+        existingUserInfo.setLastName(webClientDto.getLastName());
+        existingUserInfo.setGender(webClientDto.getGender());
+        existingUserInfo.setDateOfBirth(webClientDto.getDateOfBirth());
+        existingUserInfo.setEmail(webClientDto.getEmail());
+        existingUserInfo.setPhone(webClientDto.getPhone());
     }
 
     @Override
-    public List<TagDto> getClientTags(int userId, RequestType requestType) {
+    public List<WebTagDto> getClientTags(int userId, RequestType requestType) {
         UserInfo userInfo = getUserInfo(userId, requestType);
         return userInfo.getTags().stream()
-                .map(Tag::toDto)
+                .map(Tag::toWebDto)
                 .toList();
     }
 
@@ -67,7 +67,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                     if (requestType.equals(RequestType.WEB_API)) {
                         return new ApiUserInfoNotFoundException(message);
                     } else {
-                        return new MvcUserInfoNotFoundException(message);
+                        return new WebUserInfoNotFoundException(message);
                     }
                 });
     }

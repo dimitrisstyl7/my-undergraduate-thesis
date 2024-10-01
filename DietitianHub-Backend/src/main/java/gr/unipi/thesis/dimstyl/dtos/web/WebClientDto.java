@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.dtos;
+package gr.unipi.thesis.dimstyl.dtos.web;
 
 import gr.unipi.thesis.dimstyl.entities.User;
 import gr.unipi.thesis.dimstyl.entities.UserInfo;
@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClientDto {
+public class WebClientDto {
 
     private int id;
 

@@ -1,6 +1,6 @@
 package gr.unipi.thesis.dimstyl.entities;
 
-import gr.unipi.thesis.dimstyl.dtos.TagDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebTagDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,9 +25,9 @@ public class Tag {
     @Column(name = "name", unique = true, nullable = false, length = 100)
     private String name;
 
-    public TagDto toDto() {
+    public WebTagDto toWebDto() {
         int categoryId = category.getId();
-        return TagDto.builder()
+        return WebTagDto.builder()
                 .id(id)
                 .categoryId(categoryId)
                 .name(name)

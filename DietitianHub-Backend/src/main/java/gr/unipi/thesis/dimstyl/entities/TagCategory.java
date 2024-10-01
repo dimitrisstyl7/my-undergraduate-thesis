@@ -1,7 +1,7 @@
 package gr.unipi.thesis.dimstyl.entities;
 
-import gr.unipi.thesis.dimstyl.dtos.TagCategoryDto;
-import gr.unipi.thesis.dimstyl.dtos.TagDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebTagCategoryDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebTagDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,9 +25,9 @@ public class TagCategory {
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Tag> tags;
 
-    public TagCategoryDto toDto() {
-        List<TagDto> tags = this.tags.stream().map(Tag::toDto).toList();
-        return TagCategoryDto.builder()
+    public WebTagCategoryDto toWebDto() {
+        List<WebTagDto> tags = this.tags.stream().map(Tag::toWebDto).toList();
+        return WebTagCategoryDto.builder()
                 .name(name)
                 .tags(tags)
                 .build();

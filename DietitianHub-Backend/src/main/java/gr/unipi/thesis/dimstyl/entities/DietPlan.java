@@ -1,6 +1,6 @@
 package gr.unipi.thesis.dimstyl.entities;
 
-import gr.unipi.thesis.dimstyl.dtos.DietPlanDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebDietPlanDto;
 import gr.unipi.thesis.dimstyl.utilities.DateTimeUtil;
 import jakarta.persistence.*;
 import lombok.*;
@@ -39,9 +39,9 @@ public class DietPlan {
     @Column(name = "created_on", nullable = false, updatable = false)
     private LocalDate createdOn;
 
-    public DietPlanDto toDto() {
+    public WebDietPlanDto toWebDto() {
         String createdOn = DateTimeUtil.getFormattedDate(this.createdOn);
-        return DietPlanDto.builder()
+        return WebDietPlanDto.builder()
                 .id(id)
                 .name(name)
                 .createdOn(createdOn)

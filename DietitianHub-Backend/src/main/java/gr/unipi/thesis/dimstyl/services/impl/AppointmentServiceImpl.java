@@ -1,6 +1,6 @@
 package gr.unipi.thesis.dimstyl.services.impl;
 
-import gr.unipi.thesis.dimstyl.dtos.AppointmentDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebAppointmentDto;
 import gr.unipi.thesis.dimstyl.entities.Appointment;
 import gr.unipi.thesis.dimstyl.entities.UserInfo;
 import gr.unipi.thesis.dimstyl.enums.AppointmentStatus;
@@ -28,56 +28,56 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final UserInfoService userInfoService;
 
     @Override
-    public List<AppointmentDto> getAppointmentsByStatusesAfterGivenAppointmentDateTime(List<AppointmentStatus> statuses,
-                                                                                       LocalDateTime dateTime) {
+    public List<WebAppointmentDto> getAppointmentsByStatusesAfterGivenAppointmentDateTime(List<AppointmentStatus> statuses,
+                                                                                          LocalDateTime dateTime) {
         return appointmentRepository
                 .findAllByStatusInAndAppointmentDateTimeIsAfter(statuses, dateTime).stream()
-                .map(Appointment::toDto)
+                .map(Appointment::toWebDto)
                 .toList();
     }
 
     @Override
-    public List<AppointmentDto> getAppointmentsByStatusAfterGivenAppointmentDateTimeOrdered(AppointmentStatus status,
-                                                                                            LocalDateTime dateTime) {
+    public List<WebAppointmentDto> getAppointmentsByStatusAfterGivenAppointmentDateTimeOrdered(AppointmentStatus status,
+                                                                                               LocalDateTime dateTime) {
         return appointmentRepository
                 .findAllByStatusAndAppointmentDateTimeIsAfterOrderByAppointmentDateTime(status, dateTime).stream()
-                .map(Appointment::toDto)
+                .map(Appointment::toWebDto)
                 .toList();
     }
 
     @Override
-    public List<AppointmentDto> getAppointmentsByStatusesWithinAppointmentDateTimeRange(List<AppointmentStatus> statuses,
-                                                                                        LocalDateTime startDateTime,
-                                                                                        LocalDateTime endDateTime) {
+    public List<WebAppointmentDto> getAppointmentsByStatusesWithinAppointmentDateTimeRange(List<AppointmentStatus> statuses,
+                                                                                           LocalDateTime startDateTime,
+                                                                                           LocalDateTime endDateTime) {
         return appointmentRepository
                 .findAllByStatusInAndAppointmentDateTimeIsBetweenOrderByAppointmentDateTime(statuses, startDateTime, endDateTime)
                 .stream()
-                .map(Appointment::toDto)
+                .map(Appointment::toWebDto)
                 .toList();
     }
 
     @Override
-    public List<AppointmentDto> getLatest5AppointmentsByStatusAfterGivenAppointmentDateTime(AppointmentStatus status,
-                                                                                            LocalDateTime dateTime) {
+    public List<WebAppointmentDto> getLatest5AppointmentsByStatusAfterGivenAppointmentDateTime(AppointmentStatus status,
+                                                                                               LocalDateTime dateTime) {
         return appointmentRepository
                 .findFirst5ByStatusAndAppointmentDateTimeIsAfterOrderByAppointmentDateTime(status, dateTime).stream()
-                .map(Appointment::toDto)
+                .map(Appointment::toWebDto)
                 .toList();
     }
 
     @Override
-    public List<AppointmentDto> getLatest5AppointmentsByStatus(AppointmentStatus status) {
+    public List<WebAppointmentDto> getLatest5AppointmentsByStatus(AppointmentStatus status) {
         return appointmentRepository
                 .findFirst5ByStatusOrderByAppointmentDateTimeDesc(status).stream()
-                .map(Appointment::toDto)
+                .map(Appointment::toWebDto)
                 .toList();
     }
 
     @Override
     @Transactional
-    public void createAppointment(AppointmentDto appointmentDto, RequestType requestType) {
-        LocalDateTime AppointmentDateTime = appointmentDto.start();
-        UserInfo userInfo = userInfoService.getUserInfo(appointmentDto.clientId(), requestType);
+    public void createAppointment(WebAppointmentDto webAppointmentDto, RequestType requestType) {
+        LocalDateTime AppointmentDateTime = webAppointmentDto.start();
+        UserInfo userInfo = userInfoService.getUserInfo(webAppointmentDto.clientId(), requestType);
         Optional<Appointment> appointmentOptional =
                 appointmentRepository.findByAppointmentDateTimeAndStatusAndClientUserInfoId(
                         AppointmentDateTime,
@@ -87,25 +87,25 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         // If there is no appointment with the same scheduled date time and status PENDING, create a new appointment
         if (appointmentOptional.isEmpty()) {
-            Appointment appointment = appointmentDto.toAppointment(userInfo);
+            Appointment appointment = webAppointmentDto.toAppointment(userInfo);
             appointment.setStatus(AppointmentStatus.SCHEDULED);
             appointmentRepository.save(appointment);
         } else {
             // If there is an appointment with the same scheduled date time and status PENDING, update the appointment
             Appointment appointment = appointmentOptional.get();
-            appointment.setTitle(appointmentDto.title());
-            appointment.setDescription(appointmentDto.description());
+            appointment.setTitle(webAppointmentDto.title());
+            appointment.setDescription(webAppointmentDto.description());
             appointment.setStatus(AppointmentStatus.SCHEDULED);
         }
     }
 
     @Override
     @Transactional
-    public void updateAppointment(int id, AppointmentDto appointmentDto) {
+    public void updateAppointment(int id, WebAppointmentDto webAppointmentDto) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new AppointmentNotFoundException("Appointment with id %d not found".formatted(id)));
-        appointment.setTitle(appointmentDto.title());
-        appointment.setDescription(appointmentDto.description());
+        appointment.setTitle(webAppointmentDto.title());
+        appointment.setDescription(webAppointmentDto.description());
     }
 
     @Override
@@ -147,7 +147,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         appointment.setTitle(appointment.getClientUserInfo().getFullName());
         appointment.setStatus(AppointmentStatus.SCHEDULED);
-        appointment.toDto();
+        appointment.toWebDto();
     }
 
     @Override

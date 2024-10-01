@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.dtos;
+package gr.unipi.thesis.dimstyl.dtos.web;
 
 import gr.unipi.thesis.dimstyl.entities.Article;
 import gr.unipi.thesis.dimstyl.entities.Tag;
@@ -12,14 +12,14 @@ import java.util.List;
 
 @Builder
 @UniqueTitle
-public record ArticleDto(int id,
-                         @NotBlank(message = "Title cannot be empty")
+public record WebArticleDto(int id,
+                            @NotBlank(message = "Title cannot be empty")
                          @Size(max = 100, message = "Title must be less than 100 characters")
                          String title,
-                         @RichTextNotBlank String content,
-                         List<Integer> tagIds,
-                         List<String> tagNames,
-                         String createdAt) implements IdentifiableAndTitleable {
+                            @RichTextNotBlank String content,
+                            List<Integer> tagIds,
+                            List<String> tagNames,
+                            String createdAt) implements IdentifiableAndTitleable {
 
     public Article toArticle(List<Tag> tags) {
         return Article.builder()

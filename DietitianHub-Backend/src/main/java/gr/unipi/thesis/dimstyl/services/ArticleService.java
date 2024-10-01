@@ -1,18 +1,19 @@
 package gr.unipi.thesis.dimstyl.services;
 
-import gr.unipi.thesis.dimstyl.dtos.ArticleDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebArticleDto;
 
 import java.util.List;
 
 public interface ArticleService {
 
-    List<ArticleDto> getAllArticles();
+    List<WebArticleDto> getAllArticles();
 
-    ArticleDto getArticle(int id);
 
-    void createArticle(ArticleDto articleDto);
+    WebArticleDto getArticle(int id);
 
-    void updateArticle(int id, ArticleDto articleDto);
+    void createArticle(WebArticleDto webArticleDto);
+
+    void updateArticle(int id, WebArticleDto webArticleDto);
 
     void deleteArticle(int id);
 

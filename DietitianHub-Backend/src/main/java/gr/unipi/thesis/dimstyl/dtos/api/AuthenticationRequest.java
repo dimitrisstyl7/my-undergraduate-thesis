@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.dtos;
+package gr.unipi.thesis.dimstyl.dtos.api;
 
 import jakarta.validation.constraints.NotBlank;
 

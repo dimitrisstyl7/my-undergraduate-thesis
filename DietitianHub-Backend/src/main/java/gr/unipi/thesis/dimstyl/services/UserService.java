@@ -1,7 +1,7 @@
 package gr.unipi.thesis.dimstyl.services;
 
-import gr.unipi.thesis.dimstyl.dtos.ClientCredentialChangeDto;
-import gr.unipi.thesis.dimstyl.dtos.ClientDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebClientCredentialChangeDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebClientDto;
 import gr.unipi.thesis.dimstyl.entities.User;
 import jakarta.mail.MessagingException;
 
@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface UserService {
 
-    List<ClientDto> getAllClients();
+    List<WebClientDto> getAllClients();
 
-    void registerClient(ClientDto clientDto) throws MessagingException;
+    void registerClient(WebClientDto webClientDto) throws MessagingException;
 
     void deleteUser(int id);
 
@@ -19,6 +19,6 @@ public interface UserService {
 
     boolean usernameExists(String username);
 
-    void updateClientCredentials(ClientCredentialChangeDto credentialChangeDto);
+    void updateClientCredentials(WebClientCredentialChangeDto credentialChangeDto);
 
 }

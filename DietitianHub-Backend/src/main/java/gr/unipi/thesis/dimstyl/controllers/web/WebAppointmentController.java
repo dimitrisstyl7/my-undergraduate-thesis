@@ -1,7 +1,7 @@
-package gr.unipi.thesis.dimstyl.controllers.mvc;
+package gr.unipi.thesis.dimstyl.controllers.web;
 
-import gr.unipi.thesis.dimstyl.dtos.AppointmentDto;
-import gr.unipi.thesis.dimstyl.dtos.ClientDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebAppointmentDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebClientDto;
 import gr.unipi.thesis.dimstyl.enums.AppointmentStatus;
 import gr.unipi.thesis.dimstyl.enums.RequestType;
 import gr.unipi.thesis.dimstyl.services.AppointmentService;
@@ -26,7 +26,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/appointments")
 @RequiredArgsConstructor
-public class MvcAppointmentController {
+public class WebAppointmentController {
 
     private final UserService userService;
     private final AppointmentService appointmentService;
@@ -35,14 +35,14 @@ public class MvcAppointmentController {
     public String appointmentsPage(Model model) {
         LocalDateTime dateTimeNow = LocalDateTime.now();
         String minDateTime = dateTimeNow.toString().substring(0, 16);
-        List<ClientDto> clients = userService.getAllClients();
-        List<AppointmentDto> todaysAppointments =
+        List<WebClientDto> clients = userService.getAllClients();
+        List<WebAppointmentDto> todaysAppointments =
                 appointmentService.getAppointmentsByStatusesWithinAppointmentDateTimeRange(
                         List.of(AppointmentStatus.SCHEDULED, AppointmentStatus.COMPLETED),
                         LocalDate.now().atStartOfDay(),
                         LocalDate.now().atStartOfDay().plusHours(23).plusMinutes(59)
                 );
-        List<AppointmentDto> pendingAppointments =
+        List<WebAppointmentDto> pendingAppointments =
                 appointmentService.getAppointmentsByStatusAfterGivenAppointmentDateTimeOrdered(
                         AppointmentStatus.PENDING,
                         dateTimeNow
@@ -58,7 +58,7 @@ public class MvcAppointmentController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AppointmentDto>> getAppointments() {
+    public ResponseEntity<List<WebAppointmentDto>> getAppointments() {
         return ResponseEntity.ok(
                 appointmentService.getAppointmentsByStatusesAfterGivenAppointmentDateTime(
                         List.of(AppointmentStatus.SCHEDULED, AppointmentStatus.COMPLETED),
@@ -68,11 +68,11 @@ public class MvcAppointmentController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, String>> createAppointment(@Valid @RequestBody AppointmentDto appointmentDto,
+    public ResponseEntity<Map<String, String>> createAppointment(@Valid @RequestBody WebAppointmentDto webAppointmentDto,
                                                                  BindingResult result) {
         // If there are no errors, proceed with creating the appointment
         if (!result.hasErrors()) {
-            appointmentService.createAppointment(appointmentDto, RequestType.WEB_API);
+            appointmentService.createAppointment(webAppointmentDto, RequestType.WEB_API);
             return ResponseEntity.noContent().build();
         }
 
@@ -95,7 +95,7 @@ public class MvcAppointmentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, String>> updateAppointment(@PathVariable("id") int id,
-                                                                 @Valid @RequestBody AppointmentDto appointmentDto,
+                                                                 @Valid @RequestBody WebAppointmentDto webAppointmentDto,
                                                                  BindingResult result) {
         // If there is an error in title, return a bad request
         if (result.hasFieldErrors("title")) {
@@ -109,7 +109,7 @@ public class MvcAppointmentController {
         }
 
         // Otherwise, continue with updating the appointment
-        appointmentService.updateAppointment(id, appointmentDto);
+        appointmentService.updateAppointment(id, webAppointmentDto);
         return ResponseEntity.noContent().build();
     }
 

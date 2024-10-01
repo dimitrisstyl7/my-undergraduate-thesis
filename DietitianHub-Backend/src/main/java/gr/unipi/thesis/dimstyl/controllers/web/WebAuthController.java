@@ -1,6 +1,6 @@
-package gr.unipi.thesis.dimstyl.controllers.mvc;
+package gr.unipi.thesis.dimstyl.controllers.web;
 
-import gr.unipi.thesis.dimstyl.dtos.ClientCredentialChangeDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebClientCredentialChangeDto;
 import gr.unipi.thesis.dimstyl.security.CustomUserDetailsService;
 import gr.unipi.thesis.dimstyl.services.UserService;
 import jakarta.servlet.ServletException;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-public class MvcAuthController {
+public class WebAuthController {
 
     private final UserService userService;
     private final CustomUserDetailsService userDetailsService;
@@ -30,12 +30,12 @@ public class MvcAuthController {
 
     @GetMapping("/updateCredentials")
     public String updateCredentialsPage(Model model) {
-        model.addAttribute("client", new ClientCredentialChangeDto());
+        model.addAttribute("client", new WebClientCredentialChangeDto());
         return "auth/update-credentials";
     }
 
     @PostMapping("/updateCredentials")
-    public String updateCredentials(@Valid @ModelAttribute("client") ClientCredentialChangeDto credentialChangeDto,
+    public String updateCredentials(@Valid @ModelAttribute("client") WebClientCredentialChangeDto credentialChangeDto,
                                     BindingResult result,
                                     HttpServletRequest request,
                                     Model model) throws ServletException {

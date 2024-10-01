@@ -1,6 +1,6 @@
 package gr.unipi.thesis.dimstyl.services.impl;
 
-import gr.unipi.thesis.dimstyl.dtos.AnnouncementDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebAnnouncementDto;
 import gr.unipi.thesis.dimstyl.entities.Announcement;
 import gr.unipi.thesis.dimstyl.exceptions.announcement.AnnouncementNotFoundException;
 import gr.unipi.thesis.dimstyl.repositories.AnnouncementRepository;
@@ -20,54 +20,54 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     private final AnnouncementRepository announcementRepository;
 
     @Override
-    public List<AnnouncementDto> getAnnouncementsForToday() {
+    public List<WebAnnouncementDto> getAnnouncementsForToday() {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         return announcementRepository
                 .findAnnouncementByCreatedAtAfterOrderByCreatedAtDesc(startOfDay).stream()
-                .map(Announcement::toDto)
+                .map(Announcement::toWebDto)
                 .toList();
     }
 
     @Override
-    public List<AnnouncementDto> getAnnouncementsForYesterday() {
+    public List<WebAnnouncementDto> getAnnouncementsForYesterday() {
         LocalDateTime start = LocalDate.now().minusDays(1).atStartOfDay();
         LocalDateTime end = LocalDate.now().atStartOfDay().minusSeconds(1);
         return announcementRepository
                 .findAnnouncementByCreatedAtBetweenOrderByCreatedAtDesc(start, end).stream()
-                .map(Announcement::toDto)
+                .map(Announcement::toWebDto)
                 .toList();
     }
 
     @Override
-    public List<AnnouncementDto> getLatest10AnnouncementsBeforeYesterday() {
+    public List<WebAnnouncementDto> getLatest10AnnouncementsBeforeYesterday() {
         LocalDateTime dateTime = LocalDate.now().minusDays(1).atStartOfDay().minusSeconds(1);
         return announcementRepository
                 .findFirst10ByCreatedAtBeforeOrderByCreatedAtDesc(dateTime).stream()
-                .map(Announcement::toDto)
+                .map(Announcement::toWebDto)
                 .toList();
     }
 
     @Override
-    public AnnouncementDto getAnnouncement(int id) {
+    public WebAnnouncementDto getAnnouncement(int id) {
         return announcementRepository.findById(id)
-                .map(Announcement::toDto)
+                .map(Announcement::toWebDto)
                 .orElseThrow(() -> new AnnouncementNotFoundException("Announcement with id %d not found".formatted(id)));
     }
 
     @Override
     @Transactional
-    public void createAnnouncement(AnnouncementDto announcementDto) {
-        Announcement announcement = announcementDto.toAnnouncement();
+    public void createAnnouncement(WebAnnouncementDto webAnnouncementDto) {
+        Announcement announcement = webAnnouncementDto.toAnnouncement();
         announcementRepository.save(announcement);
     }
 
     @Override
     @Transactional
-    public void updateAnnouncement(int id, AnnouncementDto announcementDto) {
+    public void updateAnnouncement(int id, WebAnnouncementDto webAnnouncementDto) {
         Announcement announcement = announcementRepository.findById(id)
                 .orElseThrow(() -> new AnnouncementNotFoundException("Announcement with id %d not found".formatted(id)));
-        announcement.setTitle(announcementDto.title());
-        announcement.setContent(announcementDto.content());
+        announcement.setTitle(webAnnouncementDto.title());
+        announcement.setContent(webAnnouncementDto.content());
     }
 
     @Override

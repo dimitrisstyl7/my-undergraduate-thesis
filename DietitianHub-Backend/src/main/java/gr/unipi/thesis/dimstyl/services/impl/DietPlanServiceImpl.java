@@ -1,6 +1,6 @@
 package gr.unipi.thesis.dimstyl.services.impl;
 
-import gr.unipi.thesis.dimstyl.dtos.DietPlanDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebDietPlanDto;
 import gr.unipi.thesis.dimstyl.entities.DietPlan;
 import gr.unipi.thesis.dimstyl.entities.UserInfo;
 import gr.unipi.thesis.dimstyl.exceptions.dietPlan.DietPlanNotFoundException;
@@ -53,10 +53,10 @@ public class DietPlanServiceImpl implements DietPlanService {
     }
 
     @Override
-    public List<DietPlanDto> getDietPlans(int userInfoId) {
+    public List<WebDietPlanDto> getDietPlans(int userInfoId) {
         return dietPlanRepository
                 .findAllByUserInfo_IdOrderByCreatedOnDesc(userInfoId).stream()
-                .map(DietPlan::toDto)
+                .map(DietPlan::toWebDto)
                 .toList();
     }
 

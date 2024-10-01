@@ -1,6 +1,6 @@
 package gr.unipi.thesis.dimstyl.services;
 
-import gr.unipi.thesis.dimstyl.dtos.AppointmentDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebAppointmentDto;
 import gr.unipi.thesis.dimstyl.enums.AppointmentStatus;
 import gr.unipi.thesis.dimstyl.enums.RequestType;
 
@@ -9,21 +9,22 @@ import java.util.List;
 
 public interface AppointmentService {
 
-    List<AppointmentDto> getAppointmentsByStatusesAfterGivenAppointmentDateTime(List<AppointmentStatus> statuses, LocalDateTime dateTime);
+    List<WebAppointmentDto> getAppointmentsByStatusesAfterGivenAppointmentDateTime(List<AppointmentStatus> statuses, LocalDateTime dateTime);
 
-    List<AppointmentDto> getAppointmentsByStatusAfterGivenAppointmentDateTimeOrdered(AppointmentStatus status, LocalDateTime dateTime);
+    List<WebAppointmentDto> getAppointmentsByStatusAfterGivenAppointmentDateTimeOrdered(AppointmentStatus status, LocalDateTime dateTime);
 
-    List<AppointmentDto> getAppointmentsByStatusesWithinAppointmentDateTimeRange(List<AppointmentStatus> statuses,
-                                                                                 LocalDateTime startDateTime,
-                                                                                 LocalDateTime endDateTime);
+    List<WebAppointmentDto> getAppointmentsByStatusesWithinAppointmentDateTimeRange(List<AppointmentStatus> statuses,
+                                                                                    LocalDateTime startDateTime,
+                                                                                    LocalDateTime endDateTime);
 
-    List<AppointmentDto> getLatest5AppointmentsByStatusAfterGivenAppointmentDateTime(AppointmentStatus status, LocalDateTime dateTime);
+    List<WebAppointmentDto> getLatest5AppointmentsByStatusAfterGivenAppointmentDateTime(AppointmentStatus status, LocalDateTime dateTime);
 
-    List<AppointmentDto> getLatest5AppointmentsByStatus(AppointmentStatus status);
+    List<WebAppointmentDto> getLatest5AppointmentsByStatus(AppointmentStatus status);
 
-    void createAppointment(AppointmentDto appointmentDto, RequestType requestType);
 
-    void updateAppointment(int id, AppointmentDto appointmentDto);
+    void createAppointment(WebAppointmentDto webAppointmentDto, RequestType requestType);
+
+    void updateAppointment(int id, WebAppointmentDto webAppointmentDto);
 
     void completeAppointment(int id);
 

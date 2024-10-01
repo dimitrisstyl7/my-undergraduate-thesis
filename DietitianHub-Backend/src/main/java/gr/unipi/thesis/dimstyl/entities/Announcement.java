@@ -1,6 +1,6 @@
 package gr.unipi.thesis.dimstyl.entities;
 
-import gr.unipi.thesis.dimstyl.dtos.AnnouncementDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebAnnouncementDto;
 import gr.unipi.thesis.dimstyl.utilities.DateTimeUtil;
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,9 +34,9 @@ public class Announcement {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    public AnnouncementDto toDto() {
+    public WebAnnouncementDto toWebDto() {
         String createdAt = DateTimeUtil.getFormattedDateTime(this.createdAt);
-        return AnnouncementDto.builder()
+        return WebAnnouncementDto.builder()
                 .id(id)
                 .title(title)
                 .content(content)

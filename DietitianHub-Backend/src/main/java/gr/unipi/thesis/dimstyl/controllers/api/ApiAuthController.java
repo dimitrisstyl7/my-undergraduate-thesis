@@ -1,7 +1,7 @@
 package gr.unipi.thesis.dimstyl.controllers.api;
 
-import gr.unipi.thesis.dimstyl.dtos.AuthenticationRequest;
-import gr.unipi.thesis.dimstyl.dtos.AuthenticationResponse;
+import gr.unipi.thesis.dimstyl.dtos.api.AuthenticationRequest;
+import gr.unipi.thesis.dimstyl.dtos.api.AuthenticationResponse;
 import gr.unipi.thesis.dimstyl.security.ApiAuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

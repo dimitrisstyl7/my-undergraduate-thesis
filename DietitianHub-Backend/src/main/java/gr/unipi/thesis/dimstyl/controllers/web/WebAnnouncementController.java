@@ -1,6 +1,6 @@
-package gr.unipi.thesis.dimstyl.controllers.mvc;
+package gr.unipi.thesis.dimstyl.controllers.web;
 
-import gr.unipi.thesis.dimstyl.dtos.AnnouncementDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebAnnouncementDto;
 import gr.unipi.thesis.dimstyl.services.AnnouncementService;
 import gr.unipi.thesis.dimstyl.utilities.ValidationErrorUtil;
 import jakarta.validation.Valid;
@@ -20,15 +20,15 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/announcements")
 @RequiredArgsConstructor
-public class MvcAnnouncementController {
+public class WebAnnouncementController {
 
     private final AnnouncementService announcementService;
 
     @GetMapping
     public String announcementsPage(Model model) {
-        List<AnnouncementDto> announcementsForToday = announcementService.getAnnouncementsForToday();
-        List<AnnouncementDto> announcementsForYesterday = announcementService.getAnnouncementsForYesterday();
-        List<AnnouncementDto> earlierAnnouncements = announcementService.getLatest10AnnouncementsBeforeYesterday();
+        List<WebAnnouncementDto> announcementsForToday = announcementService.getAnnouncementsForToday();
+        List<WebAnnouncementDto> announcementsForYesterday = announcementService.getAnnouncementsForYesterday();
+        List<WebAnnouncementDto> earlierAnnouncements = announcementService.getLatest10AnnouncementsBeforeYesterday();
         boolean noAnnouncements = announcementsForToday.isEmpty() &&
                                   announcementsForYesterday.isEmpty() &&
                                   earlierAnnouncements.isEmpty();
@@ -42,16 +42,16 @@ public class MvcAnnouncementController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AnnouncementDto> getAnnouncement(@PathVariable("id") int id) {
+    public ResponseEntity<WebAnnouncementDto> getAnnouncement(@PathVariable("id") int id) {
         return ResponseEntity.ok(announcementService.getAnnouncement(id));
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, String>> createAnnouncement(@Valid @RequestBody AnnouncementDto announcementDto,
+    public ResponseEntity<Map<String, String>> createAnnouncement(@Valid @RequestBody WebAnnouncementDto webAnnouncementDto,
                                                                   BindingResult result) {
         // If there are no errors, proceed with creating the announcement
         if (!result.hasErrors()) {
-            announcementService.createAnnouncement(announcementDto);
+            announcementService.createAnnouncement(webAnnouncementDto);
             return ResponseEntity.noContent().location(URI.create("/announcements?publishSuccess")).build();
         }
 
@@ -72,11 +72,11 @@ public class MvcAnnouncementController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, String>> updateAnnouncement(@PathVariable("id") int id,
-                                                                  @Valid @RequestBody AnnouncementDto announcementDto,
+                                                                  @Valid @RequestBody WebAnnouncementDto webAnnouncementDto,
                                                                   BindingResult result) {
         // If there are no errors, proceed with updating the announcement
         if (!result.hasErrors()) {
-            announcementService.updateAnnouncement(id, announcementDto);
+            announcementService.updateAnnouncement(id, webAnnouncementDto);
             return ResponseEntity.noContent().location(URI.create("/announcements?updateSuccess")).build();
         }
 

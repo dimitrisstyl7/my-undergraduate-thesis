@@ -1,6 +1,6 @@
 package gr.unipi.thesis.dimstyl.services.impl;
 
-import gr.unipi.thesis.dimstyl.dtos.ArticleDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebArticleDto;
 import gr.unipi.thesis.dimstyl.entities.Article;
 import gr.unipi.thesis.dimstyl.entities.Tag;
 import gr.unipi.thesis.dimstyl.exceptions.article.ArticleNotFoundException;
@@ -22,35 +22,35 @@ public class ArticleServiceImpl implements ArticleService {
     private final TagService tagService;
 
     @Override
-    public List<ArticleDto> getAllArticles() {
+    public List<WebArticleDto> getAllArticles() {
         return articleRepository.findAll(Sort.by(Sort.Order.desc("createdAt"))).stream()
-                .map(Article::toDto)
+                .map(Article::toWebDto)
                 .toList();
     }
 
     @Override
-    public ArticleDto getArticle(int id) {
+    public WebArticleDto getArticle(int id) {
         return articleRepository.findById(id)
-                .map(Article::toDto)
+                .map(Article::toWebDto)
                 .orElseThrow(() -> new ArticleNotFoundException("Article with id %d not found".formatted(id)));
     }
 
     @Override
     @Transactional
-    public void createArticle(ArticleDto articleDto) {
-        List<Tag> tags = tagService.getTags(articleDto.tagIds());
-        Article article = articleDto.toArticle(tags);
+    public void createArticle(WebArticleDto webArticleDto) {
+        List<Tag> tags = tagService.getTags(webArticleDto.tagIds());
+        Article article = webArticleDto.toArticle(tags);
         articleRepository.save(article);
     }
 
     @Override
     @Transactional
-    public void updateArticle(int id, ArticleDto articleDto) {
-        List<Tag> tags = tagService.getTags(articleDto.tagIds());
+    public void updateArticle(int id, WebArticleDto webArticleDto) {
+        List<Tag> tags = tagService.getTags(webArticleDto.tagIds());
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new ArticleNotFoundException("Article with id %d not found".formatted(id)));
-        article.setTitle(articleDto.title());
-        article.setContent(articleDto.content());
+        article.setTitle(webArticleDto.title());
+        article.setContent(webArticleDto.content());
         article.setTags(tags);
     }
 

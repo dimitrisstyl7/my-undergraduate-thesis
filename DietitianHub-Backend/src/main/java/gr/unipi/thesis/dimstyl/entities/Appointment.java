@@ -1,6 +1,6 @@
 package gr.unipi.thesis.dimstyl.entities;
 
-import gr.unipi.thesis.dimstyl.dtos.AppointmentDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebAppointmentDto;
 import gr.unipi.thesis.dimstyl.enums.AppointmentStatus;
 import gr.unipi.thesis.dimstyl.utilities.DateTimeUtil;
 import jakarta.persistence.*;
@@ -43,11 +43,11 @@ public class Appointment {
     @Column(name = "status", nullable = false, columnDefinition = "appointment_status_enum")
     private AppointmentStatus status;
 
-    public AppointmentDto toDto() {
+    public WebAppointmentDto toWebDto() {
         String formattedAppointmentDateTime = DateTimeUtil.getFormattedDateTime(appointmentDateTime);
         String clientFullName = clientUserInfo.getFullName();
         int clientId = clientUserInfo.getUser().getId();
-        return AppointmentDto.builder()
+        return WebAppointmentDto.builder()
                 .id(id)
                 .title(title)
                 .description(description)

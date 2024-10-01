@@ -1,8 +1,8 @@
-package gr.unipi.thesis.dimstyl.controllers.mvc;
+package gr.unipi.thesis.dimstyl.controllers.web;
 
-import gr.unipi.thesis.dimstyl.dtos.ClientDto;
-import gr.unipi.thesis.dimstyl.dtos.DietPlanDto;
-import gr.unipi.thesis.dimstyl.dtos.TagDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebClientDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebDietPlanDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebTagDto;
 import gr.unipi.thesis.dimstyl.entities.User;
 import gr.unipi.thesis.dimstyl.enums.RequestType;
 import gr.unipi.thesis.dimstyl.services.DietPlanService;
@@ -31,7 +31,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/clients")
 @RequiredArgsConstructor
-public class MvcClientController {
+public class WebClientController {
 
     private final UserService userService;
     private final UserInfoService userInfoService;
@@ -51,7 +51,7 @@ public class MvcClientController {
         }
 
         model.addAttribute("clients", userService.getAllClients());
-        model.addAttribute("client", new ClientDto());
+        model.addAttribute("client", new WebClientDto());
         model.addAttribute("tagCategories", tagCategoryService.getAllTagCategoriesAndTags());
         model.addAttribute("maxDateOfBirth", LocalDate.now());
 
@@ -59,18 +59,18 @@ public class MvcClientController {
     }
 
     @PostMapping("/register")
-    public String registerClient(@Valid @ModelAttribute("client") ClientDto clientDto,
+    public String registerClient(@Valid @ModelAttribute("client") WebClientDto webClientDto,
                                  BindingResult result,
                                  RedirectAttributes redirectAttributes,
                                  Model model) throws MessagingException {
         if (result.hasErrors()) {
             model.addAttribute("clients", userService.getAllClients());
-            model.addAttribute("dateOfBirth", clientDto.getDateOfBirth());
+            model.addAttribute("dateOfBirth", webClientDto.getDateOfBirth());
             model.addAttribute("registerValidationsFailed", true);
             return "clients";
         }
 
-        userService.registerClient(clientDto);
+        userService.registerClient(webClientDto);
         redirectAttributes.addFlashAttribute("flashAttribute", """
                 The client has been registered successfully, \
                 and an activation email has been sent to their inbox.""");
@@ -80,19 +80,19 @@ public class MvcClientController {
 
     @PostMapping("/{id}/update")
     public String updateClient(@PathVariable("id") int id,
-                               @Valid @ModelAttribute("client") ClientDto clientDto,
+                               @Valid @ModelAttribute("client") WebClientDto webClientDto,
                                BindingResult result,
                                RedirectAttributes redirectAttributes,
                                Model model) {
         if (result.hasErrors()) {
             model.addAttribute("clients", userService.getAllClients());
-            model.addAttribute("editedClient", clientDto);
+            model.addAttribute("editedClient", webClientDto);
             model.addAttribute("updateValidationsFailed", true);
             return "clients";
         }
 
         int userId = userService.getUser(id).getId();
-        userInfoService.updateUserInfo(clientDto, userId, RequestType.WEB);
+        userInfoService.updateUserInfo(webClientDto, userId, RequestType.WEB);
         redirectAttributes.addFlashAttribute("flashAttribute", "Client updated successfully.");
 
         return "redirect:/clients?success";
@@ -108,7 +108,7 @@ public class MvcClientController {
     @GetMapping("/{id}/dietPlans/upload")
     public String uploadDietPlanPage(@PathVariable("id") int id, Model model) {
         User user = userService.getUser(id);
-        List<DietPlanDto> dietPlans = dietPlanService.getDietPlans(user.getUserInfo().getId());
+        List<WebDietPlanDto> dietPlans = dietPlanService.getDietPlans(user.getUserInfo().getId());
         model.addAttribute("clientId", id);
         model.addAttribute("dietPlans", dietPlans);
         return "upload-diet-plan";
@@ -168,7 +168,7 @@ public class MvcClientController {
     }
 
     @GetMapping("/{id}/tags")
-    public ResponseEntity<List<TagDto>> getClientTags(@PathVariable("id") int id) {
+    public ResponseEntity<List<WebTagDto>> getClientTags(@PathVariable("id") int id) {
         return ResponseEntity.ok(userInfoService.getClientTags(id, RequestType.WEB_API));
     }
 

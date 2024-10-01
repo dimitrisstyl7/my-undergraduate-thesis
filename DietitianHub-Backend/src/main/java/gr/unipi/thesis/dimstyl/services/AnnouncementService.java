@@ -1,22 +1,23 @@
 package gr.unipi.thesis.dimstyl.services;
 
-import gr.unipi.thesis.dimstyl.dtos.AnnouncementDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebAnnouncementDto;
 
 import java.util.List;
 
 public interface AnnouncementService {
 
-    List<AnnouncementDto> getAnnouncementsForToday();
+    List<WebAnnouncementDto> getAnnouncementsForToday();
 
-    List<AnnouncementDto> getAnnouncementsForYesterday();
+    List<WebAnnouncementDto> getAnnouncementsForYesterday();
 
-    List<AnnouncementDto> getLatest10AnnouncementsBeforeYesterday();
+    List<WebAnnouncementDto> getLatest10AnnouncementsBeforeYesterday();
 
-    AnnouncementDto getAnnouncement(int id);
 
-    void createAnnouncement(AnnouncementDto announcementDto);
+    WebAnnouncementDto getAnnouncement(int id);
 
-    void updateAnnouncement(int id, AnnouncementDto announcementDto);
+    void createAnnouncement(WebAnnouncementDto webAnnouncementDto);
+
+    void updateAnnouncement(int id, WebAnnouncementDto webAnnouncementDto);
 
     void deleteAnnouncement(int id);
 

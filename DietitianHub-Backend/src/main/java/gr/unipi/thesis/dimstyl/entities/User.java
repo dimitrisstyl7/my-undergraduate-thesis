@@ -1,6 +1,6 @@
 package gr.unipi.thesis.dimstyl.entities;
 
-import gr.unipi.thesis.dimstyl.dtos.ClientDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebClientDto;
 import gr.unipi.thesis.dimstyl.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -38,8 +38,8 @@ public class User {
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private UserInfo userInfo;
 
-    public ClientDto toClientDto() {
-        return ClientDto.builder()
+    public WebClientDto toWebClientDto() {
+        return WebClientDto.builder()
                 .id(id)
                 .phone(userInfo.getPhone())
                 .email(userInfo.getEmail())

@@ -1,6 +1,6 @@
 package gr.unipi.thesis.dimstyl.entities;
 
-import gr.unipi.thesis.dimstyl.dtos.ArticleDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebArticleDto;
 import gr.unipi.thesis.dimstyl.utilities.DateTimeUtil;
 import jakarta.persistence.*;
 import lombok.*;
@@ -44,11 +44,11 @@ public class Article {
     )
     private List<Tag> tags;
 
-    public ArticleDto toDto() {
+    public WebArticleDto toWebDto() {
         List<String> tagNames = tags.stream().map(Tag::getName).toList();
         List<Integer> tagIds = tags.stream().map(Tag::getId).toList();
         String createdAt = DateTimeUtil.getFormattedDateTime(this.createdAt);
-        return ArticleDto.builder()
+        return WebArticleDto.builder()
                 .id(id)
                 .title(title)
                 .content(content)

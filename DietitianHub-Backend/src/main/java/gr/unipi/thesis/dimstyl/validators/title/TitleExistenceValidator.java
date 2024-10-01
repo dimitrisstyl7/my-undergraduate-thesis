@@ -1,7 +1,7 @@
 package gr.unipi.thesis.dimstyl.validators.title;
 
-import gr.unipi.thesis.dimstyl.dtos.ArticleDto;
-import gr.unipi.thesis.dimstyl.dtos.IdentifiableAndTitleable;
+import gr.unipi.thesis.dimstyl.dtos.web.IdentifiableAndTitleable;
+import gr.unipi.thesis.dimstyl.dtos.web.WebArticleDto;
 import gr.unipi.thesis.dimstyl.services.AnnouncementService;
 import gr.unipi.thesis.dimstyl.services.ArticleService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ public class TitleExistenceValidator implements ConstraintValidator<UniqueTitle,
     @Override
     public boolean isValid(IdentifiableAndTitleable dto, ConstraintValidatorContext constraintValidatorContext) {
         // Determine if the dto is an ArticleDto
-        boolean isArticle = dto instanceof ArticleDto;
+        boolean isArticle = dto instanceof WebArticleDto;
 
         // If the request method is POST (creating a new article/announcement), check if the title already exists
         String httpMethod = request.getMethod();

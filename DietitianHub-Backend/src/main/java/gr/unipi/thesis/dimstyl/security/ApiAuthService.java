@@ -1,7 +1,7 @@
 package gr.unipi.thesis.dimstyl.security;
 
-import gr.unipi.thesis.dimstyl.dtos.AuthenticationRequest;
-import gr.unipi.thesis.dimstyl.dtos.AuthenticationResponse;
+import gr.unipi.thesis.dimstyl.dtos.api.AuthenticationRequest;
+import gr.unipi.thesis.dimstyl.dtos.api.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

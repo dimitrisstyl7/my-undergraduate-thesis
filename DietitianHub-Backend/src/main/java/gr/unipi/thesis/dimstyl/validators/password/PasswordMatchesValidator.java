@@ -1,10 +1,10 @@
 package gr.unipi.thesis.dimstyl.validators.password;
 
-import gr.unipi.thesis.dimstyl.dtos.ClientCredentialChangeDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebClientCredentialChangeDto;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, ClientCredentialChangeDto> {
+public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, WebClientCredentialChangeDto> {
 
     @Override
     public void initialize(PasswordMatches constraintAnnotation) {
@@ -12,7 +12,7 @@ public class PasswordMatchesValidator implements ConstraintValidator<PasswordMat
     }
 
     @Override
-    public boolean isValid(ClientCredentialChangeDto credentialChangeDto, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(WebClientCredentialChangeDto credentialChangeDto, ConstraintValidatorContext constraintValidatorContext) {
         String password = credentialChangeDto.getPassword();
         String confirmPassword = credentialChangeDto.getConfirmPassword();
 

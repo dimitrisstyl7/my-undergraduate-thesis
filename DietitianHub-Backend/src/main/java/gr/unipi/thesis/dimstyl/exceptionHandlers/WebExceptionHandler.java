@@ -4,9 +4,9 @@ import gr.unipi.thesis.dimstyl.exceptions.dietPlan.DietPlanNotFoundException;
 import gr.unipi.thesis.dimstyl.exceptions.storage.FileDeletionException;
 import gr.unipi.thesis.dimstyl.exceptions.storage.FileStorageException;
 import gr.unipi.thesis.dimstyl.exceptions.storage.StorageFileNotFoundException;
-import gr.unipi.thesis.dimstyl.exceptions.user.MvcUserInfoNotFoundException;
 import gr.unipi.thesis.dimstyl.exceptions.user.RegistrationFailedException;
 import gr.unipi.thesis.dimstyl.exceptions.user.UserNotFoundException;
+import gr.unipi.thesis.dimstyl.exceptions.user.WebUserInfoNotFoundException;
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 import java.net.URI;
 
 @ControllerAdvice
-public class MvcExceptionHandler {
+public class WebExceptionHandler {
 
-    @ExceptionHandler({MvcUserInfoNotFoundException.class, UserNotFoundException.class})
+    @ExceptionHandler({WebUserInfoNotFoundException.class, UserNotFoundException.class})
     protected ResponseEntity<Void> handleUserNotFoundException() {
         return ResponseEntity
                 .status(HttpStatus.SEE_OTHER)

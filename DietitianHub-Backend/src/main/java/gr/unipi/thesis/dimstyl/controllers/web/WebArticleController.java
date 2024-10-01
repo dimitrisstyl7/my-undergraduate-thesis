@@ -1,6 +1,6 @@
-package gr.unipi.thesis.dimstyl.controllers.mvc;
+package gr.unipi.thesis.dimstyl.controllers.web;
 
-import gr.unipi.thesis.dimstyl.dtos.ArticleDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebArticleDto;
 import gr.unipi.thesis.dimstyl.services.ArticleService;
 import gr.unipi.thesis.dimstyl.services.TagCategoryService;
 import gr.unipi.thesis.dimstyl.utilities.ValidationErrorUtil;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/articles")
 @RequiredArgsConstructor
-public class MvcArticleController {
+public class WebArticleController {
 
     private final TagCategoryService tagCategoryService;
     private final ArticleService articleService;
@@ -33,16 +33,16 @@ public class MvcArticleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ArticleDto> getArticle(@PathVariable("id") int id) {
+    public ResponseEntity<WebArticleDto> getArticle(@PathVariable("id") int id) {
         return ResponseEntity.ok(articleService.getArticle(id));
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, String>> createArticle(@Valid @RequestBody ArticleDto articleDto,
+    public ResponseEntity<Map<String, String>> createArticle(@Valid @RequestBody WebArticleDto webArticleDto,
                                                              BindingResult result) {
         // If there are no errors, proceed with creating the article
         if (!result.hasErrors()) {
-            articleService.createArticle(articleDto);
+            articleService.createArticle(webArticleDto);
             return ResponseEntity.noContent().location(URI.create("/articles?publishSuccess")).build();
         }
 
@@ -63,11 +63,11 @@ public class MvcArticleController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, String>> updateArticle(@PathVariable("id") int id,
-                                                             @Valid @RequestBody ArticleDto articleDto,
+                                                             @Valid @RequestBody WebArticleDto webArticleDto,
                                                              BindingResult result) {
         // If there are no errors, proceed with updating the article
         if (!result.hasErrors()) {
-            articleService.updateArticle(id, articleDto);
+            articleService.updateArticle(id, webArticleDto);
             return ResponseEntity.noContent().location(URI.create("/articles?updateSuccess")).build();
         }
 

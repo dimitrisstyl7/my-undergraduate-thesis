@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.dtos;
+package gr.unipi.thesis.dimstyl.dtos.web;
 
 import gr.unipi.thesis.dimstyl.validators.password.PasswordMatches;
 import gr.unipi.thesis.dimstyl.validators.username.Unique;
@@ -13,7 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @PasswordMatches
-public class ClientCredentialChangeDto {
+public class WebClientCredentialChangeDto {
 
 
     @NotBlank(message = "Username cannot be empty")

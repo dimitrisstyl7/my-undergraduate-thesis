@@ -1,6 +1,6 @@
-package gr.unipi.thesis.dimstyl.controllers.mvc;
+package gr.unipi.thesis.dimstyl.controllers.web;
 
-import gr.unipi.thesis.dimstyl.dtos.AppointmentDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebAppointmentDto;
 import gr.unipi.thesis.dimstyl.enums.AppointmentStatus;
 import gr.unipi.thesis.dimstyl.services.AppointmentService;
 import lombok.RequiredArgsConstructor;
@@ -13,23 +13,23 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class MvcIndexController {
+public class WebIndexController {
 
     private final AppointmentService appointmentService;
 
     @GetMapping({"/", "/index"})
     public String indexPage(Model model) {
         LocalDateTime dateTimeNow = LocalDateTime.now();
-        List<AppointmentDto> upcomingAppointments =
+        List<WebAppointmentDto> upcomingAppointments =
                 appointmentService.getLatest5AppointmentsByStatusAfterGivenAppointmentDateTime(
                         AppointmentStatus.SCHEDULED,
                         dateTimeNow
                 );
-        List<AppointmentDto> declinedAppointments =
+        List<WebAppointmentDto> declinedAppointments =
                 appointmentService.getLatest5AppointmentsByStatus(AppointmentStatus.DECLINED);
-        List<AppointmentDto> completedAppointments =
+        List<WebAppointmentDto> completedAppointments =
                 appointmentService.getLatest5AppointmentsByStatus(AppointmentStatus.COMPLETED);
-        List<AppointmentDto> cancelledAppointments =
+        List<WebAppointmentDto> cancelledAppointments =
                 appointmentService.getLatest5AppointmentsByStatus(AppointmentStatus.CANCELLED);
 
         model.addAttribute("upcomingAppointments", upcomingAppointments);

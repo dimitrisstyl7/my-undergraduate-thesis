@@ -1,7 +1,7 @@
 package gr.unipi.thesis.dimstyl.services.impl;
 
-import gr.unipi.thesis.dimstyl.dtos.ClientCredentialChangeDto;
-import gr.unipi.thesis.dimstyl.dtos.ClientDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebClientCredentialChangeDto;
+import gr.unipi.thesis.dimstyl.dtos.web.WebClientDto;
 import gr.unipi.thesis.dimstyl.email.EmailService;
 import gr.unipi.thesis.dimstyl.entities.DietPlan;
 import gr.unipi.thesis.dimstyl.entities.User;
@@ -34,17 +34,17 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public List<ClientDto> getAllClients() {
+    public List<WebClientDto> getAllClients() {
         List<User> clients = userRepository.findAllByRoleAndEnabledIsTrueOrderByUserInfo_FirstName(UserRole.CLIENT);
         return clients.stream()
-                .map(User::toClientDto)
+                .map(User::toWebClientDto)
                 .toList();
     }
 
     @Override
     @Transactional
-    public void registerClient(ClientDto clientDto) throws MessagingException {
-        User user = clientDto.toUserForRegistration(UserRole.CLIENT);
+    public void registerClient(WebClientDto webClientDto) throws MessagingException {
+        User user = webClientDto.toUserForRegistration(UserRole.CLIENT);
 
         if (usernameExists(user.getUsername())) {
             throw new RegistrationFailedException(
@@ -53,15 +53,15 @@ public class UserServiceImpl implements UserService {
         }
 
         // Extract email, full name, username, and password from clientDto
-        String email = clientDto.getEmail();
-        String fullName = clientDto.getFullName();
+        String email = webClientDto.getEmail();
+        String fullName = webClientDto.getFullName();
         String username = user.getUsername();
         String password = user.getPassword();
 
         // Save user and user info in database
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User newUser = userRepository.save(user);
-        userInfoService.saveUserInfo(clientDto, newUser);
+        userInfoService.saveUserInfo(webClientDto, newUser);
 
         // Send email to client
         Map<String, String> args = Map.of(
@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateClientCredentials(ClientCredentialChangeDto credentialChangeDto) {
+    public void updateClientCredentials(WebClientCredentialChangeDto credentialChangeDto) {
         String oldUsername = userDetailsService.getUserDetails().getUsername();
         String newUsername = credentialChangeDto.getUsername();
         String password = credentialChangeDto.getPassword();
