@@ -1,5 +1,6 @@
 package gr.unipi.thesis.dimstyl.services.impl;
 
+import gr.unipi.thesis.dimstyl.dtos.api.ApiAppointmentDto;
 import gr.unipi.thesis.dimstyl.dtos.web.WebAppointmentDto;
 import gr.unipi.thesis.dimstyl.entities.Appointment;
 import gr.unipi.thesis.dimstyl.entities.UserInfo;
@@ -70,6 +71,15 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository
                 .findFirst5ByStatusOrderByAppointmentDateTimeDesc(status).stream()
                 .map(Appointment::toWebDto)
+                .toList();
+    }
+
+    @Override
+    public List<ApiAppointmentDto> getLatest5AppointmentsByClientUsernameAndStatus(String username, AppointmentStatus status) {
+        UserInfo userInfo = userInfoService.getUserInfo(username);
+        return appointmentRepository.findFirst5ByClientUserInfoAndStatusOrderByAppointmentDateTimeAsc(userInfo, status)
+                .stream()
+                .map(Appointment::toApiDto)
                 .toList();
     }
 

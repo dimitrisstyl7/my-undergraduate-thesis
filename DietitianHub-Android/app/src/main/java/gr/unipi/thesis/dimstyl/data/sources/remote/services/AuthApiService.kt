@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.data.sources.remote
+package gr.unipi.thesis.dimstyl.data.sources.remote.services
 
 import gr.unipi.thesis.dimstyl.data.models.LoginRequest
 import gr.unipi.thesis.dimstyl.data.models.LoginResponse

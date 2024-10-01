@@ -1,5 +1,6 @@
 package gr.unipi.thesis.dimstyl.services;
 
+import gr.unipi.thesis.dimstyl.dtos.api.ApiAnnouncementDto;
 import gr.unipi.thesis.dimstyl.dtos.web.WebAnnouncementDto;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public interface AnnouncementService {
 
     List<WebAnnouncementDto> getLatest10AnnouncementsBeforeYesterday();
 
+    List<ApiAnnouncementDto> getLatest10Announcements();
 
     WebAnnouncementDto getAnnouncement(int id);
 

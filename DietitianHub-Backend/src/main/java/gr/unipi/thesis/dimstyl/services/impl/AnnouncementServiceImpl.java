@@ -1,5 +1,6 @@
 package gr.unipi.thesis.dimstyl.services.impl;
 
+import gr.unipi.thesis.dimstyl.dtos.api.ApiAnnouncementDto;
 import gr.unipi.thesis.dimstyl.dtos.web.WebAnnouncementDto;
 import gr.unipi.thesis.dimstyl.entities.Announcement;
 import gr.unipi.thesis.dimstyl.exceptions.announcement.AnnouncementNotFoundException;
@@ -44,6 +45,15 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         return announcementRepository
                 .findFirst10ByCreatedAtBeforeOrderByCreatedAtDesc(dateTime).stream()
                 .map(Announcement::toWebDto)
+                .toList();
+    }
+
+    @Override
+    public List<ApiAnnouncementDto> getLatest10Announcements() {
+        LocalDateTime dateTime = LocalDateTime.now();
+        return announcementRepository
+                .findFirst10ByCreatedAtBeforeOrderByCreatedAtDesc(dateTime).stream()
+                .map(Announcement::toApiDto)
                 .toList();
     }
 

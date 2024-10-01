@@ -1,5 +1,6 @@
 package gr.unipi.thesis.dimstyl.services;
 
+import gr.unipi.thesis.dimstyl.dtos.api.ApiAppointmentDto;
 import gr.unipi.thesis.dimstyl.dtos.web.WebAppointmentDto;
 import gr.unipi.thesis.dimstyl.enums.AppointmentStatus;
 import gr.unipi.thesis.dimstyl.enums.RequestType;
@@ -21,6 +22,7 @@ public interface AppointmentService {
 
     List<WebAppointmentDto> getLatest5AppointmentsByStatus(AppointmentStatus status);
 
+    List<ApiAppointmentDto> getLatest5AppointmentsByClientUsernameAndStatus(String username, AppointmentStatus status);
 
     void createAppointment(WebAppointmentDto webAppointmentDto, RequestType requestType);
 

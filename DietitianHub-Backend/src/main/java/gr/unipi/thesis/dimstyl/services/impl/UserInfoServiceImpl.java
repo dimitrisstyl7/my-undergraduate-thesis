@@ -51,6 +51,11 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public List<Tag> getClientTags(String username) {
+        return getUserInfo(username).getTags();
+    }
+
+    @Override
     @Transactional
     public void updateClientTags(int userId, List<Integer> tagIds, RequestType requestType) {
         UserInfo userInfo = getUserInfo(userId, requestType);
@@ -69,6 +74,16 @@ public class UserInfoServiceImpl implements UserInfoService {
                     } else {
                         return new WebUserInfoNotFoundException(message);
                     }
+                });
+    }
+
+    @Override
+    public UserInfo getUserInfo(String username) {
+        return userInfoRepository
+                .findByUser_Username(username)
+                .orElseThrow(() -> {
+                    String message = "User info not found for user with username: %s".formatted(username);
+                    return new ApiUserInfoNotFoundException(message);
                 });
     }
 

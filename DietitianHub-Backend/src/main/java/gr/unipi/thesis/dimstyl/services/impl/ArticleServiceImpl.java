@@ -1,5 +1,6 @@
 package gr.unipi.thesis.dimstyl.services.impl;
 
+import gr.unipi.thesis.dimstyl.dtos.api.ApiArticleDto;
 import gr.unipi.thesis.dimstyl.dtos.web.WebArticleDto;
 import gr.unipi.thesis.dimstyl.entities.Article;
 import gr.unipi.thesis.dimstyl.entities.Tag;
@@ -25,6 +26,13 @@ public class ArticleServiceImpl implements ArticleService {
     public List<WebArticleDto> getAllArticles() {
         return articleRepository.findAll(Sort.by(Sort.Order.desc("createdAt"))).stream()
                 .map(Article::toWebDto)
+                .toList();
+    }
+
+    @Override
+    public List<ApiArticleDto> getLatest10ArticlesByTags(List<Tag> tags) {
+        return articleRepository.findFirst10ByTagsOrderByCreatedAtDesc(tags).stream()
+                .map(Article::toApiDto)
                 .toList();
     }
 

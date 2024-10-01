@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.data.sources.remote
+package gr.unipi.thesis.dimstyl.data.sources.remote.builders
 
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
