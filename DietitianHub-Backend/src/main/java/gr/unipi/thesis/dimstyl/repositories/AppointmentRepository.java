@@ -27,12 +27,20 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 
     List<Appointment> findFirst5ByStatusOrderByAppointmentDateTimeDesc(AppointmentStatus status);
 
-    List<Appointment> findFirst5ByClientUserInfoAndStatusOrderByAppointmentDateTimeAsc(UserInfo userInfo, AppointmentStatus status);
+    List<Appointment> findFirst5ByClientUserInfoAndStatusAndAppointmentDateTimeIsAfterOrderByAppointmentDateTime(UserInfo userInfo,
+                                                                                                                 AppointmentStatus status,
+                                                                                                                 LocalDateTime dateTime);
+
+    List<Appointment> findFirst5ByClientUserInfoAndStatusOrderByAppointmentDateTimeDesc(UserInfo userInfo, AppointmentStatus status);
 
     Optional<Appointment> findByAppointmentDateTimeAndStatusAndClientUserInfoId(LocalDateTime dateTime,
                                                                                 AppointmentStatus status,
                                                                                 int clientUserInfoId);
 
     boolean existsByAppointmentDateTimeAndStatus(LocalDateTime dateTime, AppointmentStatus status);
+
+    boolean existsByClientUserInfo_IdAndAppointmentDateTimeAndStatusIn(int userInfoId,
+                                                                       LocalDateTime dateTime,
+                                                                       List<AppointmentStatus> statuses);
 
 }
