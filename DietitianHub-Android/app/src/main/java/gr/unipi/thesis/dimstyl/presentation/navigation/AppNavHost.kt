@@ -37,8 +37,10 @@ fun AppNavHost(
         composable<Landing> {
             LandingScreen(
                 loginStatus = mainState.loginStatus,
-                onLoginStatusResolved = {
+                onLoginStatusResolved = { status, showSnackbarMessage, snackbarMessage, shortDuration ->
+                    viewModel.setLoginStatus(status)
                     viewModel.setCurrentNavRoute(NavRoute.HOME)
+                    if (showSnackbarMessage) onSnackbarShow(snackbarMessage, shortDuration)
                     navController.navigate(Home) { popUpTo(Landing) { inclusive = true } }
                 }
             )
