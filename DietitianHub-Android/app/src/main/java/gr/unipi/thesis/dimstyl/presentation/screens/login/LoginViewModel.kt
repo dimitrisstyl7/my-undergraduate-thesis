@@ -3,7 +3,7 @@ package gr.unipi.thesis.dimstyl.presentation.screens.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import gr.unipi.thesis.dimstyl.domain.usecases.LoginUseCase
-import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.DEFAULT_LOGIN_ERROR_MESSAGE
+import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.LOGIN_ERROR_MESSAGE
 import gr.unipi.thesis.dimstyl.utils.Constants.SuccessMessages.MANUAL_LOGIN_SUCCESS_MESSAGE
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +17,7 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
     fun login(onSuccessfulLogin: (String, Boolean) -> Unit) {
         viewModelScope.launch {
             val result = loginUseCase.execute(state.value.username, state.value.password)
-            val errorMessage = result.exceptionOrNull()?.message ?: DEFAULT_LOGIN_ERROR_MESSAGE
+            val errorMessage = result.exceptionOrNull()?.message ?: LOGIN_ERROR_MESSAGE
 
             _state.value = _state.value.copy(
                 loginHasError = result.isFailure,

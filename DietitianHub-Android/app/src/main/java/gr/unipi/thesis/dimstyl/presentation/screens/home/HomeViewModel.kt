@@ -16,7 +16,7 @@ import gr.unipi.thesis.dimstyl.presentation.components.table.createEmptyTableRow
 import gr.unipi.thesis.dimstyl.presentation.components.table.createTableRowsData
 import gr.unipi.thesis.dimstyl.presentation.theme.DangerColor
 import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.FETCH_DATA_ERROR_MESSAGE
-import gr.unipi.thesis.dimstyl.utils.Constants.SuccessMessages.APPOINTMENT_CANCELED_SUCCESS_MESSAGE
+import gr.unipi.thesis.dimstyl.utils.Constants.SuccessMessages.APPOINTMENT_CANCELLED_SUCCESS_MESSAGE
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -102,7 +102,7 @@ class HomeViewModel(
                     )
                 _state.value =
                     _state.value.copy(appointmentsTableRowsData = appointmentsTableRowsData)
-                onCancelAppointmentResult(APPOINTMENT_CANCELED_SUCCESS_MESSAGE, true)
+                onCancelAppointmentResult(APPOINTMENT_CANCELLED_SUCCESS_MESSAGE, true)
             } else {
                 val errorMessage = result.exceptionOrNull()?.message ?: FETCH_DATA_ERROR_MESSAGE
                 onCancelAppointmentResult(errorMessage, false)

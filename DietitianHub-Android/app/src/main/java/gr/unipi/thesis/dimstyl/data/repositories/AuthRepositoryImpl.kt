@@ -5,11 +5,11 @@ import gr.unipi.thesis.dimstyl.data.models.LoginRequest
 import gr.unipi.thesis.dimstyl.data.models.LoginResponse
 import gr.unipi.thesis.dimstyl.data.sources.local.JwtTokenManager
 import gr.unipi.thesis.dimstyl.data.sources.remote.services.AuthApiService
-import gr.unipi.thesis.dimstyl.data.utils.ErrorParser.handleErrorResponse
+import gr.unipi.thesis.dimstyl.data.utils.ErrorParser.extractErrorMessage
 import gr.unipi.thesis.dimstyl.domain.repositories.AuthRepository
 import gr.unipi.thesis.dimstyl.exceptions.JwtAccessTokenDoesNotExist
 import gr.unipi.thesis.dimstyl.exceptions.JwtAccessTokenRetrievalFailed
-import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.DEFAULT_LOGIN_ERROR_MESSAGE
+import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.LOGIN_ERROR_MESSAGE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -31,7 +31,7 @@ class AuthRepositoryImpl(
                 response = authApiService.login(loginRequest)
             } catch (e: Exception) {
                 Log.e(TAG, "Login failed", e)
-                return@withContext Result.failure(Exception(DEFAULT_LOGIN_ERROR_MESSAGE))
+                return@withContext Result.failure(Exception(LOGIN_ERROR_MESSAGE))
             }
 
             if (response.isSuccessful) {
@@ -40,14 +40,14 @@ class AuthRepositoryImpl(
                 when {
                     body == null || body.token.isBlank() -> {
                         Log.e(TAG, "Login failed: Response body is null or token is empty")
-                        return@withContext Result.failure(Exception(DEFAULT_LOGIN_ERROR_MESSAGE))
+                        return@withContext Result.failure(Exception(LOGIN_ERROR_MESSAGE))
                     }
 
                     else -> return@withContext saveAccessToken(body.token)
                 }
             } else {
                 val errorBody = response.errorBody()?.string()
-                val errorMessage = handleErrorResponse(errorBody, DEFAULT_LOGIN_ERROR_MESSAGE)
+                val errorMessage = extractErrorMessage(errorBody, LOGIN_ERROR_MESSAGE)
                 Log.e(TAG, "Login failed: $errorMessage")
                 return@withContext Result.failure(Exception(errorMessage))
             }
@@ -76,7 +76,7 @@ class AuthRepositoryImpl(
             Result.success(Unit)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to save token", e)
-            Result.failure(Exception(DEFAULT_LOGIN_ERROR_MESSAGE))
+            Result.failure(Exception(LOGIN_ERROR_MESSAGE))
         }
     }
 
