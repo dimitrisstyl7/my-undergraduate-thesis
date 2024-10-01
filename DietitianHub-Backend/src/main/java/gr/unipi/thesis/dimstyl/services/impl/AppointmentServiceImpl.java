@@ -11,6 +11,7 @@ import gr.unipi.thesis.dimstyl.exceptions.appointment.AppointmentIsInTheFutureEx
 import gr.unipi.thesis.dimstyl.exceptions.appointment.AppointmentIsInThePastException;
 import gr.unipi.thesis.dimstyl.exceptions.appointment.AppointmentNotFoundException;
 import gr.unipi.thesis.dimstyl.repositories.AppointmentRepository;
+import gr.unipi.thesis.dimstyl.security.CustomUserDetailsService;
 import gr.unipi.thesis.dimstyl.services.AppointmentService;
 import gr.unipi.thesis.dimstyl.services.UserInfoService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import java.util.Optional;
 public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
+    private final CustomUserDetailsService userDetailsService;
     private final UserInfoService userInfoService;
 
     @Override
@@ -75,9 +77,25 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<ApiAppointmentDto> getLatest5AppointmentsByClientUsernameAndStatus(String username, AppointmentStatus status) {
+    public List<ApiAppointmentDto> getLatest5AppointmentsByUsernameAndStatusAfterGivenAppointmentDateTime(String username,
+                                                                                                          AppointmentStatus status,
+                                                                                                          LocalDateTime dateTime) {
         UserInfo userInfo = userInfoService.getUserInfo(username);
-        return appointmentRepository.findFirst5ByClientUserInfoAndStatusOrderByAppointmentDateTimeAsc(userInfo, status)
+        return appointmentRepository
+                .findFirst5ByClientUserInfoAndStatusAndAppointmentDateTimeIsAfterOrderByAppointmentDateTime(
+                        userInfo,
+                        status,
+                        dateTime
+                )
+                .stream()
+                .map(Appointment::toApiDto)
+                .toList();
+    }
+
+    @Override
+    public List<ApiAppointmentDto> getLatest5AppointmentsByUsernameAndStatus(String username, AppointmentStatus status) {
+        UserInfo userInfo = userInfoService.getUserInfo(username);
+        return appointmentRepository.findFirst5ByClientUserInfoAndStatusOrderByAppointmentDateTimeDesc(userInfo, status)
                 .stream()
                 .map(Appointment::toApiDto)
                 .toList();
@@ -107,6 +125,35 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointment.setDescription(webAppointmentDto.description());
             appointment.setStatus(AppointmentStatus.SCHEDULED);
         }
+    }
+
+    @Override
+    @Transactional
+    public ApiAppointmentDto createAppointment(LocalDateTime requestedDateTime) {
+        UserInfo userInfo = userInfoService.getUserInfo(userDetailsService.getUserDetails().getUsername());
+
+        // If there is an appointment with the same requested date time and status PENDING or SCHEDULED, throw an exception
+        boolean exists = appointmentRepository.existsByClientUserInfo_IdAndAppointmentDateTimeAndStatusIn(
+                userInfo.getId(),
+                requestedDateTime,
+                List.of(AppointmentStatus.PENDING, AppointmentStatus.SCHEDULED)
+        );
+
+        if (exists) {
+            throw new AppointmentAlreadyExistsException("""
+                    Appointment with the same requested date time already exists (PENDING or SCHEDULED).
+                    Requested date time: %s
+                    """.formatted(requestedDateTime)
+            );
+        }
+
+        Appointment appointment = Appointment.builder()
+                .clientUserInfo(userInfo)
+                .title(userDetailsService.getUserDetails().getFullName())
+                .appointmentDateTime(requestedDateTime)
+                .status(AppointmentStatus.PENDING)
+                .build();
+        return appointmentRepository.save(appointment).toApiDto();
     }
 
     @Override
