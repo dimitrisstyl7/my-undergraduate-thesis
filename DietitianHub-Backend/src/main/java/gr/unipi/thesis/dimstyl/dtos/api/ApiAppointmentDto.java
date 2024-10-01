@@ -1,8 +1,9 @@
 package gr.unipi.thesis.dimstyl.dtos.api;
 
-import gr.unipi.thesis.dimstyl.enums.AppointmentStatus;
 import lombok.Builder;
 
+import java.time.LocalDateTime;
+
 @Builder
-public record ApiAppointmentDto(int id, String start, AppointmentStatus status) {
+public record ApiAppointmentDto(int id, LocalDateTime appointmentDateTime, String formattedAppointmentDateTime) {
 }

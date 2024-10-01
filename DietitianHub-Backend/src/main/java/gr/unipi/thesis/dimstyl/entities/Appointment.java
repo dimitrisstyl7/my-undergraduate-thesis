@@ -64,8 +64,8 @@ public class Appointment {
         String formattedAppointmentDateTime = DateTimeUtil.getFormattedDateTime(appointmentDateTime);
         return ApiAppointmentDto.builder()
                 .id(id)
-                .start(formattedAppointmentDateTime)
-                .status(status)
+                .appointmentDateTime(appointmentDateTime)
+                .formattedAppointmentDateTime(formattedAppointmentDateTime)
                 .build();
     }
 

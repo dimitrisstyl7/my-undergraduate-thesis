@@ -86,11 +86,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     @Transactional
     public void createAppointment(WebAppointmentDto webAppointmentDto, RequestType requestType) {
-        LocalDateTime AppointmentDateTime = webAppointmentDto.start();
+        LocalDateTime appointmentDateTime = webAppointmentDto.start();
         UserInfo userInfo = userInfoService.getUserInfo(webAppointmentDto.clientId(), requestType);
         Optional<Appointment> appointmentOptional =
                 appointmentRepository.findByAppointmentDateTimeAndStatusAndClientUserInfoId(
-                        AppointmentDateTime,
+                        appointmentDateTime,
                         AppointmentStatus.PENDING,
                         userInfo.getId()
                 );

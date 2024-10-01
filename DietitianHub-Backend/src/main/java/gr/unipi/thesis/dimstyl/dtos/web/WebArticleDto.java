@@ -14,8 +14,8 @@ import java.util.List;
 @UniqueTitle
 public record WebArticleDto(int id,
                             @NotBlank(message = "Title cannot be empty")
-                         @Size(max = 100, message = "Title must be less than 100 characters")
-                         String title,
+                            @Size(max = 100, message = "Title must be less than 100 characters")
+                            String title,
                             @RichTextNotBlank String content,
                             List<Integer> tagIds,
                             List<String> tagNames,
