@@ -21,6 +21,8 @@ import gr.unipi.thesis.dimstyl.domain.repositories.AuthRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.HomeRepository
 import gr.unipi.thesis.dimstyl.domain.usecases.CancelAppointmentUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.CheckTokenValidityUseCase
+import gr.unipi.thesis.dimstyl.domain.usecases.CreateAppointmentUseCase
+import gr.unipi.thesis.dimstyl.domain.usecases.FetchAppointmentsUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchHomeDataUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.LoginUseCase
 
@@ -89,6 +91,12 @@ class AppModuleImpl(private val appContext: Context) : AppModule {
     }
     override val fetchHomeDataUseCase: FetchHomeDataUseCase by lazy {
         FetchHomeDataUseCase(homeRepository)
+    }
+    override val fetchAppointmentsUseCase: FetchAppointmentsUseCase by lazy {
+        FetchAppointmentsUseCase(appointmentRepository)
+    }
+    override val createAppointmentUseCase: CreateAppointmentUseCase by lazy {
+        CreateAppointmentUseCase(appointmentRepository)
     }
     override val cancelAppointmentUseCase: CancelAppointmentUseCase by lazy {
         CancelAppointmentUseCase(appointmentRepository)

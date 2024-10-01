@@ -15,6 +15,8 @@ import gr.unipi.thesis.dimstyl.domain.repositories.AuthRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.HomeRepository
 import gr.unipi.thesis.dimstyl.domain.usecases.CancelAppointmentUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.CheckTokenValidityUseCase
+import gr.unipi.thesis.dimstyl.domain.usecases.CreateAppointmentUseCase
+import gr.unipi.thesis.dimstyl.domain.usecases.FetchAppointmentsUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchHomeDataUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.LoginUseCase
 
@@ -40,6 +42,8 @@ interface AppModule {
     val loginUseCase: LoginUseCase
     val checkTokenValidityUseCase: CheckTokenValidityUseCase
     val fetchHomeDataUseCase: FetchHomeDataUseCase
+    val fetchAppointmentsUseCase: FetchAppointmentsUseCase
+    val createAppointmentUseCase: CreateAppointmentUseCase
     val cancelAppointmentUseCase: CancelAppointmentUseCase
 
 }
