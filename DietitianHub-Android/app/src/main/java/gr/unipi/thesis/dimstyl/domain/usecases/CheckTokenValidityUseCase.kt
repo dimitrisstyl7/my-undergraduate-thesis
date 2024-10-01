@@ -7,7 +7,7 @@ import gr.unipi.thesis.dimstyl.exceptions.UnknownException
 
 class CheckTokenValidityUseCase(private val authRepository: AuthRepository) {
 
-    suspend fun execute(): Result<String> {
+    suspend fun execute(): Result<Unit> {
         val result = authRepository.retrieveAccessToken()
         val token = result.getOrNull()
 
@@ -15,7 +15,7 @@ class CheckTokenValidityUseCase(private val authRepository: AuthRepository) {
             result.exceptionOrNull() ?: UnknownException()
         )
         if (TokenUtils.isTokenExpired(token)) return Result.failure(JwtAccessTokenExpired())
-        return Result.success(token)
+        return Result.success(Unit)
     }
 
 }
