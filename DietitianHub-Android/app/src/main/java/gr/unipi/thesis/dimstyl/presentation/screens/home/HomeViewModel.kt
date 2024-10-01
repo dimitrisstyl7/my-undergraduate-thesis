@@ -46,7 +46,7 @@ class HomeViewModel(
         )
     }
 
-    fun fetchHomeData(onSnackbarShow: (String, Boolean) -> Unit) {
+    fun fetchHomeData(onFetchHomeDataResult: (String, Boolean) -> Unit) {
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true)
 
@@ -61,20 +61,15 @@ class HomeViewModel(
 
             if (result.isSuccess && homeData != null) {
                 isLoading = false
+                appointments.clear()
                 fullName = homeData.fullName
                 articles = homeData.articles
                 announcements = homeData.announcements
                 appointments.addAll(homeData.appointments)
-                appointmentsTableRowsData = createTableRowsData(
-                    appointments = appointments,
-                    onCancelAppointment = { id ->
-                        setAppointmentToBeCanceledId(id)
-                        showCancelAppointmentDialog(true)
-                    }
-                )
+                appointmentsTableRowsData = createTableRowsData(appointments)
             } else {
                 val errorMessage = result.exceptionOrNull()?.message ?: FETCH_DATA_ERROR_MESSAGE
-                onSnackbarShow(errorMessage, false)
+                onFetchHomeDataResult(errorMessage, false)
             }
 
             _state.value =
@@ -90,21 +85,18 @@ class HomeViewModel(
 
     fun cancelAppointment(onCancelAppointmentResult: (String, Boolean) -> Unit) {
         viewModelScope.launch {
-            val id = _state.value.appointmentToBeCanceledId
+            val id = _state.value.appointmentToBeCancelledId
             val result = cancelAppointmentUseCase.execute(id)
 
             if (result.isSuccess) {
                 removeCancelledAppointmentFromTable(id)
-                @Suppress("NAME_SHADOWING") val appointmentsTableRowsData =
-                    createTableRowsData(
-                        appointments = appointments,
-                        onCancelAppointment = { id -> setAppointmentToBeCanceledId(id) }
-                    )
+                val appointmentsTableRowsData = createTableRowsData(appointments)
                 _state.value =
                     _state.value.copy(appointmentsTableRowsData = appointmentsTableRowsData)
                 onCancelAppointmentResult(APPOINTMENT_CANCELLED_SUCCESS_MESSAGE, true)
             } else {
-                val errorMessage = result.exceptionOrNull()?.message ?: FETCH_DATA_ERROR_MESSAGE
+                val errorMessage =
+                    result.exceptionOrNull()?.message ?: APPOINTMENT_CANCELLED_SUCCESS_MESSAGE
                 onCancelAppointmentResult(errorMessage, false)
             }
 
@@ -116,33 +108,33 @@ class HomeViewModel(
         _state.value = _state.value.copy(showCancelAppointmentDialog = show)
     }
 
-    private fun setAppointmentToBeCanceledId(id: Int) {
-        _state.value = _state.value.copy(appointmentToBeCanceledId = id)
+    private fun setAppointmentToBeCancelledId(id: Int) {
+        _state.value = _state.value.copy(appointmentToBeCancelledId = id)
     }
 
     private fun removeCancelledAppointmentFromTable(id: Int) {
         appointments.removeIf { it.id == id }
     }
 
-    private fun createTableRowsData(
-        appointments: List<Appointment>,
-        onCancelAppointment: (Int) -> Unit
-    ): List<List<CellData>> {
+    private fun createTableRowsData(appointments: List<Appointment>): List<List<CellData>> {
         return if (appointments.isEmpty()) createEmptyTableRowsData("No appointments found")
         else createTableRowsData(
             cellsWeight = cellsWeight,
             items = appointments,
-            getText = { appointment -> appointment.start },
+            getText = { appointment -> appointment.formattedAppointmentDateTime },
             icon = { appointment ->
                 {
                     Icon(
                         imageVector = Icons.Rounded.Clear,
-                        contentDescription = "Cancel the appointment requested at ${appointment.start}"
+                        contentDescription = "Cancel the appointment requested at ${appointment.formattedAppointmentDateTime}"
                     )
                 }
             },
             buttonColor = DangerColor,
-            onClick = { id -> onCancelAppointment(id) }
+            onClick = { id ->
+                setAppointmentToBeCancelledId(id)
+                showCancelAppointmentDialog(true)
+            }
         )
     }
 

@@ -63,7 +63,7 @@ fun HomeScreen(
         ScreenCircularProgressIndicator()
         LaunchedEffect(Unit) {
             viewModel.fetchHomeData(
-                onSnackbarShow = { message, shortDuration ->
+                onFetchHomeDataResult = { message, shortDuration ->
                     onSnackbarShow(message, shortDuration)
                 }
             )
