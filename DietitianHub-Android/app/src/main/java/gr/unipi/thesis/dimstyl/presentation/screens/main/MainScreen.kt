@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import gr.unipi.thesis.dimstyl.App
 import gr.unipi.thesis.dimstyl.presentation.components.BottomBar
 import gr.unipi.thesis.dimstyl.presentation.components.TopBar
 import gr.unipi.thesis.dimstyl.presentation.components.dialogs.AlertDialog
@@ -35,6 +36,7 @@ import gr.unipi.thesis.dimstyl.presentation.navigation.navRoutes
 import gr.unipi.thesis.dimstyl.presentation.theme.BodyColor
 import gr.unipi.thesis.dimstyl.presentation.theme.DangerColor
 import gr.unipi.thesis.dimstyl.presentation.utils.LoginStatus
+import gr.unipi.thesis.dimstyl.presentation.utils.viewModelFactory
 import kotlinx.coroutines.launch
 
 @SuppressLint("RestrictedApi")
@@ -49,7 +51,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreen(
     navController: NavController = rememberNavController(),
-    viewModel: MainViewModel = viewModel(),
+    viewModel: MainViewModel = viewModel<MainViewModel>(
+        factory = viewModelFactory { MainViewModel(App.appModule.logoutUseCase) }
+    ),
     exitApp: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -95,6 +99,14 @@ fun MainScreen(
         }
     }
 
+    val onSnackbarShow: (String, Boolean) -> Unit = { message, shortDuration ->
+        scope.launch {
+            val duration =
+                if (shortDuration) SnackbarDuration.Short else SnackbarDuration.Long
+            snackbarHostState.showSnackbar(message = message, duration = duration)
+        }
+    }
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         gesturesEnabled = mainState.loginStatus == LoginStatus.LOGGED_IN && mainState.currentNavRoute != NavRoute.LANDING,
@@ -137,44 +149,41 @@ fun MainScreen(
                 navController = navController,
                 viewModel = viewModel,
                 mainState = mainState,
-                onSnackbarShow = { message, shortDuration ->
-                    scope.launch {
-                        val duration =
-                            if (shortDuration) SnackbarDuration.Short else SnackbarDuration.Long
-                        snackbarHostState.showSnackbar(message = message, duration = duration)
-                    }
-                },
+                onSnackbarShow = onSnackbarShow,
                 backHandler = backHandler,
                 innerPadding = innerPadding
             )
+        }
+    }
 
-            if (mainState.showLogoutDialog) {
-                AlertDialog(
-                    title = "Logout",
-                    text = {
-                        Text(
-                            text = "Are you sure you want to log out? You will need to log in again next time.",
-                            textAlign = TextAlign.Center
-                        )
+    if (mainState.showLogoutDialog) {
+        AlertDialog(
+            title = "Logout",
+            text = {
+                Text(
+                    text = "Are you sure you want to log out? You will need to log in again next time.",
+                    textAlign = TextAlign.Center
+                )
+            },
+            confirmButtonText = "Yes, Log Out",
+            dismissButtonText = "No, Cancel",
+            icon = Icons.AutoMirrored.Rounded.ExitToApp,
+            iconContentColor = DangerColor,
+            onDismiss = { viewModel.showLogoutDialog(false) },
+            onConfirm = {
+                viewModel.showLogoutDialog(false)
+                scope.launch { drawerState.close() }
+
+                viewModel.logout(
+                    onLogoutResult = { message, shortDuration ->
+                        onSnackbarShow(message, shortDuration)
                     },
-                    confirmButtonText = "Yes, Log Out",
-                    dismissButtonText = "No, Cancel",
-                    icon = Icons.AutoMirrored.Rounded.ExitToApp,
-                    iconContentColor = DangerColor,
-                    onDismiss = { viewModel.showLogoutDialog(false) },
-                    onConfirm = {
-                        // TODO: Implement logout logic
-                        scope.launch {
-                            viewModel.showLogoutDialog(false)
-                            drawerState.close()
-                            viewModel.setLoginStatus(LoginStatus.LOGGED_OUT)
-                            navController.navigate(Login) {
-                                popUpTo(Landing) { inclusive = true }
-                            }
-                        }
+                    onSuccessLogout = {
+                        navController.navigate(Login) { popUpTo(Landing) { inclusive = true } }
                     }
                 )
             }
-        }
+        )
     }
+
 }
