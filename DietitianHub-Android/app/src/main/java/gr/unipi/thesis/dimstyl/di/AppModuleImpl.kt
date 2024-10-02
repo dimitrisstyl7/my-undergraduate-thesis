@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import gr.unipi.thesis.dimstyl.data.repositories.AnnouncementRepositoryImpl
 import gr.unipi.thesis.dimstyl.data.repositories.AppointmentRepositoryImpl
 import gr.unipi.thesis.dimstyl.data.repositories.ArticleRepositoryImpl
 import gr.unipi.thesis.dimstyl.data.repositories.AuthRepositoryImpl
@@ -16,11 +17,13 @@ import gr.unipi.thesis.dimstyl.data.sources.remote.builders.OkHttpClientBuilder
 import gr.unipi.thesis.dimstyl.data.sources.remote.builders.RetrofitBuilder
 import gr.unipi.thesis.dimstyl.data.sources.remote.interceptors.AccessTokenInterceptor
 import gr.unipi.thesis.dimstyl.data.sources.remote.interceptors.LoggingInterceptor
+import gr.unipi.thesis.dimstyl.data.sources.remote.services.AnnouncementApiService
 import gr.unipi.thesis.dimstyl.data.sources.remote.services.AppointmentApiService
 import gr.unipi.thesis.dimstyl.data.sources.remote.services.ArticleApiService
 import gr.unipi.thesis.dimstyl.data.sources.remote.services.AuthApiService
 import gr.unipi.thesis.dimstyl.data.sources.remote.services.DietPlanApiService
 import gr.unipi.thesis.dimstyl.data.sources.remote.services.HomeApiService
+import gr.unipi.thesis.dimstyl.domain.repositories.AnnouncementRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.AppointmentRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.ArticleRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.AuthRepository
@@ -30,6 +33,7 @@ import gr.unipi.thesis.dimstyl.domain.usecases.CancelAppointmentUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.CheckTokenValidityUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.CreateAppointmentUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.DownloadDietPlanUseCase
+import gr.unipi.thesis.dimstyl.domain.usecases.FetchAnnouncementsUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchAppointmentsUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchArticlesUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchDietPlansUseCase
@@ -101,6 +105,13 @@ class AppModuleImpl(private val appContext: Context) : AppModule {
             )
         ).create(DietPlanApiService::class.java)
     }
+    override val announcementApiService: AnnouncementApiService by lazy {
+        retrofitBuilder.build(
+            okHttpClientBuilder.build(
+                listOf(loggingInterceptor, accessTokenInterceptor)
+            )
+        ).create(AnnouncementApiService::class.java)
+    }
 
     override val authRepository: AuthRepository by lazy {
         AuthRepositoryImpl(authApiService, jwtTokenManager)
@@ -116,6 +127,9 @@ class AppModuleImpl(private val appContext: Context) : AppModule {
     }
     override val dietPlanRepository: DietPlanRepository by lazy {
         DietPlanRepositoryImpl(dietPlanApiService, downloadManager, jwtTokenManager)
+    }
+    override val announcementRepository: AnnouncementRepository by lazy {
+        AnnouncementRepositoryImpl(announcementApiService)
     }
 
     override val loginUseCase: LoginUseCase by lazy {
@@ -147,6 +161,9 @@ class AppModuleImpl(private val appContext: Context) : AppModule {
     }
     override val downloadDietPlanUseCase: DownloadDietPlanUseCase by lazy {
         DownloadDietPlanUseCase(dietPlanRepository)
+    }
+    override val fetchAnnouncementsUseCase: FetchAnnouncementsUseCase by lazy {
+        FetchAnnouncementsUseCase(announcementRepository)
     }
 
 }
