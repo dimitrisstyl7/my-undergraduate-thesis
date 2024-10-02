@@ -139,7 +139,7 @@ public class WebClientController {
     public ResponseEntity<Resource> downloadDietPlan(@PathVariable("clientId") int clientId,
                                                      @PathVariable("dietPlanId") int dietPlanId) {
         User user = userService.getUser(clientId);
-        Resource file = dietPlanService.getDietPlanFileAsResource(dietPlanId, user.getUserInfo());
+        Resource file = dietPlanService.getDietPlanFileAsResource(dietPlanId, user.getUserInfo(), RequestType.WEB_API);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename=\"" + file.getFilename() + "\"")
@@ -151,7 +151,7 @@ public class WebClientController {
     public ResponseEntity<Resource> viewDietPlan(@PathVariable("clientId") int clientId,
                                                  @PathVariable("dietPlanId") int dietPlanId) {
         User user = userService.getUser(clientId);
-        Resource file = dietPlanService.getDietPlanFileAsResource(dietPlanId, user.getUserInfo());
+        Resource file = dietPlanService.getDietPlanFileAsResource(dietPlanId, user.getUserInfo(), RequestType.WEB_API);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         "inline; filename=\"" + file.getFilename() + "\"")
