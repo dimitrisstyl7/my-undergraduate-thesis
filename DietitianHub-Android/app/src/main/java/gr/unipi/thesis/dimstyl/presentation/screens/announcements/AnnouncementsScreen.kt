@@ -4,36 +4,71 @@ import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import gr.unipi.thesis.dimstyl.App
 import gr.unipi.thesis.dimstyl.presentation.components.cards.AnnouncementsCardsRow
 import gr.unipi.thesis.dimstyl.presentation.components.circularProgressIndicators.ScreenCircularProgressIndicator
 import gr.unipi.thesis.dimstyl.presentation.theme.AnnouncementSectionTitleColor
+import gr.unipi.thesis.dimstyl.presentation.theme.DataNotFoundColor
 import gr.unipi.thesis.dimstyl.presentation.utils.ContentType
+import gr.unipi.thesis.dimstyl.presentation.utils.viewModelFactory
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun AnnouncementsScreen(viewModel: AnnouncementsViewModel = viewModel()) {
+fun AnnouncementsScreen(
+    viewModel: AnnouncementsViewModel = viewModel<AnnouncementsViewModel>(
+        factory = viewModelFactory {
+            AnnouncementsViewModel(App.appModule.fetchAnnouncementsUseCase)
+        }
+    ),
+    onSnackbarShow: (String, Boolean) -> Unit
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val context = LocalContext.current
+    val context = LocalContext.current // TODO: REMOVE THIS LINE
 
     if (state.isLoading) {
         ScreenCircularProgressIndicator()
+        LaunchedEffect(Unit) {
+            viewModel.fetchAnnouncements(
+                onFetchAnnouncementsResult = { message, shortDuration ->
+                    onSnackbarShow(message, shortDuration)
+                }
+            )
+        }
+    } else if (state.announcementSections.isEmpty()) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                modifier = Modifier.padding(16.dp),
+                text = "No announcements found",
+                fontWeight = FontWeight.SemiBold,
+                color = DataNotFoundColor
+            )
+        }
     } else {
         LazyColumn(
             contentPadding = PaddingValues(top = 16.dp),
@@ -84,5 +119,5 @@ fun AnnouncementsScreen(viewModel: AnnouncementsViewModel = viewModel()) {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun AnnouncementsScreenPreview() {
-    AnnouncementsScreen()
+    AnnouncementsScreen { _, _ -> }
 }

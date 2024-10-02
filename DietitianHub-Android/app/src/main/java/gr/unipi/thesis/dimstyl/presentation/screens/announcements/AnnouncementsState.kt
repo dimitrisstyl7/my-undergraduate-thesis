@@ -1,8 +1,8 @@
 package gr.unipi.thesis.dimstyl.presentation.screens.announcements
 
-import gr.unipi.thesis.dimstyl.domain.models.AnnouncementSection
+import gr.unipi.thesis.dimstyl.presentation.models.AnnouncementSectionWithColor
 
 data class AnnouncementsState(
-    val announcementSections: List<AnnouncementSection> = emptyList(),
-    val isLoading: Boolean = false
+    val announcementSections: List<AnnouncementSectionWithColor> = emptyList(),
+    val isLoading: Boolean = true
 )

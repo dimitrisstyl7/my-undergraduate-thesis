@@ -64,7 +64,7 @@ fun AppNavHost(
 
         composable<Articles> { ArticlesScreen(onSnackbarShow = onSnackbarShow) }
 
-        composable<Announcements> { AnnouncementsScreen() }
+        composable<Announcements> { AnnouncementsScreen(onSnackbarShow = onSnackbarShow) }
 
         composable<DietPlans> { DietPlansScreen(onSnackbarShow = onSnackbarShow) }
 
