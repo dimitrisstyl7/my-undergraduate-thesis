@@ -13,6 +13,8 @@ public interface DietPlanRepository extends JpaRepository<DietPlan, Integer> {
 
     List<DietPlan> findAllByUserInfo_IdOrderByCreatedOnDesc(int userInfoId);
 
+    List<DietPlan> findFirst15ByUserInfo_IdOrderByCreatedOnDesc(int userInfoId);
+
     boolean existsByUserInfo_IdAndCreatedOn(int userInfoId, LocalDate createdOn);
 
 }
