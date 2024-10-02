@@ -45,7 +45,7 @@ class LandingViewModel(
 
                     is JwtAccessTokenDoesNotExist, is UnknownException -> {
                         showSnackbarMessage = false
-                        snackbarMessage = ""
+                        snackbarMessage = UNKNOWN_ERROR_MESSAGE
                     }
                 }
             }

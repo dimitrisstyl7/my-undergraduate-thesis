@@ -195,7 +195,7 @@ class AppointmentsViewModel(
                 onCancelAppointmentResult(APPOINTMENT_CANCELLED_SUCCESS_MESSAGE, true)
             } else {
                 val errorMessage =
-                    result.exceptionOrNull()?.message ?: APPOINTMENT_CANCELLED_SUCCESS_MESSAGE
+                    result.exceptionOrNull()?.message ?: CANCEL_APPOINTMENT_ERROR_MESSAGE
                 onCancelAppointmentResult(errorMessage, false)
             }
 
