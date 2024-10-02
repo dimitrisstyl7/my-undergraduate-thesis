@@ -1,9 +1,7 @@
 package gr.unipi.thesis.dimstyl.services.impl;
 
-import gr.unipi.thesis.dimstyl.exceptions.storage.DirectoryCreationException;
-import gr.unipi.thesis.dimstyl.exceptions.storage.FileDeletionException;
-import gr.unipi.thesis.dimstyl.exceptions.storage.FileStorageException;
-import gr.unipi.thesis.dimstyl.exceptions.storage.StorageFileNotFoundException;
+import gr.unipi.thesis.dimstyl.enums.RequestType;
+import gr.unipi.thesis.dimstyl.exceptions.storage.*;
 import gr.unipi.thesis.dimstyl.services.StorageService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -51,7 +49,9 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public Resource loadDietPlanFileAsResource(String fileName) {
+    public Resource loadDietPlanFileAsResource(String fileName, RequestType requestType) {
+        String exceptionMessage = "Could not read file: %s".formatted(fileName);
+
         try {
             Path file = DIET_PLANS_DIRECTORY.resolve(fileName);
             Resource resource = new UrlResource(file.toUri());
@@ -59,11 +59,12 @@ public class StorageServiceImpl implements StorageService {
             if (resource.exists() && resource.isReadable()) {
                 return resource;
             } else {
-                throw new StorageFileNotFoundException("Could not read file: %s".formatted(fileName));
+                if (requestType.equals(RequestType.API)) throw new ApiStorageFileNotFoundException(exceptionMessage);
+                else throw new WebStorageFileNotFoundException(exceptionMessage);
             }
-
         } catch (MalformedURLException e) {
-            throw new StorageFileNotFoundException("Could not read file: %s".formatted(fileName), e);
+            if (requestType.equals(RequestType.API)) throw new ApiStorageFileNotFoundException(exceptionMessage, e);
+            else throw new WebStorageFileNotFoundException(exceptionMessage, e);
         }
     }
 
