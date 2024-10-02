@@ -60,6 +60,10 @@ class Constants {
             "An error occurred while trying to fetch diet plans. Please try again later. " +
                     "If the problem persists, contact our support team for assistance."
 
+        const val FETCH_ANNOUNCEMENTS_ERROR_MESSAGE =
+            "An error occurred while trying to fetch announcements. Please try again later. " +
+                    "If the problem persists, contact our support team for assistance."
+
         const val UNKNOWN_ERROR_MESSAGE =
             "An unknown error occurred. Please try again later. " +
                     "If the problem persists, contact our support team for assistance."
