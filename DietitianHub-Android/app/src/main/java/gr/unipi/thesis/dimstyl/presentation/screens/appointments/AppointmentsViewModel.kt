@@ -14,6 +14,7 @@ import gr.unipi.thesis.dimstyl.presentation.components.table.HeaderCellData
 import gr.unipi.thesis.dimstyl.presentation.components.table.createEmptyTableRowsData
 import gr.unipi.thesis.dimstyl.presentation.components.table.createTableRowsData
 import gr.unipi.thesis.dimstyl.presentation.theme.DangerColor
+import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.CANCEL_APPOINTMENT_ERROR_MESSAGE
 import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.CREATE_APPOINTMENT_ERROR_MESSAGE
 import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.FETCH_APPOINTMENTS_ERROR_MESSAGE
 import gr.unipi.thesis.dimstyl.utils.Constants.SuccessMessages.APPOINTMENT_CANCELLED_SUCCESS_MESSAGE
@@ -84,15 +85,19 @@ class AppointmentsViewModel(
 
             val result = fetchAppointmentsUseCase()
             val appointments = result.getOrNull()
-            var isLoading = _state.value.isLoading
-            var scheduledTableRowsData = _state.value.scheduledTableRowsData
-            var pendingTableRowsData = _state.value.pendingTableRowsData
-            var completedTableRowsData = _state.value.completedTableRowsData
-            var declinedTableRowsData = _state.value.declinedTableRowsData
-            var cancelledTableRowsData = _state.value.cancelledTableRowsData
+
+            var scheduledTableRowsData: List<List<CellData>> =
+                createEmptyTableRowsData("No scheduled appointments found")
+            var pendingTableRowsData: List<List<CellData>> =
+                createEmptyTableRowsData("No pending appointments found")
+            var completedTableRowsData: List<List<CellData>> =
+                createEmptyTableRowsData("No completed appointments found")
+            var declinedTableRowsData: List<List<CellData>> =
+                createEmptyTableRowsData("No declined appointments found")
+            var cancelledTableRowsData: List<List<CellData>> =
+                createEmptyTableRowsData("No cancelled appointments found")
 
             if (result.isSuccess && appointments != null) {
-                isLoading = false
                 scheduledAppointments.clear()
                 pendingAppointments.clear()
                 cancelledAppointments.clear()
@@ -133,7 +138,7 @@ class AppointmentsViewModel(
                 completedTableRowsData = completedTableRowsData,
                 declinedTableRowsData = declinedTableRowsData,
                 cancelledTableRowsData = cancelledTableRowsData,
-                isLoading = isLoading
+                isLoading = false
             )
         }
     }
@@ -148,8 +153,8 @@ class AppointmentsViewModel(
                 pendingAppointments.addIndexed(appointment)
                 val appointmentsTableRowsData =
                     createTableRowsData(pendingAppointments, isActionable = true)
-                _state.value = _state.value.copy(pendingTableRowsData = appointmentsTableRowsData)
                 onCreateAppointmentResult(APPOINTMENT_CREATED_SUCCESS_MESSAGE, true)
+                _state.value = _state.value.copy(pendingTableRowsData = appointmentsTableRowsData)
             } else {
                 val errorMessage =
                     result.exceptionOrNull()?.message ?: CREATE_APPOINTMENT_ERROR_MESSAGE
@@ -200,6 +205,7 @@ class AppointmentsViewModel(
             }
 
             showCancelAppointmentDialog(false)
+            _state.value = _state.value.copy(appointmentToBeCancelledId = -1)
         }
     }
 
