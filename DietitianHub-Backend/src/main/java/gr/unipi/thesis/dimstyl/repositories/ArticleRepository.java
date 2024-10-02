@@ -12,6 +12,9 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     @Query("SELECT a FROM Article a JOIN FETCH a.tags ts WHERE ts IN :tags ORDER BY a.createdAt DESC")
     List<Article> findFirst10ByTagsOrderByCreatedAtDesc(List<Tag> tags);
 
+    @Query("SELECT a FROM Article a ORDER BY a.createdAt DESC LIMIT :limit")
+    List<Article> findAllOrderByCreatedAtDesc(int limit);
+
     boolean existsByTitle(String title);
 
 }
