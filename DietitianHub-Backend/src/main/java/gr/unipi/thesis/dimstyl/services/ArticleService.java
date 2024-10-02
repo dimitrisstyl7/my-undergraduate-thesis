@@ -12,6 +12,8 @@ public interface ArticleService {
 
     List<ApiArticleDto> getLatest10ArticlesByTags(List<Tag> tags);
 
+    List<ApiArticleDto> getLatest20Articles();
+
     WebArticleDto getArticle(int id);
 
     void createArticle(WebArticleDto webArticleDto);

@@ -37,6 +37,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public List<ApiArticleDto> getLatest20Articles() {
+        return articleRepository.findAllOrderByCreatedAtDesc(20).stream()
+                .map(Article::toApiDto)
+                .toList();
+    }
+
+    @Override
     public WebArticleDto getArticle(int id) {
         return articleRepository.findById(id)
                 .map(Article::toWebDto)
