@@ -1,5 +1,6 @@
 package gr.unipi.thesis.dimstyl.entities;
 
+import gr.unipi.thesis.dimstyl.dtos.api.ApiDietPlanDto;
 import gr.unipi.thesis.dimstyl.dtos.web.WebDietPlanDto;
 import gr.unipi.thesis.dimstyl.utilities.DateTimeUtil;
 import jakarta.persistence.*;
@@ -44,6 +45,14 @@ public class DietPlan {
         return WebDietPlanDto.builder()
                 .id(id)
                 .name(name)
+                .createdOn(createdOn)
+                .build();
+    }
+
+    public ApiDietPlanDto toApiDto() {
+        String createdOn = DateTimeUtil.getFormattedDate(this.createdOn);
+        return ApiDietPlanDto.builder()
+                .id(id)
                 .createdOn(createdOn)
                 .build();
     }
