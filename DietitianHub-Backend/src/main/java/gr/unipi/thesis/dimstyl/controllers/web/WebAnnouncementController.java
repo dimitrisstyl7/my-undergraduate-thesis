@@ -1,6 +1,7 @@
 package gr.unipi.thesis.dimstyl.controllers.web;
 
 import gr.unipi.thesis.dimstyl.dtos.web.WebAnnouncementDto;
+import gr.unipi.thesis.dimstyl.entities.Announcement;
 import gr.unipi.thesis.dimstyl.services.AnnouncementService;
 import gr.unipi.thesis.dimstyl.utilities.ValidationErrorUtil;
 import jakarta.validation.Valid;
@@ -26,9 +27,9 @@ public class WebAnnouncementController {
 
     @GetMapping
     public String announcementsPage(Model model) {
-        List<WebAnnouncementDto> announcementsForToday = announcementService.getAnnouncementsForToday();
-        List<WebAnnouncementDto> announcementsForYesterday = announcementService.getAnnouncementsForYesterday();
-        List<WebAnnouncementDto> earlierAnnouncements = announcementService.getLatest10AnnouncementsBeforeYesterday();
+        List<WebAnnouncementDto> announcementsForToday = announcementService.getAnnouncementsForToday(Announcement::toWebDto);
+        List<WebAnnouncementDto> announcementsForYesterday = announcementService.getAnnouncementsForYesterday(Announcement::toWebDto);
+        List<WebAnnouncementDto> earlierAnnouncements = announcementService.getLatest10AnnouncementsBeforeYesterday(Announcement::toWebDto);
         boolean noAnnouncements = announcementsForToday.isEmpty() &&
                                   announcementsForYesterday.isEmpty() &&
                                   earlierAnnouncements.isEmpty();

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -21,30 +22,30 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     private final AnnouncementRepository announcementRepository;
 
     @Override
-    public List<WebAnnouncementDto> getAnnouncementsForToday() {
+    public <T> List<T> getAnnouncementsForToday(Function<Announcement, T> mapper) {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         return announcementRepository
                 .findAnnouncementByCreatedAtAfterOrderByCreatedAtDesc(startOfDay).stream()
-                .map(Announcement::toWebDto)
+                .map(mapper)
                 .toList();
     }
 
     @Override
-    public List<WebAnnouncementDto> getAnnouncementsForYesterday() {
+    public <T> List<T> getAnnouncementsForYesterday(Function<Announcement, T> mapper) {
         LocalDateTime start = LocalDate.now().minusDays(1).atStartOfDay();
         LocalDateTime end = LocalDate.now().atStartOfDay().minusSeconds(1);
         return announcementRepository
                 .findAnnouncementByCreatedAtBetweenOrderByCreatedAtDesc(start, end).stream()
-                .map(Announcement::toWebDto)
+                .map(mapper)
                 .toList();
     }
 
     @Override
-    public List<WebAnnouncementDto> getLatest10AnnouncementsBeforeYesterday() {
+    public <T> List<T> getLatest10AnnouncementsBeforeYesterday(Function<Announcement, T> mapper) {
         LocalDateTime dateTime = LocalDate.now().minusDays(1).atStartOfDay().minusSeconds(1);
         return announcementRepository
                 .findFirst10ByCreatedAtBeforeOrderByCreatedAtDesc(dateTime).stream()
-                .map(Announcement::toWebDto)
+                .map(mapper)
                 .toList();
     }
 

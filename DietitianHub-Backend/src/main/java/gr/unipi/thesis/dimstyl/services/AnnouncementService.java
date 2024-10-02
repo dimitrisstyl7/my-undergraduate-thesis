@@ -2,16 +2,18 @@ package gr.unipi.thesis.dimstyl.services;
 
 import gr.unipi.thesis.dimstyl.dtos.api.ApiAnnouncementDto;
 import gr.unipi.thesis.dimstyl.dtos.web.WebAnnouncementDto;
+import gr.unipi.thesis.dimstyl.entities.Announcement;
 
 import java.util.List;
+import java.util.function.Function;
 
 public interface AnnouncementService {
 
-    List<WebAnnouncementDto> getAnnouncementsForToday();
+    <T> List<T> getAnnouncementsForToday(Function<Announcement, T> mapper);
 
-    List<WebAnnouncementDto> getAnnouncementsForYesterday();
+    <T> List<T> getAnnouncementsForYesterday(Function<Announcement, T> mapper);
 
-    List<WebAnnouncementDto> getLatest10AnnouncementsBeforeYesterday();
+    <T> List<T> getLatest10AnnouncementsBeforeYesterday(Function<Announcement, T> mapper);
 
     List<ApiAnnouncementDto> getLatest10Announcements();
 
