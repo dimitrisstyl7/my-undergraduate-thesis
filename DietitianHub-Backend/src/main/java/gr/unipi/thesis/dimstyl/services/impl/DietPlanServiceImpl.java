@@ -1,12 +1,16 @@
 package gr.unipi.thesis.dimstyl.services.impl;
 
+import gr.unipi.thesis.dimstyl.dtos.api.ApiDietPlanDto;
 import gr.unipi.thesis.dimstyl.dtos.web.WebDietPlanDto;
 import gr.unipi.thesis.dimstyl.entities.DietPlan;
 import gr.unipi.thesis.dimstyl.entities.UserInfo;
+import gr.unipi.thesis.dimstyl.enums.RequestType;
+import gr.unipi.thesis.dimstyl.exceptions.dietPlan.ApiDietPlanNotFoundException;
 import gr.unipi.thesis.dimstyl.exceptions.dietPlan.WebDietPlanNotFoundException;
 import gr.unipi.thesis.dimstyl.repositories.DietPlanRepository;
 import gr.unipi.thesis.dimstyl.services.DietPlanService;
 import gr.unipi.thesis.dimstyl.services.StorageService;
+import gr.unipi.thesis.dimstyl.services.UserInfoService;
 import gr.unipi.thesis.dimstyl.utilities.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -23,6 +27,7 @@ public class DietPlanServiceImpl implements DietPlanService {
 
     private final DietPlanRepository dietPlanRepository;
     private final StorageService storageService;
+    private final UserInfoService userInfoService;
 
     @Override
     @Transactional
@@ -61,12 +66,30 @@ public class DietPlanServiceImpl implements DietPlanService {
     }
 
     @Override
-    public Resource getDietPlanFileAsResource(int dietPlanId, UserInfo userInfo) {
+    public List<ApiDietPlanDto> getLatest15DietPlans(String username) {
+        UserInfo userInfo = userInfoService.getUserInfo(username);
+        return dietPlanRepository.findFirst15ByUserInfo_IdOrderByCreatedOnDesc(userInfo.getId()).stream()
+                .map(DietPlan::toApiDto)
+                .toList();
+    }
+
+    @Override
+    public Resource getDietPlanFileAsResource(int dietPlanId, UserInfo userInfo, RequestType requestType) {
         // Get the diet plan by the user info id and diet plan id
         DietPlan dietPlan = getDietPlan(userInfo.getId(), dietPlanId);
 
         // Load and return the diet plan file as a resource
-        return storageService.loadDietPlanFileAsResource(dietPlan.getName());
+        return storageService.loadDietPlanFileAsResource(dietPlan.getName(), requestType);
+    }
+
+    @Override
+    public Resource getDietPlanFileAsResource(int id, RequestType requestType) {
+        DietPlan dietPlan = dietPlanRepository.findById(id).orElseThrow(
+                () -> new ApiDietPlanNotFoundException("Diet plan with id %d not found".formatted(id))
+        );
+
+        // Load and return the diet plan file as a resource
+        return storageService.loadDietPlanFileAsResource(dietPlan.getName(), requestType);
     }
 
     @Override
