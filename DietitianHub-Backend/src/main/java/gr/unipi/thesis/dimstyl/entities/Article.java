@@ -60,7 +60,7 @@ public class Article {
     }
 
     public ApiArticleDto toApiDto() {
-        String createdAt = DateTimeUtil.getFormattedDateTime(this.createdAt);
+        String createdAt = DateTimeUtil.getFormattedDateTime(this.createdAt).replace(",", "\n");
         return ApiArticleDto.builder()
                 .id(id)
                 .title(title)
