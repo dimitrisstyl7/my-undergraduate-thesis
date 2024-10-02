@@ -5,9 +5,7 @@ import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material3.Icon
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import gr.unipi.thesis.dimstyl.data.models.Announcement
 import gr.unipi.thesis.dimstyl.data.models.Appointment
-import gr.unipi.thesis.dimstyl.data.models.Article
 import gr.unipi.thesis.dimstyl.domain.usecases.CancelAppointmentUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchHomeDataUseCase
 import gr.unipi.thesis.dimstyl.presentation.components.table.CellData
@@ -15,6 +13,7 @@ import gr.unipi.thesis.dimstyl.presentation.components.table.HeaderCellData
 import gr.unipi.thesis.dimstyl.presentation.components.table.createEmptyTableRowsData
 import gr.unipi.thesis.dimstyl.presentation.components.table.createTableRowsData
 import gr.unipi.thesis.dimstyl.presentation.theme.DangerColor
+import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.CANCEL_APPOINTMENT_ERROR_MESSAGE
 import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.FETCH_DATA_ERROR_MESSAGE
 import gr.unipi.thesis.dimstyl.utils.Constants.SuccessMessages.APPOINTMENT_CANCELLED_SUCCESS_MESSAGE
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,34 +51,34 @@ class HomeViewModel(
 
             val result = fetchHomeDataUseCase()
             val homeData = result.getOrNull()
-            var isLoading = _state.value.isLoading
-            var fullName: String? = _state.value.fullName
-            var articles: List<Article> = _state.value.articles
-            var announcements: List<Announcement> = _state.value.announcements
-            var appointmentsTableRowsData: List<List<CellData>> =
-                _state.value.appointmentsTableRowsData
 
             if (result.isSuccess && homeData != null) {
-                isLoading = false
                 appointments.clear()
-                fullName = homeData.fullName
-                articles = homeData.articles
-                announcements = homeData.announcements
+                val fullName = homeData.fullName
+                val articles = homeData.articles
+                val announcements = homeData.announcements
                 appointments.addAll(homeData.appointments)
-                appointmentsTableRowsData = createTableRowsData(appointments)
-            } else {
-                val errorMessage = result.exceptionOrNull()?.message ?: FETCH_DATA_ERROR_MESSAGE
-                onFetchHomeDataResult(errorMessage, false)
-            }
+                val appointmentsTableRowsData = createTableRowsData(appointments)
 
-            _state.value =
-                _state.value.copy(
-                    fullName = fullName,
-                    articles = articles,
-                    announcements = announcements,
+                _state.value =
+                    _state.value.copy(
+                        fullName = fullName,
+                        articles = articles,
+                        announcements = announcements,
+                        appointmentsTableRowsData = appointmentsTableRowsData,
+                        isLoading = false
+                    )
+            } else {
+                val appointmentsTableRowsData = createTableRowsData(appointments)
+                val errorMessage = result.exceptionOrNull()?.message ?: FETCH_DATA_ERROR_MESSAGE
+
+                onFetchHomeDataResult(errorMessage, false)
+
+                _state.value = _state.value.copy(
                     appointmentsTableRowsData = appointmentsTableRowsData,
-                    isLoading = isLoading
+                    isLoading = false
                 )
+            }
         }
     }
 
@@ -89,7 +88,7 @@ class HomeViewModel(
             val result = cancelAppointmentUseCase(id)
 
             if (result.isSuccess) {
-                removeCancelledAppointmentFromTable(id)
+                appointments.removeIf { it.id == id } // Remove the cancelled appointment from the list
                 val appointmentsTableRowsData = createTableRowsData(appointments)
                 _state.value =
                     _state.value.copy(appointmentsTableRowsData = appointmentsTableRowsData)
@@ -101,6 +100,7 @@ class HomeViewModel(
             }
 
             showCancelAppointmentDialog(false)
+            _state.value = _state.value.copy(appointmentToBeCancelledId = -1)
         }
     }
 
@@ -110,10 +110,6 @@ class HomeViewModel(
 
     private fun setAppointmentToBeCancelledId(id: Int) {
         _state.value = _state.value.copy(appointmentToBeCancelledId = id)
-    }
-
-    private fun removeCancelledAppointmentFromTable(id: Int) {
-        appointments.removeIf { it.id == id }
     }
 
     private fun createTableRowsData(appointments: List<Appointment>): List<List<CellData>> {

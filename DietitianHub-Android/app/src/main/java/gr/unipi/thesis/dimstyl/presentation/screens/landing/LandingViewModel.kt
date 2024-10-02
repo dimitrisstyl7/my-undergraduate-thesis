@@ -10,6 +10,7 @@ import gr.unipi.thesis.dimstyl.exceptions.UnknownException
 import gr.unipi.thesis.dimstyl.presentation.utils.LoginStatus
 import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.TOKEN_EXPIRED_ERROR_MESSAGE
 import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.TOKEN_RETRIEVAL_FAILED_ERROR_MESSAGE
+import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.UNKNOWN_ERROR_MESSAGE
 import gr.unipi.thesis.dimstyl.utils.Constants.SuccessMessages.AUTO_LOGIN_SUCCESS_MESSAGE
 import kotlinx.coroutines.launch
 

@@ -5,7 +5,7 @@ import gr.unipi.thesis.dimstyl.data.models.Article
 import gr.unipi.thesis.dimstyl.presentation.components.table.CellData
 
 data class HomeState(
-    val fullName: String? = null,
+    val fullName: String? = "have a nice day",
     val articles: List<Article> = emptyList(),
     val announcements: List<Announcement> = emptyList(),
     val appointmentsTableRowsData: List<List<CellData>> = emptyList(),
