@@ -10,6 +10,8 @@ import gr.unipi.thesis.dimstyl.domain.repositories.AuthRepository
 import gr.unipi.thesis.dimstyl.exceptions.JwtAccessTokenDoesNotExist
 import gr.unipi.thesis.dimstyl.exceptions.JwtAccessTokenRetrievalFailed
 import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.LOGIN_ERROR_MESSAGE
+import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.LOGOUT_ERROR_MESSAGE
+import gr.unipi.thesis.dimstyl.utils.Constants.SuccessMessages.LOGOUT_SUCCESS_MESSAGE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -66,6 +68,18 @@ class AuthRepositoryImpl(
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to retrieve token", e)
                 return@withContext Result.failure(JwtAccessTokenRetrievalFailed())
+            }
+        }
+    }
+
+    override suspend fun logout(): Result<String> {
+        return withContext(Dispatchers.IO) {
+            try {
+                jwtTokenManager.clearAccessToken()
+                return@withContext Result.success(LOGOUT_SUCCESS_MESSAGE)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to clear token", e)
+                return@withContext Result.failure(Exception(LOGOUT_ERROR_MESSAGE))
             }
         }
     }

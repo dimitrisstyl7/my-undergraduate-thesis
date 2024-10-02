@@ -6,5 +6,6 @@ interface AuthRepository {
 
     suspend fun login(loginRequest: LoginRequest): Result<Unit>
     suspend fun retrieveAccessToken(): Result<String>
+    suspend fun logout(): Result<String>
 
 }
