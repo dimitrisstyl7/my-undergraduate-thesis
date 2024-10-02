@@ -3,16 +3,25 @@ package gr.unipi.thesis.dimstyl.presentation.screens.dietPlans
 import androidx.compose.material3.Icon
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import gr.unipi.thesis.dimstyl.R
 import gr.unipi.thesis.dimstyl.data.models.DietPlan
+import gr.unipi.thesis.dimstyl.domain.usecases.DownloadDietPlanUseCase
+import gr.unipi.thesis.dimstyl.domain.usecases.FetchDietPlansUseCase
+import gr.unipi.thesis.dimstyl.presentation.components.table.CellData
 import gr.unipi.thesis.dimstyl.presentation.components.table.HeaderCellData
 import gr.unipi.thesis.dimstyl.presentation.components.table.createEmptyTableRowsData
 import gr.unipi.thesis.dimstyl.presentation.components.table.createTableRowsData
 import gr.unipi.thesis.dimstyl.presentation.theme.PrimaryColor
+import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.FETCH_DIET_PLANS_ERROR_MESSAGE
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
-class DietPlansViewModel : ViewModel() {
+class DietPlansViewModel(
+    private val fetchDietPlansUseCase: FetchDietPlansUseCase,
+    private val downloadDietPlanUseCase: DownloadDietPlanUseCase
+) : ViewModel() {
 
     private val _state = MutableStateFlow(DietPlansState())
     val state = _state.asStateFlow()
@@ -22,7 +31,6 @@ class DietPlansViewModel : ViewModel() {
 
     init {
         initializeTableHeaderCellsData()
-        fetchDietPlans()
     }
 
     private fun initializeTableHeaderCellsData() {
@@ -33,50 +41,50 @@ class DietPlansViewModel : ViewModel() {
         )
     }
 
-    private fun fetchDietPlans() {
-        _state.value = _state.value.copy(isLoading = true)
+    fun fetchDietPlans(onFetchDietPlansResult: (String, Boolean) -> Unit) {
+        viewModelScope.launch {
+            _state.value = _state.value.copy(isLoading = true)
 
-        // TODO: Fetch diet plans from the server
-        val dietPlans = listOf(
-            DietPlan(24, "3 Jan 2023"),
-            DietPlan(25, "3 Feb 2023"),
-            DietPlan(26, "3 Mar 2023"),
-            DietPlan(27, "3 Apr 2023"),
-            DietPlan(28, "3 May 2023"),
-            DietPlan(29, "3 Jun 2023"),
-            DietPlan(30, "3 Jul 2023"),
-            DietPlan(31, "3 Aug 2023"),
-            DietPlan(32, "3 Sep 2023"),
-            DietPlan(33, "3 Oct 2023"),
-            DietPlan(34, "3 Nov 2023"),
-            DietPlan(35, "3 Dec 2023"),
-            DietPlan(36, "3 Jan 2024"),
-            DietPlan(37, "3 Feb 2024"),
-            DietPlan(38, "3 Mar 2024"),
-            DietPlan(39, "3 Apr 2024"),
-            DietPlan(40, "3 May 2024"),
-            DietPlan(41, "3 Jun 2024")
+            val result = fetchDietPlansUseCase()
+            val dietPlans = result.getOrNull()
+            var tableRowsData: List<List<CellData>> =
+                createEmptyTableRowsData("No diet plans found")
+
+            if (result.isSuccess && dietPlans != null) {
+                tableRowsData = createTableRowsData(dietPlans)
+            } else {
+                val errorMessage =
+                    result.exceptionOrNull()?.message ?: FETCH_DIET_PLANS_ERROR_MESSAGE
+                onFetchDietPlansResult(errorMessage, false)
+            }
+
+            _state.value = _state.value.copy(tableRowsData = tableRowsData, isLoading = false)
+        }
+    }
+
+    private fun createTableRowsData(dietPlans: List<DietPlan>): List<List<CellData>> {
+        return if (dietPlans.isEmpty()) createEmptyTableRowsData("No diet plans found")
+        else createTableRowsData(
+            cellsWeight = cellsWeight,
+            items = dietPlans,
+            getText = { dietPlan -> dietPlan.createdOn },
+            icon = { dietPlan ->
+                {
+                    Icon(
+                        painter = painterResource(R.drawable.baseline_download_24),
+                        contentDescription = "Download the diet plan created on ${dietPlan.createdOn}"
+                    )
+                }
+            },
+            buttonColor = PrimaryColor,
+            onClick = { id ->
+                val dietPlan = dietPlans.find { it.id == id }
+                val fileName =
+                    if (dietPlan != null) "diet plan (${dietPlan.createdOn}).pdf"
+                    else "diet plan $id.pdf"
+                downloadDietPlanUseCase(id, fileName)
+            }
         )
-
-        val tableRowsData =
-            if (dietPlans.isEmpty()) createEmptyTableRowsData("No diet plans found")
-            else createTableRowsData(
-                cellsWeight = cellsWeight,
-                items = dietPlans,
-                getText = { dietPlan -> dietPlan.createdOn },
-                icon = { dietPlan ->
-                    {
-                        Icon(
-                            painter = painterResource(R.drawable.baseline_download_24),
-                            contentDescription = "Download the diet plan created on ${dietPlan.createdOn}"
-                        )
-                    }
-                },
-                buttonColor = PrimaryColor,
-                onClick = { /* TODO: Download the diet plan */ }
-            )
-
-        _state.value = _state.value.copy(tableRowsData = tableRowsData, isLoading = false)
     }
 
 }
