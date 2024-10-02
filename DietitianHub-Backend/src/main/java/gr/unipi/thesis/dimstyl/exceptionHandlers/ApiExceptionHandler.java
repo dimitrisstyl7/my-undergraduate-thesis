@@ -6,6 +6,8 @@ import gr.unipi.thesis.dimstyl.exceptions.appointment.AppointmentIsInTheFutureEx
 import gr.unipi.thesis.dimstyl.exceptions.appointment.AppointmentIsInThePastException;
 import gr.unipi.thesis.dimstyl.exceptions.appointment.AppointmentNotFoundException;
 import gr.unipi.thesis.dimstyl.exceptions.article.ArticleNotFoundException;
+import gr.unipi.thesis.dimstyl.exceptions.dietPlan.ApiDietPlanNotFoundException;
+import gr.unipi.thesis.dimstyl.exceptions.storage.ApiStorageFileNotFoundException;
 import gr.unipi.thesis.dimstyl.exceptions.tag.TagsMismatchException;
 import gr.unipi.thesis.dimstyl.exceptions.user.ApiUserInfoNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -162,6 +164,19 @@ public class ApiExceptionHandler {
                 HttpStatus.FORBIDDEN.value(),
                 """
                         Unauthorized access. Please contact our support team for assistance.""",
+                null
+        );
+    }
+
+    @ExceptionHandler({ApiDietPlanNotFoundException.class, ApiStorageFileNotFoundException.class})
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    protected ErrorResponse handleStorageFileNotFoundException() {
+        return new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                """
+                        The diet plan you are looking for was not found. Please try again. \
+                        If the problem persists, contact our support team for assistance.""",
                 null
         );
     }
