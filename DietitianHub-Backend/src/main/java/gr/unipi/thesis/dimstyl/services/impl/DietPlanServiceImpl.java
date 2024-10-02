@@ -3,7 +3,7 @@ package gr.unipi.thesis.dimstyl.services.impl;
 import gr.unipi.thesis.dimstyl.dtos.web.WebDietPlanDto;
 import gr.unipi.thesis.dimstyl.entities.DietPlan;
 import gr.unipi.thesis.dimstyl.entities.UserInfo;
-import gr.unipi.thesis.dimstyl.exceptions.dietPlan.DietPlanNotFoundException;
+import gr.unipi.thesis.dimstyl.exceptions.dietPlan.WebDietPlanNotFoundException;
 import gr.unipi.thesis.dimstyl.repositories.DietPlanRepository;
 import gr.unipi.thesis.dimstyl.services.DietPlanService;
 import gr.unipi.thesis.dimstyl.services.StorageService;
@@ -47,7 +47,7 @@ public class DietPlanServiceImpl implements DietPlanService {
     public DietPlan getDietPlan(int userInfoId, int dietPlanId) {
         return dietPlanRepository
                 .findByIdAndUserInfo_Id(dietPlanId, userInfoId)
-                .orElseThrow(() -> new DietPlanNotFoundException(
+                .orElseThrow(() -> new WebDietPlanNotFoundException(
                         "Diet plan with id %d and user info id %d not found".formatted(dietPlanId, userInfoId))
                 );
     }

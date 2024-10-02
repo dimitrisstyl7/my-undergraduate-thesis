@@ -1,9 +1,9 @@
 package gr.unipi.thesis.dimstyl.exceptionHandlers;
 
-import gr.unipi.thesis.dimstyl.exceptions.dietPlan.DietPlanNotFoundException;
+import gr.unipi.thesis.dimstyl.exceptions.dietPlan.WebDietPlanNotFoundException;
 import gr.unipi.thesis.dimstyl.exceptions.storage.FileDeletionException;
 import gr.unipi.thesis.dimstyl.exceptions.storage.FileStorageException;
-import gr.unipi.thesis.dimstyl.exceptions.storage.StorageFileNotFoundException;
+import gr.unipi.thesis.dimstyl.exceptions.storage.WebStorageFileNotFoundException;
 import gr.unipi.thesis.dimstyl.exceptions.user.RegistrationFailedException;
 import gr.unipi.thesis.dimstyl.exceptions.user.UserNotFoundException;
 import gr.unipi.thesis.dimstyl.exceptions.user.WebUserInfoNotFoundException;
@@ -35,7 +35,7 @@ public class WebExceptionHandler {
                 .build();
     }
 
-    @ExceptionHandler({DietPlanNotFoundException.class, StorageFileNotFoundException.class})
+    @ExceptionHandler({WebDietPlanNotFoundException.class, WebStorageFileNotFoundException.class})
     protected ResponseEntity<Void> handleDietPlanNotFoundException() {
         return ResponseEntity
                 .status(HttpStatus.SEE_OTHER)
