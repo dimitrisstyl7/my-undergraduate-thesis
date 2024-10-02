@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,18 +21,33 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import gr.unipi.thesis.dimstyl.App
 import gr.unipi.thesis.dimstyl.presentation.components.cards.ArticleCard
 import gr.unipi.thesis.dimstyl.presentation.components.circularProgressIndicators.ScreenCircularProgressIndicator
 import gr.unipi.thesis.dimstyl.presentation.theme.DataNotFoundColor
 import gr.unipi.thesis.dimstyl.presentation.utils.ContentType
+import gr.unipi.thesis.dimstyl.presentation.utils.viewModelFactory
 
 @Composable
-fun ArticlesScreen(viewModel: ArticlesViewModel = viewModel()) {
+fun ArticlesScreen(
+    viewModel: ArticlesViewModel = viewModel<ArticlesViewModel>(
+        factory = viewModelFactory {
+            ArticlesViewModel(App.appModule.fetchArticlesUseCase)
+        }),
+    onSnackbarShow: (String, Boolean) -> Unit
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val context = LocalContext.current
+    val context = LocalContext.current // TODO: REMOVE THIS LINE
 
     if (state.isLoading) {
         ScreenCircularProgressIndicator()
+        LaunchedEffect(Unit) {
+            viewModel.fetchArticles(
+                onFetchArticlesResult = { message, shortDuration ->
+                    onSnackbarShow(message, shortDuration)
+                }
+            )
+        }
     } else if (state.articles.isEmpty()) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -69,5 +85,5 @@ fun ArticlesScreen(viewModel: ArticlesViewModel = viewModel()) {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun ArticlesScreenPreview() {
-    ArticlesScreen()
+    ArticlesScreen { _, _ -> }
 }
