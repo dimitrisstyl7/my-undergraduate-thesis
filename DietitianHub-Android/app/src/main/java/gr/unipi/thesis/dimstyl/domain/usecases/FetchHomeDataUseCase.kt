@@ -4,6 +4,6 @@ import gr.unipi.thesis.dimstyl.domain.repositories.HomeRepository
 
 class FetchHomeDataUseCase(private val homeRepository: HomeRepository) {
 
-    suspend fun execute() = homeRepository.fetchHomeData()
+    suspend operator fun invoke() = homeRepository.fetchHomeData()
 
 }

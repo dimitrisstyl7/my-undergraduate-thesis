@@ -16,7 +16,7 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
 
     fun login(onSuccessfulLogin: (String, Boolean) -> Unit) {
         viewModelScope.launch {
-            val result = loginUseCase.execute(state.value.username, state.value.password)
+            val result = loginUseCase(state.value.username, state.value.password)
             val errorMessage = result.exceptionOrNull()?.message ?: LOGIN_ERROR_MESSAGE
 
             _state.value = _state.value.copy(

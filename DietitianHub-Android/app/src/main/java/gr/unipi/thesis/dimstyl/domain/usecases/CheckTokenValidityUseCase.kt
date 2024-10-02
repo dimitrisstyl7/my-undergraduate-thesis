@@ -7,7 +7,7 @@ import gr.unipi.thesis.dimstyl.exceptions.UnknownException
 
 class CheckTokenValidityUseCase(private val authRepository: AuthRepository) {
 
-    suspend fun execute(): Result<Unit> {
+    suspend operator fun invoke(): Result<Unit> {
         val result = authRepository.retrieveAccessToken()
         val token = result.getOrNull()
 

@@ -50,7 +50,7 @@ class HomeViewModel(
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true)
 
-            val result = fetchHomeDataUseCase.execute()
+            val result = fetchHomeDataUseCase()
             val homeData = result.getOrNull()
             var isLoading = _state.value.isLoading
             var fullName: String? = _state.value.fullName
@@ -86,7 +86,7 @@ class HomeViewModel(
     fun cancelAppointment(onCancelAppointmentResult: (String, Boolean) -> Unit) {
         viewModelScope.launch {
             val id = _state.value.appointmentToBeCancelledId
-            val result = cancelAppointmentUseCase.execute(id)
+            val result = cancelAppointmentUseCase(id)
 
             if (result.isSuccess) {
                 removeCancelledAppointmentFromTable(id)

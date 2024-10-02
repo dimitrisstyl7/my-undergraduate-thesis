@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 class CreateAppointmentUseCase(private val appointmentRepository: AppointmentRepository) {
 
-    suspend fun execute(requestedDateTime: LocalDateTime): Result<Appointment> {
+    suspend operator fun invoke(requestedDateTime: LocalDateTime): Result<Appointment> {
         return appointmentRepository.createAppointment(
             Appointment(appointmentDateTime = requestedDateTime.toString())
         )

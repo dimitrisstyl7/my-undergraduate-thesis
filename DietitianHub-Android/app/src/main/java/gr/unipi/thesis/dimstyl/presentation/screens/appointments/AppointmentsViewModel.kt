@@ -82,7 +82,7 @@ class AppointmentsViewModel(
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true)
 
-            val result = fetchAppointmentsUseCase.execute()
+            val result = fetchAppointmentsUseCase()
             val appointments = result.getOrNull()
             var isLoading = _state.value.isLoading
             var scheduledTableRowsData = _state.value.scheduledTableRowsData
@@ -141,7 +141,7 @@ class AppointmentsViewModel(
     fun createAppointment(onCreateAppointmentResult: (String, Boolean) -> Unit) {
         viewModelScope.launch {
             val requestedDatetime = _state.value.requestedDatetime
-            val result = createAppointmentUseCase.execute(requestedDatetime)
+            val result = createAppointmentUseCase(requestedDatetime)
             val appointment = result.getOrNull()
 
             if (result.isSuccess && appointment != null) {
@@ -164,7 +164,7 @@ class AppointmentsViewModel(
     fun cancelAppointment(onCancelAppointmentResult: (String, Boolean) -> Unit) {
         viewModelScope.launch {
             val id = _state.value.appointmentToBeCancelledId
-            val result = cancelAppointmentUseCase.execute(id)
+            val result = cancelAppointmentUseCase(id)
 
             if (result.isSuccess) {
                 // Find the cancelled appointment and move it to the cancelled list

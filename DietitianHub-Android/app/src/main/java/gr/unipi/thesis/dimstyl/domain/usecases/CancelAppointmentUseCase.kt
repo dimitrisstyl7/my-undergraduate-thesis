@@ -4,6 +4,6 @@ import gr.unipi.thesis.dimstyl.domain.repositories.AppointmentRepository
 
 class CancelAppointmentUseCase(private val appointmentRepository: AppointmentRepository) {
 
-    suspend fun execute(id: Int) = appointmentRepository.cancelAppointment(id)
+    suspend operator fun invoke(id: Int) = appointmentRepository.cancelAppointment(id)
 
 }
