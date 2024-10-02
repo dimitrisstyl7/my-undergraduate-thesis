@@ -62,11 +62,11 @@ fun AppNavHost(
 
         composable<Appointments> { AppointmentsScreen(onSnackbarShow = onSnackbarShow) }
 
-        composable<Articles> { ArticlesScreen() }
+        composable<Articles> { ArticlesScreen(onSnackbarShow = onSnackbarShow) }
 
         composable<Announcements> { AnnouncementsScreen() }
 
-        composable<DietPlans> { DietPlansScreen() }
+        composable<DietPlans> { DietPlansScreen(onSnackbarShow = onSnackbarShow) }
 
         composable<Login> {
             LoginScreen(onSuccessfulLogin = { snackbarMessage, shortDuration ->
