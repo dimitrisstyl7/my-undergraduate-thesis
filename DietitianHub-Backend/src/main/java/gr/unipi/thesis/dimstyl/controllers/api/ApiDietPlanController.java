@@ -26,8 +26,8 @@ public class ApiDietPlanController {
 
     @GetMapping
     public ResponseEntity<List<ApiDietPlanDto>> getDietPlans() {
-        String username = userDetailsService.getUserDetails().getUsername();
-        return ResponseEntity.ok(dietPlanService.getLatest15DietPlans(username));
+        int userInfoId = userDetailsService.getUserDetails().user().getUserInfo().getId();
+        return ResponseEntity.ok(dietPlanService.getLatest15DietPlans(userInfoId));
     }
 
     @GetMapping("/{id}")

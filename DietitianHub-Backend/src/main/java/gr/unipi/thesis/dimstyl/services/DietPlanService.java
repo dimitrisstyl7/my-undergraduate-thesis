@@ -18,7 +18,7 @@ public interface DietPlanService {
 
     List<WebDietPlanDto> getDietPlans(int userInfoId);
 
-    List<ApiDietPlanDto> getLatest15DietPlans(String username);
+    List<ApiDietPlanDto> getLatest15DietPlans(int userInfoId);
 
     Resource getDietPlanFileAsResource(int dietPlanId, UserInfo userInfo, RequestType requestType);
 

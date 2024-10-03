@@ -10,7 +10,6 @@ import gr.unipi.thesis.dimstyl.exceptions.dietPlan.WebDietPlanNotFoundException;
 import gr.unipi.thesis.dimstyl.repositories.DietPlanRepository;
 import gr.unipi.thesis.dimstyl.services.DietPlanService;
 import gr.unipi.thesis.dimstyl.services.StorageService;
-import gr.unipi.thesis.dimstyl.services.UserInfoService;
 import gr.unipi.thesis.dimstyl.utilities.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -27,7 +26,6 @@ public class DietPlanServiceImpl implements DietPlanService {
 
     private final DietPlanRepository dietPlanRepository;
     private final StorageService storageService;
-    private final UserInfoService userInfoService;
 
     @Override
     @Transactional
@@ -66,9 +64,8 @@ public class DietPlanServiceImpl implements DietPlanService {
     }
 
     @Override
-    public List<ApiDietPlanDto> getLatest15DietPlans(String username) {
-        UserInfo userInfo = userInfoService.getUserInfo(username);
-        return dietPlanRepository.findFirst15ByUserInfo_IdOrderByCreatedOnDesc(userInfo.getId()).stream()
+    public List<ApiDietPlanDto> getLatest15DietPlans(int userInfoId) {
+        return dietPlanRepository.findFirst15ByUserInfo_IdOrderByCreatedOnDesc(userInfoId).stream()
                 .map(DietPlan::toApiDto)
                 .toList();
     }
