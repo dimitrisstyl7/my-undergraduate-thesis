@@ -1,6 +1,5 @@
 package gr.unipi.thesis.dimstyl.presentation.screens.announcements
 
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,7 +19,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,10 +40,10 @@ fun AnnouncementsScreen(
             AnnouncementsViewModel(App.appModule.fetchAnnouncementsUseCase)
         }
     ),
-    onSnackbarShow: (String, Boolean) -> Unit
+    onSnackbarShow: (String, Boolean) -> Unit,
+    onShowWebView: (String, Boolean) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val context = LocalContext.current // TODO: REMOVE THIS LINE
 
     if (state.isLoading) {
         ScreenCircularProgressIndicator()
@@ -101,12 +99,8 @@ fun AnnouncementsScreen(
                         announcements = section.announcements,
                         createdAtColor = section.color,
                         onClick = { announcement ->
-                            // TODO: Handle announcement click
-                            Toast.makeText(
-                                context,
-                                "Announcement clicked: ${announcement.title}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            val endpoint = "announcements/${announcement.id}/preview"
+                            onShowWebView(endpoint, true)
                         }
                     )
                 }
@@ -119,5 +113,5 @@ fun AnnouncementsScreen(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun AnnouncementsScreenPreview() {
-    AnnouncementsScreen { _, _ -> }
+    AnnouncementsScreen(onSnackbarShow = { _, _ -> }, onShowWebView = { _, _ -> })
 }
