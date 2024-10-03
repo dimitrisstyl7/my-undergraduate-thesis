@@ -64,6 +64,14 @@ class Constants {
             "An error occurred while trying to fetch announcements. Please try again later. " +
                     "If the problem persists, contact our support team for assistance."
 
+        const val FETCH_PROFILE_DATA_ERROR_MESSAGE =
+            "An error occurred while trying to fetch your profile data. Please try again later. " +
+                    "If the problem persists, contact our support team for assistance."
+
+        const val UPDATE_PROFILE_DATA_ERROR_MESSAGE =
+            "An error occurred while trying to update your profile data. Please try again later. " +
+                    "If the problem persists, contact our support team for assistance."
+
         const val UNKNOWN_ERROR_MESSAGE =
             "An unknown error occurred. Please try again later. " +
                     "If the problem persists, contact our support team for assistance."
@@ -83,6 +91,9 @@ class Constants {
 
         const val APPOINTMENT_CREATED_SUCCESS_MESSAGE =
             "Your appointment has been requested successfully!"
+
+        const val PROFILE_DATA_UPDATED_SUCCESS_MESSAGE =
+            "Your profile data has been updated successfully!"
 
     }
 
