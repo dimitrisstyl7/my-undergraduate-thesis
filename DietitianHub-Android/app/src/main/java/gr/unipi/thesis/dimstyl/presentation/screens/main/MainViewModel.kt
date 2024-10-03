@@ -36,6 +36,14 @@ class MainViewModel(private val logoutUseCase: LogoutUseCase) : ViewModel() {
         _state.value = _state.value.copy(showLogoutDialog = show)
     }
 
+    fun showWebView(show: Boolean) {
+        _state.value = _state.value.copy(showWebView = show)
+    }
+
+    fun setWebViewEndpoint(endpoint: String) {
+        _state.value = _state.value.copy(webViewEndpoint = endpoint)
+    }
+
     fun setTopBarTitle(title: String) {
         _state.value = _state.value.copy(topBarTitle = title)
     }

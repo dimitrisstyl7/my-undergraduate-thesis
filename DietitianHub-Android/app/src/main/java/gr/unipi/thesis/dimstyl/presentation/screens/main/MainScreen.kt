@@ -26,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import gr.unipi.thesis.dimstyl.App
 import gr.unipi.thesis.dimstyl.presentation.components.BottomBar
 import gr.unipi.thesis.dimstyl.presentation.components.TopBar
+import gr.unipi.thesis.dimstyl.presentation.components.WebView
 import gr.unipi.thesis.dimstyl.presentation.components.dialogs.AlertDialog
 import gr.unipi.thesis.dimstyl.presentation.components.modalDrawerSheet.ModalDrawerSheet
 import gr.unipi.thesis.dimstyl.presentation.navigation.AppNavHost
@@ -37,6 +38,7 @@ import gr.unipi.thesis.dimstyl.presentation.theme.BodyColor
 import gr.unipi.thesis.dimstyl.presentation.theme.DangerColor
 import gr.unipi.thesis.dimstyl.presentation.utils.LoginStatus
 import gr.unipi.thesis.dimstyl.presentation.utils.viewModelFactory
+import gr.unipi.thesis.dimstyl.utils.Constants.BaseUrl.WEB_LOCALHOST
 import kotlinx.coroutines.launch
 
 @SuppressLint("RestrictedApi")
@@ -67,6 +69,8 @@ fun MainScreen(
             val backStackSize = navController.currentBackStack.value.size
 
             when {
+                mainState.showWebView -> viewModel.showWebView(false)
+
                 drawerState.isOpen -> {
                     scope.launch { drawerState.close() }
                 }
@@ -150,6 +154,7 @@ fun MainScreen(
                 viewModel = viewModel,
                 mainState = mainState,
                 onSnackbarShow = onSnackbarShow,
+                onShowWebView = { show -> viewModel.showWebView(show) },
                 backHandler = backHandler,
                 innerPadding = innerPadding
             )
@@ -185,5 +190,7 @@ fun MainScreen(
             }
         )
     }
+
+    if (mainState.showWebView) WebView("$WEB_LOCALHOST${mainState.webViewEndpoint}", mainState.jwtToken)
 
 }
