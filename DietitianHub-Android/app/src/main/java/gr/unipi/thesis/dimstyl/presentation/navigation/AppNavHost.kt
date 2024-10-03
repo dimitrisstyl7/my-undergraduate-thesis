@@ -58,7 +58,7 @@ fun AppNavHost(
             )
         }
 
-        composable<Profile> { ProfileScreen() }
+        composable<Profile> { ProfileScreen(onSnackbarShow = onSnackbarShow) }
 
         composable<Appointments> { AppointmentsScreen(onSnackbarShow = onSnackbarShow) }
 

@@ -19,6 +19,7 @@ import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -28,15 +29,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -45,6 +48,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import gr.unipi.thesis.dimstyl.App
 import gr.unipi.thesis.dimstyl.R
 import gr.unipi.thesis.dimstyl.domain.models.Gender
 import gr.unipi.thesis.dimstyl.presentation.components.OutlinedTextField
@@ -52,6 +56,7 @@ import gr.unipi.thesis.dimstyl.presentation.components.circularProgressIndicator
 import gr.unipi.thesis.dimstyl.presentation.components.dialogs.DatePickerDialog
 import gr.unipi.thesis.dimstyl.presentation.theme.BodyColor
 import gr.unipi.thesis.dimstyl.presentation.theme.DangerColor
+import gr.unipi.thesis.dimstyl.presentation.theme.DataNotFoundColor
 import gr.unipi.thesis.dimstyl.presentation.theme.LeftBarColor
 import gr.unipi.thesis.dimstyl.presentation.theme.PrimaryColor
 import gr.unipi.thesis.dimstyl.presentation.theme.SuccessColor
@@ -59,22 +64,49 @@ import gr.unipi.thesis.dimstyl.presentation.theme.TextFieldInputColor
 import gr.unipi.thesis.dimstyl.presentation.theme.TopBarColor
 import gr.unipi.thesis.dimstyl.presentation.utils.ContentType
 import gr.unipi.thesis.dimstyl.presentation.utils.PastSelectableDates
-import gr.unipi.thesis.dimstyl.presentation.utils.convertMillisToDate
+import gr.unipi.thesis.dimstyl.presentation.utils.viewModelFactory
 import gr.unipi.thesis.dimstyl.presentation.utils.yearRange
+import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.FETCH_PROFILE_DATA_ERROR_MESSAGE
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
+fun ProfileScreen(
+    viewModel: ProfileViewModel = viewModel<ProfileViewModel>(
+        factory = viewModelFactory {
+            ProfileViewModel(
+                App.appModule.fetchProfileDataUseCase,
+                App.appModule.updateProfileDataUseCase
+            )
+        }
+    ),
+    onSnackbarShow: (String, Boolean) -> Unit
+) {
     val focusManager = LocalFocusManager.current
     val profileState by viewModel.state.collectAsStateWithLifecycle()
-    val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = profileState.dateOfBirthMillis,
-        yearRange = yearRange(inPast = true),
-        selectableDates = PastSelectableDates
-    )
+    val profileData = profileState.profileData
 
     if (profileState.isLoading) {
         ScreenCircularProgressIndicator()
+        LaunchedEffect(Unit) {
+            viewModel.fetchProfileData(
+                onFetchProfileDataResult = { message, shortDuration ->
+                    onSnackbarShow(message, shortDuration)
+                }
+            )
+        }
+    } else if (profileData == null) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                modifier = Modifier.padding(16.dp),
+                text = FETCH_PROFILE_DATA_ERROR_MESSAGE,
+                fontWeight = FontWeight.SemiBold,
+                color = DataNotFoundColor
+            )
+        }
     } else {
         Column(Modifier.fillMaxSize()) {
             LazyColumn(
@@ -83,48 +115,63 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 item(contentType = ContentType.PROFILE_TEXT_INPUT_FIELD) {
+                    val error = viewModel.validateFirstName(profileData.firstName)
+                    viewModel.setHasError(error != null)
+
                     OutlinedTextField(
                         paddingValues = PaddingValues(start = 16.dp, end = 16.dp, top = 24.dp),
                         label = "First Name",
                         placeholder = "Enter first name",
-                        value = profileState.profileData!!.firstName,
-                        isError = false, // TODO: Add field validation
-                        supportingText = null, // TODO: field validation message
+                        value = profileData.firstName,
+                        isError = error != null,
+                        supportingText = if (error != null) {
+                            { Text(error) }
+                        } else null,
                         onValueChange = { viewModel.setFirstName(it) },
                         readOnly = !profileState.inEditMode,
                         leadingIcon = {
                             Icon(imageVector = Icons.Rounded.Person, contentDescription = null)
                         },
-                        trailingIconVisible = profileState.profileData!!.firstName.isNotEmpty() && profileState.inEditMode,
+                        trailingIconVisible = profileData.firstName.isNotEmpty() && profileState.inEditMode,
                         onTrailingIconClick = { viewModel.setFirstName("") },
                         keyboardActions = KeyboardActions { focusManager.moveFocus(FocusDirection.Next) }
                     )
                 }
 
                 item(contentType = ContentType.PROFILE_TEXT_INPUT_FIELD) {
+                    val error = viewModel.validateLastName(profileData.lastName)
+                    viewModel.setHasError(error != null)
+
                     OutlinedTextField(
                         paddingValues = PaddingValues(horizontal = 16.dp),
                         label = "Last Name",
                         placeholder = "Enter last name",
-                        value = profileState.profileData!!.lastName,
-                        isError = false, // TODO: Add field validation
-                        supportingText = null, // TODO: field validation message
+                        value = profileData.lastName,
+                        isError = error != null,
+                        supportingText = if (error != null) {
+                            { Text(error) }
+                        } else null,
                         onValueChange = { viewModel.setLastName(it) },
                         readOnly = !profileState.inEditMode,
-                        trailingIconVisible = profileState.profileData!!.lastName.isNotEmpty() && profileState.inEditMode,
+                        trailingIconVisible = profileData.lastName.isNotEmpty() && profileState.inEditMode,
                         onTrailingIconClick = { viewModel.setLastName("") },
                         keyboardActions = KeyboardActions { focusManager.moveFocus(FocusDirection.Next) }
                     )
                 }
 
                 item(contentType = ContentType.PROFILE_TEXT_INPUT_FIELD) {
+                    val error = viewModel.validateEmail(profileData.email)
+                    viewModel.setHasError(error != null)
+
                     OutlinedTextField(
                         paddingValues = PaddingValues(horizontal = 16.dp),
                         label = "Email",
                         placeholder = "Enter email",
-                        value = profileState.profileData!!.email,
-                        isError = false, // TODO: Add field validation
-                        supportingText = null, // TODO: field validation message
+                        value = profileData.email,
+                        isError = error != null,
+                        supportingText = if (error != null) {
+                            { Text(error) }
+                        } else null,
                         onValueChange = { viewModel.setEmail(it) },
                         readOnly = !profileState.inEditMode,
                         leadingIcon = {
@@ -133,7 +180,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                                 contentDescription = null
                             )
                         },
-                        trailingIconVisible = profileState.profileData!!.email.isNotEmpty() && profileState.inEditMode,
+                        trailingIconVisible = profileData.email.isNotEmpty() && profileState.inEditMode,
                         onTrailingIconClick = { viewModel.setEmail("") },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
@@ -145,13 +192,18 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                 }
 
                 item(contentType = ContentType.PROFILE_TEXT_INPUT_FIELD) {
+                    val error = viewModel.validatePhone(profileData.phone)
+                    viewModel.setHasError(error != null)
+
                     OutlinedTextField(
                         paddingValues = PaddingValues(horizontal = 16.dp),
                         label = "Phone",
                         placeholder = "Enter phone",
-                        value = profileState.profileData!!.phone,
-                        isError = false, // TODO: Add field validation
-                        supportingText = null, // TODO: field validation message
+                        value = profileData.phone,
+                        isError = error != null,
+                        supportingText = if (error != null) {
+                            { Text(error) }
+                        } else null,
                         onValueChange = { viewModel.setPhone(it) },
                         readOnly = !profileState.inEditMode,
                         leadingIcon = {
@@ -160,7 +212,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                                 contentDescription = null
                             )
                         },
-                        trailingIconVisible = profileState.profileData!!.phone.isNotEmpty() && profileState.inEditMode,
+                        trailingIconVisible = profileData.phone.isNotEmpty() && profileState.inEditMode,
                         onTrailingIconClick = { viewModel.setPhone("") },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Phone,
@@ -186,7 +238,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                             OutlinedTextField(
                                 modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
                                 label = "Gender",
-                                value = profileState.profileData!!.gender.toString(),
+                                value = profileData.gender.toString(),
                                 leadingIcon = {
                                     Icon(
                                         painter = painterResource(R.drawable.gender_svgrepo_com),
@@ -219,7 +271,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                             ) {
                                 Gender.entries.toList().forEach {
                                     val textColor =
-                                        if (it == profileState.profileData!!.gender) TopBarColor
+                                        if (it == profileData.gender) TopBarColor
                                         else TextFieldInputColor
 
                                     DropdownMenuItem(
@@ -251,9 +303,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                                         textAlign = TextAlign.Center
                                     )
                                 },
-                                value = datePickerState.selectedDateMillis?.let {
-                                    convertMillisToDate(it)
-                                } ?: "",
+                                value = profileData.dateOfBirth,
                                 trailingIcon = {
                                     IconButton(onClick = {
                                         viewModel.showDatePickerDialog(profileState.inEditMode)
@@ -276,17 +326,6 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                                     focusedPlaceholderColor = TopBarColor
                                 )
                             )
-
-                            if (profileState.showDatePickerDialog) {
-                                DatePickerDialog(
-                                    onDismiss = { viewModel.showDatePickerDialog(false) },
-                                    onConfirm = {
-                                        viewModel.showDatePickerDialog(false)
-                                        viewModel.setDateOfBirth(datePickerState.selectedDateMillis)
-                                    },
-                                    content = { DatePicker(state = datePickerState) }
-                                )
-                            }
                         }
                     }
                 }
@@ -300,10 +339,14 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                     ) {
                         if (profileState.inEditMode) {
                             Button(
+                                enabled = profileState.hasError.not(),
                                 onClick = {
-                                    // TODO: Save data
-                                    viewModel.setEditMode(false)
-                                    focusManager.clearFocus(true)
+                                    viewModel.saveProfileData(
+                                        onSaveProfileDataResult = { message, shortDuration ->
+                                            focusManager.clearFocus(true)
+                                            onSnackbarShow(message, shortDuration)
+                                        }
+                                    )
                                 },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = SuccessColor,
@@ -344,10 +387,29 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
             }
         }
     }
+
+    if (profileState.showDatePickerDialog) {
+        val datePickerState = DatePickerState(
+            locale = LocalContext.current.resources.configuration.locales[0],
+            initialSelectedDateMillis = profileState.dateOfBirthMillis,
+            yearRange = yearRange(inPast = true),
+            selectableDates = PastSelectableDates
+        )
+
+        DatePickerDialog(
+            onDismiss = { viewModel.showDatePickerDialog(false) },
+            onConfirm = {
+                viewModel.showDatePickerDialog(false)
+                val selectedDateMillis = datePickerState.selectedDateMillis ?: 0L
+                viewModel.setDateOfBirth(selectedDateMillis)
+            },
+            content = { DatePicker(state = datePickerState) }
+        )
+    }
 }
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
-    ProfileScreen()
+    ProfileScreen { _, _ -> }
 }
