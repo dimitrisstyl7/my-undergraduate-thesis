@@ -48,4 +48,8 @@ class MainViewModel(private val logoutUseCase: LogoutUseCase) : ViewModel() {
         _state.value = _state.value.copy(loginStatus = status)
     }
 
+    fun setJwtToken(token: String) {
+        _state.value = _state.value.copy(jwtToken = token)
+    }
+
 }

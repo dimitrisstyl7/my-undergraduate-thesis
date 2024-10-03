@@ -14,10 +14,11 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
     private val _state = MutableStateFlow(LoginState())
     val state = _state.asStateFlow()
 
-    fun login(onSuccessfulLogin: (String, Boolean) -> Unit) {
+    fun login(onSuccessfulLogin: (String, String, Boolean) -> Unit) {
         viewModelScope.launch {
             val result = loginUseCase(state.value.username, state.value.password)
             val errorMessage = result.exceptionOrNull()?.message ?: LOGIN_ERROR_MESSAGE
+            val token = result.getOrNull()
 
             _state.value = _state.value.copy(
                 loginHasError = result.isFailure,
@@ -25,7 +26,11 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
                 processingLoginRequest = false
             )
 
-            if (result.isSuccess) onSuccessfulLogin(MANUAL_LOGIN_SUCCESS_MESSAGE, true)
+            if (result.isSuccess && token != null) onSuccessfulLogin(
+                token,
+                MANUAL_LOGIN_SUCCESS_MESSAGE,
+                true
+            )
         }
     }
 

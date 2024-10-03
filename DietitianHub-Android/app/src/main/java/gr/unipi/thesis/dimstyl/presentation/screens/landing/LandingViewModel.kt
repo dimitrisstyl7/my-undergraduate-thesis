@@ -18,9 +18,10 @@ class LandingViewModel(
     private val checkTokenValidityUseCase: CheckTokenValidityUseCase
 ) : ViewModel() {
 
-    fun resolveLoginStatus(onLoginStatusResolved: (LoginStatus, Boolean, String, Boolean) -> Unit) {
+    fun resolveLoginStatus(onLoginStatusResolved: (LoginStatus, String, Boolean, String, Boolean) -> Unit) {
         viewModelScope.launch {
             val result = checkTokenValidityUseCase()
+            val token = result.getOrNull() ?: ""
             var status = LoginStatus.LOGGED_OUT
             var showSnackbarMessage = false
             var snackbarMessage = ""
@@ -51,7 +52,7 @@ class LandingViewModel(
                 }
             }
 
-            onLoginStatusResolved(status, showSnackbarMessage, snackbarMessage, true)
+            onLoginStatusResolved(status, token, showSnackbarMessage, snackbarMessage, true)
         }
     }
 

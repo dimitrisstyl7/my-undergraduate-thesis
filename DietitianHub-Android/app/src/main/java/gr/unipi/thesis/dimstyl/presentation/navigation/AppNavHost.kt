@@ -37,8 +37,9 @@ fun AppNavHost(
         composable<Landing> {
             LandingScreen(
                 loginStatus = mainState.loginStatus,
-                onLoginStatusResolved = { status, showSnackbarMessage, snackbarMessage, shortDuration ->
+                onLoginStatusResolved = { status, token, showSnackbarMessage, snackbarMessage, shortDuration ->
                     viewModel.setLoginStatus(status)
+                    viewModel.setJwtToken(token)
                     viewModel.setCurrentNavRoute(NavRoute.HOME)
                     if (showSnackbarMessage) onSnackbarShow(snackbarMessage, shortDuration)
                     navController.navigate(Home) { popUpTo(Landing) { inclusive = true } }
@@ -69,9 +70,10 @@ fun AppNavHost(
         composable<DietPlans> { DietPlansScreen(onSnackbarShow = onSnackbarShow) }
 
         composable<Login> {
-            LoginScreen(onSuccessfulLogin = { snackbarMessage, shortDuration ->
+            LoginScreen(onSuccessfulLogin = { token, snackbarMessage, shortDuration ->
                 viewModel.setLoginStatus(LoginStatus.LOGGED_IN)
                 viewModel.setCurrentNavRoute(NavRoute.HOME)
+                viewModel.setJwtToken(token)
                 onSnackbarShow(snackbarMessage, shortDuration)
                 navController.navigate(Home) { popUpTo(Login) { inclusive = true } }
             })

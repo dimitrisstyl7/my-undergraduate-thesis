@@ -7,5 +7,6 @@ data class MainState(
     val showLogoutDialog: Boolean = false,
     val topBarTitle: String = NavRoute.HOME.toString(),
     val currentNavRoute: NavRoute = NavRoute.LANDING,
-    val loginStatus: LoginStatus = LoginStatus.UNKNOWN
+    val loginStatus: LoginStatus = LoginStatus.UNKNOWN,
+    val jwtToken: String = ""
 )

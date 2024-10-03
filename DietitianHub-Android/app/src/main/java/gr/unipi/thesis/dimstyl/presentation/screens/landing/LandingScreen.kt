@@ -34,7 +34,7 @@ fun LandingScreen(
         factory = viewModelFactory { LandingViewModel(App.appModule.checkTokenValidityUseCase) }
     ),
     loginStatus: LoginStatus,
-    onLoginStatusResolved: (LoginStatus, Boolean, String, Boolean) -> Unit
+    onLoginStatusResolved: (LoginStatus, String, Boolean, String, Boolean) -> Unit
 ) {
     val currentOnLoginStatusResolved by rememberUpdatedState(onLoginStatusResolved)
 
@@ -42,8 +42,9 @@ fun LandingScreen(
         // Minimum delay of 2.5 seconds
         delay(2500)
 
-        viewModel.resolveLoginStatus { status, showSnackbarMessage, snackbarMessage, shortDuration ->
+        viewModel.resolveLoginStatus { token, status, showSnackbarMessage, snackbarMessage, shortDuration ->
             currentOnLoginStatusResolved(
+                token,
                 status,
                 showSnackbarMessage,
                 snackbarMessage,
@@ -87,5 +88,5 @@ fun LandingScreen(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun LandingScreenPreview() {
-    LandingScreen(loginStatus = LoginStatus.UNKNOWN) { _, _, _, _ -> }
+    LandingScreen(loginStatus = LoginStatus.UNKNOWN) { _, _, _, _, _ -> }
 }
