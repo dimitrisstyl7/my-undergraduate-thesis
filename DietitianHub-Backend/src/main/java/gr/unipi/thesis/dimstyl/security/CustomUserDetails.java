@@ -1,9 +1,7 @@
 package gr.unipi.thesis.dimstyl.security;
 
 import gr.unipi.thesis.dimstyl.entities.User;
-import gr.unipi.thesis.dimstyl.enums.Gender;
 import gr.unipi.thesis.dimstyl.enums.UserRole;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,10 +10,7 @@ import java.security.Principal;
 import java.util.Collection;
 import java.util.stream.Stream;
 
-@RequiredArgsConstructor
-public class CustomUserDetails implements UserDetails, Principal {
-
-    private final User user;
+public record CustomUserDetails(User user) implements UserDetails, Principal {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -59,10 +54,6 @@ public class CustomUserDetails implements UserDetails, Principal {
 
     public String getFullName() {
         return user.getUserInfo().getFirstName() + " " + user.getUserInfo().getLastName();
-    }
-
-    public Gender getGender() {
-        return user.getUserInfo().getGender();
     }
 
     private Collection<? extends GrantedAuthority> mapRoleToAuthority(UserRole role) {

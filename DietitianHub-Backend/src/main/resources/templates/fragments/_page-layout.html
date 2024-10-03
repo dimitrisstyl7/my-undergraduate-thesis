@@ -232,7 +232,7 @@
             <div class="user-box text-center"
                  th:with="dietitian=${#authentication.principal}, maleImg=@{/images/users/male.png}, femaleImg=@{/images/users/female.png}">
 
-                <img th:src="${dietitian.getGender().toString() == 'FEMALE'} ? ${femaleImg} : ${maleImg}" alt="user-img"
+                <img th:src="${dietitian.user.userInfo.gender.toString() == 'FEMALE'} ? ${femaleImg} : ${maleImg}" alt="user-img"
                      title="Mat Helme" class="rounded-circle img-thumbnail avatar-md">
                 <div class="dropdown">
                     <a href="#" class="user-name dropdown-toggle h5 mt-2 mb-1 d-block" data-bs-toggle="dropdown"
