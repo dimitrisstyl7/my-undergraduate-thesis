@@ -42,6 +42,18 @@ public class WebAnnouncementController {
         return "announcements";
     }
 
+    @GetMapping("/{id}/preview")
+    public String previewAnnouncement(@PathVariable("id") int id, Model model) {
+        WebAnnouncementDto announcement = announcementService.getAnnouncement(id);
+
+        model.addAttribute("headTitle", "Announcement");
+        model.addAttribute("title", announcement.title());
+        model.addAttribute("content", announcement.content());
+        model.addAttribute("createdAt", announcement.createdAt());
+
+        return "page-preview";
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<WebAnnouncementDto> getAnnouncement(@PathVariable("id") int id) {
         return ResponseEntity.ok(announcementService.getAnnouncement(id));

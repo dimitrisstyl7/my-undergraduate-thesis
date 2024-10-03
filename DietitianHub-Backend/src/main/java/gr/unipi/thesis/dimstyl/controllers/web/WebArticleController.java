@@ -32,6 +32,18 @@ public class WebArticleController {
         return "articles";
     }
 
+    @GetMapping("/{id}/preview")
+    public String previewAnnouncement(@PathVariable("id") int id, Model model) {
+        WebArticleDto article = articleService.getArticle(id);
+
+        model.addAttribute("headTitle", "Article");
+        model.addAttribute("title", article.title());
+        model.addAttribute("content", article.content());
+        model.addAttribute("createdAt", article.createdAt());
+
+        return "page-preview";
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<WebArticleDto> getArticle(@PathVariable("id") int id) {
         return ResponseEntity.ok(articleService.getArticle(id));
