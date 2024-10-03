@@ -65,7 +65,7 @@ fun <T> createTableRowsData(
     return rows
 }
 
-fun createEmptyTableRowsData(text: String): List<List<TextCellData>> {
+fun createEmptyTableRowData(text: String): List<List<TextCellData>> {
     return listOf(
         listOf(
             TextCellData(weight = 1f, text = text)

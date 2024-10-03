@@ -66,7 +66,6 @@ import gr.unipi.thesis.dimstyl.presentation.utils.ContentType
 import gr.unipi.thesis.dimstyl.presentation.utils.PastSelectableDates
 import gr.unipi.thesis.dimstyl.presentation.utils.viewModelFactory
 import gr.unipi.thesis.dimstyl.presentation.utils.yearRange
-import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.FETCH_PROFILE_DATA_ERROR_MESSAGE
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -102,7 +101,7 @@ fun ProfileScreen(
         ) {
             Text(
                 modifier = Modifier.padding(16.dp),
-                text = FETCH_PROFILE_DATA_ERROR_MESSAGE,
+                text = "Profile data not found",
                 fontWeight = FontWeight.SemiBold,
                 color = DataNotFoundColor
             )

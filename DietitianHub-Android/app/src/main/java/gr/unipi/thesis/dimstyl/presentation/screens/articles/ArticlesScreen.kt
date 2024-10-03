@@ -56,7 +56,7 @@ fun ArticlesScreen(
         ) {
             Text(
                 modifier = Modifier.padding(16.dp),
-                text = "No articles found",
+                text = "Articles not found",
                 fontWeight = FontWeight.SemiBold,
                 color = DataNotFoundColor
             )

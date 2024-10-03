@@ -107,7 +107,7 @@ fun HomeScreen(
                         item(contentType = ContentType.NO_ARTICLES) {
                             Text(
                                 modifier = Modifier.padding(16.dp),
-                                text = "No articles found",
+                                text = "Articles not found",
                                 textAlign = TextAlign.Center,
                                 fontWeight = FontWeight.SemiBold,
                                 color = DataNotFoundColor

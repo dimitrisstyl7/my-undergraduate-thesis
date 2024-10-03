@@ -10,7 +10,7 @@ import gr.unipi.thesis.dimstyl.domain.usecases.DownloadDietPlanUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchDietPlansUseCase
 import gr.unipi.thesis.dimstyl.presentation.components.table.CellData
 import gr.unipi.thesis.dimstyl.presentation.components.table.HeaderCellData
-import gr.unipi.thesis.dimstyl.presentation.components.table.createEmptyTableRowsData
+import gr.unipi.thesis.dimstyl.presentation.components.table.createEmptyTableRowData
 import gr.unipi.thesis.dimstyl.presentation.components.table.createTableRowsData
 import gr.unipi.thesis.dimstyl.presentation.theme.PrimaryColor
 import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.FETCH_DIET_PLANS_ERROR_MESSAGE
@@ -48,7 +48,7 @@ class DietPlansViewModel(
             val result = fetchDietPlansUseCase()
             val dietPlans = result.getOrNull()
             var tableRowsData: List<List<CellData>> =
-                createEmptyTableRowsData("No diet plans found")
+                createEmptyTableRowData("Diet Plans not found")
 
             if (result.isSuccess && dietPlans != null) {
                 tableRowsData = createTableRowsData(dietPlans)
@@ -63,7 +63,7 @@ class DietPlansViewModel(
     }
 
     private fun createTableRowsData(dietPlans: List<DietPlan>): List<List<CellData>> {
-        return if (dietPlans.isEmpty()) createEmptyTableRowsData("No diet plans found")
+        return if (dietPlans.isEmpty()) createEmptyTableRowData("No diet plans found")
         else createTableRowsData(
             cellsWeight = cellsWeight,
             items = dietPlans,

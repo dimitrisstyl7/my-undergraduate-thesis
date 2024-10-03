@@ -64,7 +64,7 @@ fun AnnouncementsScreen(
         ) {
             Text(
                 modifier = Modifier.padding(16.dp),
-                text = "No announcements found",
+                text = "Announcements not found",
                 fontWeight = FontWeight.SemiBold,
                 color = DataNotFoundColor
             )

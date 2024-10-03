@@ -10,7 +10,7 @@ import gr.unipi.thesis.dimstyl.domain.usecases.CancelAppointmentUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchHomeDataUseCase
 import gr.unipi.thesis.dimstyl.presentation.components.table.CellData
 import gr.unipi.thesis.dimstyl.presentation.components.table.HeaderCellData
-import gr.unipi.thesis.dimstyl.presentation.components.table.createEmptyTableRowsData
+import gr.unipi.thesis.dimstyl.presentation.components.table.createEmptyTableRowData
 import gr.unipi.thesis.dimstyl.presentation.components.table.createTableRowsData
 import gr.unipi.thesis.dimstyl.presentation.theme.DangerColor
 import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.CANCEL_APPOINTMENT_ERROR_MESSAGE
@@ -113,7 +113,7 @@ class HomeViewModel(
     }
 
     private fun createTableRowsData(appointments: List<Appointment>): List<List<CellData>> {
-        return if (appointments.isEmpty()) createEmptyTableRowsData("No appointments found")
+        return if (appointments.isEmpty()) createEmptyTableRowData("Appointments not found")
         else createTableRowsData(
             cellsWeight = cellsWeight,
             items = appointments,

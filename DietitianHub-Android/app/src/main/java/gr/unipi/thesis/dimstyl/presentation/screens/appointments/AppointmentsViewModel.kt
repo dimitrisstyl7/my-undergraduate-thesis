@@ -11,7 +11,7 @@ import gr.unipi.thesis.dimstyl.domain.usecases.CreateAppointmentUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchAppointmentsUseCase
 import gr.unipi.thesis.dimstyl.presentation.components.table.CellData
 import gr.unipi.thesis.dimstyl.presentation.components.table.HeaderCellData
-import gr.unipi.thesis.dimstyl.presentation.components.table.createEmptyTableRowsData
+import gr.unipi.thesis.dimstyl.presentation.components.table.createEmptyTableRowData
 import gr.unipi.thesis.dimstyl.presentation.components.table.createTableRowsData
 import gr.unipi.thesis.dimstyl.presentation.theme.DangerColor
 import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.CANCEL_APPOINTMENT_ERROR_MESSAGE
@@ -87,15 +87,15 @@ class AppointmentsViewModel(
             val appointments = result.getOrNull()
 
             var scheduledTableRowsData: List<List<CellData>> =
-                createEmptyTableRowsData("No scheduled appointments found")
+                createEmptyTableRowData("No scheduled appointments")
             var pendingTableRowsData: List<List<CellData>> =
-                createEmptyTableRowsData("No pending appointments found")
+                createEmptyTableRowData("No pending appointments")
             var completedTableRowsData: List<List<CellData>> =
-                createEmptyTableRowsData("No completed appointments found")
+                createEmptyTableRowData("No completed appointments")
             var declinedTableRowsData: List<List<CellData>> =
-                createEmptyTableRowsData("No declined appointments found")
+                createEmptyTableRowData("No declined appointments")
             var cancelledTableRowsData: List<List<CellData>> =
-                createEmptyTableRowsData("No cancelled appointments found")
+                createEmptyTableRowData("No cancelled appointments")
 
             if (result.isSuccess && appointments != null) {
                 scheduledAppointments.clear()
@@ -108,23 +108,23 @@ class AppointmentsViewModel(
                 val declinedAppointments = appointments.declinedAppointments
 
                 scheduledTableRowsData =
-                    if (scheduledAppointments.isEmpty()) createEmptyTableRowsData("No scheduled appointments found")
+                    if (scheduledAppointments.isNotEmpty()) createEmptyTableRowData("No scheduled appointments")
                     else createTableRowsData(scheduledAppointments, isActionable = true)
 
                 pendingTableRowsData =
-                    if (pendingAppointments.isEmpty()) createEmptyTableRowsData("No pending appointments found")
+                    if (pendingAppointments.isEmpty()) createEmptyTableRowData("No pending appointments")
                     else createTableRowsData(pendingAppointments, isActionable = true)
 
                 completedTableRowsData =
-                    if (completedAppointments.isEmpty()) createEmptyTableRowsData("No completed appointments found")
+                    if (completedAppointments.isEmpty()) createEmptyTableRowData("No completed appointments")
                     else createTableRowsData(completedAppointments, isActionable = false)
 
                 declinedTableRowsData =
-                    if (declinedAppointments.isEmpty()) createEmptyTableRowsData("No declined appointments found")
+                    if (declinedAppointments.isEmpty()) createEmptyTableRowData("No declined appointments")
                     else createTableRowsData(declinedAppointments, isActionable = false)
 
                 cancelledTableRowsData =
-                    if (cancelledAppointments.isEmpty()) createEmptyTableRowsData("No cancelled appointments found")
+                    if (cancelledAppointments.isEmpty()) createEmptyTableRowData("No cancelled appointments")
                     else createTableRowsData(cancelledAppointments, isActionable = false)
             } else {
                 val errorMessage =
