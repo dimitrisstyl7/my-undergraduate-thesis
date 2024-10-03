@@ -39,8 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         // then he is not authorized to access the web platform
         boolean isWebRequest = RequestType.byUri(uri).equals(RequestType.WEB);
         boolean hasRoleClient = user.getRole().equals(UserRole.CLIENT);
-        boolean previewRequest = (uri.startsWith("/announcements/") && uri.endsWith("/preview")) ||
-                                 (uri.startsWith("/articles/") && uri.endsWith("/preview"));
+        boolean previewRequest = (uri.startsWith("/announcements/") || uri.startsWith("/articles/")) && uri.endsWith("/preview");
 
         if (isWebRequest && hasRoleClient && !previewRequest && user.isEnabled()) {
             throw new AccessDeniedException("User with username %s is not authorized to access the web platform.".formatted(username));
