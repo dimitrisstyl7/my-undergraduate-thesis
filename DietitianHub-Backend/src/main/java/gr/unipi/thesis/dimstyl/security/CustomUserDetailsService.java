@@ -27,21 +27,27 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        final String uri = request.getServletPath();
+
         Optional<User> optionalUser = userRepository.findByUsername(username);
 
         // Check if user exists
         User user = optionalUser.orElseThrow(() ->
                 new UsernameNotFoundException("User with username %s not found.".formatted(username)));
 
-        // If user is a client and is enabled, then he is not authorized to access the web platform
-        boolean isWebRequest = RequestType.byUri(request.getServletPath()).equals(RequestType.WEB);
+        // If user is a client, is enabled and is not trying to preview an announcement or an article,
+        // then he is not authorized to access the web platform
+        boolean isWebRequest = RequestType.byUri(uri).equals(RequestType.WEB);
         boolean hasRoleClient = user.getRole().equals(UserRole.CLIENT);
-        if (isWebRequest && hasRoleClient && user.isEnabled()) {
+        boolean previewRequest = (uri.startsWith("/announcements/") && uri.endsWith("/preview")) ||
+                                 (uri.startsWith("/articles/") && uri.endsWith("/preview"));
+
+        if (isWebRequest && hasRoleClient && !previewRequest && user.isEnabled()) {
             throw new AccessDeniedException("User with username %s is not authorized to access the web platform.".formatted(username));
         }
 
         // If user is a dietitian and request type is API, then he is not authorized to access the API
-        boolean isApiRequest = RequestType.byUri(request.getServletPath()).equals(RequestType.API);
+        boolean isApiRequest = RequestType.byUri(uri).equals(RequestType.API);
         boolean hasRoleDietitian = user.getRole().equals(UserRole.DIETITIAN);
         if (isApiRequest && hasRoleDietitian) {
             throw new AccessDeniedException("User with username %s is not authorized to access the API.".formatted(username));
