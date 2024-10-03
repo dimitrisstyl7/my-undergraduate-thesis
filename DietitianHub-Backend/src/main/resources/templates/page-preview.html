@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <title>[[${headTitle}]] Preview</title>
+</head>
+<body>
+<div><h2><u>[[${title}]]</u></h2></div>
+<div><h4>[[${createdAt}]]</h4></div>
+<hr>
+<div id="content"></div>
+</body>
+
+<script th:inline="javascript">
+    document.getElementById('content').innerHTML = [[${content}]];
+</script>
+</html>
