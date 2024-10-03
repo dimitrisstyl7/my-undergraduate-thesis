@@ -271,9 +271,8 @@ fun AppointmentsScreen(
     }
 
     if (appointmentsState.showDatePickerDialog) {
-        val onDismiss = { viewModel.showDatePickerDialog(false) }
         DatePickerDialog(
-            onDismiss = onDismiss,
+            onDismiss = { viewModel.showDatePickerDialog(false) },
             onConfirm = {
                 viewModel.showDatePickerDialog(false)
                 val selectedDateMillis = datePickerState.selectedDateMillis ?: 0L

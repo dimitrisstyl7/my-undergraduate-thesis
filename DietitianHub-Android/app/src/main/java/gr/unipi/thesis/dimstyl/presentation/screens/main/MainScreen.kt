@@ -178,7 +178,7 @@ fun MainScreen(
                     onLogoutResult = { message, shortDuration ->
                         onSnackbarShow(message, shortDuration)
                     },
-                    onSuccessLogout = {
+                    onLogoutSuccess = {
                         navController.navigate(Login) { popUpTo(Landing) { inclusive = true } }
                     }
                 )

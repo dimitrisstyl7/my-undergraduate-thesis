@@ -16,7 +16,7 @@ class MainViewModel(private val logoutUseCase: LogoutUseCase) : ViewModel() {
     private val _state = MutableStateFlow(MainState())
     val state = _state.asStateFlow()
 
-    fun logout(onLogoutResult: (String, Boolean) -> Unit, onSuccessLogout: () -> Unit) {
+    fun logout(onLogoutResult: (String, Boolean) -> Unit, onLogoutSuccess: () -> Unit) {
         viewModelScope.launch {
             val result = logoutUseCase()
 
@@ -24,7 +24,7 @@ class MainViewModel(private val logoutUseCase: LogoutUseCase) : ViewModel() {
                 val successMessage = result.getOrNull() ?: LOGOUT_SUCCESS_MESSAGE
                 setLoginStatus(LoginStatus.LOGGED_OUT)
                 onLogoutResult(successMessage, true)
-                onSuccessLogout()
+                onLogoutSuccess()
             } else {
                 val errorMessage = result.exceptionOrNull()?.message ?: LOGOUT_ERROR_MESSAGE
                 onLogoutResult(errorMessage, false)
