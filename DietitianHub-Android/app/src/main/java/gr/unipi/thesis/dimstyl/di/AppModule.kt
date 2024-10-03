@@ -14,12 +14,14 @@ import gr.unipi.thesis.dimstyl.data.sources.remote.services.ArticleApiService
 import gr.unipi.thesis.dimstyl.data.sources.remote.services.AuthApiService
 import gr.unipi.thesis.dimstyl.data.sources.remote.services.DietPlanApiService
 import gr.unipi.thesis.dimstyl.data.sources.remote.services.HomeApiService
+import gr.unipi.thesis.dimstyl.data.sources.remote.services.ProfileApiService
 import gr.unipi.thesis.dimstyl.domain.repositories.AnnouncementRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.AppointmentRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.ArticleRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.AuthRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.DietPlanRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.HomeRepository
+import gr.unipi.thesis.dimstyl.domain.repositories.ProfileRepository
 import gr.unipi.thesis.dimstyl.domain.usecases.CancelAppointmentUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.CheckTokenValidityUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.CreateAppointmentUseCase
@@ -29,8 +31,10 @@ import gr.unipi.thesis.dimstyl.domain.usecases.FetchAppointmentsUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchArticlesUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchDietPlansUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchHomeDataUseCase
+import gr.unipi.thesis.dimstyl.domain.usecases.FetchProfileDataUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.LoginUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.LogoutUseCase
+import gr.unipi.thesis.dimstyl.domain.usecases.UpdateProfileDataUseCase
 
 interface AppModule {
 
@@ -51,6 +55,7 @@ interface AppModule {
     val articleApiService: ArticleApiService
     val dietPlanApiService: DietPlanApiService
     val announcementApiService: AnnouncementApiService
+    val profileApiService: ProfileApiService
 
     val authRepository: AuthRepository
     val homeRepository: HomeRepository
@@ -58,6 +63,7 @@ interface AppModule {
     val articleRepository: ArticleRepository
     val dietPlanRepository: DietPlanRepository
     val announcementRepository: AnnouncementRepository
+    val profileRepository: ProfileRepository
 
     val loginUseCase: LoginUseCase
     val checkTokenValidityUseCase: CheckTokenValidityUseCase
@@ -70,5 +76,7 @@ interface AppModule {
     val fetchDietPlansUseCase: FetchDietPlansUseCase
     val downloadDietPlanUseCase: DownloadDietPlanUseCase
     val fetchAnnouncementsUseCase: FetchAnnouncementsUseCase
+    val fetchProfileDataUseCase: FetchProfileDataUseCase
+    val updateProfileDataUseCase: UpdateProfileDataUseCase
 
 }

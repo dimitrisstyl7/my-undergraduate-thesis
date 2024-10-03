@@ -11,6 +11,7 @@ import gr.unipi.thesis.dimstyl.data.repositories.ArticleRepositoryImpl
 import gr.unipi.thesis.dimstyl.data.repositories.AuthRepositoryImpl
 import gr.unipi.thesis.dimstyl.data.repositories.DietPlanRepositoryImpl
 import gr.unipi.thesis.dimstyl.data.repositories.HomeRepositoryImpl
+import gr.unipi.thesis.dimstyl.data.repositories.ProfileRepositoryImpl
 import gr.unipi.thesis.dimstyl.data.sources.local.JwtTokenDataStore
 import gr.unipi.thesis.dimstyl.data.sources.local.JwtTokenManager
 import gr.unipi.thesis.dimstyl.data.sources.remote.builders.OkHttpClientBuilder
@@ -23,12 +24,14 @@ import gr.unipi.thesis.dimstyl.data.sources.remote.services.ArticleApiService
 import gr.unipi.thesis.dimstyl.data.sources.remote.services.AuthApiService
 import gr.unipi.thesis.dimstyl.data.sources.remote.services.DietPlanApiService
 import gr.unipi.thesis.dimstyl.data.sources.remote.services.HomeApiService
+import gr.unipi.thesis.dimstyl.data.sources.remote.services.ProfileApiService
 import gr.unipi.thesis.dimstyl.domain.repositories.AnnouncementRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.AppointmentRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.ArticleRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.AuthRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.DietPlanRepository
 import gr.unipi.thesis.dimstyl.domain.repositories.HomeRepository
+import gr.unipi.thesis.dimstyl.domain.repositories.ProfileRepository
 import gr.unipi.thesis.dimstyl.domain.usecases.CancelAppointmentUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.CheckTokenValidityUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.CreateAppointmentUseCase
@@ -38,8 +41,10 @@ import gr.unipi.thesis.dimstyl.domain.usecases.FetchAppointmentsUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchArticlesUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchDietPlansUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.FetchHomeDataUseCase
+import gr.unipi.thesis.dimstyl.domain.usecases.FetchProfileDataUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.LoginUseCase
 import gr.unipi.thesis.dimstyl.domain.usecases.LogoutUseCase
+import gr.unipi.thesis.dimstyl.domain.usecases.UpdateProfileDataUseCase
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "jwt_tokens")
 
@@ -112,6 +117,13 @@ class AppModuleImpl(private val appContext: Context) : AppModule {
             )
         ).create(AnnouncementApiService::class.java)
     }
+    override val profileApiService: ProfileApiService by lazy {
+        retrofitBuilder.build(
+            okHttpClientBuilder.build(
+                listOf(loggingInterceptor, accessTokenInterceptor)
+            )
+        ).create(ProfileApiService::class.java)
+    }
 
     override val authRepository: AuthRepository by lazy {
         AuthRepositoryImpl(authApiService, jwtTokenManager)
@@ -130,6 +142,9 @@ class AppModuleImpl(private val appContext: Context) : AppModule {
     }
     override val announcementRepository: AnnouncementRepository by lazy {
         AnnouncementRepositoryImpl(announcementApiService)
+    }
+    override val profileRepository: ProfileRepository by lazy {
+        ProfileRepositoryImpl(profileApiService)
     }
 
     override val loginUseCase: LoginUseCase by lazy {
@@ -164,6 +179,12 @@ class AppModuleImpl(private val appContext: Context) : AppModule {
     }
     override val fetchAnnouncementsUseCase: FetchAnnouncementsUseCase by lazy {
         FetchAnnouncementsUseCase(announcementRepository)
+    }
+    override val fetchProfileDataUseCase: FetchProfileDataUseCase by lazy {
+        FetchProfileDataUseCase(profileRepository)
+    }
+    override val updateProfileDataUseCase: UpdateProfileDataUseCase by lazy {
+        UpdateProfileDataUseCase(profileRepository)
     }
 
 }
