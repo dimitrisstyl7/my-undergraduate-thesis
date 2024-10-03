@@ -68,7 +68,15 @@ fun AppNavHost(
 
         composable<Appointments> { AppointmentsScreen(onSnackbarShow = onSnackbarShow) }
 
-        composable<Articles> { ArticlesScreen(onSnackbarShow = onSnackbarShow) }
+        composable<Articles> {
+            ArticlesScreen(
+                onSnackbarShow = onSnackbarShow,
+                onShowWebView = { url, show ->
+                    viewModel.setWebViewEndpoint(url)
+                    onShowWebView(show)
+                }
+            )
+        }
 
         composable<Announcements> { AnnouncementsScreen(onSnackbarShow = onSnackbarShow) }
 

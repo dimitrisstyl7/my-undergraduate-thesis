@@ -1,6 +1,5 @@
 package gr.unipi.thesis.dimstyl.presentation.screens.articles
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,7 +14,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,10 +32,10 @@ fun ArticlesScreen(
         factory = viewModelFactory {
             ArticlesViewModel(App.appModule.fetchArticlesUseCase)
         }),
-    onSnackbarShow: (String, Boolean) -> Unit
+    onSnackbarShow: (String, Boolean) -> Unit,
+    onShowWebView: (String, Boolean) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val context = LocalContext.current // TODO: REMOVE THIS LINE
 
     if (state.isLoading) {
         ScreenCircularProgressIndicator()
@@ -70,12 +68,8 @@ fun ArticlesScreen(
         ) {
             items(items = state.articles, contentType = { ContentType.ARTICLES }) { article ->
                 ArticleCard(article) {
-                    // TODO: Handle article click
-                    Toast.makeText(
-                        context,
-                        "Article clicked: ${article.title}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val endpoint = "articles/${article.id}/preview"
+                    onShowWebView(endpoint, true)
                 }
             }
         }
@@ -85,5 +79,5 @@ fun ArticlesScreen(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun ArticlesScreenPreview() {
-    ArticlesScreen { _, _ -> }
+    ArticlesScreen(onSnackbarShow = { _, _ -> }, onShowWebView = { _, _ -> })
 }
