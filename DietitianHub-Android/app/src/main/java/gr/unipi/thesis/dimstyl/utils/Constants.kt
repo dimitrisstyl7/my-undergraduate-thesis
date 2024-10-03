@@ -4,7 +4,8 @@ class Constants {
 
     object BaseUrl {
 
-        const val LOCALHOST = "http://10.0.2.2:8080/api/v1/"
+        const val API_LOCALHOST = "http://10.0.2.2:8080/api/v1/"
+        const val WEB_LOCALHOST = "http://10.0.2.2:8080/"
 
     }
 

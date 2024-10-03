@@ -10,7 +10,7 @@ import gr.unipi.thesis.dimstyl.data.sources.remote.services.DietPlanApiService
 import gr.unipi.thesis.dimstyl.domain.repositories.DietPlanRepository
 import gr.unipi.thesis.dimstyl.utils.Constants.Authorization.HEADER_AUTHORIZATION
 import gr.unipi.thesis.dimstyl.utils.Constants.Authorization.TOKEN_TYPE
-import gr.unipi.thesis.dimstyl.utils.Constants.BaseUrl.LOCALHOST
+import gr.unipi.thesis.dimstyl.utils.Constants.BaseUrl.API_LOCALHOST
 import gr.unipi.thesis.dimstyl.utils.Constants.ErrorMessages.FETCH_DIET_PLANS_ERROR_MESSAGE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -59,7 +59,7 @@ class DietPlanRepositoryImpl(
 
     override fun downloadDietPlan(id: Int, fileName: String) {
         val token = runBlocking { jwtTokenManager.getAccessToken() }
-        val request = DownloadManager.Request("${LOCALHOST}dietPlans/$id".toUri())
+        val request = DownloadManager.Request("${API_LOCALHOST}dietPlans/$id".toUri())
             .addRequestHeader(HEADER_AUTHORIZATION, "$TOKEN_TYPE $token")
             .setMimeType("application/pdf")
             .setTitle(fileName)
