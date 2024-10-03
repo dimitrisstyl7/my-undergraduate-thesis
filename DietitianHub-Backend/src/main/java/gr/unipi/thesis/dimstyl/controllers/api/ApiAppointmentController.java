@@ -24,25 +24,25 @@ public class ApiAppointmentController {
     @GetMapping
     public ResponseEntity<AppointmentsResponse> getAppointments() {
         LocalDateTime now = LocalDateTime.now();
-        String username = userDetailsService.getUserDetails().getUsername();
+        int userInfoId = userDetailsService.getUserDetails().user().getUserInfo().getId();
         List<ApiAppointmentDto> scheduledAppointments =
-                appointmentService.getLatest5AppointmentsByUsernameAndStatusAfterGivenAppointmentDateTime(
-                        username,
+                appointmentService.getLatest5AppointmentsByUserInfoIdAndStatusAfterGivenAppointmentDateTime(
+                        userInfoId,
                         AppointmentStatus.SCHEDULED,
                         now
                 );
         List<ApiAppointmentDto> pendingAppointments =
-                appointmentService.getLatest5AppointmentsByUsernameAndStatusAfterGivenAppointmentDateTime(
-                        username,
+                appointmentService.getLatest5AppointmentsByUserInfoIdAndStatusAfterGivenAppointmentDateTime(
+                        userInfoId,
                         AppointmentStatus.PENDING,
                         now
                 );
         List<ApiAppointmentDto> completedAppointments =
-                appointmentService.getLatest5AppointmentsByUsernameAndStatus(username, AppointmentStatus.COMPLETED);
+                appointmentService.getLatest5AppointmentsByUserInfoIdAndStatus(userInfoId, AppointmentStatus.COMPLETED);
         List<ApiAppointmentDto> declinedAppointments =
-                appointmentService.getLatest5AppointmentsByUsernameAndStatus(username, AppointmentStatus.DECLINED);
+                appointmentService.getLatest5AppointmentsByUserInfoIdAndStatus(userInfoId, AppointmentStatus.DECLINED);
         List<ApiAppointmentDto> cancelledAppointments =
-                appointmentService.getLatest5AppointmentsByUsernameAndStatus(username, AppointmentStatus.CANCELLED);
+                appointmentService.getLatest5AppointmentsByUserInfoIdAndStatus(userInfoId, AppointmentStatus.CANCELLED);
 
         AppointmentsResponse appointmentsResponse = AppointmentsResponse.builder()
                 .scheduledAppointments(scheduledAppointments)

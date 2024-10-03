@@ -22,11 +22,11 @@ public interface AppointmentService {
 
     List<WebAppointmentDto> getLatest5AppointmentsByStatus(AppointmentStatus status);
 
-    List<ApiAppointmentDto> getLatest5AppointmentsByUsernameAndStatusAfterGivenAppointmentDateTime(String username,
-                                                                                                   AppointmentStatus status,
-                                                                                                   LocalDateTime dateTime);
+    List<ApiAppointmentDto> getLatest5AppointmentsByUserInfoIdAndStatusAfterGivenAppointmentDateTime(int userInfoId,
+                                                                                                     AppointmentStatus status,
+                                                                                                     LocalDateTime dateTime);
 
-    List<ApiAppointmentDto> getLatest5AppointmentsByUsernameAndStatus(String username, AppointmentStatus status);
+    List<ApiAppointmentDto> getLatest5AppointmentsByUserInfoIdAndStatus(int userInfoId, AppointmentStatus status);
 
     void createAppointment(WebAppointmentDto webAppointmentDto, RequestType requestType);
 

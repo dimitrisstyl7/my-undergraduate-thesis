@@ -1,7 +1,6 @@
 package gr.unipi.thesis.dimstyl.repositories;
 
 import gr.unipi.thesis.dimstyl.entities.Appointment;
-import gr.unipi.thesis.dimstyl.entities.UserInfo;
 import gr.unipi.thesis.dimstyl.enums.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -27,15 +26,15 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 
     List<Appointment> findFirst5ByStatusOrderByAppointmentDateTimeDesc(AppointmentStatus status);
 
-    List<Appointment> findFirst5ByClientUserInfoAndStatusAndAppointmentDateTimeIsAfterOrderByAppointmentDateTime(UserInfo userInfo,
-                                                                                                                 AppointmentStatus status,
-                                                                                                                 LocalDateTime dateTime);
+    List<Appointment> findFirst5ByClientUserInfo_IdAndStatusAndAppointmentDateTimeIsAfterOrderByAppointmentDateTime(int userInfoId,
+                                                                                                                    AppointmentStatus status,
+                                                                                                                    LocalDateTime dateTime);
 
-    List<Appointment> findFirst5ByClientUserInfoAndStatusOrderByAppointmentDateTimeDesc(UserInfo userInfo, AppointmentStatus status);
+    List<Appointment> findFirst5ByClientUserInfo_IdAndStatusOrderByAppointmentDateTimeDesc(int userInfoId, AppointmentStatus status);
 
     Optional<Appointment> findByAppointmentDateTimeAndStatusAndClientUserInfoId(LocalDateTime dateTime,
                                                                                 AppointmentStatus status,
-                                                                                int clientUserInfoId);
+                                                                                int userInfoId);
 
     boolean existsByAppointmentDateTimeAndStatus(LocalDateTime dateTime, AppointmentStatus status);
 

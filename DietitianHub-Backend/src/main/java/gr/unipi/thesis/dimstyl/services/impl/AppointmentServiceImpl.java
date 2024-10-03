@@ -77,13 +77,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<ApiAppointmentDto> getLatest5AppointmentsByUsernameAndStatusAfterGivenAppointmentDateTime(String username,
-                                                                                                          AppointmentStatus status,
-                                                                                                          LocalDateTime dateTime) {
-        UserInfo userInfo = userInfoService.getUserInfo(username);
+    public List<ApiAppointmentDto> getLatest5AppointmentsByUserInfoIdAndStatusAfterGivenAppointmentDateTime(int userInfoId,
+                                                                                                            AppointmentStatus status,
+                                                                                                            LocalDateTime dateTime) {
         return appointmentRepository
-                .findFirst5ByClientUserInfoAndStatusAndAppointmentDateTimeIsAfterOrderByAppointmentDateTime(
-                        userInfo,
+                .findFirst5ByClientUserInfo_IdAndStatusAndAppointmentDateTimeIsAfterOrderByAppointmentDateTime(
+                        userInfoId,
                         status,
                         dateTime
                 )
@@ -93,9 +92,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<ApiAppointmentDto> getLatest5AppointmentsByUsernameAndStatus(String username, AppointmentStatus status) {
-        UserInfo userInfo = userInfoService.getUserInfo(username);
-        return appointmentRepository.findFirst5ByClientUserInfoAndStatusOrderByAppointmentDateTimeDesc(userInfo, status)
+    public List<ApiAppointmentDto> getLatest5AppointmentsByUserInfoIdAndStatus(int userInfoId, AppointmentStatus status) {
+        return appointmentRepository.findFirst5ByClientUserInfo_IdAndStatusOrderByAppointmentDateTimeDesc(userInfoId, status)
                 .stream()
                 .map(Appointment::toApiDto)
                 .toList();
@@ -130,8 +128,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     @Transactional
     public ApiAppointmentDto createAppointment(LocalDateTime requestedDateTime) {
-        UserInfo userInfo = userInfoService.getUserInfo(userDetailsService.getUserDetails().getUsername());
-
+        UserInfo userInfo = userDetailsService.getUserDetails().user().getUserInfo();
         // If there is an appointment with the same requested date time and status PENDING or SCHEDULED, throw an exception
         boolean exists = appointmentRepository.existsByClientUserInfo_IdAndAppointmentDateTimeAndStatusIn(
                 userInfo.getId(),

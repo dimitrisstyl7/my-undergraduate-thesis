@@ -5,6 +5,7 @@ import gr.unipi.thesis.dimstyl.dtos.api.ApiAppointmentDto;
 import gr.unipi.thesis.dimstyl.dtos.api.ApiArticleDto;
 import gr.unipi.thesis.dimstyl.dtos.api.HomeResponse;
 import gr.unipi.thesis.dimstyl.entities.Tag;
+import gr.unipi.thesis.dimstyl.entities.User;
 import gr.unipi.thesis.dimstyl.enums.AppointmentStatus;
 import gr.unipi.thesis.dimstyl.security.CustomUserDetailsService;
 import gr.unipi.thesis.dimstyl.services.AnnouncementService;
@@ -34,14 +35,14 @@ public class ApiHomeController {
     @GetMapping
     public ResponseEntity<HomeResponse> home() {
         LocalDateTime now = LocalDateTime.now();
-        String username = userDetailsService.getUserDetails().getUsername();
+        User user = userDetailsService.getUserDetails().user();
         String fullName = userDetailsService.getUserDetails().getFullName();
-        List<Tag> tags = userInfoService.getClientTags(username);
+        List<Tag> tags = userInfoService.getClientTags(user.getUsername());
         List<ApiArticleDto> articles = articleService.getLatest10ArticlesByTags(tags);
         List<ApiAnnouncementDto> announcements = announcementService.getLatest10Announcements();
         List<ApiAppointmentDto> appointments =
-                appointmentService.getLatest5AppointmentsByUsernameAndStatusAfterGivenAppointmentDateTime(
-                        username,
+                appointmentService.getLatest5AppointmentsByUserInfoIdAndStatusAfterGivenAppointmentDateTime(
+                        user.getUserInfo().getId(),
                         AppointmentStatus.SCHEDULED,
                         now
                 );
