@@ -1,5 +1,6 @@
 package gr.unipi.thesis.dimstyl.data.models
 
+import gr.unipi.thesis.dimstyl.domain.models.Announcement
 import gr.unipi.thesis.dimstyl.domain.models.AnnouncementSection
 
 data class AnnouncementsResponse(

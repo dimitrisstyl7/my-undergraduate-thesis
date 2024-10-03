@@ -1,7 +1,7 @@
 package gr.unipi.thesis.dimstyl.presentation.models
 
 import androidx.compose.ui.graphics.Color
-import gr.unipi.thesis.dimstyl.data.models.Announcement
+import gr.unipi.thesis.dimstyl.domain.models.Announcement
 
 data class AnnouncementSectionWithColor(
     val title: String,

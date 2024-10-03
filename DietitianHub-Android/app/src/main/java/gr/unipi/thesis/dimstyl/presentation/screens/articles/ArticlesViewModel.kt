@@ -25,9 +25,7 @@ class ArticlesViewModel(private val fetchArticlesUseCase: FetchArticlesUseCase) 
             } else {
                 val errorMessage =
                     result.exceptionOrNull()?.message ?: FETCH_ARTICLES_ERROR_MESSAGE
-
                 onFetchArticlesResult(errorMessage, false)
-
                 _state.value = _state.value.copy(isLoading = false)
             }
         }

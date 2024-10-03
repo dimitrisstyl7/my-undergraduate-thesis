@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import gr.unipi.thesis.dimstyl.data.models.Announcement
+import gr.unipi.thesis.dimstyl.domain.models.Announcement
 import gr.unipi.thesis.dimstyl.presentation.theme.AnnouncementTitleColor
 import gr.unipi.thesis.dimstyl.presentation.theme.DataNotFoundColor
 import gr.unipi.thesis.dimstyl.presentation.utils.ContentType

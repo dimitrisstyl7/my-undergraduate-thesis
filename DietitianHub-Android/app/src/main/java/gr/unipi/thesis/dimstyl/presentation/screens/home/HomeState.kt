@@ -1,7 +1,7 @@
 package gr.unipi.thesis.dimstyl.presentation.screens.home
 
-import gr.unipi.thesis.dimstyl.data.models.Announcement
 import gr.unipi.thesis.dimstyl.data.models.Article
+import gr.unipi.thesis.dimstyl.domain.models.Announcement
 import gr.unipi.thesis.dimstyl.presentation.components.table.CellData
 
 data class HomeState(
