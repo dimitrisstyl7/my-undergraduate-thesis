@@ -64,6 +64,23 @@ public class SecurityConfig {
 
     @Bean
     @Order(2)
+    public SecurityFilterChain previewSecurityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .cors(withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
+                .addFilterBefore(new JwtAuthFilter(jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class)
+                .securityMatcher("/announcements/{id}/preview", "/articles/{id}/preview")
+                .authorizeHttpRequests(configurer -> configurer
+                        .requestMatchers(
+                                "/announcements/{id}/preview", "/articles/{id}/preview"
+                        ).hasAuthority(UserRole.CLIENT.toString())
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .build();
+    }
+
+    @Bean
+    @Order(3)
     public SecurityFilterChain mvcSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .addFilterBefore(new LoginPageFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class)
