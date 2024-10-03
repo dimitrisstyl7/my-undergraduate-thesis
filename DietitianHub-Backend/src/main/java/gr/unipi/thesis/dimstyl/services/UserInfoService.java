@@ -15,6 +15,8 @@ public interface UserInfoService {
 
     void updateUserInfo(WebClientDto webClientDto, int userId, RequestType requestType);
 
+    void updateUserInfo(UserInfo userInfo);
+
     List<WebTagDto> getClientTags(int id, RequestType requestType);
 
     List<Tag> getClientTags(String username);

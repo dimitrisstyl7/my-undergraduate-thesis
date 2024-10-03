@@ -43,6 +43,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    @Transactional
+    public void updateUserInfo(UserInfo userInfo) {
+        userInfoRepository.save(userInfo);
+    }
+
+    @Override
     public List<WebTagDto> getClientTags(int userId, RequestType requestType) {
         UserInfo userInfo = getUserInfo(userId, requestType);
         return userInfo.getTags().stream()
