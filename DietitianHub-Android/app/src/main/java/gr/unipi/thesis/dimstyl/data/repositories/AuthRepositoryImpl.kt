@@ -25,7 +25,7 @@ class AuthRepositoryImpl(
         private const val TAG = "AuthRepositoryImpl"
     }
 
-    override suspend fun login(loginRequest: LoginRequest): Result<Unit> {
+    override suspend fun login(loginRequest: LoginRequest): Result<String> {
         return withContext(Dispatchers.IO) {
             val response: Response<LoginResponse>
 
@@ -84,10 +84,10 @@ class AuthRepositoryImpl(
         }
     }
 
-    private suspend fun saveAccessToken(accessToken: String): Result<Unit> {
+    private suspend fun saveAccessToken(accessToken: String): Result<String> {
         return try {
             jwtTokenManager.saveAccessToken(accessToken)
-            Result.success(Unit)
+            Result.success(accessToken)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to save token", e)
             Result.failure(Exception(LOGIN_ERROR_MESSAGE))
