@@ -2,10 +2,9 @@ package gr.unipi.thesis.dimstyl.presentation.utils
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SelectableDates
-import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.Year
-import java.util.Date
-import java.util.Locale
+import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
 object PastSelectableDates : SelectableDates {
@@ -30,9 +29,9 @@ fun yearRange(inPast: Boolean): IntRange {
     else getCurrentYear()..getCurrentYear() + 1
 }
 
-fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-    return formatter.format(Date(millis))
+fun getDateMillis(date: String): Long {
+    return LocalDate.parse(date).atStartOfDay(ZoneId.systemDefault()).plusDays(1).toInstant()
+        .toEpochMilli()
 }
 
 private fun getCurrentYear(): Int = Year.now().value
