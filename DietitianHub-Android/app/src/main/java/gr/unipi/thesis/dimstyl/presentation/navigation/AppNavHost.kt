@@ -26,6 +26,7 @@ fun AppNavHost(
     viewModel: MainViewModel,
     mainState: MainState,
     onSnackbarShow: (String, Boolean) -> Unit,
+    onShowWebView: (Boolean) -> Unit,
     backHandler: @Composable () -> Unit,
     innerPadding: PaddingValues
 ) {
@@ -55,7 +56,11 @@ fun AppNavHost(
                     viewModel.setCurrentNavRoute(NavRoute.LOGIN)
                     navController.navigate(Login) { popUpTo(Home) { inclusive = true } }
                 },
-                onSnackbarShow = onSnackbarShow
+                onSnackbarShow = onSnackbarShow,
+                onShowWebView = { url, show ->
+                    viewModel.setWebViewEndpoint(url)
+                    onShowWebView(show)
+                }
             )
         }
 
