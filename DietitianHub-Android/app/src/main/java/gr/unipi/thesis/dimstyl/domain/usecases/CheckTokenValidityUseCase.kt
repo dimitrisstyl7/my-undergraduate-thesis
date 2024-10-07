@@ -1,6 +1,6 @@
 package gr.unipi.thesis.dimstyl.domain.usecases
 
-import gr.unipi.thesis.dimstyl.data.utils.TokenUtils
+import gr.unipi.thesis.dimstyl.domain.utils.TokenUtils
 import gr.unipi.thesis.dimstyl.domain.repositories.AuthRepository
 import gr.unipi.thesis.dimstyl.exceptions.JwtAccessTokenExpired
 import gr.unipi.thesis.dimstyl.exceptions.UnknownException

@@ -1,4 +1,4 @@
-package gr.unipi.thesis.dimstyl.data.utils
+package gr.unipi.thesis.dimstyl.domain.utils
 
 import android.util.Base64
 import org.json.JSONObject
