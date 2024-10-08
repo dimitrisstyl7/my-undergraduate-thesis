@@ -108,7 +108,7 @@ class AppointmentsViewModel(
                 val declinedAppointments = appointments.declinedAppointments
 
                 scheduledTableRowsData =
-                    if (scheduledAppointments.isNotEmpty()) createEmptyTableRowData("No scheduled appointments")
+                    if (scheduledAppointments.isEmpty()) createEmptyTableRowData("No scheduled appointments")
                     else createTableRowsData(scheduledAppointments, isActionable = true)
 
                 pendingTableRowsData =
