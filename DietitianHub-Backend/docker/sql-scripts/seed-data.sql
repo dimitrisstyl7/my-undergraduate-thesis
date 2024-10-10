@@ -1,8 +1,8 @@
--- DIETITIAN -> username: aliceWhite95, password: aliceWhite95
--- CLIENT -> username: johnBrown90, password: johnBrown90
+-- DIETITIAN -> username: aliceWhite95, password: aliceWhite95!
+-- CLIENT -> username: johnBrown90, password: johnBrown90!
 insert into "user" (username, password, enabled, role)
-values ('aliceWhite95', '$2a$10$6cZ5L3DqviiLHWV.8ci8leDRKd9nk1nv0xAz/B.Qm2/E6.uQEmaHO', true, 'DIETITIAN'),
-       ('johnBrown90', '$2a$10$d/./JcM59U/3vh4eDy/.9uRb7zA.tJmD267s17BJufVjXN0ZfkKDa', true, 'CLIENT');
+values ('aliceWhite95', '$2a$10$9Pk.38T4obAN.51s8fzypeZiVhORHiB0fXfFG3qUyVgDJO5r7FDtG', true, 'DIETITIAN'),
+       ('johnBrown90', '$2a$10$r9ZLWK60oTQ8kQnEka673Ol0LK4BBS75OZAMN83fWYIOPFk0zSD0m', true, 'CLIENT');
 
 insert into user_info (user_id, first_name, last_name, gender, date_of_birth, email, phone)
 values (1, 'Alice', 'White', 'FEMALE', '1995-06-16', 'aliceWhite95@email.com', '1234567890'),
