@@ -44,7 +44,7 @@ public record CustomUserDetails(User user) implements UserDetails, Principal {
 
     @Override
     public boolean isEnabled() {
-        return user.isEnabled();
+        return true;
     }
 
     @Override
