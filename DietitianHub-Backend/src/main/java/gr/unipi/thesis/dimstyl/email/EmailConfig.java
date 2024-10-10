@@ -29,6 +29,9 @@ public class EmailConfig {
     @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
     private String mailServerStartTls;
 
+    @Value("${testing.email.server.root-domain}")
+    private String rootDomain;
+
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -107,7 +110,7 @@ public class EmailConfig {
                             To do so, click the button below:</p>
                 
                             <p>
-                                <a href="http://localhost:8080/auth/updateCredentials" target="_blank" class="button">
+                                <a href="{root-domain}/auth/updateCredentials" target="_blank" class="button">
                                 Update Credentials
                                 </a>
                             </p>
@@ -120,7 +123,7 @@ public class EmailConfig {
                     </div>
                 </body>
                 </html>
-                """;
+                """.replace("{root-domain}", rootDomain);
     }
 
 }

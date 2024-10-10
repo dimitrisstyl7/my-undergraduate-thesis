@@ -32,6 +32,12 @@ spring:
   main:
     banner-mode: off
 
+# Testing configuration
+testing:
+  email:
+    server:
+      root-domain: "${TEST_EMAIL_SERVER_URL:http://localhost:8080}" # Fallback to localhost if not set
+
 # JWT configuration
 application:
   security:
