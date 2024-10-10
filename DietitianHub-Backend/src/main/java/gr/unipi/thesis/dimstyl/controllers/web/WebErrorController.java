@@ -23,6 +23,11 @@ public class WebErrorController {
         return "error/404";
     }
 
+    @GetMapping("/405")
+    public String MethodNotAllowedPage() {
+        return "error/405";
+    }
+
     @GetMapping("/500")
     public String InternalServerErrorPage() {
         return "error/500";
