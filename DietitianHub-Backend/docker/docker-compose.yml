@@ -4,7 +4,7 @@ services:
     image: postgres:16.4
     environment:
       POSTGRES_PASSWORD: 1234
-      POSTGRES_DB: clientDietitian_db
+      POSTGRES_DB: dietitianHub_db
       PGDATA: /var/lib/postgresql/data
     volumes:
       - postgres_data:/var/lib/postgresql/data
