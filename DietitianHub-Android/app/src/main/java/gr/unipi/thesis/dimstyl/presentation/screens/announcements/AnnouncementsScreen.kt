@@ -68,41 +68,46 @@ fun AnnouncementsScreen(
             )
         }
     } else {
-        LazyColumn(
-            contentPadding = PaddingValues(top = 16.dp),
+        Column(
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            state.announcementSections.forEach { section ->
-                stickyHeader(contentType = ContentType.ANNOUNCEMENTS_SECTION_TITLE) {
-                    Row(Modifier.padding(top = 16.dp)) {
-                        Box(
-                            modifier = Modifier
-                                .size(width = 150.dp, height = 30.dp)
-                                .border(
-                                    width = 1.dp,
-                                    color = section.color,
-                                    shape = RoundedCornerShape(16.dp)
-                                )
-                                .background(
-                                    color = section.color,
-                                    shape = RoundedCornerShape(16.dp)
-                                ),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(text = section.title, color = AnnouncementSectionTitleColor)
+            LazyColumn(
+                contentPadding = PaddingValues(top = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                state.announcementSections.forEach { section ->
+                    stickyHeader(contentType = ContentType.ANNOUNCEMENTS_SECTION_TITLE) {
+                        Row(Modifier.padding(top = 16.dp)) {
+                            Box(
+                                modifier = Modifier
+                                    .size(width = 150.dp, height = 30.dp)
+                                    .border(
+                                        width = 1.dp,
+                                        color = section.color,
+                                        shape = RoundedCornerShape(16.dp)
+                                    )
+                                    .background(
+                                        color = section.color,
+                                        shape = RoundedCornerShape(16.dp)
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(text = section.title, color = AnnouncementSectionTitleColor)
+                            }
                         }
                     }
-                }
 
-                item(contentType = ContentType.ANNOUNCEMENTS_SECTION_BODY) {
-                    AnnouncementsCardsRow(
-                        announcements = section.announcements,
-                        createdAtColor = section.color,
-                        onClick = { announcement ->
-                            val endpoint = "announcements/${announcement.id}/preview"
-                            onShowWebView(endpoint, true)
-                        }
-                    )
+                    item(contentType = ContentType.ANNOUNCEMENTS_SECTION_BODY) {
+                        AnnouncementsCardsRow(
+                            announcements = section.announcements,
+                            createdAtColor = section.color,
+                            onClick = { announcement ->
+                                val endpoint = "announcements/${announcement.id}/preview"
+                                onShowWebView(endpoint, true)
+                            }
+                        )
+                    }
                 }
             }
         }
