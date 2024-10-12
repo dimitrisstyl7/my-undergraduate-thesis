@@ -86,9 +86,8 @@ public class SecurityConfig {
                 .addFilterBefore(new LoginPageFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(configurer -> configurer
                         .requestMatchers(
-                                "/css/**", "/data/**", "/fonts/**",
-                                "/images/**", "/js/**", "/libs/**",
-                                "error/**", "/auth/updateCredentials/confirmation"
+                                "/css/**", "/fonts/**", "/images/**", "/js/**",
+                                "/libs/**", "error/**", "/auth/updateCredentials/confirmation"
                         ).permitAll()
                         .requestMatchers("/auth/updateCredentials").hasAuthority(UserRole.CLIENT.toString())
                         .anyRequest().hasAuthority(UserRole.DIETITIAN.toString())
