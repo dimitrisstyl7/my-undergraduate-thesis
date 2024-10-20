@@ -104,7 +104,8 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <button type="reset" class="btn btn-secondary">
+                                                            <button type="reset" id="reset-tags-button"
+                                                                    class="btn btn-secondary">
                                                                 Reset
                                                             </button>
                                                         </form>
@@ -263,6 +264,7 @@
         const previewArticleTab = document.getElementById("preview-article-tab");
         const editArticleCard = document.getElementById("edit-article-card");
         const previewArticleCard = document.getElementById("preview-article-card");
+        const resetTagsButton = document.getElementById("reset-tags-button");
 
         const articleTitle = document.getElementById("article-title");
         const articleTitleErrorMessage = document.getElementById("title-error-message");
@@ -348,6 +350,7 @@
             document.querySelectorAll("input[type='checkbox']").forEach(function (item) {
                 item.removeAttribute("disabled");
             });
+            resetTagsButton.style.display = "block";
         }
 
         // Function that disables all tag checkboxes
@@ -355,6 +358,7 @@
             document.querySelectorAll("input[type='checkbox']").forEach(function (item) {
                 item.setAttribute("disabled", "true");
             });
+            resetTagsButton.style.display = "none";
         }
 
         // Function that clears the error messages
