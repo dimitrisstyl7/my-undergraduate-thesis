@@ -26,18 +26,44 @@ The following are the core frameworks, tools, and libraries used in the backend 
 - [Java JWT](https://github.com/jwtk/jjwt)
 
 ### Implemented Features:
-1. View clients
-2. Add a new client
-3. Delete a client
-4. Edit client details
-5. Add client tags
-6. Upload, view, and delete diet plans for a client
-7. Publish, edit, view, and delete announcements
-8. Publish, edit, view, and delete personalized articles
-9. View appointments
-10. Create a new appointment
-11. Edit appointment details
-12. Cancel, decline, approve, or complete an appointment
+#### 1. View clients
+![View clients](./images/view-clients.png)
+#### 2. Register a new client
+![Register a new client](./images/add-new-client.png)
+#### 3. Edit client details
+![Edit client details](./images/edit-client-details.png)
+#### 4. Delete a client
+![Delete a client](./images/delete-client.png)
+#### 5. Add client tags
+![Add client tags](./images/add-client-tags.png)
+#### 6. Upload, view, download, and delete diet plans for a client
+![Upload, view, download, and delete diet plans for a client](./images/upload-view-download-delete-diet-plans.png)
+#### 7. View announcements
+![View announcements](./images/view-announcements.png)
+#### 8. Preview announcement
+![Preview announcement](./images/preview-announcement.png)
+#### 9. Edit announcement
+![Edit announcement](./images/edit-announcement.png)
+#### 10. Delete announcement
+![Delete announcement](./images/delete-announcement.png)
+#### 11. View articles
+![View articles](./images/view-articles.png)
+#### 12. Preview article
+![Preview article](./images/preview-article.png)
+#### 13. Preview article tags
+![Preview article tags](./images/preview-article-tags.png)
+#### 14. Edit article
+![Edit article](./images/edit-article.png)
+#### 15. Edit article tags
+![Edit article tags](./images/edit-article-tags.png)
+#### 16. Delete article
+![Delete article](./images/delete-article.png)
+#### 17. Create a new appointment
+![Create a new appointment](./images/create-new-appointment.png)
+#### 18. Edit appointment details
+![Edit appointment details](./images/edit-appointment-details.png)
+#### 19. Cancel, decline, approve, or complete an appointment
+![Cancel, decline, approve, or complete an appointment](./images/cancel-decline-approve-complete-appointment.png)
 
 ## Android Application
 The Android application is implemented using the **Clean Architecture** software architecture pattern, which is an improved implementation of **MVVM (Model-View-ViewModel)** architecture design pattern.
@@ -52,10 +78,21 @@ The following tools and libraries are central to the Android application's devel
 - [DataStore](https://developer.android.com/topic/libraries/architecture/datastore)
 
 ### Implemented Features:
-1. Edit personal details
-2. Download diet plans
-3. View appointments
-4. Request a new appointment
-5. Cancel an appointment
-6. View announcements
-7. View articles
+#### 1. Edit personal details
+![Edit personal details](./images/edit-personal-details.png)
+#### 2. Download diet plans
+![Download diet plans](./images/download-diet-plans.png)
+#### 3. View appointments
+![View appointments](./images/view-appointments-android.png)
+#### 4. Request a new appointment
+![Request a new appointment](./images/request-new-appointment.png)
+#### 5. Cancel an appointment
+![Cancel an appointment](./images/cancel-appointment.png)
+#### 6. View announcements
+![View announcements](./images/view-announcements-android.png)
+#### 7. View announcement
+![View announcement](./images/view-announcement.png)
+#### 8. View articles
+![View articles](./images/view-articles-android.png)
+#### 9. View article
+![View article](./images/view-article.png)
