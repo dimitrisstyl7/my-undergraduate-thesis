@@ -4,6 +4,7 @@ import gr.unipi.thesis.dimstyl.dtos.web.WebClientDto;
 import gr.unipi.thesis.dimstyl.dtos.web.WebDietPlanDto;
 import gr.unipi.thesis.dimstyl.dtos.web.WebTagDto;
 import gr.unipi.thesis.dimstyl.entities.User;
+import gr.unipi.thesis.dimstyl.entities.UserInfo;
 import gr.unipi.thesis.dimstyl.enums.RequestType;
 import gr.unipi.thesis.dimstyl.services.DietPlanService;
 import gr.unipi.thesis.dimstyl.services.TagCategoryService;
@@ -108,8 +109,10 @@ public class WebClientController {
     @GetMapping("/{id}/dietPlans/upload")
     public String uploadDietPlanPage(@PathVariable("id") int id, Model model) {
         User user = userService.getUser(id);
-        List<WebDietPlanDto> dietPlans = dietPlanService.getDietPlans(user.getUserInfo().getId());
+        UserInfo userInfo = user.getUserInfo();
+        List<WebDietPlanDto> dietPlans = dietPlanService.getDietPlans(userInfo.getId());
         model.addAttribute("clientId", id);
+        model.addAttribute("clientFullName", userInfo.getFullName());
         model.addAttribute("dietPlans", dietPlans);
         return "upload-diet-plan";
     }
