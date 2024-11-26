@@ -96,3 +96,9 @@ The following tools and libraries are central to the Android application's devel
 ![View articles](./images/view-articles-android.png)
 #### 9. View article
 ![View article](./images/view-article.png)
+
+## Acknowledgments
+This project was developed as part of my undergraduate thesis in the Department of Informatics at the University of Piraeus. Contributions and feedback are greatly appreciated!
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
